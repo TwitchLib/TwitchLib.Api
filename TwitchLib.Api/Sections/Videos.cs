@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
-using TwitchLib.Api.Extensions.System;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Extensions.System;
 
-namespace TwitchLib.Api
+namespace TwitchLib.Api.Sections
 {
     public class Videos
     {

@@ -7,7 +7,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.RateLimiter;
+using TwitchLib.Api.Sections;
 
 namespace TwitchLib.Api
 {

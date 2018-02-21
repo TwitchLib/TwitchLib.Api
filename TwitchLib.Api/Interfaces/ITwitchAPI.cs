@@ -1,6 +1,8 @@
 ﻿
 
-namespace TwitchLib.Api
+using TwitchLib.Api.Sections;
+
+namespace TwitchLib.Api.Interfaces
 {
     public interface ITwitchAPI
     {

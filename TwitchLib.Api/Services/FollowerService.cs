@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Timers;
 using System.Threading.Tasks;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Services.Exceptions;
 using TwitchLib.Api.Services.Events.FollowerService;
 

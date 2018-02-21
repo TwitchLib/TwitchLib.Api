@@ -1,16 +1,15 @@
-﻿
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Linq;
-using System.Collections.Concurrent;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Services.Events.LiveStreamMonitor;
-using TwitchLib.Api;
 using TwitchLib.Api.Services.Exceptions;
 
-namespace TwitchLib.Services
+namespace TwitchLib.Api.Services
 {
     /// <summary>Service that allows customizability and subscribing to detection of channels going online/offline.</summary>
     public class LiveStreamMonitor

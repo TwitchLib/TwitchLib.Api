@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TwitchLib.Api;
 using TwitchLib.Api.Enums;
 
-namespace TwitchLib.Api
+namespace TwitchLib.Api.Sections
 {
     public class Follows
     {

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TwitchLib.Api;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
 
-namespace TwitchLib.Api
+namespace TwitchLib.Api.Sections
 {
     public class Chat
     {

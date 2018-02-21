@@ -4,10 +4,10 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
 using Newtonsoft.Json;
-using TwitchLib.Api.Events;
 using TwitchLib.Api.Enums;
+using TwitchLib.Api.Events;
 
-namespace TwitchLib.Api
+namespace TwitchLib.Api.Sections
 {
     /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>
     public class ThirdParty

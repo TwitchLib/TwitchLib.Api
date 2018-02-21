@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.v5.Root;
 
 namespace TwitchLib.Api

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api.Exceptions;
 
-namespace TwitchLib.Api
+namespace TwitchLib.Api.Sections
 {
     /// <summary>These endpoints are pretty cool, but they may stop working at anytime due to changes Twitch makes.</summary>
     public class Undocumented : ApiSection
