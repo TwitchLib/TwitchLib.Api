@@ -46,13 +46,11 @@ namespace TwitchLib.Api
         /// <summary>
         /// Creates an Instance of the TwitchAPI Class.
         /// </summary>
-        /// <param name="clientId">Twitch Client Id.</param>
-        /// <param name="accessToken">Twitch Access Token.</param>
         /// <param name="rateLimit">Should RateLimit Requests?</param>
         /// <param name="rateLimiter">Instance Of RateLimiter. Useful if using multiple API instances on one connection and you wish to share the requests ratelimiter.</param>
         /// <param name="callsPerPeriod">Number of Requests per Period to rate limit to</param>
         /// <param name="ratePeriod">Period for Rate Limit (In Seconds)</param>
-        public TwitchAPI(string clientId = null, string accessToken = null, bool rateLimit = true, IRateLimiter rateLimiter = null, int callsPerPeriod = 1, int ratePeriod = 1)
+        public TwitchAPI(bool rateLimit = true, IRateLimiter rateLimiter = null, int callsPerPeriod = 1, int ratePeriod = 1)
         {
             _rateLimiter = rateLimit ?
                 (rateLimiter ?? TimeLimiter.GetFromMaxCountByInterval(callsPerPeriod, TimeSpan.FromSeconds(ratePeriod)))
@@ -84,11 +82,19 @@ namespace TwitchLib.Api
             Debugging = new Debugging();
             Settings = new ApiSettings(this);
             _jsonSerializer = new TwitchLibJsonSerializer();
+        }
 
+        /// <summary>
+        /// Initializes the Instance of the TwitchAPI Class.
+        /// </summary>
+        /// <param name="clientId">Twitch Client Id.</param>
+        /// <param name="accessToken">Twitch Access Token.</param>
+        public async Task Initialize(string clientId = null, string accessToken = null)
+        {
             if (!string.IsNullOrWhiteSpace(clientId))
-                Settings.ClientId = clientId;
+                await Settings.SetClientIdAsync(clientId);
             if (!string.IsNullOrWhiteSpace(accessToken))
-                Settings.AccessToken = accessToken;
+                await Settings.SetAccessTokenAsync(accessToken);
         }
 
         #region Requests

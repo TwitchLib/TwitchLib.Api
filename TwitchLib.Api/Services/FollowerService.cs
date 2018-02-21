@@ -13,17 +13,14 @@ namespace TwitchLib.Api.Services
     /// <summary>Service that allows customizability and subscribing to detection of new Twitch followers.</summary>
     public class FollowerService
     {
-        private string _channel, _clientId;
         private int _queryCount, _checkIntervalSeconds;
         private readonly ITwitchAPI _api;
 
         private readonly Timer _followerServiceTimer = new Timer();
         /// <summary>Property representing Twitch channel service is monitoring.</summary>
-        public string ChannelData { get => _channel; protected set => _channel = value; }
+        public string ChannelData { get; protected set; }
         /// <summary>Property representing whether channeldata is a channel name or channel id.</summary>
         public ChannelIdentifierType ChannelIdentifier { get; protected set; }
-        /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
-        public string ClientId { get => _clientId; set { _clientId = value; _api.Settings.ClientId = value; } }
         /// <summary>Property representing the number of followers to compare a fresh query against for new followers. Default: 1000.</summary>
         public int CacheSize { get; set; } = 1000;
         /// <summary>Property representing number of recent followers that service should request. Recommended: 25, increase for larger channels. MAX: 100, MINIMUM: 1</summary>
@@ -39,15 +36,12 @@ namespace TwitchLib.Api.Services
         /// <param name="api">TwitchApi instance</param>
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
         /// <param name="queryCount">Number of recent followers service should request from Twitch Api. Max: 100, Min: 1</param>
-        /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
-        public FollowerService(ITwitchAPI api, int checkIntervalSeconds = 60, int queryCount = 25, string clientId = "")
+        public FollowerService(ITwitchAPI api, int checkIntervalSeconds = 60, int queryCount = 25)
         {
             _api = api;
             CheckIntervalSeconds = checkIntervalSeconds;
             QueryCount = queryCount;
             _followerServiceTimer.Elapsed += _followerServiceTimerElapsed;
-            if (clientId != "")
-                ClientId = clientId;
         }
 
         #region CONTROLS
