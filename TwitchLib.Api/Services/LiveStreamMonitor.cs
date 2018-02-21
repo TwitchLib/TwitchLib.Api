@@ -20,7 +20,7 @@ namespace TwitchLib.Api.Services
         private bool _isStartup;
         private List<string> _channelIds;
         private readonly ConcurrentDictionary<string, string> _channelToId;
-        private readonly ConcurrentDictionary<string, Api.Models.v5.Streams.Stream> _statuses;
+        private readonly ConcurrentDictionary<string, Models.v5.Streams.Stream> _statuses;
         private readonly Timer _streamMonitorTimer = new Timer();
         private readonly bool _checkStatusOnStart;
         private readonly bool _invokeEventsOnStart;
@@ -41,7 +41,7 @@ namespace TwitchLib.Api.Services
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
         public string ClientId { get => _clientId; set { _clientId = value; _api.Settings.ClientId = value; } }
         /// <summary> </summary>
-        public List<Api.Models.v5.Streams.Stream> CurrentLiveStreams { get { return _statuses.Where(x => x.Value != null).Select(x => x.Value).ToList(); } }
+        public List<Models.v5.Streams.Stream> CurrentLiveStreams { get { return _statuses.Where(x => x.Value != null).Select(x => x.Value).ToList(); } }
         /// <summary> </summary>
         public List<string> CurrentOfflineStreams { get { return _statuses.Where(x => x.Value == null).Select(x => x.Key).ToList(); } }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
@@ -74,7 +74,7 @@ namespace TwitchLib.Api.Services
         {
             _api = api;
             _channelIds = new List<string>();
-            _statuses = new ConcurrentDictionary<string, Api.Models.v5.Streams.Stream>();
+            _statuses = new ConcurrentDictionary<string, Models.v5.Streams.Stream>();
             _channelToId = new ConcurrentDictionary<string, string>();
             _checkStatusOnStart = checkStatusOnStart;
             _invokeEventsOnStart = invokeEventsOnStart;
@@ -133,7 +133,7 @@ namespace TwitchLib.Api.Services
             _channelIds.ForEach(x => _statuses.TryAdd(x, null));
 
             foreach (var item in _statuses.Keys.Where(x => !_channelIds.Any(channelId => channelId.Equals(x))).ToList())
-                _statuses.TryRemove(item, out Api.Models.v5.Streams.Stream _);
+                _statuses.TryRemove(item, out Models.v5.Streams.Stream _);
 
             OnStreamsSet?.Invoke(this,
                 new OnStreamsSetArgs { ChannelIds = ChannelIds, Channels = _channelToId, CheckIntervalSeconds = CheckIntervalSeconds });
@@ -196,9 +196,9 @@ namespace TwitchLib.Api.Services
             }
         }
 
-        private async Task<List<Api.Models.v5.Streams.Stream>> _getLiveStreamers()
+        private async Task<List<Models.v5.Streams.Stream>> _getLiveStreamers()
         {
-            var livestreamers = new List<Api.Models.v5.Streams.Stream>();
+            var livestreamers = new List<Models.v5.Streams.Stream>();
 
             var resultset = await _api.Streams.v5.GetLiveStreamsAsync(_channelIds.Select(x => x.ToString()).ToList(), limit: 100);
 
