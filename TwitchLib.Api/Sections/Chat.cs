@@ -73,7 +73,7 @@ namespace TwitchLib.Api.Sections
             public async Task<Models.v5.Chat.ChatRoomsByChannelResponse> GetChatRoomsByChannelAsync(string channelId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Any, authToken);
-                return await Api.GetGenericAsync<Models.v5.Chat.ChatRoomsByChannelResponse>($"https://api.twitch.tv/kraken/chat/{channelId}/rooms", null, authToken);
+                return await Api.GetGenericAsync<Models.v5.Chat.ChatRoomsByChannelResponse>($"https://api.twitch.tv/kraken/chat/{channelId}/rooms", null, authToken).ConfigureAwait(false);
             }
             #endregion
         }
