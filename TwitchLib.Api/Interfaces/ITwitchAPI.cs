@@ -1,6 +1,9 @@
 ﻿
 
-namespace TwitchLib.Api
+using System.Threading.Tasks;
+using TwitchLib.Api.Sections;
+
+namespace TwitchLib.Api.Interfaces
 {
     public interface ITwitchAPI
     {
@@ -29,5 +32,7 @@ namespace TwitchLib.Api
         Users Users { get; }
         Videos Videos { get; }
         Webhooks Webhooks { get; }
+
+        Task InitializeAsync(string clientId = null, string accessToken = null);
     }
 }

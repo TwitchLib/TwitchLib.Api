@@ -1,27 +1,25 @@
-﻿
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Linq;
-using System.Collections.Concurrent;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Services.Events.LiveStreamMonitor;
-using TwitchLib.Api;
 using TwitchLib.Api.Services.Exceptions;
 
-namespace TwitchLib.Services
+namespace TwitchLib.Api.Services
 {
     /// <summary>Service that allows customizability and subscribing to detection of channels going online/offline.</summary>
     public class LiveStreamMonitor
     {
         #region Private Variables
-        private string _clientId;
         private int _checkIntervalSeconds;
         private bool _isStartup;
         private List<string> _channelIds;
         private readonly ConcurrentDictionary<string, string> _channelToId;
-        private readonly ConcurrentDictionary<string, Api.Models.v5.Streams.Stream> _statuses;
+        private readonly ConcurrentDictionary<string, Models.v5.Streams.Stream> _statuses;
         private readonly Timer _streamMonitorTimer = new Timer();
         private readonly bool _checkStatusOnStart;
         private readonly bool _invokeEventsOnStart;
@@ -38,11 +36,8 @@ namespace TwitchLib.Services
         }
         /// <summary> Property representing Twitch channels service is monitoring. </summary>
         public ReadOnlyCollection<string> Channels => _channelToId.Keys.ToList().AsReadOnly();
-
-        /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
-        public string ClientId { get => _clientId; set { _clientId = value; _api.Settings.ClientId = value; } }
         /// <summary> </summary>
-        public List<Api.Models.v5.Streams.Stream> CurrentLiveStreams { get { return _statuses.Where(x => x.Value != null).Select(x => x.Value).ToList(); } }
+        public List<Models.v5.Streams.Stream> CurrentLiveStreams { get { return _statuses.Where(x => x.Value != null).Select(x => x.Value).ToList(); } }
         /// <summary> </summary>
         public List<string> CurrentOfflineStreams { get { return _statuses.Where(x => x.Value == null).Select(x => x.Key).ToList(); } }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
@@ -71,18 +66,16 @@ namespace TwitchLib.Services
         /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
         /// <param name="checkStatusOnStart">Checks the channel statuses on starting the service</param>
         /// <param name="invokeEventsOnStart">If checking the status on service start, optionally fire the OnStream Events (OnStreamOnline, OnStreamOffline, OnStreamUpdate)</param>
-        public LiveStreamMonitor(ITwitchAPI api, int checkIntervalSeconds = 60, string clientId = "", bool checkStatusOnStart = true, bool invokeEventsOnStart = false)
+        public LiveStreamMonitor(ITwitchAPI api, int checkIntervalSeconds = 60, bool checkStatusOnStart = true, bool invokeEventsOnStart = false)
         {
             _api = api;
             _channelIds = new List<string>();
-            _statuses = new ConcurrentDictionary<string, Api.Models.v5.Streams.Stream>();
+            _statuses = new ConcurrentDictionary<string, Models.v5.Streams.Stream>();
             _channelToId = new ConcurrentDictionary<string, string>();
             _checkStatusOnStart = checkStatusOnStart;
             _invokeEventsOnStart = invokeEventsOnStart;
             CheckIntervalSeconds = checkIntervalSeconds;
             _streamMonitorTimer.Elapsed += _streamMonitorTimerElapsed;
-            if (clientId != "")
-                ClientId = clientId;
         }
 
         #region CONTROLS
@@ -118,7 +111,7 @@ namespace TwitchLib.Services
         /// <param name="usernames">List of channels to monitor as usernames</param>
         public void SetStreamsByUsername(List<string> usernames)
         {
-            _getUserIds(usernames).Wait();
+            GetUserIds(usernames).Wait();
 
             foreach (var item in _channelToId.Keys.Where(x => !usernames.Any(channelToId => channelToId.Equals(x))).ToList())
                 _channelToId.TryRemove(item, out string _);
@@ -134,7 +127,7 @@ namespace TwitchLib.Services
             _channelIds.ForEach(x => _statuses.TryAdd(x, null));
 
             foreach (var item in _statuses.Keys.Where(x => !_channelIds.Any(channelId => channelId.Equals(x))).ToList())
-                _statuses.TryRemove(item, out Api.Models.v5.Streams.Stream _);
+                _statuses.TryRemove(item, out Models.v5.Streams.Stream _);
 
             OnStreamsSet?.Invoke(this,
                 new OnStreamsSetArgs { ChannelIds = ChannelIds, Channels = _channelToId, CheckIntervalSeconds = CheckIntervalSeconds });
@@ -149,7 +142,7 @@ namespace TwitchLib.Services
         private void _checkOnlineStreams()
         {
 
-            var liveStreamers = _getLiveStreamers().Result;
+            var liveStreamers = GetLiveStreamers().Result;
 
             foreach (var channel in _channelIds)
             {
@@ -197,9 +190,9 @@ namespace TwitchLib.Services
             }
         }
 
-        private async Task<List<Api.Models.v5.Streams.Stream>> _getLiveStreamers()
+        private async Task<List<Models.v5.Streams.Stream>> GetLiveStreamers()
         {
-            var livestreamers = new List<Api.Models.v5.Streams.Stream>();
+            var livestreamers = new List<Models.v5.Streams.Stream>();
 
             var resultset = await _api.Streams.v5.GetLiveStreamsAsync(_channelIds.Select(x => x.ToString()).ToList(), limit: 100);
 
@@ -215,7 +208,7 @@ namespace TwitchLib.Services
             return livestreamers;
         }
 
-        private async Task _getUserIds(IEnumerable<string> usernames)
+        private async Task GetUserIds(IEnumerable<string> usernames)
         {
             var usernamesToGet = usernames.Where(u => !_channelToId.Any(c => c.Key.Equals(u))).ToList();
             var pages = (usernamesToGet.Count + 100 - 1) / 100;

@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 
-namespace TwitchLib.Api
+namespace TwitchLib.Api.Sections
 {
     public class Subscriptions
     {

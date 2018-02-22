@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TwitchLib.Api;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
 
-namespace TwitchLib.Api
+namespace TwitchLib.Api.Sections
 {
     public class Chat
     {
@@ -74,7 +73,7 @@ namespace TwitchLib.Api
             public async Task<Models.v5.Chat.ChatRoomsByChannelResponse> GetChatRoomsByChannelAsync(string channelId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Any, authToken);
-                return await Api.GetGenericAsync<Models.v5.Chat.ChatRoomsByChannelResponse>($"https://api.twitch.tv/kraken/chat/{channelId}/rooms", null, authToken);
+                return await Api.GetGenericAsync<Models.v5.Chat.ChatRoomsByChannelResponse>($"https://api.twitch.tv/kraken/chat/{channelId}/rooms", null, authToken).ConfigureAwait(false);
             }
             #endregion
         }

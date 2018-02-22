@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using TwitchLib.Api.Extensions.RateLimiter;
+using TwitchLib.Api.Interfaces;
 
 namespace TwitchLib.Api.RateLimiter
 {
