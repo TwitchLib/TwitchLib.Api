@@ -33,6 +33,6 @@ namespace TwitchLib.Api.Interfaces
         Videos Videos { get; }
         Webhooks Webhooks { get; }
 
-        Task Initialize(string clientId = null, string accessToken = null);
+        Task InitializeAsync(string clientId = null, string accessToken = null);
     }
 }

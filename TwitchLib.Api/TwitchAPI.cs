@@ -89,7 +89,7 @@ namespace TwitchLib.Api
         /// </summary>
         /// <param name="clientId">Twitch Client Id.</param>
         /// <param name="accessToken">Twitch Access Token.</param>
-        public async Task Initialize(string clientId = null, string accessToken = null)
+        public async Task InitializeAsync(string clientId = null, string accessToken = null)
         {
             if (!string.IsNullOrWhiteSpace(clientId))
                 await Settings.SetClientIdAsync(clientId);
