@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
@@ -34,9 +35,11 @@ namespace TwitchLib.Api
         #region DynamicScopeValidation
         public void DynamicScopeValidation(AuthScopes requiredScope, string accessToken = null)
         {
-            if (!Validators.SkipDynamicScopeValidation && accessToken == null)
-                if (!Scopes.Contains(requiredScope) || requiredScope == AuthScopes.Any && Scopes.Count == 0)
-                    throw new InvalidCredentialException($"The current access token ({Scopes}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
+            if(Validators.SkipAccessTokenValidation) return;
+            if (Validators.SkipDynamicScopeValidation || !string.IsNullOrWhiteSpace(accessToken)) return;
+
+            if (!Scopes.Contains(requiredScope) || requiredScope == AuthScopes.Any && Scopes.Any(x => x == AuthScopes.None))
+                throw new InvalidCredentialException($"The current access token ({Scopes}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
         }
         #endregion
 
