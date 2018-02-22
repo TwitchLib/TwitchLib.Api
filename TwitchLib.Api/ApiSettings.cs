@@ -61,7 +61,7 @@ namespace TwitchLib.Api
             if (!Validators.SkipAccessTokenValidation)
             {
                 if (string.IsNullOrEmpty(accessToken))
-                    throw new InvalidCredentialException("Access Token cannot be empty or null. Set it using: TwitchLib.TwitchAPI.Settings.AccessToken = {access_token}");
+                    throw new InvalidCredentialException("Access Token cannot be empty or null.");
                 if (!await ValidAccessToken(accessToken))
                     throw new InvalidCredentialException("The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/");
             }
