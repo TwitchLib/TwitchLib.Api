@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TwitchLib.Api.Enums;
@@ -15,6 +16,7 @@ namespace TwitchLib.Api
 {
     public class TwitchAPI : ITwitchAPI
     {
+        private readonly ILogger<TwitchAPI> _logger;
         private readonly TwitchLibJsonSerializer _jsonSerializer;
         private readonly IRateLimiter _rateLimiter;
         public IApiSettings Settings { get; }
@@ -46,16 +48,12 @@ namespace TwitchLib.Api
         /// <summary>
         /// Creates an Instance of the TwitchAPI Class.
         /// </summary>
-        /// <param name="rateLimit">Should RateLimit Requests?</param>
-        /// <param name="rateLimiter">Instance Of RateLimiter. Useful if using multiple API instances on one connection and you wish to share the requests ratelimiter.</param>
-        /// <param name="callsPerPeriod">Number of Requests per Period to rate limit to</param>
-        /// <param name="ratePeriod">Period for Rate Limit (In Seconds)</param>
-        public TwitchAPI(bool rateLimit = true, IRateLimiter rateLimiter = null, int callsPerPeriod = 1, int ratePeriod = 1)
+        /// <param name="logger">Instance Of Logger, otherwise no logging is used,  </param>
+        /// <param name="rateLimiter">Instance Of RateLimiter, otherwise no ratelimiter is used. </param>
+        public TwitchAPI(ILogger<TwitchAPI> logger = null, IRateLimiter rateLimiter = null)
         {
-            _rateLimiter = rateLimit ?
-                (rateLimiter ?? TimeLimiter.GetFromMaxCountByInterval(callsPerPeriod, TimeSpan.FromSeconds(ratePeriod)))
-                : BypassLimiter.CreateLimiterBypassInstance();
-
+            _logger = logger;
+            _rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
             Auth = new Auth(this);
             Blocks = new Blocks(this);
             Badges = new Badges(this);
@@ -96,6 +94,7 @@ namespace TwitchLib.Api
             if (!string.IsNullOrWhiteSpace(accessToken))
                 await Settings.SetAccessTokenAsync(accessToken);
         }
+       
 
         #region Requests
 
