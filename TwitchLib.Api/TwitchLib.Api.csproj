@@ -6,12 +6,12 @@
     <Version>2.0.0</Version>
     <Description>Api component of TwitchLib. This component allows you to access the Twitch API using both authenticated and unauthenticated calls, as well as undocumented and third party APIs.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>swiftyspiffy, Prom3theu5</Authors>
-    <Company>swiftyspiffy (cole)</Company>
+    <Authors>swiftyspiffy, Prom3theu5, Syzuna, LuckyNoS7evin</Authors>
+    <Company></Company>
     <PackageIconUrl>https://colejelinek.com/dev/twitchlib.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/swiftyspiffy/TwitchLib</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-    <Copyright>Copyright 2017</Copyright>
+    <Copyright>Copyright 2018</Copyright>
     <PackageReleaseNotes>Initial release of TwitchLib API component.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
