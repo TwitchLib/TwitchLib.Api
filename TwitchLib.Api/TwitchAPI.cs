@@ -404,11 +404,11 @@ namespace TwitchLib.Api
                 case (HttpStatusCode)422:
                     throw new NotPartneredException("The resource you requested is only available to channels that have been partnered by Twitch.");
                 case HttpStatusCode.BadGateway:
-                    break;
+                    throw new BadGatewayException("The API answered with a 502 Bad Gateway. Please retry your request");
                 case HttpStatusCode.GatewayTimeout:
-                    break;
+                    throw new GatewayTimeoutException("The API answered with a 504 Gateway Timeout. Please retry your request");
                 case HttpStatusCode.InternalServerError:
-                    break;
+                    throw new InternalServerErrorException("The API answered with a 500 Internal Server Error. Please retry your request");
                 default:
                     throw new HttpRequestException("Something went wrong during the request! Please try again later");
             }
