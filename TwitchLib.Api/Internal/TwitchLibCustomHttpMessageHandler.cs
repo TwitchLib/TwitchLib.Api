@@ -19,11 +19,11 @@ namespace TwitchLib.Api.Internal
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (request.Content != null)
-                _logger.LogInformation("Timestamp: {timestamp} Type: {type} Resource: {url} Content: {content}",
-                    DateTime.Now, request.RequestUri.ToString(), "Request", await request.Content.ReadAsStringAsync());
+                _logger.LogInformation("Timestamp: {timestamp} Type: {type} Method: {method} Resource: {url} Content: {content}",
+                    DateTime.Now, "Request", request.Method.ToString(), request.RequestUri.ToString(), await request.Content.ReadAsStringAsync());
             else
-                _logger.LogInformation("Timestamp: {timestamp} Requested Resource: {url}",
-                    DateTime.Now, request.RequestUri.ToString());
+                _logger.LogInformation("Timestamp: {timestamp} Type: {type} Method: {method} Resource: {url}",
+                    DateTime.Now, "Request", request.Method.ToString(), request.RequestUri.ToString());
 
             var stopwatch = Stopwatch.StartNew();
             var response = await base.SendAsync(request, cancellationToken);
