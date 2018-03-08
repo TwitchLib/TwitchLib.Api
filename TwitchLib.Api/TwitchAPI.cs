@@ -306,11 +306,12 @@ namespace TwitchLib.Api
 
             if (payload != null)
                 request.Content = new StringContent(payload);
-            
-                var response = await _http.SendAsync(request);
-                if(!response.IsSuccessStatusCode)
-                    HandleWebException(response);
 
+            var response = await _http.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+                return new KeyValuePair<int, string>((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+
+            HandleWebException(response);
             return new KeyValuePair<int, string>(0, null);
         }
         #endregion

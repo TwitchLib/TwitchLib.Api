@@ -33,19 +33,19 @@ namespace TwitchLib.Api.Internal
             {
                 if (response.Content != null)
                     _logger.LogInformation("Timestamp: {timestamp} Type: {type} Resource: {url} Statuscode: {statuscode} Elapsed: {elapsed} ms Content: {content}",
-                        DateTime.Now, "Response", response.RequestMessage.RequestUri, response.StatusCode, stopwatch.ElapsedMilliseconds, await response.Content.ReadAsStringAsync());
+                        DateTime.Now, "Response", response.RequestMessage.RequestUri, (int)response.StatusCode, stopwatch.ElapsedMilliseconds, await response.Content.ReadAsStringAsync());
                 else
                     _logger.LogInformation("Timestamp: {timestamp} Type: {type} Resource: {url} Statuscode: {statuscode} Elapsed: {elapsed} ms",
-                        DateTime.Now, "Response", response.RequestMessage.RequestUri, response.StatusCode, stopwatch.ElapsedMilliseconds);
+                        DateTime.Now, "Response", response.RequestMessage.RequestUri, (int)response.StatusCode, stopwatch.ElapsedMilliseconds);
             }
             else
             {
                 if (response.Content != null)
                     _logger.LogError("Timestamp: {timestamp} Type: {type} Resource: {url} Statuscode: {statuscode} Elapsed: {elapsed} ms Content: {content}",
-                        DateTime.Now, "Response", response.RequestMessage.RequestUri, response.StatusCode, stopwatch.ElapsedMilliseconds, await response.Content.ReadAsStringAsync());
+                        DateTime.Now, "Response", response.RequestMessage.RequestUri, (int)response.StatusCode, stopwatch.ElapsedMilliseconds, await response.Content.ReadAsStringAsync());
                 else
                     _logger.LogError("Timestamp: {timestamp} Type: {type} Resource: {url} Statuscode: {statuscode} Elapsed: {elapsed} ms",
-                        DateTime.Now, "Response", response.RequestMessage.RequestUri, response.StatusCode, stopwatch.ElapsedMilliseconds);
+                        DateTime.Now, "Response", response.RequestMessage.RequestUri, (int)response.StatusCode, stopwatch.ElapsedMilliseconds);
             }
 
             return response;
