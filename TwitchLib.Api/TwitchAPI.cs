@@ -394,11 +394,14 @@ namespace TwitchLib.Api
                 case HttpStatusCode.BadRequest:
                     throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set. \n 2. Your refresh token was invalid. \n 3. You requested a username when the server was expecting a user ID.");
                 case HttpStatusCode.Unauthorized:
-                    var authenticateHeader = errorResp.Headers.WwwAuthenticate;
-                    if (authenticateHeader == null || authenticateHeader.Count <= 0)
-                        throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
-                    else
-                        throw new TokenExpiredException("Your request was blocked du to an expired Token. Please refresh your token and update your API instance settings.");
+                    var authenticateHeader = errorResp.Headers["WWW-Authenticate"];
+                    if (string.IsNullOrEmpty(authenticateHeader))
+                        throw new BadScopeException("Your request was blocked due to bad credentials (Do you have the right scope for your access token?).");
+
+                    var invalidTokenFound = authenticateHeader.Contains("error='invalid_token'");
+                    if (invalidTokenFound)
+                        throw new TokenExpiredException("Your request was blocked due to an expired Token. Please refresh your token and update your API instance settings.");
+                    break;
                 case HttpStatusCode.NotFound:
                     throw new BadResourceException("The resource you tried to access was not valid.");
                 case (HttpStatusCode)422:
