@@ -51,9 +51,9 @@ namespace TwitchLib.Api.Services
         public event EventHandler<OnStreamOfflineArgs> OnStreamOffline;
         /// <summary>Event fires when Stream gets updated</summary>
         public event EventHandler<OnStreamUpdateArgs> OnStreamUpdate;
-        /// <summary>Event fires when service stops.</summary>
+        /// <summary>Event fires when service started.</summary>
         public event EventHandler<OnStreamMonitorStartedArgs> OnStreamMonitorStarted;
-        /// <summary>Event fires when service starts.</summary>
+        /// <summary>Event fires when service ended.</summary>
         public event EventHandler<OnStreamMonitorEndedArgs> OnStreamMonitorEnded;
         /// <summary>Event fires when channels to monitor are intitialized.</summary>
         public event EventHandler<OnStreamsSetArgs> OnStreamsSet;
