@@ -42,7 +42,7 @@ namespace TwitchLib.Api.Sections
                     new KeyValuePair<string, string> ("client_secret", clientSecret)
                 };
 
-                return await Api.PostGenericAsync<Models.v5.Auth.RefreshResponse>("https://api.twitch.tv/kraken/oauth2/token", null, getParams).ConfigureAwait(false);
+                return await Api.PostGenericAsync<Models.v5.Auth.RefreshResponse>("https://id.twitch.tv/oauth2/token", null, getParams).ConfigureAwait(false);
             }
             #endregion
         }
