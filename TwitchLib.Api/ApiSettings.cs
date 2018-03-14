@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
@@ -39,7 +40,7 @@ namespace TwitchLib.Api
             if (Validators.SkipDynamicScopeValidation || !string.IsNullOrWhiteSpace(accessToken)) return;
 
             if (!Scopes.Contains(requiredScope) || requiredScope == AuthScopes.Any && Scopes.Any(x => x == AuthScopes.None))
-                throw new InvalidCredentialException($"The current access token ({Scopes}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
+                throw new InvalidCredentialException($"The current access token ({String.Join(",", Scopes)}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
         }
         #endregion
 
@@ -175,6 +176,12 @@ namespace TwitchLib.Api
                         break;
                     case "clips:edit":
                         scopes.Add(AuthScopes.Helix_Clips_Edit);
+                        break;
+                    case "bits:read":
+                        scopes.Add(AuthScopes.Helix_Bits_Read);
+                        break;
+                    case "analytics:read:games":
+                        scopes.Add(AuthScopes.Helix_Analytics_Read_Games);
                         break;
                 }
             }

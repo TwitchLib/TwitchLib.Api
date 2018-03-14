@@ -62,6 +62,12 @@ namespace TwitchLib.Api.Common
                     return "user:edit";
                 case AuthScopes.Helix_User_Read_Email:
                     return "user:read:email";
+                case AuthScopes.Helix_Clips_Edit:
+                    return "clips:edit";
+                case AuthScopes.Helix_Analytics_Read_Games:
+                    return "analytics:read:games";
+                case AuthScopes.Helix_Bits_Read:
+                    return "bits:read";
                 default:
                     return "";
             }
@@ -105,6 +111,16 @@ namespace TwitchLib.Api.Common
                     return AuthScopes.Communities_Moderate;
                 case "viewing_activity_read":
                     return AuthScopes.Viewing_Activity_Read;
+                case "user:edit":
+                    return AuthScopes.Helix_User_Edit;
+                case "user:read:email":
+                    return AuthScopes.Helix_User_Read_Email;
+                case "clips:edit":
+                    return AuthScopes.Helix_Clips_Edit;
+                case "analytics:read:games":
+                    return AuthScopes.Helix_Analytics_Read_Games;
+                case "bits:read":
+                    return AuthScopes.Helix_Bits_Read;
                 default:
                     throw new Exception("Unknown scope");
             }
