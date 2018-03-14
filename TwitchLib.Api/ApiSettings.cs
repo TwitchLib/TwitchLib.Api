@@ -37,7 +37,7 @@ namespace TwitchLib.Api
         public void DynamicScopeValidation(AuthScopes requiredScope, string accessToken = null)
         {
             if(Validators.SkipAccessTokenValidation) return;
-            if (Validators.SkipDynamicScopeValidation || (accessToken != null && !string.IsNullOrWhiteSpace(accessToken))) return;
+            if (Validators.SkipDynamicScopeValidation || !string.IsNullOrWhiteSpace(accessToken)) return;
 
             if (!Scopes.Contains(requiredScope) || requiredScope == AuthScopes.Any && Scopes.Any(x => x == AuthScopes.None))
                 throw new InvalidCredentialException($"The current access token ({String.Join(",", Scopes)}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
