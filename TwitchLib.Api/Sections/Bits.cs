@@ -52,7 +52,7 @@ namespace TwitchLib.Api.Sections
                 if (userid != null)
                     getParams.Add(new KeyValuePair<string, string>("user_id", userid));
 
-                return await Api.GetGenericAsync<Models.Helix.Bits.GetBitsLeaderboardResponse>("https://api.twitch.tv/helix/bits/leaderboard", getParams, accessToken, ApiVersion.Helix);
+                return await Api.GetGenericAsync<Models.Helix.Bits.GetBitsLeaderboardResponse>("https://api.twitch.tv/helix/bits/leaderboard", getParams, accessToken, ApiVersion.Helix).ConfigureAwait(false);
             }
             #endregion 
         }
