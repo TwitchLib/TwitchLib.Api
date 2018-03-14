@@ -25,6 +25,8 @@
         Helix_User_Edit,
         Helix_User_Read_Email,
         Helix_Clips_Edit,
+        Helix_Bits_Read,
+        Helix_Analytics_Read_Games,
         None
     }
 }
