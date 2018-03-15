@@ -29,13 +29,13 @@ namespace TwitchLib.Api.Sections
                     new KeyValuePair<string, string>("limit", limit.ToString()),
                     new KeyValuePair<string, string>("offset", offset.ToString())
                 };
-                return await Api.GetGenericAsync<Models.v3.Teams.GetTeamsResponse>("https://api.twitch.tv/kraken/teams", getParams, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Teams.GetTeamsResponse>($"{Api.baseV3}teams", getParams, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetTeam
             public async Task<Models.v3.Teams.Team> GetTeamAsync(string teamName)
             {
-                return await Api.GetGenericAsync<Models.v3.Teams.Team>($"https://api.twitch.tv/kraken/teams/{teamName}", null, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Teams.Team>($"{Api.baseV3}teams/{teamName}", null, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
         }
@@ -54,14 +54,14 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-                return await Api.GetGenericAsync<Models.v5.Teams.AllTeams>("https://api.twitch.tv/kraken/teams", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Teams.AllTeams>($"{Api.baseV5}teams", getParams).ConfigureAwait(false);
             }
             #endregion
             #region GetTeam
             public async Task<Models.v5.Teams.Team> GetTeamAsync(string teamName)
             {
                 if (string.IsNullOrWhiteSpace(teamName)) { throw new BadParameterException("The team name is not valid for fetching teams. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.GetGenericAsync<Models.v5.Teams.Team>($"https://api.twitch.tv/kraken/teams/{teamName}").ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Teams.Team>($"{Api.baseV5}teams/{teamName}").ConfigureAwait(false);
             }
             #endregion
         }

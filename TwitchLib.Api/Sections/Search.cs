@@ -30,7 +30,7 @@ namespace TwitchLib.Api.Sections
                     new KeyValuePair<string, string>("limit", limit.ToString()),
                     new KeyValuePair<string, string>("offset", offset.ToString())
                 };
-                return await Api.GetGenericAsync<Models.v3.Search.SearchChannelsResponse>("https://api.twitch.tv/kraken/search/channels", getParams, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Search.SearchChannelsResponse>($"{Api.baseV3}search/channels", getParams, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region SearchStreams
@@ -50,7 +50,7 @@ namespace TwitchLib.Api.Sections
                         ? new KeyValuePair<string, string>("hls", "true")
                         : new KeyValuePair<string, string>("hls", "false"));
                 }
-                return await Api.GetGenericAsync<Models.v3.Search.SearchStreamsResponse>("https://api.twitch.tv/kraken/search/streams", getParams, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Search.SearchStreamsResponse>($"{Api.baseV3}search/streams", getParams, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region SearchGames
@@ -71,7 +71,7 @@ namespace TwitchLib.Api.Sections
                         throw new ArgumentOutOfRangeException(nameof(type), type, null);
                 }
 
-                return await Api.GetGenericAsync<Models.v3.Search.SearchGamesResponse>("https://api.twitch.tv/kraken/search/games", getParams, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Search.SearchGamesResponse>($"{Api.baseV3}search/games", getParams, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
         }
@@ -91,7 +91,7 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
                 
-                return await Api.GetGenericAsync<Models.v5.Search.SearchChannels>("https://api.twitch.tv/kraken/search/channels", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Search.SearchChannels>($"{Api.baseV5}search/channels", getParams).ConfigureAwait(false);
             }
             #endregion
             #region SearchGames
@@ -104,7 +104,7 @@ namespace TwitchLib.Api.Sections
                         ? new KeyValuePair<string, string>("live", "true")
                         : new KeyValuePair<string, string>("live", "false"));
                 }
-                return await Api.GetGenericAsync<Models.v5.Search.SearchGames>($"https://api.twitch.tv/kraken/search/games?query={encodedSearchQuery}", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Search.SearchGames>($"{Api.baseV5}search/games?query={encodedSearchQuery}", getParams).ConfigureAwait(false);
             }
             #endregion
             #region SearchStreams
@@ -118,7 +118,7 @@ namespace TwitchLib.Api.Sections
                 if (hls.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("hls", hls.Value.ToString()));
 
-                return await Api.GetGenericAsync<Models.v5.Search.SearchStreams>("https://api.twitch.tv/kraken/search/streams", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Search.SearchStreams>($"{Api.baseV5}search/streams", getParams).ConfigureAwait(false);
             }
             #endregion
         }

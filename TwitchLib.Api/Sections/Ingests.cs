@@ -22,7 +22,7 @@ namespace TwitchLib.Api.Sections
             #region GetIngests
             public async Task<Models.v3.Ingests.IngestsResponse> GetIngestsAsync()
             {
-                return await Api.GetGenericAsync<Models.v3.Ingests.IngestsResponse>("https://api.twitch.tv/kraken/ingests", null, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Ingests.IngestsResponse>($"{Api.baseV3}ingests", null, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
         }
@@ -35,7 +35,7 @@ namespace TwitchLib.Api.Sections
             #region GetIngestServerList
             public async Task<Models.v5.Ingests.Ingests> GetIngestServerListAsync()
             {
-                return await Api.GetGenericAsync<Models.v5.Ingests.Ingests>("https://api.twitch.tv/kraken/ingests").ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Ingests.Ingests>($"{Api.baseV5}ingests").ConfigureAwait(false);
             }
             #endregion
         }

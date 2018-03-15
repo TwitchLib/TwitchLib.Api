@@ -22,7 +22,7 @@ namespace TwitchLib.Api.Sections
             #region Root
             public async Task<Models.v3.Root.RootResponse> GetRootAsync(string accessToken = null, string clientId = null)
             {
-                return await Api.GetGenericAsync<Models.v3.Root.RootResponse>("https://api.twitch.tv/kraken", null, accessToken, ApiVersion.v3, clientId).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Root.RootResponse>(Api.baseV3.Substring(0, Api.baseV3.Length - 1), null, accessToken, ApiVersion.v3, clientId).ConfigureAwait(false);
             }
             #endregion
         }
@@ -36,7 +36,7 @@ namespace TwitchLib.Api.Sections
 
             public async Task<Models.v5.Root.Root> GetRoot(string authToken = null, string clientId = null)
             {
-                return await Api.GetGenericAsync<Models.v5.Root.Root>("https://api.twitch.tv/kraken", null, authToken, ApiVersion.v5, clientId).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Root.Root>(Api.baseV5.Substring(0, Api.baseV5.Length - 1), null, authToken, ApiVersion.v5, clientId).ConfigureAwait(false);
             }
 
             #endregion

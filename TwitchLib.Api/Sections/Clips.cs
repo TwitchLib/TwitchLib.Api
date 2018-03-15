@@ -24,7 +24,7 @@ namespace TwitchLib.Api.Sections
             #region GetClip
             public async Task<Models.v5.Clips.Clip> GetClipAsync(string slug)
             {
-                return await Api.GetGenericAsync<Models.v5.Clips.Clip>($"https://api.twitch.tv/kraken/clips/{slug}").ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Clips.Clip>($"{Api.baseV5}clips/{slug}").ConfigureAwait(false);
             }
             #endregion
             #region GetTopClips
@@ -58,7 +58,7 @@ namespace TwitchLib.Api.Sections
                         throw new ArgumentOutOfRangeException(nameof(period), period, null);
                 }
 
-                return await Api.GetGenericAsync<Models.v5.Clips.TopClipsResponse>("https://api.twitch.tv/kraken/clips/top", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Clips.TopClipsResponse>($"{Api.baseV5}clips/top", getParams).ConfigureAwait(false);
             }
             #endregion
             #region GetFollowedClips
@@ -72,7 +72,7 @@ namespace TwitchLib.Api.Sections
                     ? new KeyValuePair<string, string>("trending", "true")
                     : new KeyValuePair<string, string>("trending", "false"));
 
-                return await Api.GetGenericAsync<Models.v5.Clips.FollowClipsResponse>("https://api.twitch.tv/kraken/clips/followed", getParams, authToken).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Clips.FollowClipsResponse>($"{Api.baseV5}clips/followed", getParams, authToken).ConfigureAwait(false);
             }
             #endregion
         }
@@ -90,7 +90,7 @@ namespace TwitchLib.Api.Sections
                 {
                     new KeyValuePair<string, string>("id", id)
                 };
-                return await Api.GetGenericAsync<Models.Helix.Clips.GetClip.GetClipResponse>("https://api.twitch.tv/helix/clips", getParams, null, Enums.ApiVersion.Helix).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.Helix.Clips.GetClip.GetClipResponse>($"{Api.baseHelix}clips", getParams, null, Enums.ApiVersion.Helix).ConfigureAwait(false);
             }
             #endregion
             #region CreateClip
@@ -101,7 +101,7 @@ namespace TwitchLib.Api.Sections
                 {
                     new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
                 };
-                return await Api.PostGenericAsync<Models.Helix.Clips.CreateClip.CreatedClipResponse>("https://api.twitch.tv/helix/clips", null, getParams, authToken, Enums.ApiVersion.Helix);
+                return await Api.PostGenericAsync<Models.Helix.Clips.CreateClip.CreatedClipResponse>($"{Api.baseHelix}clips", null, getParams, authToken, Enums.ApiVersion.Helix);
             }
             #endregion
         }

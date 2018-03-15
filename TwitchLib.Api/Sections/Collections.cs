@@ -23,7 +23,7 @@ namespace TwitchLib.Api.Sections
             public async Task<Models.v5.Collections.CollectionMetadata> GetCollectionMetadataAsync(string collectionId)
             {
                 if (string.IsNullOrWhiteSpace(collectionId)) { throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.GetGenericAsync<Models.v5.Collections.CollectionMetadata>($"https://api.twitch.tv/kraken/collections/{collectionId}").ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Collections.CollectionMetadata>($"{Api.baseV5}collections/{collectionId}").ConfigureAwait(false);
             }
             #endregion
             #region GetCollection
@@ -33,7 +33,7 @@ namespace TwitchLib.Api.Sections
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (includeAllItems.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("include_all_items", ((bool)includeAllItems).ToString()));
-                return await Api.GetGenericAsync<Models.v5.Collections.Collection>($"https://api.twitch.tv/kraken/collections/{collectionId}/items", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Collections.Collection>($"{Api.baseV5}collections/{collectionId}/items", getParams).ConfigureAwait(false);
             }
             #endregion
             #region GetCollectionsByChannel
@@ -48,7 +48,7 @@ namespace TwitchLib.Api.Sections
                 if (!string.IsNullOrWhiteSpace(containingItem))
                     getParams.Add(new KeyValuePair<string, string>("containing_item", containingItem.StartsWith("video:") ? containingItem : $"video:{containingItem}"));
 
-                return await Api.GetGenericAsync<Models.v5.Collections.CollectionsByChannel>($"https://api.twitch.tv/kraken/channels/{channelId}/collections", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Collections.CollectionsByChannel>($"{Api.baseV5}channels/{channelId}/collections", getParams).ConfigureAwait(false);
             }
             #endregion
             #region CreateCollection
@@ -57,7 +57,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid for a collection creation. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(collectionTitle)) { throw new BadParameterException("The collection title is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.PostGenericAsync<Models.v5.Collections.CollectionMetadata>($"https://api.twitch.tv/kraken/channels/{channelId}/collections", "{\"title\": \"" + collectionTitle + "\"}", null, authToken).ConfigureAwait(false);
+                return await Api.PostGenericAsync<Models.v5.Collections.CollectionMetadata>($"{Api.baseV5}channels/{channelId}/collections", "{\"title\": \"" + collectionTitle + "\"}", null, authToken).ConfigureAwait(false);
             }
             #endregion
             #region UpdateCollection
@@ -66,7 +66,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(collectionId)) { throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(newCollectionTitle)) { throw new BadParameterException("The new collection title is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.PutAsync($"https://api.twitch.tv/kraken/collections/{collectionId}", "{\"title\": \"" + newCollectionTitle + "\"}", null, authToken).ConfigureAwait(false);
+                await Api.PutAsync($"{Api.baseV5}collections/{collectionId}", "{\"title\": \"" + newCollectionTitle + "\"}", null, authToken).ConfigureAwait(false);
             }
             #endregion
             #region CreateCollectionThumbnail
@@ -75,7 +75,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(collectionId)) { throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(itemId)) { throw new BadParameterException("The item id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.PutAsync($"https://api.twitch.tv/kraken/collections/{collectionId}/thumbnail", "{\"item_id\": \"" + itemId + "\"}", null, authToken).ConfigureAwait(false);
+                await Api.PutAsync($"{Api.baseV5}collections/{collectionId}/thumbnail", "{\"item_id\": \"" + itemId + "\"}", null, authToken).ConfigureAwait(false);
             }
             #endregion
             #region DeleteCollection
@@ -83,7 +83,7 @@ namespace TwitchLib.Api.Sections
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(collectionId)) { throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/collections/{collectionId}", null, authToken).ConfigureAwait(false);
+                await Api.DeleteAsync($"{Api.baseV5}collections/{collectionId}", null, authToken).ConfigureAwait(false);
             }
             #endregion
             #region AddItemToCollection
@@ -93,7 +93,7 @@ namespace TwitchLib.Api.Sections
                 if (string.IsNullOrWhiteSpace(collectionId)) { throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(itemId)) { throw new BadParameterException("The item id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (itemType != "video") { throw new BadParameterException($"The item_type {itemType} is not valid for a collection. Item type MUST be \"video\"."); }
-                return await Api.PostGenericAsync<Models.v5.Collections.CollectionItem>($"https://api.twitch.tv/kraken/collections/{collectionId}/items", "{\"id\": \"" + itemId + "\", \"type\": \"" + itemType + "\"}", null, authToken).ConfigureAwait(false);
+                return await Api.PostGenericAsync<Models.v5.Collections.CollectionItem>($"{Api.baseV5}collections/{collectionId}/items", "{\"id\": \"" + itemId + "\", \"type\": \"" + itemType + "\"}", null, authToken).ConfigureAwait(false);
             }
             #endregion
             #region DeleteItemFromCollection
@@ -102,7 +102,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(collectionId)) { throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(itemId)) { throw new BadParameterException("The item id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/collections/{collectionId}/items/{itemId}", null, authToken).ConfigureAwait(false);
+                await Api.DeleteAsync($"{Api.baseV5}collections/{collectionId}/items/{itemId}", null, authToken).ConfigureAwait(false);
             }
             #endregion
             #region MoveItemWithinCollection
@@ -112,7 +112,7 @@ namespace TwitchLib.Api.Sections
                 if (string.IsNullOrWhiteSpace(collectionId)) { throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(itemId)) { throw new BadParameterException("The item id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (position < 1) { throw new BadParameterException("The position is not valid for a collection. It is not allowed to be less than 1."); }
-                await Api.PutAsync($"https://api.twitch.tv/kraken/collections/{collectionId}/items/{itemId}", "{\"position\": \"" + position + "\"}", null, authToken).ConfigureAwait(false);
+                await Api.PutAsync($"{Api.baseV5}collections/{collectionId}/items/{itemId}", "{\"position\": \"" + position + "\"}", null, authToken).ConfigureAwait(false);
             }
             #endregion
         }

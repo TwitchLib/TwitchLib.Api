@@ -27,7 +27,7 @@ namespace TwitchLib.Api.Sections
             #region GetStream
             public async Task<Models.v3.Streams.StreamResponse> GetStreamAsync(string channel)
             {
-                return await Api.GetGenericAsync<Models.v3.Streams.StreamResponse>($"https://api.twitch.tv/kraken/streams/{channel}", null, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Streams.StreamResponse>($"{Api.baseV3}streams/{channel}", null, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetStreams
@@ -61,7 +61,7 @@ namespace TwitchLib.Api.Sections
                         throw new ArgumentOutOfRangeException(nameof(streamType), streamType, null);
                 }
 
-                return await Api.GetGenericAsync<Models.v3.Streams.StreamsResponse>("https://api.twitch.tv/kraken/streams", getParams, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Streams.StreamsResponse>($"{Api.baseV3}streams", getParams, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetFeaturedStreams
@@ -72,13 +72,13 @@ namespace TwitchLib.Api.Sections
                     new KeyValuePair<string, string>("limit", limit.ToString()),
                     new KeyValuePair<string, string>("offset", offset.ToString())
                 };
-                return await Api.GetGenericAsync<Models.v3.Streams.FeaturedStreamsResponse>("https://api.twitch.tv/kraken/streams/featured", getParams, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Streams.FeaturedStreamsResponse>($"{Api.baseV3}streams/featured", getParams, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetStreamsSummary
             public async Task<Models.v3.Streams.Summary> GetStreamsSummaryAsync()
             {
-                return await Api.GetGenericAsync<Models.v3.Streams.Summary>("https://api.twitch.tv/kraken/streams/summary", null, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Streams.Summary>($"{Api.baseV3}streams/summary", null, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
         }
@@ -97,7 +97,7 @@ namespace TwitchLib.Api.Sections
                 {
                     getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));
                 }
-                return await Api.GetGenericAsync<Models.v5.Streams.StreamByUser>($"https://api.twitch.tv/kraken/streams/{channelId}", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Streams.StreamByUser>($"{Api.baseV5}streams/{channelId}", getParams).ConfigureAwait(false);
             }
             #endregion
             #region GetLiveStreams
@@ -117,7 +117,7 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-                return await Api.GetGenericAsync<Models.v5.Streams.LiveStreams>("https://api.twitch.tv/kraken/streams/", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Streams.LiveStreams>($"{Api.baseV5}streams/", getParams).ConfigureAwait(false);
             }
             #endregion
             #region GetStreamsSummary
@@ -126,7 +126,7 @@ namespace TwitchLib.Api.Sections
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (game != null)
                     getParams.Add(new KeyValuePair<string, string>("game", game));
-                return await Api.GetGenericAsync<Models.v5.Streams.StreamsSummary>("https://api.twitch.tv/kraken/streams/summary", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Streams.StreamsSummary>($"{Api.baseV5}streams/summary", getParams).ConfigureAwait(false);
             }
             #endregion
             #region GetFeaturedStreams
@@ -138,7 +138,7 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-                return await Api.GetGenericAsync<Models.v5.Streams.FeaturedStreams>("https://api.twitch.tv/kraken/streams/featured", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Streams.FeaturedStreams>($"{Api.baseV5}streams/featured", getParams).ConfigureAwait(false);
             }
             #endregion
             #region GetFollowedStreams
@@ -153,7 +153,7 @@ namespace TwitchLib.Api.Sections
                 if (offset != null)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
 
-                return await Api.GetGenericAsync<Models.v5.Streams.FollowedStreams>("https://api.twitch.tv/kraken/streams/followed", getParams, authToken).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Streams.FollowedStreams>($"{Api.baseV5}streams/followed", getParams, authToken).ConfigureAwait(false);
             }
             #endregion
             #region GetUptime
@@ -205,7 +205,7 @@ namespace TwitchLib.Api.Sections
                     foreach (var userLogin in userLogins)
                         getParams.Add(new KeyValuePair<string, string>("user_login", userLogin));
 
-                return await Api.GetGenericAsync<Models.Helix.Streams.GetStreams.GetStreamsResponse>("https://api.twitch.tv/helix/streams", getParams, api: ApiVersion.Helix).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.Helix.Streams.GetStreams.GetStreamsResponse>($"{Api.baseHelix}streams", getParams, api: ApiVersion.Helix).ConfigureAwait(false);
             }
 
             public async Task<Models.Helix.StreamsMetadata.GetStreamsMetadataResponse> GetStreamsMetadata(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
@@ -229,7 +229,7 @@ namespace TwitchLib.Api.Sections
                     foreach (var userLogin in userLogins)
                         getParams.Add(new KeyValuePair<string, string>("user_login", userLogin));
 
-                return await Api.GetGenericAsync<Models.Helix.StreamsMetadata.GetStreamsMetadataResponse>("https://api.twitch.tv/helix/streams/metadata", getParams, api: ApiVersion.Helix).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.Helix.StreamsMetadata.GetStreamsMetadataResponse>($"{Api.baseHelix}streams/metadata", getParams, api: ApiVersion.Helix).ConfigureAwait(false);
             }
         }
     }

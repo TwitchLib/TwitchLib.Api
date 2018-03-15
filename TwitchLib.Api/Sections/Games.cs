@@ -27,7 +27,7 @@ namespace TwitchLib.Api.Sections
             public async Task<Models.v3.Games.TopGamesResponse> GetTopGamesAsync(int limit = 10, int offset = 0)
             {
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("limit", limit.ToString()), new KeyValuePair<string, string>("offset", offset.ToString()) };
-                return await Api.GetGenericAsync<Models.v3.Games.TopGamesResponse>("https://api.twitch.tv/kraken/games/top", getParams, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Games.TopGamesResponse>($"{Api.baseV3}games/top", getParams, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
         }
@@ -46,7 +46,7 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
                 
-                return await Api.GetGenericAsync<Models.v5.Games.TopGames>("https://api.twitch.tv/kraken/games/top", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Games.TopGames>($"{Api.baseV5}games/top", getParams).ConfigureAwait(false);
             }
             #endregion
         }
@@ -76,7 +76,7 @@ namespace TwitchLib.Api.Sections
                     foreach (var gameName in gameNames)
                         getParams.Add(new KeyValuePair<string, string>("name", gameName));
                 
-                return await Api.GetGenericAsync<Models.Helix.Games.GetGames.GetGamesResponse>("https://api.twitch.tv/helix/games", getParams, null, ApiVersion.Helix).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.Helix.Games.GetGames.GetGamesResponse>($"{Api.baseHelix}games", getParams, null, ApiVersion.Helix).ConfigureAwait(false);
             }
             #endregion
         }

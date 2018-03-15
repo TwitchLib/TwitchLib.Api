@@ -28,7 +28,7 @@ namespace TwitchLib.Api.Sections
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("limit", limit.ToString()) };
                 if (cursor != null)
                     getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
-                return await Api.GetGenericAsync<Models.v3.ChannelFeeds.ChannelFeedResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts", getParams, accessToken, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.ChannelFeeds.ChannelFeedResponse>($"{Api.baseV3}feed/{channel}/posts", getParams, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region CreatePost
@@ -40,21 +40,21 @@ namespace TwitchLib.Api.Sections
                     Content = content,
                     Share = share
                 };
-                return await Api.PostGenericModelAsync<Models.v3.ChannelFeeds.PostResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts", model, accessToken, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.PostGenericModelAsync<Models.v3.ChannelFeeds.PostResponse>($"{Api.baseV3}feed/{channel}/posts", model, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetPost
             public async Task<Models.v3.ChannelFeeds.Post> GetPostAsync(string channel, string postId, string accessToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Feed_Edit, accessToken);
-                return await Api.GetGenericAsync<Models.v3.ChannelFeeds.Post>($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", null, accessToken, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.ChannelFeeds.Post>($"{Api.baseV3}feed/{channel}/posts/{postId}", null, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region DeletePost
             public async Task DeletePostAsync(string channel, string postId, string accessToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Feed_Edit, accessToken);
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", null, accessToken, ApiVersion.v3).ConfigureAwait(false);
+                await Api.DeleteAsync($"{Api.baseV3}feed/{channel}/posts/{postId}", null, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region CreateReaction
@@ -62,7 +62,7 @@ namespace TwitchLib.Api.Sections
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Feed_Edit, accessToken);
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("emote_id", emoteId) };
-                return await Api.PostGenericAsync<Models.v3.ChannelFeeds.PostReactionResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}/reactions", null, getParams, accessToken, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.PostGenericAsync<Models.v3.ChannelFeeds.PostReactionResponse>($"{Api.baseV3}feed/{channel}/posts/{postId}/reactions", null, getParams, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region RemoveReaction
@@ -70,7 +70,7 @@ namespace TwitchLib.Api.Sections
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Feed_Edit, accessToken);
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("emote_id", emoteId) };
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}/reactions", getParams, accessToken, ApiVersion.v3).ConfigureAwait(false);
+                await Api.DeleteAsync($"{Api.baseV3}feed/{channel}/posts/{postId}/reactions", getParams, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
         }
@@ -95,7 +95,7 @@ namespace TwitchLib.Api.Sections
                 if (comments != null && comments < 6 && comments >= 0)
                     getParams.Add(new KeyValuePair<string, string>("comments", comments.Value.ToString()));
 
-                return await Api.GetGenericAsync<Models.v5.ChannelFeed.MultipleFeedPosts>($"https://api.twitch.tv/kraken/feed/{channelId}/posts", getParams, authToken).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.ChannelFeed.MultipleFeedPosts>($"{Api.baseV5}feed/{channelId}/posts", getParams, authToken).ConfigureAwait(false);
             }
             #endregion
             #region GetFeedPosts
@@ -109,7 +109,7 @@ namespace TwitchLib.Api.Sections
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (comments != null && comments < 6 && comments >= 0)
                     getParams.Add(new KeyValuePair<string, string>("comments", comments.Value.ToString()));
-                return await Api.GetGenericAsync<Models.v5.ChannelFeed.FeedPost>($"https://api.twitch.tv/kraken/feed/{channelId}/posts/{postId}", getParams, authToken).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.ChannelFeed.FeedPost>($"{Api.baseV5}feed/{channelId}/posts/{postId}", getParams, authToken).ConfigureAwait(false);
             }
         
             #endregion
@@ -122,7 +122,7 @@ namespace TwitchLib.Api.Sections
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (share.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("share", share.Value.ToString()));
-                return await Api.PostGenericAsync<Models.v5.ChannelFeed.FeedPostCreation>($"https://api.twitch.tv/kraken/feed/{channelId}/posts", "{\"content\": \"" + content + "\"}", getParams, authToken).ConfigureAwait(false);
+                return await Api.PostGenericAsync<Models.v5.ChannelFeed.FeedPostCreation>($"{Api.baseV5}feed/{channelId}/posts", "{\"content\": \"" + content + "\"}", getParams, authToken).ConfigureAwait(false);
             }
             #endregion
             #region DeleteFeedPost
@@ -131,7 +131,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Feed_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid for fetching channel feed posts. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(postId)) { throw new BadParameterException("The post id is not valid for fetching channel feed posts. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.DeleteGenericAsync<Models.v5.ChannelFeed.FeedPost>($"https://api.twitch.tv/kraken/feed/{channelId}/posts/{postId}", authToken).ConfigureAwait(false);
+                return await Api.DeleteGenericAsync<Models.v5.ChannelFeed.FeedPost>($"{Api.baseV5}feed/{channelId}/posts/{postId}", authToken).ConfigureAwait(false);
             }
             #endregion
             #region CreateReactionToFeedPost
@@ -142,7 +142,7 @@ namespace TwitchLib.Api.Sections
                 if (string.IsNullOrWhiteSpace(postId)) { throw new BadParameterException("The post id is not valid for fetching channel feed posts. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(emoteId)) { throw new BadParameterException("The emote id is not valid for posting a channel feed post reaction. It is not allowed to be null, empty or filled with whitespaces."); }
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("emote_id", emoteId) };
-                return await Api.PostGenericAsync<Models.v5.ChannelFeed.FeedPostReactionPost>($"https://api.twitch.tv/kraken/feed/{channelId}/posts/{postId}/reactions", null, getParams, authToken).ConfigureAwait(false);
+                return await Api.PostGenericAsync<Models.v5.ChannelFeed.FeedPostReactionPost>($"{Api.baseV5}feed/{channelId}/posts/{postId}/reactions", null, getParams, authToken).ConfigureAwait(false);
             }
             #endregion
             #region DeleteReactionToFeedPost
@@ -153,7 +153,7 @@ namespace TwitchLib.Api.Sections
                 if (string.IsNullOrWhiteSpace(postId)) { throw new BadParameterException("The post id is not valid for fetching channel feed posts. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(emoteId)) { throw new BadParameterException("The emote id is not valid for posting a channel reaction. It is not allowed to be null, empty or filled with whitespaces."); }
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("emote_id", emoteId) };
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/feed/{channelId}/posts/{postId}/reactions", getParams, authToken).ConfigureAwait(false);
+                await Api.DeleteAsync($"{Api.baseV5}feed/{channelId}/posts/{postId}/reactions", getParams, authToken).ConfigureAwait(false);
             }
             #endregion
             #region GetFeedComments
@@ -169,7 +169,7 @@ namespace TwitchLib.Api.Sections
                 if (!string.IsNullOrEmpty(cursor))
                     getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
 
-                return await Api.GetGenericAsync<Models.v5.ChannelFeed.FeedPostComments>($"https://api.twitch.tv/kraken/feed/{channelId}/posts/{postId}/comments", getParams, authToken).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.ChannelFeed.FeedPostComments>($"{Api.baseV5}feed/{channelId}/posts/{postId}/comments", getParams, authToken).ConfigureAwait(false);
             }
             #endregion
             #region CreateFeedComment
@@ -179,7 +179,7 @@ namespace TwitchLib.Api.Sections
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid for fetching channel feed posts. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(postId)) { throw new BadParameterException("The post id is not valid for fetching channel feed posts. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(content)) { throw new BadParameterException("The content is not valid for commenting channel feed posts. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.PostGenericAsync<Models.v5.ChannelFeed.FeedPostComment>($"https://api.twitch.tv/kraken/feed/{channelId}/posts/{postId}/comments", "{\"content\": \"" + content + "\"}", null, authToken).ConfigureAwait(false);
+                return await Api.PostGenericAsync<Models.v5.ChannelFeed.FeedPostComment>($"{Api.baseV5}feed/{channelId}/posts/{postId}/comments", "{\"content\": \"" + content + "\"}", null, authToken).ConfigureAwait(false);
             }
             #endregion
             #region DeleteFeedComment
@@ -189,7 +189,7 @@ namespace TwitchLib.Api.Sections
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid for fetching channel feed posts. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(postId)) { throw new BadParameterException("The post id is not valid for fetching channel feed posts. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(commentId)) { throw new BadParameterException("The comment id is not valid for fetching channel feed post comments. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.DeleteGenericAsync<Models.v5.ChannelFeed.FeedPostComment>($"https://api.twitch.tv/kraken/feed/{channelId}/posts/{postId}/comments/{commentId}", authToken).ConfigureAwait(false);
+                return await Api.DeleteGenericAsync<Models.v5.ChannelFeed.FeedPostComment>($"{Api.baseV5}feed/{channelId}/posts/{postId}/comments/{commentId}", authToken).ConfigureAwait(false);
             }
             #endregion
             #region CreateReactionToFeedComments
@@ -201,7 +201,7 @@ namespace TwitchLib.Api.Sections
                 if (string.IsNullOrWhiteSpace(commentId)) { throw new BadParameterException("The comment id is not valid for fetching channel feed post comments. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(emoteId)) { throw new BadParameterException("The emote id is not valid for posting a channel feed post comment reaction. It is not allowed to be null, empty or filled with whitespaces."); }
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("emote_id", emoteId) };
-                return await Api.PostGenericAsync<Models.v5.ChannelFeed.FeedPostReactionPost>($"https://api.twitch.tv/kraken/feed/{channelId}/posts/{postId}/comments/{commentId}/reactions", null, getParams, authToken).ConfigureAwait(false);
+                return await Api.PostGenericAsync<Models.v5.ChannelFeed.FeedPostReactionPost>($"{Api.baseV5}feed/{channelId}/posts/{postId}/comments/{commentId}/reactions", null, getParams, authToken).ConfigureAwait(false);
             }
             #endregion
             #region DeleteReactionToFeedComments
@@ -212,7 +212,7 @@ namespace TwitchLib.Api.Sections
                 if (string.IsNullOrWhiteSpace(commentId)) { throw new BadParameterException("The comment id is not valid for fetching channel feed post comments. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(emoteId)) { throw new BadParameterException("The emote id is not valid for posting a channel feed post comment reaction. It is not allowed to be null, empty or filled with whitespaces."); }
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("emote_id", emoteId) };
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/feed/{channelId}/posts/{postId}/comments/{commentId}/reactions", getParams, authToken).ConfigureAwait(false);
+                await Api.DeleteAsync($"{Api.baseV5}feed/{channelId}/posts/{postId}/comments/{commentId}/reactions", getParams, authToken).ConfigureAwait(false);
             }
             #endregion
         }

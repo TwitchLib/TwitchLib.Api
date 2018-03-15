@@ -21,6 +21,13 @@ namespace TwitchLib.Api
         private readonly HttpClient _http;
         private readonly TwitchLibJsonSerializer _jsonSerializer;
         private readonly IRateLimiter _rateLimiter;
+
+        internal readonly string baseV3 = "https://api.twitch.tv/kraken/";
+        internal readonly string baseV5 = "https://api.twitch.tv/kraken/";
+        internal readonly string baseHelix = "https://api.twitch.tv/helix/";
+        internal readonly string baseId = "https://id.twitch.tv/";
+        internal readonly string baseBadges = "https://badges.twitch.tv/";
+
         public IApiSettings Settings { get; }
         public Auth Auth { get; }
         public Blocks Blocks { get; }

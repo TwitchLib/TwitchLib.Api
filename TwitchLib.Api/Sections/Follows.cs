@@ -37,7 +37,7 @@ namespace TwitchLib.Api.Sections
                         throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
                 }
 
-                return await Api.GetGenericAsync<Models.v3.Follows.FollowersResponse>($"https://api.twitch.tv/kraken/channels/{channel}/follows", getParams, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Follows.FollowersResponse>($"{Api.baseV3}channels/{channel}/follows", getParams, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetFollows
@@ -70,13 +70,13 @@ namespace TwitchLib.Api.Sections
                         throw new ArgumentOutOfRangeException(nameof(sortBy), sortBy, null);
                 }
 
-                return await Api.GetGenericAsync<Models.v3.Follows.FollowsResponse>($"https://api.twitch.tv/kraken/users/{channel}/follows/channels", getParams, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Follows.FollowsResponse>($"{Api.baseV3}users/{channel}/follows/channels", getParams, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetFollowStatus
             public async Task<Models.v3.Follows.Follows> GetFollowsStatusAsync(string user, string targetChannel)
             {
-                return await Api.GetGenericAsync<Models.v3.Follows.Follows>($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{targetChannel}", null, null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v3.Follows.Follows>($"{Api.baseV3}users/{user}/follows/channels/{targetChannel}", null, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region CreateFollow
@@ -84,14 +84,14 @@ namespace TwitchLib.Api.Sections
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Follows_Edit, accessToken);
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("notificaitons", notifications.ToString().ToLower()) };
-                return await Api.PutGenericAsync<Models.v3.Follows.Follows>($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{targetChannel}", null, getParams, accessToken, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.PutGenericAsync<Models.v3.Follows.Follows>($"{Api.baseV3}users/{user}/follows/channels/{targetChannel}", null, getParams, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region RemoveFollow
             public async Task RemoveFollowAsync(string user, string target, string accessToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Follows_Edit, accessToken);
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{target}", null, accessToken, ApiVersion.v3).ConfigureAwait(false);
+                await Api.DeleteAsync($"{Api.baseV3}users/{user}/follows/channels/{target}", null, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
         }

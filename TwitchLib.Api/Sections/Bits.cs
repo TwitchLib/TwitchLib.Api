@@ -52,7 +52,7 @@ namespace TwitchLib.Api.Sections
                 if (userid != null)
                     getParams.Add(new KeyValuePair<string, string>("user_id", userid));
 
-                return await Api.GetGenericAsync<Models.Helix.Bits.GetBitsLeaderboardResponse>("https://api.twitch.tv/helix/bits/leaderboard", getParams, accessToken, ApiVersion.Helix).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.Helix.Bits.GetBitsLeaderboardResponse>($"{Api.baseHelix}bits/leaderboard", getParams, accessToken, ApiVersion.Helix).ConfigureAwait(false);
             }
             #endregion 
         }
@@ -69,7 +69,7 @@ namespace TwitchLib.Api.Sections
                 List<KeyValuePair<string, string>> getParams = null;
                 if (channelId != null)
                     getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("channel_id", channelId) };
-                return await Api.GetGenericAsync<Models.v5.Bits.Cheermotes>("https://api.twitch.tv/kraken/bits/actions", getParams).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.v5.Bits.Cheermotes>($"{Api.baseV5}bits/actions", getParams).ConfigureAwait(false);
             }
             #endregion
         }
