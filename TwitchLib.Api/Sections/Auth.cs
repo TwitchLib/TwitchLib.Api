@@ -43,7 +43,7 @@ namespace TwitchLib.Api.Sections
                     new KeyValuePair<string, string> ("client_secret", clientSecret)
                 };
 
-                return await Api.TwitchGetGenericAsync<Models.v5.Auth.RefreshResponse>("/oauth2/token", ApiVersion.v5, getParams, customBase: "https://id.twitch.tv");
+                return await Api.TwitchPostGenericAsync<Models.v5.Auth.RefreshResponse>("/oauth2/token", ApiVersion.v5, null, getParams, customBase: "https://id.twitch.tv");
             }
             #endregion
         }
