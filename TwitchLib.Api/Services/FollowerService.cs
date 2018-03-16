@@ -19,8 +19,6 @@ namespace TwitchLib.Api.Services
         private readonly Timer _followerServiceTimer = new Timer();
         /// <summary>Property representing Twitch channel service is monitoring.</summary>
         public string ChannelData { get; protected set; }
-        /// <summary>Property representing whether channeldata is a channel name or channel id.</summary>
-        public ChannelIdentifierType ChannelIdentifier { get; protected set; }
         /// <summary>Property representing the number of followers to compare a fresh query against for new followers. Default: 1000.</summary>
         public int CacheSize { get; set; } = 1000;
         /// <summary>Property representing number of recent followers that service should request. Recommended: 25, increase for larger channels. MAX: 100, MINIMUM: 1</summary>
@@ -53,22 +51,13 @@ namespace TwitchLib.Api.Services
                 throw new UninitializedChannelDataException("ChannelData must be set before starting the FollowerService. Use SetChannelByName() or SetChannelById()");
             }
 
-            if (ChannelIdentifier == ChannelIdentifierType.Username)
-            {
-                var response = await _api.Follows.v3.GetFollowersAsync(ChannelData, QueryCount);
-                foreach (var follower in response.Followers)
-                    ActiveCache.Add(follower);
-            }
-            else
-            {
-                var response = await _api.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
-                foreach (var follower in response.Follows)
-                    ActiveCache.Add(follower);
-            }
+            var response = await _api.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
+            foreach (var follower in response.Follows)
+                ActiveCache.Add(follower);
 
             _followerServiceTimer.Start();
             OnServiceStarted?.Invoke(this,
-                new OnServiceStartedArgs { ChannelIdentifier = ChannelIdentifier, ChannelData = ChannelData, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount });
+                new OnServiceStartedArgs {  ChannelData = ChannelData, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount });
         }
 
         /// <summary>Stops service and fires OnServiceStopped event.</summary>
@@ -76,22 +65,13 @@ namespace TwitchLib.Api.Services
         {
             _followerServiceTimer.Stop();
             OnServiceStopped?.Invoke(this,
-                new OnServiceStoppedArgs { ChannelIdentifier = ChannelIdentifier, ChannelData = ChannelData, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount });
-        }
-
-        /// <summary>Tells FollowerService to request the channel by the channel name.</summary>
-        /// <param name="channelName"></param>
-        public void SetChannelByName(string channelName)
-        {
-            ChannelIdentifier = ChannelIdentifierType.Username;
-            ChannelData = channelName;
+                new OnServiceStoppedArgs { ChannelData = ChannelData, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount });
         }
 
         /// <summary>Tells FollowerService to request the channel by the channel Id</summary>
         /// <param name="channelId"></param>
         public void SetChannelByChannelId(string channelId)
         {
-            ChannelIdentifier = ChannelIdentifierType.UserId;
             ChannelData = channelId;
         }
         #endregion
@@ -101,16 +81,8 @@ namespace TwitchLib.Api.Services
             var mostRecentFollowers = new List<IFollow>();
             try
             {
-                if (ChannelIdentifier == ChannelIdentifierType.Username)
-                {
-                    var followers = await _api.Follows.v3.GetFollowersAsync(ChannelData, QueryCount);
-                    mostRecentFollowers.AddRange(followers.Followers);
-                }
-                else
-                {
-                    var followers = await _api.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
-                    mostRecentFollowers.AddRange(followers.Follows);
-                }
+                var followers = await _api.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
+                mostRecentFollowers.AddRange(followers.Follows);
             }
             catch (WebException)
             {
@@ -144,7 +116,6 @@ namespace TwitchLib.Api.Services
             OnNewFollowersDetected?.Invoke(this,
                 new OnNewFollowersDetectedArgs
                 {
-                    ChannelIdentifier = ChannelIdentifier,
                     ChannelData = ChannelData,
                     CheckIntervalSeconds = CheckIntervalSeconds,
                     QueryCount = QueryCount,
