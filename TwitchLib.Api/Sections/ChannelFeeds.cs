@@ -62,7 +62,7 @@ namespace TwitchLib.Api.Sections
                 if (share.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("share", share.Value.ToString()));
                 string payload = "{\"content\": \"" + content + "\"}";
-                return await Api.PostGenericAsync<Models.v5.ChannelFeed.FeedPostCreation>($"/feed/{channelId}/posts", payload, getParams, accessToken: authToken).ConfigureAwait(false);
+                return await Api.TwitchPostGenericAsync<Models.v5.ChannelFeed.FeedPostCreation>($"/feed/{channelId}/posts", ApiVersion.v5, payload, getParams, authToken).ConfigureAwait(false);
             }
             #endregion
             #region DeleteFeedPost

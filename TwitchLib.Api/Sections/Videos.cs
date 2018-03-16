@@ -202,7 +202,7 @@ namespace TwitchLib.Api.Sections
 
             private async Task CompleteVideoUpload(Models.v5.UploadVideo.Upload upload, string accessToken)
             {
-                await Api.PostAsync($"{upload.Url}/complete?upload_token={upload.Token}", null, null,  accessToken);
+                await Api.TwitchPostAsync(null, ApiVersion.v5, null, accessToken: accessToken, customBase: $"{upload.Url}/complete?upload_token={upload.Token}");
             }
         }
 
