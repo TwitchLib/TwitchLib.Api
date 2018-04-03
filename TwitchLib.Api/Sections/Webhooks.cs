@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api.Sections
@@ -70,8 +71,8 @@ namespace TwitchLib.Api.Sections
 
                 if (signingSecret != null)
                     getParams.Add(new KeyValuePair<string, string>("hub.secret", signingSecret));
-
-                var resp = await Api.PostAsync("https://api.twitch.tv/helix/webhooks/hub", null, getParams);
+                
+                var resp = await Api.TwitchPostAsync("/webhooks/hub", ApiVersion.Helix, null, getParams).ConfigureAwait(false);
                 return resp.Key == 202;
             }
         }

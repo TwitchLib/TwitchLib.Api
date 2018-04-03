@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace TwitchLib.Api.Models.v3.Videos
+namespace TwitchLib.Api.Models.v5.UploadVideo
 {
     public class Channel
     {
