@@ -12,6 +12,7 @@ using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Internal;
 using TwitchLib.Api.RateLimiter;
 using TwitchLib.Api.Sections;
+using System.Text;
 
 namespace TwitchLib.Api
 {
@@ -248,10 +249,6 @@ namespace TwitchLib.Api
             var request = new HttpRequestMessage
             {
                 RequestUri = new Uri(url),
-                Headers =
-                {
-                    {HttpRequestHeader.ContentType.ToString(), "application/json"},
-                },
                 Method = method
             };
 
@@ -278,7 +275,8 @@ namespace TwitchLib.Api
                 request.Headers.Add(HttpRequestHeader.Authorization.ToString(), $"{authPrefix} {Settings.AccessToken}");
 
             if (payload != null)
-                request.Content = new StringContent(payload);
+                request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
+
 
             var response = await _http.SendAsync(request);
             if (response.IsSuccessStatusCode)
