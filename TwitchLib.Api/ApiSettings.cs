@@ -75,7 +75,7 @@ namespace TwitchLib.Api
         {
             try
             {
-                var result = await _api.Root.v5.GetRoot(null, clientId);
+                var result = await _api.Root.v5.GetRootAsync(null, clientId);
                 return result.Token != null;
             }
             catch (BadRequestException)
@@ -89,7 +89,7 @@ namespace TwitchLib.Api
         {
             try
             {
-                var resp = await _api.Root.v5.GetRoot(accessToken);
+                var resp = await _api.Root.v5.GetRootAsync(accessToken);
                 if (resp.Token == null) return false;
 
                 Scopes = BuildScopesList(resp.Token);
