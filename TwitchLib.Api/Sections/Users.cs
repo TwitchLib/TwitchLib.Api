@@ -211,7 +211,7 @@ namespace TwitchLib.Api.Sections
                 return await Api.TwitchGetGenericAsync<Models.Helix.Users.GetUsers.GetUsersResponse>("/users", ApiVersion.Helix, getParams, accessToken).ConfigureAwait(false);
             }
 
-            public async Task<Models.Helix.Users.GetUsersFollows.GetUsersFollowsResponse> GetUsersFollows(string after = null, string before = null, int first = 20, string fromId = null, string toId = null)
+            public async Task<Models.Helix.Users.GetUsersFollows.GetUsersFollowsResponse> GetUsersFollowsAsync(string after = null, string before = null, int first = 20, string fromId = null, string toId = null)
             {
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("first", first.ToString()) };
                 if (after != null)
@@ -226,7 +226,7 @@ namespace TwitchLib.Api.Sections
                 return await Api.TwitchGetGenericAsync<Models.Helix.Users.GetUsersFollows.GetUsersFollowsResponse>("/users/follows", ApiVersion.Helix, getParams).ConfigureAwait(false);
             }
 
-            public async Task PutUsers(string description, string accessToken = null)
+            public async Task PutUsersAsync(string description, string accessToken = null)
             {
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("description", description) };
                 await Api.TwitchPutAsync("/users", ApiVersion.Helix, null, getParams, accessToken).ConfigureAwait(false);
