@@ -149,7 +149,7 @@ namespace TwitchLib.Api.Sections
         }
         #endregion
         #region GetChatUser
-        public async Task<Models.Undocumented.ChatUser.ChatUserResponse> GetChatUser(string userId, string channelId = null)
+        public async Task<Models.Undocumented.ChatUser.ChatUserResponse> GetChatUserAsync(string userId, string channelId = null)
         {
             if (channelId != null)
                 return await Api.GetGenericAsync<Models.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}");
