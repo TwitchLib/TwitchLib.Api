@@ -96,7 +96,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, accessToken);
                 var listing = await CreateVideoAsync(channelId, title, description, game, language, tagList, viewable, viewableAt);
                 UploadVideoParts(videoPath, listing.Upload);
-                await CompleteVideoUpload(listing.Upload, accessToken);
+                await CompleteVideoUploadAsync(listing.Upload, accessToken);
                 return listing.Video;
             }
             #endregion
