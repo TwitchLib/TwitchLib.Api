@@ -118,7 +118,7 @@ namespace TwitchLib.Api.Sections
             public Helix(TwitchAPI api) : base(api)
             {
             }
-            public async Task<Models.Helix.Streams.GetStreams.GetStreamsResponse> GetStreams(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
+            public async Task<Models.Helix.Streams.GetStreams.GetStreamsResponse> GetStreamsAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
             {
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("first", first.ToString()), new KeyValuePair<string, string>("type", type) };
                 if (after != null)
@@ -142,7 +142,7 @@ namespace TwitchLib.Api.Sections
                 return await Api.TwitchGetGenericAsync<Models.Helix.Streams.GetStreams.GetStreamsResponse>($"/streams", ApiVersion.Helix, getParams).ConfigureAwait(false);
             }
 
-            public async Task<Models.Helix.StreamsMetadata.GetStreamsMetadataResponse> GetStreamsMetadata(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
+            public async Task<Models.Helix.StreamsMetadata.GetStreamsMetadataResponse> GetStreamsMetadataAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
             {
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("first", first.ToString()), new KeyValuePair<string, string>("type", type) };
                 if (after != null)
