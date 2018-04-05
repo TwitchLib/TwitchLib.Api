@@ -41,7 +41,7 @@ namespace TwitchLib.Api.Sections
             {
             }
             #region GetGames
-            public async Task<Models.Helix.Games.GetGames.GetGamesResponse> GetGames(List<string> gameIds = null, List<string> gameNames = null)
+            public async Task<Models.Helix.Games.GetGames.GetGamesResponse> GetGamesAsync(List<string> gameIds = null, List<string> gameNames = null)
             {
                 if (gameIds == null && gameNames == null ||
                     gameIds != null && gameIds.Count == 0 && gameNames == null ||

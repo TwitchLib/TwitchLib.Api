@@ -96,7 +96,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, accessToken);
                 var listing = await CreateVideoAsync(channelId, title, description, game, language, tagList, viewable, viewableAt);
                 UploadVideoParts(videoPath, listing.Upload);
-                await CompleteVideoUpload(listing.Upload, accessToken);
+                await CompleteVideoUploadAsync(listing.Upload, accessToken);
                 return listing.Video;
             }
             #endregion
@@ -200,7 +200,7 @@ namespace TwitchLib.Api.Sections
                 }
             }
 
-            private async Task CompleteVideoUpload(Models.v5.UploadVideo.Upload upload, string accessToken)
+            private async Task CompleteVideoUploadAsync(Models.v5.UploadVideo.Upload upload, string accessToken)
             {
                 await Api.TwitchPostAsync(null, ApiVersion.v5, null, accessToken: accessToken, customBase: $"{upload.Url}/complete?upload_token={upload.Token}");
             }

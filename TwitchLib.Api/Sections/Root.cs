@@ -19,7 +19,7 @@ namespace TwitchLib.Api.Sections
             }
             #region GetRoot
 
-            public async Task<Models.v5.Root.Root> GetRoot(string authToken = null, string clientId = null)
+            public async Task<Models.v5.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
             {
                 return await Api.TwitchGetGenericAsync<Models.v5.Root.Root>("", ApiVersion.v5, accessToken: authToken, clientId: clientId).ConfigureAwait(false);
             }
