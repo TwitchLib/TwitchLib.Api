@@ -49,7 +49,7 @@ namespace TwitchLib.Api
         {
             if (!Validators.SkipClientIdValidation)
             {
-                if ((!string.IsNullOrWhiteSpace(clientId) || !string.IsNullOrWhiteSpace(AccessToken)) && !await ValidClientId(clientId))
+                if ((!string.IsNullOrWhiteSpace(clientId) || !string.IsNullOrWhiteSpace(AccessToken)) && !await ValidClientIdAsync(clientId))
                     throw new InvalidCredentialException("The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new");
             }
             ClientId = clientId;
@@ -63,7 +63,7 @@ namespace TwitchLib.Api
             {
                 if (string.IsNullOrEmpty(accessToken))
                     throw new InvalidCredentialException("Access Token cannot be empty or null.");
-                if (!await ValidAccessToken(accessToken))
+                if (!await ValidAccessTokenAsync(accessToken))
                     throw new InvalidCredentialException("The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/");
             }
             AccessToken = accessToken;
@@ -71,7 +71,7 @@ namespace TwitchLib.Api
         #endregion
 
         #region ValidClientId
-        private async Task<bool> ValidClientId(string clientId)
+        private async Task<bool> ValidClientIdAsync(string clientId)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace TwitchLib.Api
         }
         #endregion
         #region ValidAccessToken
-        private async Task<bool> ValidAccessToken(string accessToken)
+        private async Task<bool> ValidAccessTokenAsync(string accessToken)
         {
             try
             {
