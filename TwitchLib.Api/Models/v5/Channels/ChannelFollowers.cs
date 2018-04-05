@@ -7,7 +7,7 @@ namespace TwitchLib.Api.Models.v5.Channels
     public class ChannelFollowers : IFollows
     {
 
-        public ChannelFollowers(IFollow[] follows)
+        public ChannelFollowers(ChannelFollow[] follows)
         {
             Follows = follows;
         }

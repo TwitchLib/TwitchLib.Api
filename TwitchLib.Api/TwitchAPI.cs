@@ -280,7 +280,10 @@ namespace TwitchLib.Api
 
             var response = await _http.SendAsync(request);
             if (response.IsSuccessStatusCode)
-                return new KeyValuePair<int, string>((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+            {
+                string respStr = await response.Content.ReadAsStringAsync();
+                return new KeyValuePair<int, string>((int)response.StatusCode, respStr);
+            }
 
             HandleWebException(response);
             return new KeyValuePair<int, string>(0, null);
