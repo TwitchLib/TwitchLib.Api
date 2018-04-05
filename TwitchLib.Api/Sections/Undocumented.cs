@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using TwitchLib.Api.Exceptions;
 
@@ -148,7 +149,7 @@ namespace TwitchLib.Api.Sections
         }
         #endregion
         #region GetChatUser
-        public async Task<Models.Undocumented.ChatUser.ChatUserResponse> GetChatUser(string userId, string channelId = null)
+        public async Task<Models.Undocumented.ChatUser.ChatUserResponse> GetChatUserAsync(string userId, string channelId = null)
         {
             if (channelId != null)
                 return await Api.GetGenericAsync<Models.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}");
@@ -157,10 +158,10 @@ namespace TwitchLib.Api.Sections
         }
         #endregion
         #region IsUsernameAvailable
-        public bool IsUsernameAvailable(string username)
+        public async Task<bool> IsUsernameAvailable(string username)
         {
             var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("users_service", "true") };
-            var resp = Api.RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}", "HEAD", getParams);
+            var resp = await Api.RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}", HttpMethod.Head, getParams);
             switch (resp)
             {
                 case 200:

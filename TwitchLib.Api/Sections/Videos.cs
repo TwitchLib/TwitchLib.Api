@@ -12,58 +12,12 @@ namespace TwitchLib.Api.Sections
     {
         public Videos(TwitchAPI api)
         {
-            v3 = new V3(api);
             v5 = new V5(api);
             helix = new Helix(api);
         }
-
-        public V3 v3 { get; }
+        
         public V5 v5 { get; }
         public Helix helix { get; }
-
-        public class V3 : ApiSection
-        {
-            public V3(TwitchAPI api) : base(api)
-            {
-            }
-            #region GetVideo
-            public async Task<Models.v3.Videos.Video> GetVideoAsync(string id)
-            {
-                return await Api.GetGenericAsync<Models.v3.Videos.Video>($"https://api.twitch.tv/kraken/videos/{id}", null, null, ApiVersion.v3).ConfigureAwait(false);
-            }
-            #endregion
-            #region GetTopVideos
-            public async Task<Models.v3.Videos.TopVideosResponse> GetTopVideosAsync(int limit = 25, int offset = 0, string game = null, Period period = Period.Week)
-            {
-                var getParams = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("limit", limit.ToString()),
-                    new KeyValuePair<string, string>("offset", offset.ToString())
-                };
-                if (game != null)
-                    getParams.Add(new KeyValuePair<string, string>("game", game));
-                switch (period)
-                {
-                    case Period.Day:
-                        getParams.Add(new KeyValuePair<string, string>("period", "day"));
-                        break;
-                    case Period.Week:
-                        getParams.Add(new KeyValuePair<string, string>("period", "week"));
-                        break;
-                    case Period.Month:
-                        getParams.Add(new KeyValuePair<string, string>("period", "month"));
-                        break;
-                    case Period.All:
-                        getParams.Add(new KeyValuePair<string, string>("period", "all"));
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(period), period, null);
-                }
-
-                return await Api.GetGenericAsync<Models.v3.Videos.TopVideosResponse>("https://api.twitch.tv/kraken/videos/top", getParams, null, ApiVersion.v3).ConfigureAwait(false);
-            }
-            #endregion
-        }
 
         public class V5 : ApiSection
         {
@@ -74,7 +28,7 @@ namespace TwitchLib.Api.Sections
             public async Task<Models.v5.Videos.Video> GetVideoAsync(string videoId)
             {
                 if (string.IsNullOrWhiteSpace(videoId)) { throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.GetGenericAsync<Models.v5.Videos.Video>($"https://api.twitch.tv/kraken/videos/{videoId}").ConfigureAwait(false);
+                return await Api.TwitchGetGenericAsync<Models.v5.Videos.Video>($"/videos/{videoId}", ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetTopVideos
@@ -104,8 +58,8 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("language", string.Join(",", language)));
                 if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
                     getParams.Add(new KeyValuePair<string, string>("sort", sort));
-
-                return await Api.GetGenericAsync<Models.v5.Videos.TopVideos>("https://api.twitch.tv/kraken/videos/top", getParams).ConfigureAwait(false);
+                
+                return await Api.TwitchGetGenericAsync<Models.v5.Videos.TopVideos>("/videos/top", ApiVersion.v5, getParams).ConfigureAwait(false);
             }
             #endregion
             #region GetFollowedVideos
@@ -132,8 +86,8 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("language", string.Join(",", language)));
                 if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
                     getParams.Add(new KeyValuePair<string, string>("sort", sort));
-
-                return await Api.GetGenericAsync<Models.v5.Videos.FollowedVideos>("https://api.twitch.tv/kraken/videos/followed", getParams, authToken).ConfigureAwait(false);
+                
+                return await Api.TwitchGetGenericAsync<Models.v5.Videos.FollowedVideos>("/videos/followed", ApiVersion.v5, getParams, authToken).ConfigureAwait(false);
             }
             #endregion
             #region UploadVideo
@@ -142,7 +96,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, accessToken);
                 var listing = await CreateVideoAsync(channelId, title, description, game, language, tagList, viewable, viewableAt);
                 UploadVideoParts(videoPath, listing.Upload);
-                await CompleteVideoUpload(listing.Upload, accessToken);
+                await CompleteVideoUploadAsync(listing.Upload, accessToken);
                 return listing.Video;
             }
             #endregion
@@ -162,8 +116,8 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("tagList", tagList));
                 if (!string.IsNullOrWhiteSpace(title))
                     getParams.Add(new KeyValuePair<string, string>("title", title));
-
-                return await Api.PutGenericAsync<Models.v5.Videos.Video>($"https://api.twitch.tv/kraken/videos/{videoId}", null, getParams, authToken).ConfigureAwait(false);
+                
+                return await Api.TwitchPutGenericAsync<Models.v5.Videos.Video>($"/videos/{videoId}", ApiVersion.v5, null, getParams, authToken).ConfigureAwait(false);
             }
             #endregion
             #region DeleteVideo
@@ -171,7 +125,7 @@ namespace TwitchLib.Api.Sections
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
                 if (string.IsNullOrWhiteSpace(videoId)) { throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/videos/{videoId}", null, authToken).ConfigureAwait(false);
+                await Api.TwitchDeleteAsync($"/videos/{videoId}", ApiVersion.v5, accessToken: authToken).ConfigureAwait(false);
             }
             #endregion
 
@@ -198,7 +152,7 @@ namespace TwitchLib.Api.Sections
                 // Should do it?
                 if (viewableAt.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("viewable_at", viewableAt.Value.ToRfc3339String()));
-                return await Api.PostGenericAsync<Models.v5.UploadVideo.UploadVideoListing>("https://api.twitch.tv/kraken/videos", null, getParams, accessToken);
+                return await Api.TwitchPostGenericAsync<Models.v5.UploadVideo.UploadVideoListing>("/videos", ApiVersion.v5, null, getParams, accessToken).ConfigureAwait(false);
             }
 
             private const long MAX_VIDEO_SIZE = 10737418240;
@@ -246,9 +200,9 @@ namespace TwitchLib.Api.Sections
                 }
             }
 
-            private async Task CompleteVideoUpload(Models.v5.UploadVideo.Upload upload, string accessToken)
+            private async Task CompleteVideoUploadAsync(Models.v5.UploadVideo.Upload upload, string accessToken)
             {
-                await Api.PostAsync($"{upload.Url}/complete?upload_token={upload.Token}", null, null,  accessToken);
+                await Api.TwitchPostAsync(null, ApiVersion.v5, null, accessToken: accessToken, customBase: $"{upload.Url}/complete?upload_token={upload.Token}");
             }
         }
 
@@ -334,7 +288,7 @@ namespace TwitchLib.Api.Sections
                     }
                 }
 
-                return await Api.GetGenericAsync<Models.Helix.Videos.GetVideos.GetVideosResponse>("https://api.twitch.tv/helix/videos", getParams, null, ApiVersion.Helix).ConfigureAwait(false);
+                return await Api.TwitchGetGenericAsync<Models.Helix.Videos.GetVideos.GetVideosResponse>("/videos", ApiVersion.Helix, getParams).ConfigureAwait(false);
             }
         }
     }

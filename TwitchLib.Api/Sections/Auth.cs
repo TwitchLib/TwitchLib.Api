@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api.Sections
@@ -42,7 +43,7 @@ namespace TwitchLib.Api.Sections
                     new KeyValuePair<string, string> ("client_secret", clientSecret)
                 };
 
-                return await Api.PostGenericAsync<Models.v5.Auth.RefreshResponse>("https://api.twitch.tv/kraken/oauth2/token", null, getParams).ConfigureAwait(false);
+                return await Api.TwitchPostGenericAsync<Models.v5.Auth.RefreshResponse>("/oauth2/token", ApiVersion.v5, null, getParams, customBase: "https://id.twitch.tv");
             }
             #endregion
         }
