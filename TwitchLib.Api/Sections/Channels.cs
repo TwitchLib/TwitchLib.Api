@@ -28,9 +28,9 @@ namespace TwitchLib.Api.Sections
             /// <para>Required Authentication Scope: channel_read</para>
             /// </summary>
             /// <returns>A ChannelPrivileged object including all Channel object info plus email and streamkey.</returns>
-            public async Task<Models.v5.Channels.ChannelAuthed> GetChannelAsync(string authToken = null)
+            public Task<Models.v5.Channels.ChannelAuthed> GetChannelAsync(string authToken = null)
             {
-                return await Api.TwitchGetGenericAsync<Models.v5.Channels.ChannelAuthed>("/channel", ApiVersion.v5, accessToken: authToken).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Channels.ChannelAuthed>("/channel", ApiVersion.v5, accessToken: authToken);
             }
             #endregion
             #region GetChannelById
@@ -39,10 +39,10 @@ namespace TwitchLib.Api.Sections
             /// </summary>
             /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
             /// <returns>A Channel object from the response of the Twitch API.</returns>
-            public async Task<Models.v5.Channels.Channel> GetChannelByIDAsync(string channelId)
+            public Task<Models.v5.Channels.Channel> GetChannelByIDAsync(string channelId)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.TwitchGetGenericAsync<Models.v5.Channels.Channel>($"/channels/{channelId}", ApiVersion.v5).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Channels.Channel>($"/channels/{channelId}", ApiVersion.v5);
             }
             #endregion
             #region UpdateChannel
@@ -59,7 +59,7 @@ namespace TwitchLib.Api.Sections
             /// <param name="channelFeedEnabled">If true, the channel’s feed is turned on. Requires the channel owner’s OAuth token. Default: false.</param>
             /// <param name="authToken"></param>
             /// <returns>A Channel object with the newly changed properties.</returns>
-            public async Task<Models.v5.Channels.Channel> UpdateChannelAsync(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
+            public Task<Models.v5.Channels.Channel> UpdateChannelAsync(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
@@ -91,7 +91,7 @@ namespace TwitchLib.Api.Sections
 
                 payload = "{ \"channel\": {" + payload + "} }";
 
-                return await Api.TwitchPutGenericAsync<Models.v5.Channels.Channel>($"/channels/{channelId}", ApiVersion.v5, payload, accessToken: authToken).ConfigureAwait(false);
+                return Api.TwitchPutGenericAsync<Models.v5.Channels.Channel>($"/channels/{channelId}", ApiVersion.v5, payload, accessToken: authToken);
             }
             #endregion
             #region GetChannelEditors
@@ -103,11 +103,11 @@ namespace TwitchLib.Api.Sections
             /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
             /// <param name="authToken"></param>
             /// <returns>A ChannelEditors object that contains an array of the Users which are Editor of the channel.</returns>
-            public async Task<Models.v5.Channels.ChannelEditors> GetChannelEditorsAsync(string channelId, string authToken = null)
+            public Task<Models.v5.Channels.ChannelEditors> GetChannelEditorsAsync(string channelId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Read, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.TwitchGetGenericAsync<Models.v5.Channels.ChannelEditors>($"/channels/{channelId}/editors", ApiVersion.v5, accessToken: authToken).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Channels.ChannelEditors>($"/channels/{channelId}/editors", ApiVersion.v5, accessToken: authToken);
             }
             #endregion
             #region GetChannelFollowers
@@ -120,7 +120,7 @@ namespace TwitchLib.Api.Sections
             /// <param name="cursor">Tells the server where to start fetching the next set of results, in a multi-page response.</param>
             /// <param name="direction">Sorting direction. Valid values: "asc", "desc" (newest first). Default: "desc".</param>
             /// <returns>A ChannelFollowers object that represents the response from the Twitch API.</returns>
-            public async Task<Models.v5.Channels.ChannelFollowers> GetChannelFollowersAsync(string channelId, int? limit = null, int? offset = null, string cursor = null, string direction = null)
+            public Task<Models.v5.Channels.ChannelFollowers> GetChannelFollowersAsync(string channelId, int? limit = null, int? offset = null, string cursor = null, string direction = null)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 var getParams = new List<KeyValuePair<string, string>>();
@@ -133,7 +133,7 @@ namespace TwitchLib.Api.Sections
                 if (!string.IsNullOrEmpty(direction) && (direction == "asc" || direction == "desc"))
                     getParams.Add(new KeyValuePair<string, string>("direction", direction));
 
-                return await Api.TwitchGetGenericAsync<Models.v5.Channels.ChannelFollowers>($"/channels/{channelId}/follows", ApiVersion.v5, getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Channels.ChannelFollowers>($"/channels/{channelId}/follows", ApiVersion.v5, getParams);
             }
             #endregion
             #region GetAllChannelFollowers
@@ -179,10 +179,10 @@ namespace TwitchLib.Api.Sections
             /// </summary>
             /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
             /// <returns>An Array of the Teams the Channel belongs to.</returns>
-            public async Task<Models.v5.Channels.ChannelTeams> GetChannelTeamsAsync(string channelId)
+            public Task<Models.v5.Channels.ChannelTeams> GetChannelTeamsAsync(string channelId)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.TwitchGetGenericAsync<Models.v5.Channels.ChannelTeams>($"/channels/{channelId}/teams", ApiVersion.v5).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Channels.ChannelTeams>($"/channels/{channelId}/teams", ApiVersion.v5);
             }
             #endregion
             #region GetChannelSubscribers
@@ -196,7 +196,7 @@ namespace TwitchLib.Api.Sections
             /// <param name="direction">Sorting direction. Valid values: "asc", "desc" (newest first). Default: "desc".</param>
             /// <param name="authToken">The associated auth token for this request.</param>
             /// <returns></returns>
-            public async Task<Models.v5.Channels.ChannelSubscribers> GetChannelSubscribersAsync(string channelId, int? limit = null, int? offset = null, string direction = null, string authToken = null)
+            public Task<Models.v5.Channels.ChannelSubscribers> GetChannelSubscribersAsync(string channelId, int? limit = null, int? offset = null, string direction = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Subscriptions, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
@@ -208,7 +208,7 @@ namespace TwitchLib.Api.Sections
                 if (!string.IsNullOrEmpty(direction) && (direction == "asc" || direction == "desc"))
                     getParams.Add(new KeyValuePair<string, string>("direction", direction));
 
-                return await Api.TwitchGetGenericAsync<Models.v5.Channels.ChannelSubscribers>($"/channels/{channelId}/subscriptions", ApiVersion.v5, getParams, authToken).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Channels.ChannelSubscribers>($"/channels/{channelId}/subscriptions", ApiVersion.v5, getParams, authToken);
             }
             #endregion
             #region GetAllSubscribers
@@ -263,17 +263,17 @@ namespace TwitchLib.Api.Sections
             /// <param name="userId">The specified user to check for.</param>
             /// <param name="authToken"></param>
             /// <returns>Returns a subscription object or null if not subscribed.</returns>
-            public async Task<Models.v5.Subscriptions.Subscription> CheckChannelSubscriptionByUserAsync(string channelId, string userId, string authToken = null)
+            public Task<Models.v5.Subscriptions.Subscription> CheckChannelSubscriptionByUserAsync(string channelId, string userId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Check_Subscription, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.TwitchGetGenericAsync<Models.v5.Subscriptions.Subscription>($"/channels/{channelId}/subscriptions/{userId}", ApiVersion.v5, accessToken: authToken).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Subscriptions.Subscription>($"/channels/{channelId}/subscriptions/{userId}", ApiVersion.v5, accessToken: authToken);
             }
         
             #endregion
             #region GetChannelVideos
-            public async Task<Models.v5.Channels.ChannelVideos> GetChannelVideosAsync(string channelId, int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
+            public Task<Models.v5.Channels.ChannelVideos> GetChannelVideosAsync(string channelId, int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 var getParams = new List<KeyValuePair<string, string>>();
@@ -297,16 +297,16 @@ namespace TwitchLib.Api.Sections
                 if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
                     getParams.Add(new KeyValuePair<string, string>("sort", sort));
 
-                return await Api.TwitchGetGenericAsync<Models.v5.Channels.ChannelVideos>($"/channels/{channelId}/videos", ApiVersion.v5, getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Channels.ChannelVideos>($"/channels/{channelId}/videos", ApiVersion.v5, getParams);
             }
             #endregion
             #region StartChannelCommercial
-            public async Task<Models.v5.Channels.ChannelCommercial> StartChannelCommercialAsync(string channelId, CommercialLength duration, string authToken = null)
+            public Task<Models.v5.Channels.ChannelCommercial> StartChannelCommercialAsync(string channelId, CommercialLength duration, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Commercial, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 string payload = "{\"duration\": " + (int)duration + "}";
-                return await Api.TwitchPostGenericAsync<Models.v5.Channels.ChannelCommercial>($"/channels/{channelId}/commercial", ApiVersion.v5, payload, accessToken: authToken).ConfigureAwait(false);
+                return Api.TwitchPostGenericAsync<Models.v5.Channels.ChannelCommercial>($"/channels/{channelId}/commercial", ApiVersion.v5, payload, accessToken: authToken);
             }
             #endregion
             #region ResetChannelStreamKey
@@ -319,11 +319,11 @@ namespace TwitchLib.Api.Sections
             /// <param name="channelId">The specified channel to reset the StreamKey on.</param>
             /// <param name="authToken"></param>
             /// <returns>A ChannelPrivileged object that also contains the email and stream key of the channel aside from the normal channel values.</returns>
-            public async Task<Models.v5.Channels.ChannelAuthed> ResetChannelStreamKeyAsync(string channelId, string authToken = null)
+            public Task<Models.v5.Channels.ChannelAuthed> ResetChannelStreamKeyAsync(string channelId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Stream, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.TwitchDeleteGenericAsync<Models.v5.Channels.ChannelAuthed>($"/channels/{channelId}/stream_key", ApiVersion.v5, authToken).ConfigureAwait(false);
+                return Api.TwitchDeleteGenericAsync<Models.v5.Channels.ChannelAuthed>($"/channels/{channelId}/stream_key", ApiVersion.v5, authToken);
             }
             #endregion
 
@@ -337,17 +337,17 @@ namespace TwitchLib.Api.Sections
             /// <param name="channelId">The specified channel ID to get the community from.</param>
             /// <param name="authToken"></param>
             /// <returns>A Community object that represents the community the channel is in.</returns>
-            public async Task<Models.v5.Communities.Community> GetChannelCommunityAsync(string channelId, string authToken = null)
+            public Task<Models.v5.Communities.Community> GetChannelCommunityAsync(string channelId, string authToken = null)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.TwitchGetGenericAsync<Models.v5.Communities.Community>($"/channels/{channelId}/community", ApiVersion.v5, accessToken: authToken).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Communities.Community>($"/channels/{channelId}/community", ApiVersion.v5, accessToken: authToken);
             }
             #endregion
             #region GetChannelCommunities
-            public async Task<Models.v5.Communities.CommunitiesResponse> GetChannelCommunitiesAsync(string channelId, string authToken = null)
+            public Task<Models.v5.Communities.CommunitiesResponse> GetChannelCommunitiesAsync(string channelId, string authToken = null)
             {
                 if (string.IsNullOrEmpty(channelId)) { throw new BadParameterException("The channel id is not valid. It is now allowed to be null, empty or filled with whitespaces."); }
-                return await Api.TwitchGetGenericAsync<Models.v5.Communities.CommunitiesResponse>($"/channels/{channelId}/communities", ApiVersion.v5, accessToken: authToken).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Communities.CommunitiesResponse>($"/channels/{channelId}/communities", ApiVersion.v5, accessToken: authToken);
             }
             #endregion
             #region SetChannelCommunities

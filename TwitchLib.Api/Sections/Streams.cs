@@ -23,7 +23,7 @@ namespace TwitchLib.Api.Sections
             {
             }
             #region GetStreamByUser
-            public async Task<Models.v5.Streams.StreamByUser> GetStreamByUserAsync(string channelId, string streamType = null)
+            public Task<Models.v5.Streams.StreamByUser> GetStreamByUserAsync(string channelId, string streamType = null)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid for fetching streams. It is not allowed to be null, empty or filled with whitespaces."); }
                 var getParams = new List<KeyValuePair<string, string>>();
@@ -31,11 +31,11 @@ namespace TwitchLib.Api.Sections
                 {
                     getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));
                 }
-                return await Api.TwitchGetGenericAsync<Models.v5.Streams.StreamByUser>($"/streams/{channelId}", ApiVersion.v5, getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Streams.StreamByUser>($"/streams/{channelId}", ApiVersion.v5, getParams);
             }
             #endregion
             #region GetLiveStreams
-            public async Task<Models.v5.Streams.LiveStreams> GetLiveStreamsAsync(List<string> channelList = null, string game = null, string language = null, string streamType = null, int? limit = null, int? offset = null)
+            public Task<Models.v5.Streams.LiveStreams> GetLiveStreamsAsync(List<string> channelList = null, string game = null, string language = null, string streamType = null, int? limit = null, int? offset = null)
             {
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (channelList != null && channelList.Count > 0)
@@ -51,20 +51,20 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
                 
-                return await Api.TwitchGetGenericAsync<Models.v5.Streams.LiveStreams>("/streams", ApiVersion.v5, getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Streams.LiveStreams>("/streams", ApiVersion.v5, getParams);
             }
             #endregion
             #region GetStreamsSummary
-            public async Task<Models.v5.Streams.StreamsSummary> GetStreamsSummaryAsync(string game = null)
+            public Task<Models.v5.Streams.StreamsSummary> GetStreamsSummaryAsync(string game = null)
             {
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (game != null)
                     getParams.Add(new KeyValuePair<string, string>("game", game));
-                return await Api.TwitchGetGenericAsync<Models.v5.Streams.StreamsSummary>("/streams/summary", ApiVersion.v5, getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Streams.StreamsSummary>("/streams/summary", ApiVersion.v5, getParams);
             }
             #endregion
             #region GetFeaturedStreams
-            public async Task<Models.v5.Streams.FeaturedStreams> GetFeaturedStreamAsync(int? limit = null, int? offset = null)
+            public Task<Models.v5.Streams.FeaturedStreams> GetFeaturedStreamAsync(int? limit = null, int? offset = null)
             {
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (limit.HasValue)
@@ -72,11 +72,11 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
                 
-                return await Api.TwitchGetGenericAsync<Models.v5.Streams.FeaturedStreams>("/streams/featured", ApiVersion.v5, getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Streams.FeaturedStreams>("/streams/featured", ApiVersion.v5, getParams);
             }
             #endregion
             #region GetFollowedStreams
-            public async Task<Models.v5.Streams.FollowedStreams> GetFollowedStreamsAsync(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
+            public Task<Models.v5.Streams.FollowedStreams> GetFollowedStreamsAsync(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Read, authToken);
                 var getParams = new List<KeyValuePair<string, string>>();
@@ -87,7 +87,7 @@ namespace TwitchLib.Api.Sections
                 if (offset != null)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
 
-                return await Api.TwitchGetGenericAsync<Models.v5.Streams.FollowedStreams>("/streams/followed", ApiVersion.v5, getParams, authToken).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Streams.FollowedStreams>("/streams/followed", ApiVersion.v5, getParams, authToken);
             }
             #endregion
             #region GetUptime
@@ -118,7 +118,7 @@ namespace TwitchLib.Api.Sections
             public Helix(TwitchAPI api) : base(api)
             {
             }
-            public async Task<Models.Helix.Streams.GetStreams.GetStreamsResponse> GetStreamsAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
+            public Task<Models.Helix.Streams.GetStreams.GetStreamsResponse> GetStreamsAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
             {
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("first", first.ToString()), new KeyValuePair<string, string>("type", type) };
                 if (after != null)
@@ -139,10 +139,10 @@ namespace TwitchLib.Api.Sections
                     foreach (var userLogin in userLogins)
                         getParams.Add(new KeyValuePair<string, string>("user_login", userLogin));
                 
-                return await Api.TwitchGetGenericAsync<Models.Helix.Streams.GetStreams.GetStreamsResponse>($"/streams", ApiVersion.Helix, getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.Helix.Streams.GetStreams.GetStreamsResponse>($"/streams", ApiVersion.Helix, getParams);
             }
 
-            public async Task<Models.Helix.StreamsMetadata.GetStreamsMetadataResponse> GetStreamsMetadataAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
+            public Task<Models.Helix.StreamsMetadata.GetStreamsMetadataResponse> GetStreamsMetadataAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
             {
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("first", first.ToString()), new KeyValuePair<string, string>("type", type) };
                 if (after != null)
@@ -163,7 +163,7 @@ namespace TwitchLib.Api.Sections
                     foreach (var userLogin in userLogins)
                         getParams.Add(new KeyValuePair<string, string>("user_login", userLogin));
 
-                return await Api.TwitchGetGenericAsync<Models.Helix.StreamsMetadata.GetStreamsMetadataResponse>("/streams/metadata", ApiVersion.Helix, getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.Helix.StreamsMetadata.GetStreamsMetadataResponse>("/streams/metadata", ApiVersion.Helix, getParams);
             }
         }
     }

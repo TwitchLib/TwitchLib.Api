@@ -47,7 +47,7 @@ namespace TwitchLib.Api.Sections
         }
         #endregion
         #region GetComments
-        public async Task<Models.Undocumented.Comments.CommentsPage> GetCommentsPageAsync(string videoId, int? contentOffsetSeconds = null, string cursor = null)
+        public Task<Models.Undocumented.Comments.CommentsPage> GetCommentsPageAsync(string videoId, int? contentOffsetSeconds = null, string cursor = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
             if (string.IsNullOrWhiteSpace(videoId))
@@ -62,7 +62,7 @@ namespace TwitchLib.Api.Sections
             {
                 getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
             }
-            return await Api.GetGenericAsync<Models.Undocumented.Comments.CommentsPage>($"https://api.twitch.tv/kraken/videos/{videoId}/comments", getParams).ConfigureAwait(false);
+            return Api.GetGenericAsync<Models.Undocumented.Comments.CommentsPage>($"https://api.twitch.tv/kraken/videos/{videoId}/comments", getParams);
         }
 
         public async Task<List<Models.Undocumented.Comments.CommentsPage>> GetAllCommentsAsync(string videoId)
@@ -76,52 +76,52 @@ namespace TwitchLib.Api.Sections
         }
         #endregion
         #region GetTwitchPrimeOffers
-        public async Task<Models.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers> GetTwitchPrimeOffersAsync()
+        public Task<Models.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers> GetTwitchPrimeOffersAsync()
         {
             var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("on_site", "1") };
-            return await Api.GetGenericAsync<Models.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers>("https://api.twitch.tv/api/premium/offers", getParams).ConfigureAwait(false);
+            return Api.GetGenericAsync<Models.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers>("https://api.twitch.tv/api/premium/offers", getParams);
         }
         #endregion
         #region GetChannelHosts
-        public async Task<Models.Undocumented.Hosting.ChannelHostsResponse> GetChannelHostsAsync(string channelId)
+        public Task<Models.Undocumented.Hosting.ChannelHostsResponse> GetChannelHostsAsync(string channelId)
         {
             var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("include_logins", "1"), new KeyValuePair<string, string>("target", channelId) };
-            return await Api.GetSimpleGenericAsync<Models.Undocumented.Hosting.ChannelHostsResponse>("https://tmi.twitch.tv/hosts", getParams);
+            return Api.GetSimpleGenericAsync<Models.Undocumented.Hosting.ChannelHostsResponse>("https://tmi.twitch.tv/hosts", getParams);
         }
         #endregion
         #region GetChatProperties
-        public async Task<Models.Undocumented.ChatProperties.ChatProperties> GetChatPropertiesAsync(string channelName)
+        public Task<Models.Undocumented.ChatProperties.ChatProperties> GetChatPropertiesAsync(string channelName)
         {
-            return await Api.GetGenericAsync<Models.Undocumented.ChatProperties.ChatProperties>($"https://api.twitch.tv/api/channels/{channelName}/chat_properties");
+            return Api.GetGenericAsync<Models.Undocumented.ChatProperties.ChatProperties>($"https://api.twitch.tv/api/channels/{channelName}/chat_properties");
         }
         #endregion
         #region GetChannelPanels
-        public async Task<Models.Undocumented.ChannelPanels.Panel[]> GetChannelPanelsAsync(string channelName)
+        public Task<Models.Undocumented.ChannelPanels.Panel[]> GetChannelPanelsAsync(string channelName)
         {
-            return await Api.GetGenericAsync<Models.Undocumented.ChannelPanels.Panel[]>($"https://api.twitch.tv/api/channels/{channelName}/panels");
+            return Api.GetGenericAsync<Models.Undocumented.ChannelPanels.Panel[]>($"https://api.twitch.tv/api/channels/{channelName}/panels");
         }
         #endregion
         #region GetCSMaps
-        public async Task<Models.Undocumented.CSMaps.CSMapsResponse> GetCSMapsAsync()
+        public Task<Models.Undocumented.CSMaps.CSMapsResponse> GetCSMapsAsync()
         {
-            return await Api.GetGenericAsync<Models.Undocumented.CSMaps.CSMapsResponse>("https://api.twitch.tv/api/cs/maps");
+            return Api.GetGenericAsync<Models.Undocumented.CSMaps.CSMapsResponse>("https://api.twitch.tv/api/cs/maps");
         }
         #endregion
         #region GetCSStreams
-        public async Task<Models.Undocumented.CSStreams.CSStreams> GetCSStreamsAsync(int limit = 25, int offset = 0)
+        public Task<Models.Undocumented.CSStreams.CSStreams> GetCSStreamsAsync(int limit = 25, int offset = 0)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("limit", limit.ToString()),
                 new KeyValuePair<string, string>("offset", offset.ToString())
             };
-            return await Api.GetGenericAsync<Models.Undocumented.CSStreams.CSStreams>("https://api.twitch.tv/api/cs", getParams);
+            return Api.GetGenericAsync<Models.Undocumented.CSStreams.CSStreams>("https://api.twitch.tv/api/cs", getParams);
         }
         #endregion
         #region GetRecentMessages
-        public async Task<Models.Undocumented.RecentMessages.RecentMessagesResponse> GetRecentMessagesAsync(string channelId)
+        public Task<Models.Undocumented.RecentMessages.RecentMessagesResponse> GetRecentMessagesAsync(string channelId)
         {
-            return await Api.GetGenericAsync<Models.Undocumented.RecentMessages.RecentMessagesResponse>($"https://tmi.twitch.tv/api/rooms/{channelId}/recent_messages");
+            return Api.GetGenericAsync<Models.Undocumented.RecentMessages.RecentMessagesResponse>($"https://tmi.twitch.tv/api/rooms/{channelId}/recent_messages");
         }
         #endregion
         #region GetChatters
@@ -143,18 +143,18 @@ namespace TwitchLib.Api.Sections
         }
         #endregion
         #region GetRecentChannelEvents
-        public async Task<Models.Undocumented.RecentEvents.RecentEvents> GetRecentChannelEventsAsync(string channelId)
+        public Task<Models.Undocumented.RecentEvents.RecentEvents> GetRecentChannelEventsAsync(string channelId)
         {
-            return await Api.GetGenericAsync<Models.Undocumented.RecentEvents.RecentEvents>($"https://api.twitch.tv/bits/channels/{channelId}/events/recent");
+            return Api.GetGenericAsync<Models.Undocumented.RecentEvents.RecentEvents>($"https://api.twitch.tv/bits/channels/{channelId}/events/recent");
         }
         #endregion
         #region GetChatUser
-        public async Task<Models.Undocumented.ChatUser.ChatUserResponse> GetChatUserAsync(string userId, string channelId = null)
+        public Task<Models.Undocumented.ChatUser.ChatUserResponse> GetChatUserAsync(string userId, string channelId = null)
         {
             if (channelId != null)
-                return await Api.GetGenericAsync<Models.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}");
+                return Api.GetGenericAsync<Models.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}");
 
-            return await Api.GetGenericAsync<Models.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/");
+            return Api.GetGenericAsync<Models.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/");
         }
         #endregion
         #region IsUsernameAvailable

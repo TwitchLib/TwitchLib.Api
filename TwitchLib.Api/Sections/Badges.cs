@@ -19,17 +19,17 @@ namespace TwitchLib.Api.Sections
             }
 
             #region GetSubscriberBadgesForChannel
-            public async Task<Models.v5.Badges.ChannelDisplayBadges> GetSubscriberBadgesForChannelAsync(string channelId)
+            public Task<Models.v5.Badges.ChannelDisplayBadges> GetSubscriberBadgesForChannelAsync(string channelId)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.TwitchGetGenericAsync<Models.v5.Badges.ChannelDisplayBadges>($"/v1/badges/channels/{channelId}/display", Enums.ApiVersion.v5, customBase: "https://badges.twitch.tv").ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Badges.ChannelDisplayBadges>($"/v1/badges/channels/{channelId}/display", Enums.ApiVersion.v5, customBase: "https://badges.twitch.tv");
             }
             #endregion
 
             #region GetGlobalBadges
-            public async Task<Models.v5.Badges.GlobalBadgesResponse> GetGlobalBadgesAsync()
+            public Task<Models.v5.Badges.GlobalBadgesResponse> GetGlobalBadgesAsync()
             {
-                return await Api.TwitchGetGenericAsync<Models.v5.Badges.GlobalBadgesResponse>("/v1/badges/gloal/display", Enums.ApiVersion.v5, customBase: "https://badges.twitch.tv").ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Badges.GlobalBadgesResponse>("/v1/badges/gloal/display", Enums.ApiVersion.v5, customBase: "https://badges.twitch.tv");
             }
             #endregion
         }
