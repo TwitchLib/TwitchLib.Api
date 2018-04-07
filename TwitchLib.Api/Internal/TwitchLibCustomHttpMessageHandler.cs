@@ -4,14 +4,15 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using TwitchLib.Api.Interfaces;
 
 namespace TwitchLib.Api.Internal
 {
     public class TwitchHttpClientHandler : DelegatingHandler
     {
-        private readonly ILogger<TwitchHttpClient> _logger;
+        private readonly ILogger<IHttpCallHandler> _logger;
 
-        public TwitchHttpClientHandler(HttpMessageHandler innerHandler, ILogger<TwitchHttpClient> logger) : base(innerHandler)
+        public TwitchHttpClientHandler(HttpMessageHandler innerHandler, ILogger<IHttpCallHandler> logger) : base(innerHandler)
         {
             _logger = logger;
         }
