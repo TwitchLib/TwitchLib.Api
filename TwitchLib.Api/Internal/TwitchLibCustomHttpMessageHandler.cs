@@ -7,11 +7,11 @@ using Microsoft.Extensions.Logging;
 
 namespace TwitchLib.Api.Internal
 {
-    public class TwitchLibCustomHttpMessageHandler : DelegatingHandler
+    public class TwitchHttpClientHandler : DelegatingHandler
     {
-        private readonly ILogger<TwitchAPI> _logger;
+        private readonly ILogger<TwitchHttpClient> _logger;
 
-        public TwitchLibCustomHttpMessageHandler(HttpMessageHandler innerHandler, ILogger<TwitchAPI> logger) : base(innerHandler)
+        public TwitchHttpClientHandler(HttpMessageHandler innerHandler, ILogger<TwitchHttpClient> logger) : base(innerHandler)
         {
             _logger = logger;
         }

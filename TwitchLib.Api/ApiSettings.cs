@@ -11,9 +11,9 @@ namespace TwitchLib.Api
 {
     public class ApiSettings : IApiSettings
     {
-        public string ClientId { get; private set; }
+        public string ClientId { get;  set; }
 
-        public string AccessToken { get; private set; }
+        public string AccessToken { get;  set; }
 
         private readonly TwitchAPI _api;
 
@@ -36,46 +36,30 @@ namespace TwitchLib.Api
         #region DynamicScopeValidation
         public void DynamicScopeValidation(AuthScopes requiredScope, string accessToken = null)
         {
-            if(Validators.SkipAccessTokenValidation) return;
             if (Validators.SkipDynamicScopeValidation || !string.IsNullOrWhiteSpace(accessToken)) return;
 
             if (!Scopes.Contains(requiredScope) || requiredScope == AuthScopes.Any && Scopes.Any(x => x == AuthScopes.None))
                 throw new InvalidCredentialException($"The current access token ({String.Join(",", Scopes)}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
         }
         #endregion
-
-        #region SetClientId
-        public async Task SetClientIdAsync(string clientId)
+      
+        public KeyValuePair<bool,string> CheckCredentials()
         {
-            if (!Validators.SkipClientIdValidation)
-            {
-                if ((!string.IsNullOrWhiteSpace(clientId) || !string.IsNullOrWhiteSpace(AccessToken)) && !await ValidClientIdAsync(clientId))
-                    throw new InvalidCredentialException("The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new");
-            }
-            ClientId = clientId;
-        }
-        #endregion
+            if (!string.IsNullOrWhiteSpace(ClientId) && !ValidClientIdAsync(ClientId))
+                return new KeyValuePair<bool, string>(false, "The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new");
+            
+            if (!string.IsNullOrWhiteSpace(AccessToken) && !ValidAccessTokenAsync(AccessToken))
+                return new KeyValuePair<bool, string>(false, "The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/");
 
-        #region SetAccessToken
-        public async Task SetAccessTokenAsync(string accessToken)
-        {
-            if (!Validators.SkipAccessTokenValidation)
-            {
-                if (string.IsNullOrEmpty(accessToken))
-                    throw new InvalidCredentialException("Access Token cannot be empty or null.");
-                if (!await ValidAccessTokenAsync(accessToken))
-                    throw new InvalidCredentialException("The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/");
-            }
-            AccessToken = accessToken;
+            return new KeyValuePair<bool, string>(true, "");
         }
-        #endregion
 
         #region ValidClientId
-        private async Task<bool> ValidClientIdAsync(string clientId)
+        private bool ValidClientIdAsync(string clientId)
         {
             try
             {
-                var result = await _api.Root.v5.GetRootAsync(null, clientId);
+                var result = _api.Root.v5.GetRootAsync(null, clientId).GetAwaiter().GetResult();
                 return result.Token != null;
             }
             catch (BadRequestException)
@@ -84,12 +68,13 @@ namespace TwitchLib.Api
             }
         }
         #endregion
+
         #region ValidAccessToken
-        private async Task<bool> ValidAccessTokenAsync(string accessToken)
+        private bool ValidAccessTokenAsync(string accessToken)
         {
             try
             {
-                var resp = await _api.Root.v5.GetRootAsync(accessToken);
+                var resp =  _api.Root.v5.GetRootAsync(accessToken).GetAwaiter().GetResult();
                 if (resp.Token == null) return false;
 
                 Scopes = BuildScopesList(resp.Token);
@@ -193,12 +178,6 @@ namespace TwitchLib.Api
 
         public class CredentialValidators
         {
-            #region ClientIdValidation
-            public bool SkipClientIdValidation { get; set; } = false;
-            #endregion
-            #region AccessTokenValidation
-            public bool SkipAccessTokenValidation { get; set; } = false;
-            #endregion
             #region DynamicScopeValidation
             public bool SkipDynamicScopeValidation { get; set; } = false;
             #endregion
