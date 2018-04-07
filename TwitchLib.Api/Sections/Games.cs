@@ -22,7 +22,7 @@ namespace TwitchLib.Api.Sections
             {
             }
             #region GetTopGames
-            public async Task<Models.v5.Games.TopGames> GetTopGamesAsync(int? limit = null, int? offset = null)
+            public Task<Models.v5.Games.TopGames> GetTopGamesAsync(int? limit = null, int? offset = null)
             {
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (limit.HasValue)
@@ -30,7 +30,7 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
                 
-                return await Api.TwitchGetGenericAsync<Models.v5.Games.TopGames>("/games/top", ApiVersion.v5, getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Games.TopGames>("/games/top", ApiVersion.v5, getParams);
             }
             #endregion
         }
@@ -41,7 +41,7 @@ namespace TwitchLib.Api.Sections
             {
             }
             #region GetGames
-            public async Task<Models.Helix.Games.GetGames.GetGamesResponse> GetGamesAsync(List<string> gameIds = null, List<string> gameNames = null)
+            public Task<Models.Helix.Games.GetGames.GetGamesResponse> GetGamesAsync(List<string> gameIds = null, List<string> gameNames = null)
             {
                 if (gameIds == null && gameNames == null ||
                     gameIds != null && gameIds.Count == 0 && gameNames == null ||
@@ -60,7 +60,7 @@ namespace TwitchLib.Api.Sections
                     foreach (var gameName in gameNames)
                         getParams.Add(new KeyValuePair<string, string>("name", gameName));
                 
-                return await Api.TwitchGetGenericAsync<Models.Helix.Games.GetGames.GetGamesResponse>("/games", ApiVersion.Helix, getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.Helix.Games.GetGames.GetGamesResponse>("/games", ApiVersion.Helix, getParams);
             }
             #endregion
         }

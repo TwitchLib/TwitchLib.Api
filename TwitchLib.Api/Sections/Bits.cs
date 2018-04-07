@@ -24,7 +24,7 @@ namespace TwitchLib.Api.Sections
             }
 
             #region GetBitsLeaderboard
-            public async Task<Models.Helix.Bits.GetBitsLeaderboardResponse> GetBitsLeaderboardAsync(int count = 10, BitsLeaderboardPeriodEnum period = BitsLeaderboardPeriodEnum.All, DateTime? startedAt = null, string userid = null, string accessToken = null)
+            public Task<Models.Helix.Bits.GetBitsLeaderboardResponse> GetBitsLeaderboardAsync(int count = 10, BitsLeaderboardPeriodEnum period = BitsLeaderboardPeriodEnum.All, DateTime? startedAt = null, string userid = null, string accessToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Helix_Bits_Read, accessToken);
                 List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
@@ -52,7 +52,7 @@ namespace TwitchLib.Api.Sections
                 if (userid != null)
                     getParams.Add(new KeyValuePair<string, string>("user_id", userid));
 
-                return await Api.TwitchGetGenericAsync<Models.Helix.Bits.GetBitsLeaderboardResponse>("/bits/leaderboard", ApiVersion.Helix, getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.Helix.Bits.GetBitsLeaderboardResponse>("/bits/leaderboard", ApiVersion.Helix, getParams);
             }
             #endregion 
         }
@@ -64,12 +64,12 @@ namespace TwitchLib.Api.Sections
             }
 
             #region GetCheermotes
-            public async Task<Models.v5.Bits.Cheermotes> GetCheermotesAsync(string channelId = null)
+            public Task<Models.v5.Bits.Cheermotes> GetCheermotesAsync(string channelId = null)
             {
                 List<KeyValuePair<string, string>> getParams = null;
                 if (channelId != null)
                     getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("channel_id", channelId) };
-                return await Api.TwitchGetGenericAsync<Models.v5.Bits.Cheermotes>("/bits/actions", ApiVersion.v5, getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Bits.Cheermotes>("/bits/actions", ApiVersion.v5, getParams);
             }
             #endregion
         }
