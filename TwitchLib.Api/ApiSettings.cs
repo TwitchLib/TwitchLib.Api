@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
 using TwitchLib.Api.Interfaces;
+using TwitchLib.Api.Models;
 using TwitchLib.Api.Models.v5.Root;
 
 namespace TwitchLib.Api
@@ -42,10 +43,14 @@ namespace TwitchLib.Api
                 throw new InvalidCredentialException($"The current access token ({String.Join(",", Scopes)}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
         }
         #endregion
-      
-        public Task<KeyValuePair<bool,string>> CheckCredentialsAsync()
+
+        /// <summary>
+        /// Checks the ClientId and AccessToken against the Twitch Api Endpoints 
+        /// </summary>
+        /// <returns>CredentialCheckResponseModel with a success boolean and message</returns>
+        public Task<CredentialCheckResponseModel> CheckCredentialsAsync()
         {
-            var message = "";
+            var message = "Check successful";
             var result = true;
             if (!string.IsNullOrWhiteSpace(ClientId) && !ValidClientId(ClientId))
             {
@@ -59,11 +64,11 @@ namespace TwitchLib.Api
                 message += "The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/";
             }
           
-            return Task.FromResult(new KeyValuePair<bool, string>(result, message));
+            return Task.FromResult(new CredentialCheckResponseModel { Result = result, ResultMessage = message });
         }
 
         #region ValidClientId
-        private bool ValidClientId(string clientId)
+        private bool ValidClientId(string clientId) 
         {
             try
             {
