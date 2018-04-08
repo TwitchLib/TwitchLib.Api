@@ -51,20 +51,21 @@ namespace TwitchLib.Api
         public Task<CredentialCheckResponseModel> CheckCredentialsAsync()
         {
             var message = "Check successful";
+            var failMessage = "";
             var result = true;
             if (!string.IsNullOrWhiteSpace(ClientId) && !ValidClientId(ClientId))
             {
                 result = false;
-                message = "The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new";
+                failMessage = "The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new";
             }
             
             if (!string.IsNullOrWhiteSpace(AccessToken) && !ValidAccessToken(AccessToken))
             {
                 result = false;
-                message += "The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/";
+                failMessage += "The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/";
             }
           
-            return Task.FromResult(new CredentialCheckResponseModel { Result = result, ResultMessage = message });
+            return Task.FromResult(new CredentialCheckResponseModel { Result = result, ResultMessage = result? message: failMessage });
         }
 
         #region ValidClientId
