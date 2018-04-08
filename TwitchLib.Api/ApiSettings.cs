@@ -45,13 +45,21 @@ namespace TwitchLib.Api
       
         public Task<KeyValuePair<bool,string>> CheckCredentialsAsync()
         {
+            var message = "";
+            var result = true;
             if (!string.IsNullOrWhiteSpace(ClientId) && !ValidClientId(ClientId))
-                return Task.FromResult(new KeyValuePair<bool, string>(false, "The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new"));
+            {
+                result = false;
+                message = "The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new";
+            }
             
             if (!string.IsNullOrWhiteSpace(AccessToken) && !ValidAccessToken(AccessToken))
-                return Task.FromResult(new KeyValuePair<bool, string>(false, "The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/"));
-
-            return Task.FromResult(new KeyValuePair<bool, string>(true, ""));
+            {
+                result = false;
+                message += "The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/";
+            }
+          
+            return Task.FromResult(new KeyValuePair<bool, string>(result, message));
         }
 
         #region ValidClientId
