@@ -54,10 +54,10 @@ namespace TwitchLib.Api
         /// </summary>
         /// <param name="logger">Instance Of Logger, otherwise no logging is used,  </param>
         /// <param name="rateLimiter">Instance Of RateLimiter, otherwise no ratelimiter is used. </param>
-        public TwitchAPI(ILogger<TwitchAPI> logger = null, IRateLimiter rateLimiter = null, IHttpCallHandler http = null)
+        public TwitchAPI(ILoggerFactory loggerFactory = null, IRateLimiter rateLimiter = null, IHttpCallHandler http = null)
         {
-            _logger = logger;
-            _http = http ?? new TwitchHttpClient();
+            _logger = loggerFactory?.CreateLogger<TwitchAPI>();
+            _http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             _rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
             Auth = new Auth(this);
             Badges = new Badges(this);
