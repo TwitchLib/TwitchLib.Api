@@ -29,7 +29,6 @@ namespace TwitchLib.Api.Interfaces
         Users Users { get; }
         Videos Videos { get; }
         Webhooks Webhooks { get; }
-
-        Task InitializeAsync(string clientId = null, string accessToken = null);
+        
     }
 }
