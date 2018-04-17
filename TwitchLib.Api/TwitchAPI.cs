@@ -96,7 +96,7 @@ namespace TwitchLib.Api
             if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
                 accessToken = Settings.AccessToken;
 
-            return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequestAsync(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
+            return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
         }
 
         internal Task<string> TwitchDeleteAsync(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
@@ -108,7 +108,7 @@ namespace TwitchLib.Api
             if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
                 accessToken = Settings.AccessToken;
 
-            return _rateLimiter.Perform(() => _http.GeneralRequestAsync(url, "DELETE", null, api, clientId, accessToken).Value);
+            return _rateLimiter.Perform(() => _http.GeneralRequest(url, "DELETE", null, api, clientId, accessToken).Value);
         }
 
         internal Task<T> TwitchPostGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
@@ -120,7 +120,7 @@ namespace TwitchLib.Api
             if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
                 accessToken = Settings.AccessToken;
 
-            return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequestAsync(url, "POST", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
+            return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "POST", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
         }
 
         internal Task<T> TwitchPostGenericModelAsync<T>(string resource, ApiVersion api, Models.RequestModel model, string accessToken = null, string clientId = null, string customBase = null)
@@ -132,7 +132,7 @@ namespace TwitchLib.Api
             if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
                 accessToken = Settings.AccessToken;
 
-            return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequestAsync(url, "POST", model != null ? _jsonSerializer.SerializeObject(model) : "", api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
+            return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "POST", model != null ? _jsonSerializer.SerializeObject(model) : "", api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
         }
 
         internal Task<T> TwitchDeleteGenericAsync<T>(string resource, ApiVersion api, string accessToken = null, string clientId = null, string customBase = null)
@@ -144,7 +144,7 @@ namespace TwitchLib.Api
             if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
                 accessToken = Settings.AccessToken;
 
-            return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequestAsync(url, "DELETE", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
+            return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "DELETE", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
         }
 
         internal Task<T> TwitchPutGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
@@ -156,7 +156,7 @@ namespace TwitchLib.Api
             if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
                 accessToken = Settings.AccessToken;
 
-            return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequestAsync(url, "PUT", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
+            return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "PUT", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
         }
 
         internal Task<string> TwitchPutAsync(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
@@ -168,7 +168,7 @@ namespace TwitchLib.Api
             if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
                 accessToken = Settings.AccessToken;
 
-            return _rateLimiter.Perform(() => _http.GeneralRequestAsync(url, "PUT", payload, api, clientId, accessToken).Value);
+            return _rateLimiter.Perform(() => _http.GeneralRequest(url, "PUT", payload, api, clientId, accessToken).Value);
         }
 
         internal Task<KeyValuePair<int, string>> TwitchPostAsync(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
@@ -180,7 +180,7 @@ namespace TwitchLib.Api
             if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
                 accessToken = Settings.AccessToken;
 
-            return _rateLimiter.Perform(() => _http.GeneralRequestAsync(url, "POST", payload, api, clientId, accessToken));
+            return _rateLimiter.Perform(() => _http.GeneralRequest(url, "POST", payload, api, clientId, accessToken));
         }
 
         private string ConstructResourceUrl(string resource = null, List<KeyValuePair<string, string>> getParams = null, ApiVersion api = ApiVersion.v5, string overrideUrl = null)
@@ -250,16 +250,14 @@ namespace TwitchLib.Api
                 clientId = Settings.ClientId;
             if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
                 accessToken = Settings.AccessToken;
-
-
-            return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequestAsync(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
+            
+            return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
         }
         #endregion
 
         #region GetSimpleGenericAsync
         internal Task<T> GetSimpleGenericAsync<T>(string url, List<KeyValuePair<string, string>> getParams = null)
         {
-
             if (getParams != null)
             {
                 for (var i = 0; i < getParams.Count; i++)
