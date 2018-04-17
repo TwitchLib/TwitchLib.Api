@@ -24,7 +24,7 @@ namespace TwitchLib.Api
         public TwitchHttpClient(ILogger<TwitchHttpClient> logger = null)
         {
             _logger = logger;
-            _http = new HttpClient(new TwitchHttpClientHandler(new HttpClientHandler(), _logger));
+            _http = new HttpClient(new TwitchHttpClientHandler(_logger));
         }
 
 

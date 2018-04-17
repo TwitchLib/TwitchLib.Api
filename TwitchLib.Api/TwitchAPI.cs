@@ -90,51 +90,96 @@ namespace TwitchLib.Api
         internal Task<T> TwitchGetGenericAsync<T>(string resource, ApiVersion api, List <KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
+                accessToken = Settings.AccessToken;
+
             return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequestAsync(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
         }
 
         internal Task<string> TwitchDeleteAsync(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            return _rateLimiter.Perform(() =>
-            {
-                string url = ConstructResourceUrl(resource, getParams, api, customBase);
-                return _http.GeneralRequestAsync(url, "DELETE", null, api, clientId, accessToken).Value;
-            });
+            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
+                accessToken = Settings.AccessToken;
+
+            return _rateLimiter.Perform(() => _http.GeneralRequestAsync(url, "DELETE", null, api, clientId, accessToken).Value);
         }
 
         internal Task<T> TwitchPostGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             string url = ConstructResourceUrl(resource, getParams, api, customBase);
+
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
+                accessToken = Settings.AccessToken;
+
             return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequestAsync(url, "POST", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
         }
 
         internal Task<T> TwitchPostGenericModelAsync<T>(string resource, ApiVersion api, Models.RequestModel model, string accessToken = null, string clientId = null, string customBase = null)
         {
             string url = ConstructResourceUrl(resource, api: api, overrideUrl: customBase);
+
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
+                accessToken = Settings.AccessToken;
+
             return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequestAsync(url, "POST", model != null ? _jsonSerializer.SerializeObject(model) : "", api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
         }
 
         internal Task<T> TwitchDeleteGenericAsync<T>(string resource, ApiVersion api, string accessToken = null, string clientId = null, string customBase = null)
         {
             string url = ConstructResourceUrl(resource, null, api, customBase);
+
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
+                accessToken = Settings.AccessToken;
+
             return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequestAsync(url, "DELETE", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
         }
 
         internal Task<T> TwitchPutGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             string url = ConstructResourceUrl(resource, getParams, api, customBase);
+
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
+                accessToken = Settings.AccessToken;
+
             return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequestAsync(url, "PUT", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
         }
 
         internal Task<string> TwitchPutAsync(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
+                accessToken = Settings.AccessToken;
+
             return _rateLimiter.Perform(() => _http.GeneralRequestAsync(url, "PUT", payload, api, clientId, accessToken).Value);
         }
 
         internal Task<KeyValuePair<int, string>> TwitchPostAsync(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(Settings.AccessToken))
+                accessToken = Settings.AccessToken;
+
             return _rateLimiter.Perform(() => _http.GeneralRequestAsync(url, "POST", payload, api, clientId, accessToken));
         }
 
@@ -210,6 +255,7 @@ namespace TwitchLib.Api
             return _rateLimiter.Perform(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequestAsync(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer));
         }
         #endregion
+
         #region GetSimpleGenericAsync
         internal Task<T> GetSimpleGenericAsync<T>(string url, List<KeyValuePair<string, string>> getParams = null)
         {
@@ -257,20 +303,6 @@ namespace TwitchLib.Api
         }
         #endregion
       
-
-        #region AppendClientId
-        private string AppendClientId(string url, string clientId = null)
-        {
-            if (clientId == null)
-                return url.Contains("?")
-                    ? $"{url}&client_id={Settings.ClientId}"
-                    : $"{url}?client_id={Settings.ClientId}";
-
-            return url.Contains("?")
-                ? $"{url}&client_id={clientId}"
-                : $"{url}?client_id={clientId}";
-        }
-        #endregion
        
         #region SerialiazationSettings
 

@@ -12,7 +12,7 @@ namespace TwitchLib.Api.Internal
     {
         private readonly ILogger<IHttpCallHandler> _logger;
 
-        public TwitchHttpClientHandler(HttpMessageHandler innerHandler, ILogger<IHttpCallHandler> logger) : base(innerHandler)
+        public TwitchHttpClientHandler(ILogger<IHttpCallHandler> logger) : base(new HttpClientHandler())
         {
             _logger = logger;
         }
