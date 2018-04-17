@@ -48,7 +48,7 @@ namespace TwitchLib.Api.Services
         {
             if (ChannelData == null)
             {
-                throw new UninitializedChannelDataException("ChannelData must be set before starting the FollowerService. Use SetChannelByName() or SetChannelById()");
+                throw new UninitializedChannelDataException("ChannelData must be set before starting the FollowerService. Use SetChannelById() to set the channel to monitor");
             }
 
             var response = await _api.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
