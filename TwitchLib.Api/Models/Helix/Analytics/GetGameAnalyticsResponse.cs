@@ -8,6 +8,6 @@ namespace TwitchLib.Api.Models.Helix.Analytics
     public class GetGameAnalyticsResponse
     {
         [JsonProperty(PropertyName = "data")]
-        public GameAnalytics[] GameId { get; protected set; }
+        public GameAnalytics[] Data { get; protected set; }
     }
 }
