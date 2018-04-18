@@ -33,7 +33,7 @@ namespace TwitchLib.Api
             catch (WebException ex) { HandleWebException(ex); }
         }
 
-        public KeyValuePair<int, string> GeneralRequestAsync(string url, string method, string payload = null, ApiVersion api = ApiVersion.v5, string clientId = null, string accessToken = null)
+        public KeyValuePair<int, string> GeneralRequest(string url, string method, string payload = null, ApiVersion api = ApiVersion.v5, string clientId = null, string accessToken = null)
         {
             var request = WebRequest.CreateHttp(url);
             if (string.IsNullOrEmpty(clientId) && string.IsNullOrEmpty(accessToken))
