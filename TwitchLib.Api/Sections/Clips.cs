@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
+using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api.Sections
 {
@@ -85,12 +86,28 @@ namespace TwitchLib.Api.Sections
             }
 
             #region GetClip
-            public Task<Models.Helix.Clips.GetClip.GetClipResponse> GetClipAsync(string id)
+            public Task<Models.Helix.Clips.GetClip.GetClipResponse> GetClipAsync(string clipId = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, int first = 20)
             {
-                var getParams = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("id", id)
-                };
+                if (first < 0 || first > 100)
+                    throw new BadParameterException("'first' must between 0 (inclusive) and 100 (inclusive).");
+
+                var getParams = new List<KeyValuePair<string, string>>();
+                if (clipId != null)
+                    getParams.Add(new KeyValuePair<string, string>("id", clipId));
+                if (gameId != null)
+                    getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
+                if (broadcasterId != null)
+                    getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
+
+                if (getParams.Count != 1)
+                    throw new BadParameterException("One of the following parameters must be set: clipId, gameId, broadcasterId. Only one is allowed to be set.");
+
+                if (before != null)
+                    getParams.Add(new KeyValuePair<string, string>("before", before));
+                if (after != null)
+                    getParams.Add(new KeyValuePair<string, string>("after", after));
+                getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
+                
                 return Api.TwitchGetGenericAsync<Models.Helix.Clips.GetClip.GetClipResponse>("/clips", ApiVersion.Helix, getParams);
             }
             #endregion
