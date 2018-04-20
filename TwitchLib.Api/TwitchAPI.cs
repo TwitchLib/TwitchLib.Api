@@ -36,6 +36,7 @@ namespace TwitchLib.Api
         public Clips Clips { get; }
         public Collections Collections { get; }
         public Communities Communities { get; }
+        public Entitlements Entitlements { get; }
         public Games Games { get; }
         public Ingests Ingests { get; }
         public Root Root { get; }
@@ -68,6 +69,7 @@ namespace TwitchLib.Api
             Clips = new Clips(this);
             Collections = new Collections(this);
             Communities = new Communities(this);
+            Entitlements = new Entitlements(this);
             Games = new Games(this);
             Ingests = new Ingests(this);
             Root = new Root(this);
