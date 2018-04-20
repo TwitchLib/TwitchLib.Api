@@ -65,7 +65,7 @@ namespace TwitchLib.Api.Sections
             #endregion
 
             #region GetTopGames
-            public Task<Models.Helix.Games.GetTopGames.GetTopGamesResponse> GetTopGames(string before = null, string after = null, int first = 20)
+            public Task<Models.Helix.Games.GetTopGames.GetTopGamesResponse> GetTopGamesAsync(string before = null, string after = null, int first = 20)
             {
                 if (first < 0 || first > 100)
                     throw new BadParameterException("'first' parameter must be between 1 (inclusive) and 100 (inclusive).");
