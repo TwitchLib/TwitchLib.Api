@@ -20,7 +20,7 @@ namespace TwitchLib.Api.Sections
             {
             }
             #region GetGameAnalytics
-            public Task<Models.Helix.Analytics.GetGameAnalyticsResponse> GetGameAnalytics(string gameId = null)
+            public Task<Models.Helix.Analytics.GetGameAnalyticsResponse> GetGameAnalyticsAsync(string gameId = null)
             {
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (gameId != null)
