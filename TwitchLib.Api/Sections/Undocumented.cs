@@ -86,7 +86,7 @@ namespace TwitchLib.Api.Sections
         public Task<Models.Undocumented.Hosting.ChannelHostsResponse> GetChannelHostsAsync(string channelId)
         {
             var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("include_logins", "1"), new KeyValuePair<string, string>("target", channelId) };
-            return Api.GetSimpleGenericAsync<Models.Undocumented.Hosting.ChannelHostsResponse>("https://tmi.twitch.tv/hosts", getParams);
+            return Api.TwitchGetGenericAsync<Models.Undocumented.Hosting.ChannelHostsResponse>("hosts", Enums.ApiVersion.v5, getParams, customBase: "https://tmi.twitch.tv/");
         }
         #endregion
         #region GetChatProperties
