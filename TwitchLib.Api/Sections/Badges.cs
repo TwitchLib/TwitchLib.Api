@@ -29,7 +29,7 @@ namespace TwitchLib.Api.Sections
             #region GetGlobalBadges
             public Task<Models.v5.Badges.GlobalBadgesResponse> GetGlobalBadgesAsync()
             {
-                return Api.TwitchGetGenericAsync<Models.v5.Badges.GlobalBadgesResponse>("/v1/badges/gloal/display", Enums.ApiVersion.v5, customBase: "https://badges.twitch.tv");
+                return Api.TwitchGetGenericAsync<Models.v5.Badges.GlobalBadgesResponse>("/v1/badges/global/display", Enums.ApiVersion.v5, customBase: "https://badges.twitch.tv");
             }
             #endregion
         }
