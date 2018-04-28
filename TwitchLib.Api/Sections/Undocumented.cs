@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Models.Undocumented.ChannelExtensionData;
 
 namespace TwitchLib.Api.Sections
 {
@@ -172,6 +173,12 @@ namespace TwitchLib.Api.Sections
                     throw new BadResourceException("Unexpected response from resource. Expecting response code 200 or 204, received: " + resp);
             }
 
+        }
+        #endregion
+        #region GetChannelExtensionData
+        public Task<GetChannelExtensionDataResponse> GetChannelExtensionDataAsync(string channelId)
+        {
+            return Api.TwitchGetGenericAsync<GetChannelExtensionDataResponse>($"/channels/{channelId}/extensions", Enums.ApiVersion.v5, customBase: "https://api.twitch.tv/v5");
         }
         #endregion
     }
