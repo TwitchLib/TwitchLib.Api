@@ -9,16 +9,16 @@ namespace TwitchLib.Api.Sections
     {
         public Games(TwitchAPI api)
         {
-            v5 = new V5(api);
-            helix = new Helix(api);
+            v5 = new V5Api(api);
+            helix = new HelixApi(api);
         }
-        
-        public V5 v5 { get; }
-        public Helix helix { get; }
 
-        public class V5 : ApiSection
+        public V5Api v5 { get; }
+        public HelixApi helix { get; }
+
+        public class V5Api : ApiSection
         {
-            public V5(TwitchAPI api) : base(api)
+            public V5Api(TwitchAPI api) : base(api)
             {
             }
             #region GetTopGames
@@ -35,9 +35,9 @@ namespace TwitchLib.Api.Sections
             #endregion
         }
 
-        public class Helix : ApiSection
+        public class HelixApi : ApiSection
         {
-            public Helix(TwitchAPI api) : base(api)
+            public HelixApi(TwitchAPI api) : base(api)
             {
             }
             #region GetGames

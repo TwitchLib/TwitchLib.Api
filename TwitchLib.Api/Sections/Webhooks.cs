@@ -10,14 +10,14 @@ namespace TwitchLib.Api.Sections
     {
         public Webhooks(TwitchAPI api)
         {
-            helix = new Helix(api);
+            helix = new HelixApi(api);
         }
 
-        public Helix helix { get; }
+        public HelixApi helix { get; }
 
-        public class Helix : ApiSection
+        public class HelixApi : ApiSection
         {
-            public Helix(TwitchAPI api) : base(api)
+            public HelixApi(TwitchAPI api) : base(api)
             {
             }
             #region UserFollowsSomeone
@@ -71,7 +71,7 @@ namespace TwitchLib.Api.Sections
 
                 if (signingSecret != null)
                     getParams.Add(new KeyValuePair<string, string>("hub.secret", signingSecret));
-                
+
                 var resp = await Api.TwitchPostAsync("/webhooks/hub", ApiVersion.Helix, null, getParams).ConfigureAwait(false);
                 return resp.Key == 202;
             }
