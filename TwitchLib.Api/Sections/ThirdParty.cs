@@ -14,18 +14,18 @@ namespace TwitchLib.Api.Sections
     {
         public ThirdParty(TwitchAPI api)
         {
-            UsernameChange = new usernameChangeApi(api);
-            ModLookup = new modLookupApi(api);
-            AuthorizationFlow = new authorizationFlowApi(api);
+            UsernameChange = new UsernameChangeApi(api);
+            ModLookup = new ModLookupApi(api);
+            AuthorizationFlow = new AuthorizationFlowApi(api);
         }
 
-        public usernameChangeApi UsernameChange { get; }
-        public modLookupApi ModLookup { get; }
-        public authorizationFlowApi AuthorizationFlow { get; }
+        public UsernameChangeApi UsernameChange { get; }
+        public ModLookupApi ModLookup { get; }
+        public AuthorizationFlowApi AuthorizationFlow { get; }
 
-        public class usernameChangeApi : ApiSection
+        public class UsernameChangeApi : ApiSection
         {
-            public usernameChangeApi(TwitchAPI api) : base(api)
+            public UsernameChangeApi(TwitchAPI api) : base(api)
             {
             }
             #region GetUsernameChanges
@@ -41,9 +41,9 @@ namespace TwitchLib.Api.Sections
             #endregion
         }
 
-        public class modLookupApi : ApiSection
+        public class ModLookupApi : ApiSection
         {
-            public modLookupApi(TwitchAPI api) : base(api)
+            public ModLookupApi(TwitchAPI api) : base(api)
             {
             }
             public Task<Models.ThirdParty.ModLookup.ModLookupResponse> GetChannelsModdedForByNameAsync(string username, int offset = 0, int limit = 100, bool useTls12 = true)
@@ -73,9 +73,9 @@ namespace TwitchLib.Api.Sections
             }
         }
 
-        public class authorizationFlowApi : ApiSection
+        public class AuthorizationFlowApi : ApiSection
         {
-            public authorizationFlowApi(TwitchAPI api) : base(api)
+            public AuthorizationFlowApi(TwitchAPI api) : base(api)
             {
             }
 
