@@ -10,12 +10,12 @@ namespace TwitchLib.Api.Sections
     {
         public Users(TwitchAPI api)
         {
-            V5 = new V5Api(api);
-            Helix = new HelixApi(api);
+            v5 = new V5Api(api);
+            helix = new HelixApi(api);
         }
 
-        public V5Api V5 { get; }
-        public HelixApi Helix { get; }
+        public V5Api v5 { get; }
+        public HelixApi helix { get; }
 
         public class V5Api : ApiSection
         {

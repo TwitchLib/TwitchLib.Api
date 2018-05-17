@@ -10,9 +10,9 @@ namespace TwitchLib.Api.Sections
     {
         public Analytics(TwitchAPI api)
         {
-            Helix = new HelixApi(api);
+            helix = new HelixApi(api);
         }
-        public HelixApi Helix { get; }
+        public HelixApi helix { get; }
 
         public class HelixApi : ApiSection
         {
