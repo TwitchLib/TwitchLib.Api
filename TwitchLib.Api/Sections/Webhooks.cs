@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api.Sections
@@ -20,31 +21,31 @@ namespace TwitchLib.Api.Sections
             {
             }
             #region UserFollowsSomeone
-            public async Task<bool> UserFollowsSomeoneAsync(string callbackUrl, Enums.WebhookCallMode mode, string userInitiatorId, TimeSpan? duration = null, string signingSecret = null)
+            public Task<bool> UserFollowsSomeoneAsync(string callbackUrl, Enums.WebhookCallMode mode, string userInitiatorId, TimeSpan? duration = null, string signingSecret = null)
             {
                 var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
-                return await PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?first=1&from_id={userInitiatorId}", callbackUrl, leaseSeconds, signingSecret);
+                return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?first=1&from_id={userInitiatorId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
             #region UserReceivesFollower
-            public async Task<bool> UserReceivesFollowerAsync(string callbackUrl, Enums.WebhookCallMode mode, string userReceiverId, TimeSpan? duration = null, string signingSecret = null)
+            public Task<bool> UserReceivesFollowerAsync(string callbackUrl, Enums.WebhookCallMode mode, string userReceiverId, TimeSpan? duration = null, string signingSecret = null)
             {
                 var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
-                return await PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?first=1&to_id={userReceiverId}", callbackUrl, leaseSeconds, signingSecret);
+                return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?first=1&to_id={userReceiverId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
             #region UserFollowsUser
-            public async Task<bool> UserFollowsUser(string callbackUrl, Enums.WebhookCallMode mode, string userInitiator, string userReceiverId, TimeSpan? duration = null, string signingSecret = null)
+            public Task<bool> UserFollowsUserAsync(string callbackUrl, Enums.WebhookCallMode mode, string userInitiator, string userReceiverId, TimeSpan? duration = null, string signingSecret = null)
             {
                 var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
-                return await PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?to_id={userReceiverId}", callbackUrl, leaseSeconds, signingSecret);
+                return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?to_id={userReceiverId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
             #region StreamUpDown
-            public async Task<bool> StreamUpDown(string callbackUrl, Enums.WebhookCallMode mode, string userId, TimeSpan? duration = null, string signingSecret = null)
+            public Task<bool> StreamUpDownAsync(string callbackUrl, Enums.WebhookCallMode mode, string userId, TimeSpan? duration = null, string signingSecret = null)
             {
                 var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
-                return await PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/streams?user_id={userId}", callbackUrl, leaseSeconds, signingSecret);
+                return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/streams?user_id={userId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
 
@@ -70,8 +71,8 @@ namespace TwitchLib.Api.Sections
 
                 if (signingSecret != null)
                     getParams.Add(new KeyValuePair<string, string>("hub.secret", signingSecret));
-
-                var resp = await Api.PostAsync("https://api.twitch.tv/helix/webhooks/hub", null, getParams);
+                
+                var resp = await Api.TwitchPostAsync("/webhooks/hub", ApiVersion.Helix, null, getParams).ConfigureAwait(false);
                 return resp.Key == 202;
             }
         }

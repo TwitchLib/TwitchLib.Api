@@ -20,18 +20,18 @@ namespace TwitchLib.Api.Sections
             {
             }
             #region GetCommunityByName
-            public async Task<Models.v5.Communities.Community> GetCommunityByNameAsync(string communityName)
+            public Task<Models.v5.Communities.Community> GetCommunityByNameAsync(string communityName)
             {
                 if (string.IsNullOrWhiteSpace(communityName)) { throw new BadParameterException("The community name is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("name", communityName) };
-                return await Api.GetGenericAsync<Models.v5.Communities.Community>("https://api.twitch.tv/kraken/communities", getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Communities.Community>("/communities", ApiVersion.v5, getParams);
             }
             #endregion
             #region GetCommunityByID
-            public async Task<Models.v5.Communities.Community> GetCommunityByIDAsync(string communityId)
+            public Task<Models.v5.Communities.Community> GetCommunityByIDAsync(string communityId)
             {
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.GetGenericAsync<Models.v5.Communities.Community>($"https://api.twitch.tv/kraken/communities/{communityId}").ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Communities.Community>($"/communities/{communityId}", ApiVersion.v5);
             }
             #endregion
             #region UpdateCommunity
@@ -66,12 +66,12 @@ namespace TwitchLib.Api.Sections
                 }
 
                 payload = "{" + payload + "}";
-
-                await Api.PutAsync($"https://api.twitch.tv/kraken/communities/{communityId}", payload, null, authToken).ConfigureAwait(false);
+                
+                await Api.TwitchPutAsync($"/communities/{communityId}", ApiVersion.v5, payload, accessToken: authToken).ConfigureAwait(false);
             }
             #endregion
             #region GetTopCommunities
-            public async Task<Models.v5.Communities.TopCommunities> GetTopCommunitiesAsync(long? limit = null, string cursor = null)
+            public Task<Models.v5.Communities.TopCommunities> GetTopCommunitiesAsync(long? limit = null, string cursor = null)
             {
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (limit.HasValue)
@@ -79,11 +79,11 @@ namespace TwitchLib.Api.Sections
                 if (!string.IsNullOrEmpty(cursor))
                     getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
 
-                return await Api.GetGenericAsync<Models.v5.Communities.TopCommunities>("https://api.twitch.tv/kraken/communities/top", getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Communities.TopCommunities>("/communities/top", ApiVersion.v5, getParams);
             }
             #endregion
             #region GetCommunityBannedUsers
-            public async Task<Models.v5.Communities.BannedUsers> GetCommunityBannedUsersAsync(string communityId, long? limit = null, string cursor = null, string authToken = null)
+            public Task<Models.v5.Communities.BannedUsers> GetCommunityBannedUsersAsync(string communityId, long? limit = null, string cursor = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Communities_Moderate, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
@@ -92,8 +92,8 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
                 if (!string.IsNullOrEmpty(cursor))
                     getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
-
-                return await Api.GetGenericAsync<Models.v5.Communities.BannedUsers>($"https://api.twitch.tv/kraken/communities/{communityId}/bans", getParams, authToken).ConfigureAwait(false);
+                
+                return Api.TwitchGetGenericAsync<Models.v5.Communities.BannedUsers>($"/communities/{communityId}/bans", ApiVersion.v5, getParams, authToken);
             }
             #endregion
             #region BanCommunityUser
@@ -102,7 +102,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Communities_Moderate, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.PutAsync($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", null, null, authToken).ConfigureAwait(false);
+                await Api.TwitchPutAsync($"/communities/{communityId}/bans/{userId}", ApiVersion.v5, null, accessToken: authToken).ConfigureAwait(false);
             }
             #endregion
             #region UnBanCommunityUser
@@ -111,7 +111,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Communities_Moderate, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", null, authToken).ConfigureAwait(false);
+                await Api.TwitchDeleteAsync($"/communities/{communityId}/bans/{userId}", ApiVersion.v5, accessToken: authToken).ConfigureAwait(false);
             }
             #endregion
             #region CreateCommunityAvatarImage
@@ -120,7 +120,8 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Communities_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(avatarImage)) { throw new BadParameterException("The avatar image is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.PostAsync($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "{\"avatar_image\": \"" + @avatarImage + "\"}", null, authToken);
+                string payload = "{\"avatar_image\": \"" + @avatarImage + "\"}";
+                await Api.TwitchPostAsync($"/communities/{communityId}/images/avatar", ApiVersion.v5, payload, accessToken: authToken).ConfigureAwait(false);
             }
             #endregion
             #region DeleteCommunityAvatarImage
@@ -128,7 +129,7 @@ namespace TwitchLib.Api.Sections
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Communities_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", null, authToken).ConfigureAwait(false);
+                await Api.TwitchDeleteAsync($"/communities/{communityId}/images/avatar", ApiVersion.v5, accessToken: authToken).ConfigureAwait(false);
             }
             #endregion
             #region CreateCommunityCoverImage
@@ -137,7 +138,8 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Communities_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(coverImage)) { throw new BadParameterException("The cover image is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.PostAsync($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", "{\"cover_image\": \"" + @coverImage + "\"}", null, authToken).ConfigureAwait(false);
+                string payload = "{\"cover_image\": \"" + @coverImage + "\"}";
+                await Api.TwitchPostAsync($"/communities/{communityId}/images/cover", ApiVersion.v5, payload, accessToken: authToken).ConfigureAwait(false);
             }
             #endregion
             #region DeleteCommunityCoverImage
@@ -145,15 +147,15 @@ namespace TwitchLib.Api.Sections
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Communities_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", null, authToken).ConfigureAwait(false);
+                await Api.TwitchDeleteAsync($"/communities/{communityId}/images/cover", ApiVersion.v5, accessToken: authToken).ConfigureAwait(false);
             }
             #endregion
             #region GetCommunityModerators
-            public async Task<Models.v5.Communities.Moderators> GetCommunityModeratorsAsync(string communityId, string authToken)
+            public Task<Models.v5.Communities.Moderators> GetCommunityModeratorsAsync(string communityId, string authToken)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Communities_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.GetGenericAsync<Models.v5.Communities.Moderators>($"https://api.twitch.tv/kraken/communities/{communityId}/moderators", null, authToken).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Communities.Moderators>($"/communities/{communityId}/moderators", ApiVersion.v5, accessToken: authToken);
             }
             #endregion
             #region AddCommunityModerator
@@ -162,7 +164,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Communities_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.PutAsync($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", null, null, authToken).ConfigureAwait(false);
+                await Api.TwitchPutAsync($"/communities/{communityId}/moderators/{userId}", ApiVersion.v5, null, accessToken:authToken).ConfigureAwait(false);
             }
             #endregion
             #region DeleteCommunityModerator
@@ -171,15 +173,15 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Communities_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", null, authToken).ConfigureAwait(false);
+                await Api.TwitchDeleteAsync($"/communities/{communityId}/moderators/{userId}", ApiVersion.v5, accessToken: authToken).ConfigureAwait(false);
             }
             #endregion
             #region GetCommunityPermissions
-            public async Task<Dictionary<string, bool>> GetCommunityPermissionsAsync(string communityId, string authToken = null)
+            public Task<Dictionary<string, bool>> GetCommunityPermissionsAsync(string communityId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Any, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.GetGenericAsync<Dictionary<string, bool>>($"https://api.twitch.tv/kraken/communities/{communityId}/permissions", null, authToken).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Dictionary<string, bool>>($"/communities/{communityId}/permissions", ApiVersion.v5, accessToken: authToken);
             }
             #endregion
             #region ReportCommunityViolation
@@ -187,11 +189,12 @@ namespace TwitchLib.Api.Sections
             {
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.PostAsync($"https://api.twitch.tv/kraken/communities/{communityId}/report_channel", "{\"channel_id\": \"" + channelId + "\"}").ConfigureAwait(false);
+                string payload = "{\"channel_id\": \"" + channelId + "\"}";
+                await Api.TwitchPostAsync($"/communities/{communityId}/report_channel", ApiVersion.v5, payload).ConfigureAwait(false);
             }
             #endregion
             #region GetCommunityTimedOutUsers
-            public async Task<Models.v5.Communities.TimedOutUsers> GetCommunityTimedOutUsersAsync(string communityId, long? limit = null, string cursor = null, string authToken = null)
+            public Task<Models.v5.Communities.TimedOutUsers> GetCommunityTimedOutUsersAsync(string communityId, long? limit = null, string cursor = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Communities_Moderate, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
@@ -201,7 +204,7 @@ namespace TwitchLib.Api.Sections
                 if (!string.IsNullOrEmpty(cursor))
                     getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
 
-                return await Api.GetGenericAsync<Models.v5.Communities.TimedOutUsers>($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts", getParams, authToken).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Communities.TimedOutUsers>($"/communities/{communityId}/timeouts", ApiVersion.v5, getParams, accessToken: authToken);
             }
             #endregion
             #region AddCommunityTimedOutUser
@@ -211,7 +214,7 @@ namespace TwitchLib.Api.Sections
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 var payload = "{\"duration\": \"" + duration + "\"" + ((!string.IsNullOrWhiteSpace(reason)) ? ", \"reason\": \"" + reason + "\"}" : "}");
-                await Api.PutAsync($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", payload, null, authToken).ConfigureAwait(false);
+                await Api.TwitchPutAsync($"/communities/{communityId}/timeouts/{userId}", ApiVersion.v5, payload, accessToken: authToken).ConfigureAwait(false);
             }
             #endregion
             #region DeleteCommunityTimedOutUser
@@ -220,7 +223,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.Communities_Moderate, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", null, authToken).ConfigureAwait(false);
+                await Api.TwitchDeleteAsync($"/communities/{communityId}/timeouts/{userId}", ApiVersion.v5, accessToken: authToken).ConfigureAwait(false);
             }
             #endregion
         }

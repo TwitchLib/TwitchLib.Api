@@ -29,14 +29,14 @@ namespace TwitchLib.Api.Sections
             {
             }
             #region GetUsernameChanges
-            public async Task<List<Models.ThirdParty.UsernameChange.UsernameChangeListing>> GetUsernameChangesAsync(string username)
+            public Task<List<Models.ThirdParty.UsernameChange.UsernameChangeListing>> GetUsernameChangesAsync(string username)
             {
                 var getParams = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("q", username),
                     new KeyValuePair<string, string>("format", "json")
                 };
-                return await Api.GetGenericAsync<List<Models.ThirdParty.UsernameChange.UsernameChangeListing>>("https://twitch-tools.rootonline.de/username_changelogs_search.php", getParams, null, ApiVersion.Void).ConfigureAwait(false);
+                return Api.GetGenericAsync<List<Models.ThirdParty.UsernameChange.UsernameChangeListing>>("https://twitch-tools.rootonline.de/username_changelogs_search.php", getParams, null, ApiVersion.Void);
             }
             #endregion
         }
@@ -46,7 +46,7 @@ namespace TwitchLib.Api.Sections
             public modLookup(TwitchAPI api) : base(api)
             {
             }
-            public async Task<Models.ThirdParty.ModLookup.ModLookupResponse> GetChannelsModdedForByNameAsync(string username, int offset = 0, int limit = 100, bool useTls12 = true)
+            public Task<Models.ThirdParty.ModLookup.ModLookupResponse> GetChannelsModdedForByNameAsync(string username, int offset = 0, int limit = 100, bool useTls12 = true)
             {
                 if (useTls12)
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -55,21 +55,21 @@ namespace TwitchLib.Api.Sections
                     new KeyValuePair<string, string>("offset", offset.ToString()),
                     new KeyValuePair<string, string>("limit", limit.ToString())
                 };
-                return await Api.GetGenericAsync<Models.ThirdParty.ModLookup.ModLookupResponse>($"https://twitchstuff.3v.fi/modlookup/api/user/{username}").ConfigureAwait(false);
+                return Api.GetGenericAsync<Models.ThirdParty.ModLookup.ModLookupResponse>($"https://twitchstuff.3v.fi/modlookup/api/user/{username}");
             }
 
-            public async Task<Models.ThirdParty.ModLookup.TopResponse> GetChannelsModdedForByTopAsync(bool useTls12 = true)
+            public Task<Models.ThirdParty.ModLookup.TopResponse> GetChannelsModdedForByTopAsync(bool useTls12 = true)
             {
                 if (useTls12)
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                return await Api.GetGenericAsync<Models.ThirdParty.ModLookup.TopResponse>("https://twitchstuff.3v.fi/modlookup/api/top");
+                return Api.GetGenericAsync<Models.ThirdParty.ModLookup.TopResponse>("https://twitchstuff.3v.fi/modlookup/api/top");
             }
 
-            public async Task<Models.ThirdParty.ModLookup.StatsResponse> GetChannelsModdedForStatsAsync(bool useTls12 = true)
+            public Task<Models.ThirdParty.ModLookup.StatsResponse> GetChannelsModdedForStatsAsync(bool useTls12 = true)
             {
                 if (useTls12)
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                return await Api.GetGenericAsync<Models.ThirdParty.ModLookup.StatsResponse>("https://twitchstuff.3v.fi/modlookup/api/stats").ConfigureAwait(false);
+                return Api.GetGenericAsync<Models.ThirdParty.ModLookup.StatsResponse>("https://twitchstuff.3v.fi/modlookup/api/stats");
             }
         }
 

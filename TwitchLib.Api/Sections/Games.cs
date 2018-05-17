@@ -9,28 +9,12 @@ namespace TwitchLib.Api.Sections
     {
         public Games(TwitchAPI api)
         {
-            v3 = new V3(api);
             v5 = new V5(api);
             helix = new Helix(api);
         }
-
-        public V3 v3 { get; }
+        
         public V5 v5 { get; }
         public Helix helix { get; }
-
-        public class V3 : ApiSection
-        {
-            public V3(TwitchAPI api) : base(api)
-            {
-            }
-            #region GetTopGames
-            public async Task<Models.v3.Games.TopGamesResponse> GetTopGamesAsync(int limit = 10, int offset = 0)
-            {
-                var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("limit", limit.ToString()), new KeyValuePair<string, string>("offset", offset.ToString()) };
-                return await Api.GetGenericAsync<Models.v3.Games.TopGamesResponse>("https://api.twitch.tv/kraken/games/top", getParams, null, ApiVersion.v3).ConfigureAwait(false);
-            }
-            #endregion
-        }
 
         public class V5 : ApiSection
         {
@@ -38,7 +22,7 @@ namespace TwitchLib.Api.Sections
             {
             }
             #region GetTopGames
-            public async Task<Models.v5.Games.TopGames> GetTopGamesAsync(int? limit = null, int? offset = null)
+            public Task<Models.v5.Games.TopGames> GetTopGamesAsync(int? limit = null, int? offset = null)
             {
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (limit.HasValue)
@@ -46,7 +30,7 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
                 
-                return await Api.GetGenericAsync<Models.v5.Games.TopGames>("https://api.twitch.tv/kraken/games/top", getParams).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.v5.Games.TopGames>("/games/top", ApiVersion.v5, getParams);
             }
             #endregion
         }
@@ -57,7 +41,7 @@ namespace TwitchLib.Api.Sections
             {
             }
             #region GetGames
-            public async Task<Models.Helix.Games.GetGames.GetGamesResponse> GetGames(List<string> gameIds = null, List<string> gameNames = null)
+            public Task<Models.Helix.Games.GetGames.GetGamesResponse> GetGamesAsync(List<string> gameIds = null, List<string> gameNames = null)
             {
                 if (gameIds == null && gameNames == null ||
                     gameIds != null && gameIds.Count == 0 && gameNames == null ||
@@ -76,10 +60,26 @@ namespace TwitchLib.Api.Sections
                     foreach (var gameName in gameNames)
                         getParams.Add(new KeyValuePair<string, string>("name", gameName));
                 
-                return await Api.GetGenericAsync<Models.Helix.Games.GetGames.GetGamesResponse>("https://api.twitch.tv/helix/games", getParams, null, ApiVersion.Helix).ConfigureAwait(false);
+                return Api.TwitchGetGenericAsync<Models.Helix.Games.GetGames.GetGamesResponse>("/games", ApiVersion.Helix, getParams);
+            }
+            #endregion
+
+            #region GetTopGames
+            public Task<Models.Helix.Games.GetTopGames.GetTopGamesResponse> GetTopGamesAsync(string before = null, string after = null, int first = 20)
+            {
+                if (first < 0 || first > 100)
+                    throw new BadParameterException("'first' parameter must be between 1 (inclusive) and 100 (inclusive).");
+
+                var getParams = new List<KeyValuePair<string, string>>();
+                getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
+                if (before != null)
+                    getParams.Add(new KeyValuePair<string, string>("before", before));
+                if (after != null)
+                    getParams.Add(new KeyValuePair<string, string>("after", after));
+
+                return Api.TwitchGetGenericAsync<Models.Helix.Games.GetTopGames.GetTopGamesResponse>("/games/top", ApiVersion.Helix, getParams);
             }
             #endregion
         }
-
     }
 }

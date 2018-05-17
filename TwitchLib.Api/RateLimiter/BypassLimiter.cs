@@ -17,16 +17,16 @@ namespace TwitchLib.Api.RateLimiter
             return Perform(perform, CancellationToken.None);
         }
 
-        public async Task Perform(Func<Task> perform, CancellationToken cancellationToken)
+        public Task Perform(Func<Task> perform, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            await perform();
+            return perform();
         }
 
-        public async Task<T> Perform<T>(Func<Task<T>> perform, CancellationToken cancellationToken)
+        public Task<T> Perform<T>(Func<Task<T>> perform, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return await perform();
+            return perform();
         }
 
         private static Func<Task> Transform(Action act)
