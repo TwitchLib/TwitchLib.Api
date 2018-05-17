@@ -194,14 +194,14 @@ namespace TwitchLib.Api.Services
         {
             var livestreamers = new List<Models.v5.Streams.Stream>();
 
-            var resultset = await _api.Streams.V5.GetLiveStreamsAsync(_channelIds.Select(x => x.ToString()).ToList(), limit: 100);
+            var resultset = await _api.Streams.v5.GetLiveStreamsAsync(_channelIds.Select(x => x.ToString()).ToList(), limit: 100);
 
             livestreamers.AddRange(resultset.Streams.ToList());
 
             var pages = (int)Math.Ceiling((double)resultset.Total / 100);
             for (var i = 1; i < pages; i++)
             {
-                resultset = await _api.Streams.V5.GetLiveStreamsAsync(_channelIds.Select(x => x.ToString()).ToList(), limit: 100, offset: i * 100);
+                resultset = await _api.Streams.v5.GetLiveStreamsAsync(_channelIds.Select(x => x.ToString()).ToList(), limit: 100, offset: i * 100);
                 livestreamers.AddRange(resultset.Streams.ToList());
             }
 
@@ -216,7 +216,7 @@ namespace TwitchLib.Api.Services
             for (var i = 0; i < pages; i++)
             {
                 var selectedSet = usernamesToGet.Skip(i * 100).Take(100).ToList();
-                var users = await _api.Users.V5.GetUsersByNameAsync(selectedSet);
+                var users = await _api.Users.v5.GetUsersByNameAsync(selectedSet);
 
                 foreach (var user in users.Matches)
                     _channelToId.TryAdd(user.Name, user.Id);
