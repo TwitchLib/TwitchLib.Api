@@ -10,10 +10,10 @@ namespace TwitchLib.Api.Sections
     {
         public Webhooks(TwitchAPI api)
         {
-            helix = new HelixApi(api);
+            Helix = new HelixApi(api);
         }
 
-        public HelixApi helix { get; }
+        public HelixApi Helix { get; }
 
         public class HelixApi : ApiSection
         {

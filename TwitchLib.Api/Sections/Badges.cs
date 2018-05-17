@@ -5,11 +5,11 @@ namespace TwitchLib.Api.Sections
 {
     public class Badges
     {
-        public V5Api v5 { get; }
+        public V5Api V5 { get; }
 
         public Badges(TwitchAPI api)
         {
-            v5 = new V5Api(api);
+            V5 = new V5Api(api);
         }
 
         public class V5Api : ApiSection

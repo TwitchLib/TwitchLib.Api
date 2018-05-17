@@ -17,7 +17,7 @@ namespace TwitchLib.Api.Sections
         #region GetClipChat
         public async Task<Models.Undocumented.ClipChat.GetClipChatResponse> GetClipChatAsync(string slug)
         {
-            var clip = await Api.Clips.v5.GetClipAsync(slug);
+            var clip = await Api.Clips.V5.GetClipAsync(slug);
             if (clip == null)
                 return null;
 
