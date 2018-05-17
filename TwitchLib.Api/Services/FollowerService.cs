@@ -51,7 +51,7 @@ namespace TwitchLib.Api.Services
                 throw new UninitializedChannelDataException("ChannelData must be set before starting the FollowerService. Use SetChannelById() to set the channel to monitor");
             }
 
-            var response = await _api.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
+            var response = await _api.Channels.V5.GetChannelFollowersAsync(ChannelData, QueryCount);
             foreach (var follower in response.Follows)
                 ActiveCache.Add(follower);
 
@@ -81,7 +81,7 @@ namespace TwitchLib.Api.Services
             var mostRecentFollowers = new List<IFollow>();
             try
             {
-                var followers = await _api.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
+                var followers = await _api.Channels.V5.GetChannelFollowersAsync(ChannelData, QueryCount);
                 mostRecentFollowers.AddRange(followers.Follows);
             }
             catch (WebException)
