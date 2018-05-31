@@ -48,6 +48,21 @@ namespace TwitchLib.Api.Sections
                 return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/streams?user_id={userId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
+            #region UserChanged
+            public Task<bool> UserChangedAsync(string callbackUrl, Enums.WebhookCallMode mode, int id, TimeSpan? duration = null, string signingSecret = null)
+            {
+                var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
+                return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users?id={id}", callbackUrl, leaseSeconds, signingSecret);
+            }
+            #endregion
+            #region GameAnalytics
+            public Task<bool> GameAnalytics(string callbackUrl, Enums.WebhookCallMode mode, string gameId, TimeSpan? duration = null, string signingSecret = null)
+            {
+                var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
+                return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/analytics/games?game_id={gameId}", callbackUrl, leaseSeconds, signingSecret);
+            }
+            #endregion
+            #region 
 
             private TimeSpan ValidateTimespan(TimeSpan? duration)
             {
