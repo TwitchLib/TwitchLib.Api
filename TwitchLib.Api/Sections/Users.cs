@@ -10,16 +10,16 @@ namespace TwitchLib.Api.Sections
     {
         public Users(TwitchAPI api)
         {
-            v5 = new V5(api);
-            helix = new Helix(api);
+            v5 = new V5Api(api);
+            helix = new HelixApi(api);
         }
-        
-        public V5 v5 { get; }
-        public Helix helix { get; }
 
-        public class V5 : ApiSection
+        public V5Api v5 { get; }
+        public HelixApi helix { get; }
+
+        public class V5Api : ApiSection
         {
-            public V5(TwitchAPI api) : base(api)
+            public V5Api(TwitchAPI api) : base(api)
             {
             }
             #region GetUsersByName
@@ -82,7 +82,7 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("direction", direction));
                 if (!string.IsNullOrEmpty(sortby) && (sortby == "created_at" || sortby == "last_broadcast" || sortby == "login"))
                     getParams.Add(new KeyValuePair<string, string>("sortby", sortby));
-                
+
                 return Api.TwitchGetGenericAsync < Models.v5.Users.UserFollows>($"/users/{userId}/follows/channels", ApiVersion.v5, getParams);
             }
             #endregion
@@ -139,7 +139,7 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("limit", limit.Value.ToString()));
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
-                
+
                 return Api.TwitchGetGenericAsync<Models.v5.Users.UserBlocks>($"/users/{userId}/blocks", ApiVersion.v5, getParams, authToken);
             }
             #endregion
@@ -189,9 +189,9 @@ namespace TwitchLib.Api.Sections
             #endregion
         }
 
-        public class Helix : ApiSection
+        public class HelixApi : ApiSection
         {
-            public Helix(TwitchAPI api) : base(api)
+            public HelixApi(TwitchAPI api) : base(api)
             {
             }
 
@@ -222,7 +222,7 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("from_id", fromId));
                 if (toId != null)
                     getParams.Add(new KeyValuePair<string, string>("to_id", toId));
-                
+
                 return Api.TwitchGetGenericAsync<Models.Helix.Users.GetUsersFollows.GetUsersFollowsResponse>("/users/follows", ApiVersion.Helix, getParams);
             }
 

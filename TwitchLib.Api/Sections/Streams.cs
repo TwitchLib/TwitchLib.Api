@@ -10,16 +10,16 @@ namespace TwitchLib.Api.Sections
     {
         public Streams(TwitchAPI api)
         {
-            v5 = new V5(api);
-            helix = new Helix(api);
+            v5 = new V5Api(api);
+            helix = new HelixApi(api);
         }
 
-        public V5 v5 { get; }
-        public Helix helix { get; }
+        public V5Api v5 { get; }
+        public HelixApi helix { get; }
 
-        public class V5 : ApiSection
+        public class V5Api : ApiSection
         {
-            public V5(TwitchAPI api) : base(api)
+            public V5Api(TwitchAPI api) : base(api)
             {
             }
             #region GetStreamByUser
@@ -50,7 +50,7 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("limit", limit.Value.ToString()));
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
-                
+
                 return Api.TwitchGetGenericAsync<Models.v5.Streams.LiveStreams>("/streams", ApiVersion.v5, getParams);
             }
             #endregion
@@ -71,7 +71,7 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("limit", limit.Value.ToString()));
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
-                
+
                 return Api.TwitchGetGenericAsync<Models.v5.Streams.FeaturedStreams>("/streams/featured", ApiVersion.v5, getParams);
             }
             #endregion
@@ -113,9 +113,9 @@ namespace TwitchLib.Api.Sections
             #endregion
         }
 
-        public class Helix : ApiSection
+        public class HelixApi : ApiSection
         {
-            public Helix(TwitchAPI api) : base(api)
+            public HelixApi(TwitchAPI api) : base(api)
             {
             }
             public Task<Models.Helix.Streams.GetStreams.GetStreamsResponse> GetStreamsAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
@@ -138,7 +138,7 @@ namespace TwitchLib.Api.Sections
                 if (userLogins != null && userLogins.Count > 0)
                     foreach (var userLogin in userLogins)
                         getParams.Add(new KeyValuePair<string, string>("user_login", userLogin));
-                
+
                 return Api.TwitchGetGenericAsync<Models.Helix.Streams.GetStreams.GetStreamsResponse>($"/streams", ApiVersion.Helix, getParams);
             }
 
