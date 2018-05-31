@@ -56,7 +56,7 @@ namespace TwitchLib.Api.Sections
             }
             #endregion
             #region GameAnalytics
-            public Task<bool> GameAnalytics(string callbackUrl, Enums.WebhookCallMode mode, string gameId, TimeSpan? duration = null, string signingSecret = null)
+            public Task<bool> GameAnalyticsAsync(string callbackUrl, Enums.WebhookCallMode mode, string gameId, TimeSpan? duration = null, string signingSecret = null)
             {
                 var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
                 return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/analytics/games?game_id={gameId}", callbackUrl, leaseSeconds, signingSecret);
