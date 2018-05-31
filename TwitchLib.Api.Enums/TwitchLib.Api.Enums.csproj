@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
-    <PackageId>TwitchLib.Api</PackageId>
+    <PackageId>TwitchLib.Api.Enums</PackageId>
     <Version>2.1.2</Version>
     <Description>Api component of TwitchLib. This component allows you to access the Twitch API using both authenticated and unauthenticated calls, as well as undocumented and third party APIs.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <Copyright>Copyright 2018</Copyright>
-    <PackageReleaseNotes>GetChannelExtensionData undocumented endpoint supported. Removes ValidateScope (since it was unused), adds null check for dynamic scope validation, and updates settings interface to allow CheckCredentialAsync to be used.</PackageReleaseNotes>
+    <PackageReleaseNotes>Split Interfaces into separate Nuget</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
@@ -20,20 +20,13 @@
     <AssemblyVersion>2.1.2.0</AssemblyVersion>
     <FileVersion>2.1.2.0</FileVersion>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>TwitchLib.Api.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>TwitchLib.Api.Enums.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
-    <PackageReference Include="System.Net.Http" Version="4.3.3" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TwitchLib.Api.Enums\TwitchLib.Api.Enums.csproj" />
-    <ProjectReference Include="..\TwitchLib.Api.Interfaces\TwitchLib.Api.Interfaces.csproj" />
-    <ProjectReference Include="..\TwitchLib.Api.Models\TwitchLib.Api.Models.csproj" />
-  </ItemGroup>
-  
+
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net452'">
     <DefineConstants>NET452</DefineConstants>
   </PropertyGroup>
