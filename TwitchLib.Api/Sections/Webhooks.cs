@@ -62,7 +62,6 @@ namespace TwitchLib.Api.Sections
                 return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/analytics/games?game_id={gameId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
-            #region 
 
             private TimeSpan ValidateTimespan(TimeSpan? duration)
             {
