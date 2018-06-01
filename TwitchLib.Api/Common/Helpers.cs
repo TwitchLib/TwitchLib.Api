@@ -66,6 +66,8 @@ namespace TwitchLib.Api.Common
                     return "clips:edit";
                 case AuthScopes.Helix_Analytics_Read_Games:
                     return "analytics:read:games";
+                case AuthScopes.Helix_Analytics_Read_Extensions:
+                    return "analytics:read:extensions";
                 case AuthScopes.Helix_Bits_Read:
                     return "bits:read";
                 default:
@@ -119,6 +121,8 @@ namespace TwitchLib.Api.Common
                     return AuthScopes.Helix_Clips_Edit;
                 case "analytics:read:games":
                     return AuthScopes.Helix_Analytics_Read_Games;
+                case "analytics:read:extensions":
+                    return AuthScopes.Helix_Analytics_Read_Extensions;
                 case "bits:read":
                     return AuthScopes.Helix_Bits_Read;
                 default:
