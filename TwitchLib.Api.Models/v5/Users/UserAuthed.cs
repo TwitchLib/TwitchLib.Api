@@ -4,7 +4,7 @@ using TwitchLib.Api.Interfaces;
 
 namespace TwitchLib.Api.Models.v5.Users
 {
-    public class UserAuthed :IUser
+    public class UserAuthed : IUser
     {
         #region Id
         [JsonProperty(PropertyName = "_id")]
