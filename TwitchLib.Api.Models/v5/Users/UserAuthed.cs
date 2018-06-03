@@ -1,9 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TwitchLib.Api.Interfaces;
 
 namespace TwitchLib.Api.Models.v5.Users
 {
-    public class UserAuthed
+    public class UserAuthed :IUser
     {
         #region Id
         [JsonProperty(PropertyName = "_id")]
