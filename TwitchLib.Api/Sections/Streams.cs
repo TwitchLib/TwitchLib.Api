@@ -165,6 +165,25 @@ namespace TwitchLib.Api.Sections
 
                 return Api.TwitchGetGenericAsync<Models.Helix.StreamsMetadata.GetStreamsMetadataResponse>("/streams/metadata", ApiVersion.Helix, getParams);
             }
+
+            public Task<Models.Helix.Streams.GetStreams.LiveStreams> GetLiveStreamsAsync(List<string> channelList = null, string game = null, string language = null, string streamType = null, int? limit = null, int? offset = null)
+            {
+                var getParams = new List<KeyValuePair<string, string>>();
+                if (channelList != null && channelList.Count > 0)
+                    getParams.Add(new KeyValuePair<string, string>("channel", string.Join(",", channelList)));
+                if (!string.IsNullOrWhiteSpace(game))
+                    getParams.Add(new KeyValuePair<string, string>("game", game));
+                if (!string.IsNullOrWhiteSpace(language))
+                    getParams.Add(new KeyValuePair<string, string>("language", language));
+                if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
+                    getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));
+                if (limit.HasValue)
+                    getParams.Add(new KeyValuePair<string, string>("limit", limit.Value.ToString()));
+                if (offset.HasValue)
+                    getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
+
+                return Api.TwitchGetGenericAsync<Models.Helix.Streams.GetStreams.LiveStreams>("/streams", ApiVersion.Helix, getParams);
+            }
         }
     }
 }
