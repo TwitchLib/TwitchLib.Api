@@ -48,6 +48,21 @@ namespace TwitchLib.Api.Sections
                 return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/streams?user_id={userId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
+            #region UserChanged
+            public Task<bool> UserChangedAsync(string callbackUrl, Enums.WebhookCallMode mode, int id, TimeSpan? duration = null, string signingSecret = null)
+            {
+                var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
+                return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users?id={id}", callbackUrl, leaseSeconds, signingSecret);
+            }
+            #endregion
+            #region GameAnalytics
+            public Task<bool> GameAnalyticsAsync(string callbackUrl, Enums.WebhookCallMode mode, string gameId, TimeSpan? duration = null, string signingSecret = null, string authToken = null)
+            {
+                Api.Settings.DynamicScopeValidation(AuthScopes.Helix_Analytics_Read_Games, authToken);
+                var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
+                return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/analytics/games?game_id={gameId}", callbackUrl, leaseSeconds, signingSecret);
+            }
+            #endregion
 
             private TimeSpan ValidateTimespan(TimeSpan? duration)
             {
@@ -56,7 +71,7 @@ namespace TwitchLib.Api.Sections
                 return duration ?? TimeSpan.FromDays(10);
             }
 
-            private async Task<bool> PerformWebhookRequestAsync(Enums.WebhookCallMode mode, string topicUrl, string callbackUrl, int leaseSeconds, string signingSecret = null)
+            private async Task<bool> PerformWebhookRequestAsync(Enums.WebhookCallMode mode, string topicUrl, string callbackUrl, int leaseSeconds, string signingSecret = null, string authToken = null)
             {
                 var getParams = new List<KeyValuePair<string, string>>
                 {
@@ -72,7 +87,7 @@ namespace TwitchLib.Api.Sections
                 if (signingSecret != null)
                     getParams.Add(new KeyValuePair<string, string>("hub.secret", signingSecret));
 
-                var resp = await Api.TwitchPostAsync("/webhooks/hub", ApiVersion.Helix, null, getParams).ConfigureAwait(false);
+                var resp = await Api.TwitchPostAsync("/webhooks/hub", ApiVersion.Helix, null, getParams, authToken).ConfigureAwait(false);
                 return resp.Key == 202;
             }
         }

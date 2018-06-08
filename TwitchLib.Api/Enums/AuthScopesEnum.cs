@@ -27,6 +27,7 @@
         Helix_Clips_Edit,
         Helix_Bits_Read,
         Helix_Analytics_Read_Games,
+        Helix_Analytics_Read_Extensions,
         None
     }
 }

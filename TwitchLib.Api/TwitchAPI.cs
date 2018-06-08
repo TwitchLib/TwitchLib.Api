@@ -27,6 +27,7 @@ namespace TwitchLib.Api
         internal const string BaseHelix = "https://api.twitch.tv/helix";
 
         public IApiSettings Settings { get; }
+        public Analytics Analytics { get; }
         public Auth Auth { get; }
         public Badges Badges { get; }
         public Bits Bits { get; }
@@ -60,6 +61,7 @@ namespace TwitchLib.Api
             _logger = loggerFactory?.CreateLogger<TwitchAPI>();
             _http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             _rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
+            Analytics = new Analytics(this);
             Auth = new Auth(this);
             Badges = new Badges(this);
             Bits = new Bits(this);

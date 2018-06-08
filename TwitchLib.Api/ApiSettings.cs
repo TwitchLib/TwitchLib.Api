@@ -174,6 +174,9 @@ namespace TwitchLib.Api
                     case "analytics:read:games":
                         scopes.Add(AuthScopes.Helix_Analytics_Read_Games);
                         break;
+                    case "analytics:read:extensions":
+                        scopes.Add(AuthScopes.Helix_Analytics_Read_Extensions);
+                        break;
                 }
             }
 
