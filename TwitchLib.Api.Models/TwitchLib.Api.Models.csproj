@@ -19,7 +19,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <AssemblyVersion>2.1.2.0</AssemblyVersion>
     <FileVersion>2.1.2.0</FileVersion>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>TwitchLib.Api.Models.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
