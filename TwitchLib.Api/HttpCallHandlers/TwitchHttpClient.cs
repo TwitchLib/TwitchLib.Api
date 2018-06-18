@@ -119,7 +119,7 @@ namespace TwitchLib.Api
                 case (HttpStatusCode)422:
                     throw new NotPartneredException("The resource you requested is only available to channels that have been partnered by Twitch.");
                 case (HttpStatusCode)429:
-                    throw new NotPartneredException("You have reached your rate limit. Too many requests were made");
+                    throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made");
                 case HttpStatusCode.BadGateway:
                     throw new BadGatewayException("The API answered with a 502 Bad Gateway. Please retry your request");
                 case HttpStatusCode.GatewayTimeout:
