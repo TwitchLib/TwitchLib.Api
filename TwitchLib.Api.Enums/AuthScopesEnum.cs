@@ -28,6 +28,8 @@
         Helix_Bits_Read,
         Helix_Analytics_Read_Games,
         Helix_Analytics_Read_Extensions,
+        Helix_User_Edit_Broadcast,
+        Helix_User_Read_Broadcast,
         None
     }
 }
