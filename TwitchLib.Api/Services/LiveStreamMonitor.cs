@@ -88,10 +88,10 @@ namespace TwitchLib.Api.Services
 
             if (_checkStatusOnStart)
             {
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
                     _isStartup = true;
-                    _checkOnlineStreams();
+                    await _checkOnlineStreams();
                     _isStartup = false;
 
                     OnInitialized();
@@ -146,14 +146,14 @@ namespace TwitchLib.Api.Services
         }
         #endregion
 
-        private void _streamMonitorTimerElapsed(object sender, ElapsedEventArgs e)
+        private async void _streamMonitorTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            _checkOnlineStreams();
+            await _checkOnlineStreams();
         }
 
-        private void _checkOnlineStreams()
+        private async Task _checkOnlineStreams()
         {
-            var liveStreamers = GetLiveStreamers().GetAwaiter().GetResult();
+            var liveStreamers = await GetLiveStreamers();
 
             foreach (var channel in _channelIds)
             {
