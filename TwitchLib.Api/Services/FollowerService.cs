@@ -1,15 +1,15 @@
-﻿namespace TwitchLib.Api.Services
-{
-    using Exceptions;
-    using Interfaces;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Threading.Tasks;
-    using System.Timers;
-    using TwitchLib.Api.Services.Events.FollowerService;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Timers;
+using TwitchLib.Api.Interfaces;
+using TwitchLib.Api.Services.Events.FollowerService;
+using TwitchLib.Api.Services.Exceptions;
 
+namespace TwitchLib.Api.Services
+{
     /// <summary>Service that allows customizability and subscribing to detection of new Twitch followers.</summary>
     public class FollowerService
     {

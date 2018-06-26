@@ -1,8 +1,8 @@
-﻿namespace TwitchLib.Api.Services.Events.FollowerService
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace TwitchLib.Api.Services.Events.FollowerService
+{
     /// <inheritdoc />
     /// <summary>Class representing event args for OnServiceStopped event.</summary>
     public class OnServiceStoppedArgs : EventArgs
