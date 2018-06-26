@@ -25,8 +25,6 @@ namespace TwitchLib.Api.Models.Helpers
         public ExtensionAnalytics(string row)
         {
             string[] p = row.Split(',');
-            if (p.Length < 15)
-                throw new Exceptions.UnexpectedResponseException($"Expected at least 15 items, got: {p.Length}, row data: {row}");
             Date = p[0];
             ExtensionName = p[1];
             ExtensionClientId = p[2];

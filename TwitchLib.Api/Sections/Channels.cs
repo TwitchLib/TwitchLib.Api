@@ -61,7 +61,7 @@ namespace TwitchLib.Api.Sections
             /// <returns>A Channel object with the newly changed properties.</returns>
             public Task<Models.v5.Channels.Channel> UpdateChannelAsync(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
+                Api.Settings.DynamicScopeValidation(AuthScopes.Helix_User_Edit_Broadcast, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 var datas = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrEmpty(status))
