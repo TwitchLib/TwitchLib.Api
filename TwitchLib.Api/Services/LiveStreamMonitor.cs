@@ -74,7 +74,7 @@ namespace TwitchLib.Api.Services
             _checkStatusOnStart = checkStatusOnStart;
             _invokeEventsOnStart = invokeEventsOnStart;
             CheckIntervalSeconds = checkIntervalSeconds;
-            _streamMonitorTimer.Elapsed += CheckForOnlineStreamChanges;
+            _streamMonitorTimer.Elapsed += CheckForOnlineStreamChangesAsync;
         }
 
         #region CONTROLS
@@ -90,7 +90,7 @@ namespace TwitchLib.Api.Services
                 Task.Run(async () =>
                 {
                     _isStarting = true;
-                    await CheckForOnlineStreamChanges();
+                    await CheckForOnlineStreamChangesAsync();
                     _isStarting = false;
 
                     OnInitialized();
@@ -122,7 +122,7 @@ namespace TwitchLib.Api.Services
         /// <param name="usernames">List of channels to monitor as usernames</param>
         public void SetStreamsByUsername(List<string> usernames)
         {
-            GetUserIds(usernames).Wait();
+            GetUserIdsAsync(usernames).Wait();
 
             foreach (var item in _channelToId.Keys.Where(x => !usernames.Any(channelToId => channelToId.Equals(x))).ToList())
                 _channelToId.TryRemove(item, out string _);
@@ -145,14 +145,14 @@ namespace TwitchLib.Api.Services
         }
         #endregion
 
-        private async void CheckForOnlineStreamChanges(object sender, ElapsedEventArgs e)
+        private async void CheckForOnlineStreamChangesAsync(object sender, ElapsedEventArgs e)
         {
-            await CheckForOnlineStreamChanges();
+            await CheckForOnlineStreamChangesAsync();
         }
 
-        private async Task CheckForOnlineStreamChanges()
+        private async Task CheckForOnlineStreamChangesAsync()
         {
-            var liveStreamers = await GetLiveStreamers();
+            var liveStreamers = await GetLiveStreamersAsync();
 
             foreach (var channel in _channelIds)
             {
@@ -200,7 +200,7 @@ namespace TwitchLib.Api.Services
             }
         }
 
-        private async Task<List<Models.v5.Streams.Stream>> GetLiveStreamers()
+        private async Task<List<Models.v5.Streams.Stream>> GetLiveStreamersAsync()
         {
             var livestreamers = new List<Models.v5.Streams.Stream>();
 
@@ -218,7 +218,7 @@ namespace TwitchLib.Api.Services
             return livestreamers;
         }
 
-        private async Task GetUserIds(IEnumerable<string> usernames)
+        private async Task GetUserIdsAsync(IEnumerable<string> usernames)
         {
             var usernamesToGet = usernames.Where(u => !_channelToId.Any(c => c.Key.Equals(u))).ToList();
             var pages = (usernamesToGet.Count + 100 - 1) / 100;
