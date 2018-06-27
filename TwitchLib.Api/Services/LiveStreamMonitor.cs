@@ -16,7 +16,7 @@ namespace TwitchLib.Api.Services
     {
         #region Private Variables
         private int _checkIntervalSeconds;
-        private bool _isStartup;
+        private bool _isStarting;
         private List<string> _channelIds;
         private readonly ConcurrentDictionary<string, string> _channelToId;
         private readonly ConcurrentDictionary<string, Models.v5.Streams.Stream> _statuses;
@@ -60,10 +60,9 @@ namespace TwitchLib.Api.Services
         #endregion
 
         /// <summary>Service constructor.</summary>
-        /// <exception cref="BadResourceException">If channel is invalid, an InvalidChannelException will be thrown.</exception>
+        /// <exception cref="ArgumentNullException">If the provided api is null.</exception>
         /// <param name="api">Instance of the Twitch Api Interface.</param>
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
-        /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
         /// <param name="checkStatusOnStart">Checks the channel statuses on starting the service</param>
         /// <param name="invokeEventsOnStart">If checking the status on service start, optionally fire the OnStream Events (OnStreamOnline, OnStreamOffline, OnStreamUpdate)</param>
         public LiveStreamMonitor(ITwitchAPI api, int checkIntervalSeconds = 60, bool checkStatusOnStart = true, bool invokeEventsOnStart = false)
@@ -75,7 +74,7 @@ namespace TwitchLib.Api.Services
             _checkStatusOnStart = checkStatusOnStart;
             _invokeEventsOnStart = invokeEventsOnStart;
             CheckIntervalSeconds = checkIntervalSeconds;
-            _streamMonitorTimer.Elapsed += _streamMonitorTimerElapsed;
+            _streamMonitorTimer.Elapsed += CheckForOnlineStreamChanges;
         }
 
         #region CONTROLS
@@ -90,9 +89,9 @@ namespace TwitchLib.Api.Services
             {
                 Task.Run(async () =>
                 {
-                    _isStartup = true;
-                    await _checkOnlineStreams();
-                    _isStartup = false;
+                    _isStarting = true;
+                    await CheckForOnlineStreamChanges();
+                    _isStarting = false;
 
                     OnInitialized();
                 });
@@ -146,12 +145,12 @@ namespace TwitchLib.Api.Services
         }
         #endregion
 
-        private async void _streamMonitorTimerElapsed(object sender, ElapsedEventArgs e)
+        private async void CheckForOnlineStreamChanges(object sender, ElapsedEventArgs e)
         {
-            await _checkOnlineStreams();
+            await CheckForOnlineStreamChanges();
         }
 
-        private async Task _checkOnlineStreams()
+        private async Task CheckForOnlineStreamChanges()
         {
             var liveStreamers = await GetLiveStreamers();
 
@@ -167,7 +166,7 @@ namespace TwitchLib.Api.Services
                         //have gone offline
                         _statuses[channel] = null;
 
-                        if (!_isStartup || _invokeEventsOnStart)
+                        if (!_isStarting || _invokeEventsOnStart)
                         {
                             OnStreamOffline?.Invoke(this,
                                 new OnStreamOfflineArgs { ChannelId = channel, Channel = channelName, CheckIntervalSeconds = CheckIntervalSeconds });
@@ -181,7 +180,7 @@ namespace TwitchLib.Api.Services
                     if (_statuses[channel] == null)
                     {
                         //have gone online
-                        if (!_isStartup || _invokeEventsOnStart)
+                        if (!_isStarting || _invokeEventsOnStart)
                         {
                             OnStreamOnline?.Invoke(this,
                                 new OnStreamOnlineArgs { ChannelId = channel, Channel = channelName, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
@@ -190,7 +189,7 @@ namespace TwitchLib.Api.Services
                     else
                     {
                         //stream updated
-                        if (!_isStartup || _invokeEventsOnStart)
+                        if (!_isStarting || _invokeEventsOnStart)
                         {
                             OnStreamUpdate?.Invoke(this,
                                 new OnStreamUpdateArgs { ChannelId = channel, Channel = channelName, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
