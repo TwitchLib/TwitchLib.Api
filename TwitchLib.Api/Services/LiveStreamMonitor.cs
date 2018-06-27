@@ -24,7 +24,7 @@ namespace TwitchLib.Api.Services
         private readonly bool _checkStatusOnStart;
         private readonly bool _invokeEventsOnStart;
         private readonly ITwitchAPI _api;
-        
+
         #endregion
 
         #region Public Variables
@@ -68,7 +68,7 @@ namespace TwitchLib.Api.Services
         /// <param name="invokeEventsOnStart">If checking the status on service start, optionally fire the OnStream Events (OnStreamOnline, OnStreamOffline, OnStreamUpdate)</param>
         public LiveStreamMonitor(ITwitchAPI api, int checkIntervalSeconds = 60, bool checkStatusOnStart = true, bool invokeEventsOnStart = false)
         {
-            _api = api;
+            _api = api ?? throw new ArgumentNullException(nameof(api));
             _channelIds = new List<string>();
             _statuses = new ConcurrentDictionary<string, Models.v5.Streams.Stream>();
             _channelToId = new ConcurrentDictionary<string, string>();
@@ -83,15 +83,27 @@ namespace TwitchLib.Api.Services
         /// <exception cref="UnintializedChannelListException">If no channels to monitor were provided an UnintializedChannelListException will be thrown.</exception>
         public void StartService()
         {
-            if(! _channelIds.Any())
+            if (!_channelIds.Any())
                 throw new UnintializedChannelListException("You must atleast add 1 channel to monitor before starting the Service. Use SetStreamsById() to add a channel to monitor");
 
-            if(_checkStatusOnStart)
+            if (_checkStatusOnStart)
             {
-                _isStartup = true;
-                _checkOnlineStreams();
-                _isStartup = false;
+                Task.Run(() =>
+                {
+                    _isStartup = true;
+                    _checkOnlineStreams();
+                    _isStartup = false;
+
+                    OnInitialized();
+                });
+                return;
             }
+
+            OnInitialized();
+        }
+
+        private void OnInitialized()
+        {
             //Timer not started until initial check complete
             _streamMonitorTimer.Start();
             OnStreamMonitorStarted?.Invoke(this,
@@ -118,7 +130,7 @@ namespace TwitchLib.Api.Services
 
             SetStreamsByUserId(_channelToId.Values.ToList());
         }
-        
+
         /// <summary> Sets the list of channels to monitor by userid </summary>
         /// <param name="userids">List of channels to monitor as userids</param>
         public void SetStreamsByUserId(List<string> userids)
@@ -141,8 +153,7 @@ namespace TwitchLib.Api.Services
 
         private void _checkOnlineStreams()
         {
-
-            var liveStreamers = GetLiveStreamers().Result;
+            var liveStreamers = GetLiveStreamers().GetAwaiter().GetResult();
 
             foreach (var channel in _channelIds)
             {

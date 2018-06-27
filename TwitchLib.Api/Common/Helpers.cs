@@ -70,6 +70,10 @@ namespace TwitchLib.Api.Common
                     return "analytics:read:extensions";
                 case AuthScopes.Helix_Bits_Read:
                     return "bits:read";
+                case AuthScopes.Helix_User_Edit_Broadcast:
+                    return "user:edit:broadcast";
+                case AuthScopes.Helix_User_Read_Broadcast:
+                    return "user:read:broadcast";
                 default:
                     return "";
             }
