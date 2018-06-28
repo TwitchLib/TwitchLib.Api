@@ -62,7 +62,7 @@ namespace TwitchLib.Api.Services
         /// <summary>Service constructor.</summary>
         /// <exception cref="ArgumentNullException">If the provided api is null.</exception>
         /// <param name="api">Instance of the Twitch Api Interface.</param>
-        /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
+        /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api. Note: Lowering the number of seconds increase the chance that you may hit rate limits.</param>
         /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
         /// <param name="checkStatusOnStart">Checks the channel statuses on starting the service</param>
         /// <param name="invokeEventsOnStart">If checking the status on service start, optionally fire the OnStream Events (OnStreamOnline, OnStreamOffline, OnStreamUpdate)</param>
