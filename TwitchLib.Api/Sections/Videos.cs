@@ -211,7 +211,7 @@ namespace TwitchLib.Api.Sections
             public HelixApi(TwitchAPI api) : base(api)
             {
             }
-            public Task<Models.Helix.Videos.GetVideos.GetVideosResponse> GetVideoAsync(List<string> videoIds = null, string userId = null, string gameId = null, string after = null, string before = null, int first = 20, string language = null, Period period = Period.All, VideoSort sort = VideoSort.Time, VideoType type = VideoType.All)
+            public Task<Models.Helix.Videos.GetVideosResponse> GetVideoAsync(List<string> videoIds = null, string userId = null, string gameId = null, string after = null, string before = null, int first = 20, string language = null, Period period = Period.All, VideoSort sort = VideoSort.Time, VideoType type = VideoType.All)
             {
                 if ((videoIds == null || videoIds.Count == 0) && userId == null && gameId == null)
                     throw new BadParameterException("VideoIds, userId, and gameId cannot all be null/empty.");
@@ -288,7 +288,7 @@ namespace TwitchLib.Api.Sections
                     }
                 }
 
-                return Api.TwitchGetGenericAsync<Models.Helix.Videos.GetVideos.GetVideosResponse>("/videos", ApiVersion.Helix, getParams);
+                return Api.TwitchGetGenericAsync<Models.Helix.Videos.GetVideosResponse>("/videos", ApiVersion.Helix, getParams);
             }
         }
     }
