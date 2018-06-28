@@ -210,18 +210,8 @@ namespace TwitchLib.Api.Services
         {
             var livestreamers = new List<Models.Helix.Streams.Stream>();
 
-            var resultset = await _api.Streams.helix.GetLiveStreamsAsync(_channelIds.Select(x => x.ToString()).ToList(), limit: 100);
-            // Need a Helix GetLiveStreamsAsync
-
-            livestreamers.AddRange(resultset.Streams.ToList());
-
-            var pages = (int)Math.Ceiling((double)resultset.Total / 100);
-            for (var i = 1; i < pages; i++)
-            {
-                resultset = await _api.Streams.helix.GetLiveStreamsAsync(_channelIds.Select(x => x.ToString()).ToList(), limit: 100, offset: i * 100);
-                // Need a Helix GetLiveStreamsAsync
-                livestreamers.AddRange(resultset.Streams.ToList());
-            }
+            var resultset = await _api.Streams.helix.GetStreamsAsync(userIds: _channelIds.Select(x => x.ToString()).ToList(), first: _channelIds.Count);
+            livestreamers = resultset.Streams.Where(x => x.Type == "live").ToList();
 
             return livestreamers;
         }
