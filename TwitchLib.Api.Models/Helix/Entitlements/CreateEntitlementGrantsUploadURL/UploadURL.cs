@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TwitchLib.Api.Models.Helix.Entitlements
+namespace TwitchLib.Api.Models.Helix.Entitlements.CreateEntitlementGrantsUploadURL
 {
     public class UploadURL
     {
