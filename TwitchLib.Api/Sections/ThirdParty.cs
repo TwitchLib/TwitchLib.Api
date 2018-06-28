@@ -14,18 +14,18 @@ namespace TwitchLib.Api.Sections
     {
         public ThirdParty(TwitchAPI api)
         {
-            UsernameChange = new usernameChange(api);
-            ModLookup = new modLookup(api);
-            AuthorizationFlow = new authorizationFlow(api);
+            UsernameChange = new usernameChangeApi(api);
+            ModLookup = new modLookupApi(api);
+            AuthorizationFlow = new authorizationFlowApi(api);
         }
 
-        public usernameChange UsernameChange { get; }
-        public modLookup ModLookup { get; }
-        public authorizationFlow AuthorizationFlow { get; }
+        public usernameChangeApi UsernameChange { get; }
+        public modLookupApi ModLookup { get; }
+        public authorizationFlowApi AuthorizationFlow { get; }
 
-        public class usernameChange : ApiSection
+        public class usernameChangeApi : ApiSection
         {
-            public usernameChange(TwitchAPI api) : base(api)
+            public usernameChangeApi(TwitchAPI api) : base(api)
             {
             }
             #region GetUsernameChanges
@@ -41,9 +41,9 @@ namespace TwitchLib.Api.Sections
             #endregion
         }
 
-        public class modLookup : ApiSection
+        public class modLookupApi : ApiSection
         {
-            public modLookup(TwitchAPI api) : base(api)
+            public modLookupApi(TwitchAPI api) : base(api)
             {
             }
             public Task<Models.ThirdParty.ModLookup.ModLookupResponse> GetChannelsModdedForByNameAsync(string username, int offset = 0, int limit = 100, bool useTls12 = true)
@@ -73,9 +73,9 @@ namespace TwitchLib.Api.Sections
             }
         }
 
-        public class authorizationFlow : ApiSection
+        public class authorizationFlowApi : ApiSection
         {
-            public authorizationFlow(TwitchAPI api) : base(api)
+            public authorizationFlowApi(TwitchAPI api) : base(api)
             {
             }
 
@@ -141,7 +141,7 @@ namespace TwitchLib.Api.Sections
                 else
                 {
                     if (ping.Error == 3) return;
-                    
+
                     _pingTimer.Stop();
                     OnError?.Invoke(null, new OnAuthorizationFlowErrorArgs { Error = ping.Error, Message = ping.Message });
                 }

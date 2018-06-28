@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <PackageId>TwitchLib.Api.Enums</PackageId>
-    <Version>2.1.2</Version>
-    <Description>Api component of TwitchLib. This component allows you to access the Twitch API using both authenticated and unauthenticated calls, as well as undocumented and third party APIs.</Description>
+    <Version>1.0.0</Version>
+    <Description>Project containing all enums used in TwitchLib.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>swiftyspiffy, Prom3theu5, Syzuna, LuckyNoS7evin</Authors>
     <Company></Company>
@@ -12,12 +12,12 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <Copyright>Copyright 2018</Copyright>
-    <PackageReleaseNotes>Split Interfaces into separate Nuget</PackageReleaseNotes>
+    <PackageReleaseNotes>Initial release of TwitchLib.Api.Enums</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>2.1.2.0</AssemblyVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>2.1.2.0</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>TwitchLib.Api.Enums.snk</AssemblyOriginatorKeyFile>

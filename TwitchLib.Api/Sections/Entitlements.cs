@@ -11,13 +11,13 @@ namespace TwitchLib.Api.Sections
     {
         public Entitlements(TwitchAPI api)
         {
-            helix = new Helix(api);
+            helix = new HelixApi(api);
         }
-        public Helix helix { get; }
+        public HelixApi helix { get; }
 
-        public class Helix : ApiSection
+        public class HelixApi : ApiSection
         {
-            public Helix(TwitchAPI api) : base(api)
+            public HelixApi(TwitchAPI api) : base(api)
             {
             }
             #region CreateEntitlementGrantsUploadURL

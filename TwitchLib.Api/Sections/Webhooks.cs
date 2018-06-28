@@ -10,14 +10,14 @@ namespace TwitchLib.Api.Sections
     {
         public Webhooks(TwitchAPI api)
         {
-            helix = new Helix(api);
+            helix = new HelixApi(api);
         }
 
-        public Helix helix { get; }
+        public HelixApi helix { get; }
 
-        public class Helix : ApiSection
+        public class HelixApi : ApiSection
         {
-            public Helix(TwitchAPI api) : base(api)
+            public HelixApi(TwitchAPI api) : base(api)
             {
             }
             #region UserFollowsSomeone
@@ -38,7 +38,7 @@ namespace TwitchLib.Api.Sections
             public Task<bool> UserFollowsUserAsync(string callbackUrl, Enums.WebhookCallMode mode, string userInitiator, string userReceiverId, TimeSpan? duration = null, string signingSecret = null, string accessToken = null)
             {
                 var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
-                return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?to_id={userReceiverId}", callbackUrl, leaseSeconds, signingSecret, accessToken);
+                return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?first=1&from_id={userInitiator}&to_id={userReceiverId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
             #region StreamUpDown
@@ -46,6 +46,21 @@ namespace TwitchLib.Api.Sections
             {
                 var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
                 return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/streams?user_id={userId}", callbackUrl, leaseSeconds, signingSecret, accessToken);
+            }
+            #endregion
+            #region UserChanged
+            public Task<bool> UserChangedAsync(string callbackUrl, Enums.WebhookCallMode mode, int id, TimeSpan? duration = null, string signingSecret = null)
+            {
+                var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
+                return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users?id={id}", callbackUrl, leaseSeconds, signingSecret);
+            }
+            #endregion
+            #region GameAnalytics
+            public Task<bool> GameAnalyticsAsync(string callbackUrl, Enums.WebhookCallMode mode, string gameId, TimeSpan? duration = null, string signingSecret = null, string authToken = null)
+            {
+                Api.Settings.DynamicScopeValidation(AuthScopes.Helix_Analytics_Read_Games, authToken);
+                var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
+                return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/analytics/games?game_id={gameId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
 
@@ -71,7 +86,6 @@ namespace TwitchLib.Api.Sections
 
                 if (signingSecret != null)
                     getParams.Add(new KeyValuePair<string, string>("hub.secret", signingSecret));
-                
                 var resp = await Api.TwitchPostAsync("/webhooks/hub", ApiVersion.Helix, null, getParams,accessToken: accessToken).ConfigureAwait(false);
                 return resp.Key == 202;
             }

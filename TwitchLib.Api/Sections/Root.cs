@@ -7,14 +7,14 @@ namespace TwitchLib.Api.Sections
     {
         public Root(TwitchAPI api)
         {
-            v5 = new V5(api);
+            v5 = new V5Api(api);
         }
-        
-        public V5 v5 { get; }
 
-        public class V5 : ApiSection
+        public V5Api v5 { get; }
+
+        public class V5Api : ApiSection
         {
-            public V5(TwitchAPI api) : base(api)
+            public V5Api(TwitchAPI api) : base(api)
             {
             }
             #region GetRoot

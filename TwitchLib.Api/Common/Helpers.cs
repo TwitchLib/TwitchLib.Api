@@ -66,14 +66,19 @@ namespace TwitchLib.Api.Common
                     return "clips:edit";
                 case AuthScopes.Helix_Analytics_Read_Games:
                     return "analytics:read:games";
+                case AuthScopes.Helix_Analytics_Read_Extensions:
+                    return "analytics:read:extensions";
                 case AuthScopes.Helix_Bits_Read:
                     return "bits:read";
+                case AuthScopes.Helix_User_Edit_Broadcast:
+                    return "user:edit:broadcast";
+                case AuthScopes.Helix_User_Read_Broadcast:
+                    return "user:read:broadcast";
                 default:
                     return "";
             }
         }
-
-       
+        
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);

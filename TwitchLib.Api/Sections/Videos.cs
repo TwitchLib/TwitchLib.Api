@@ -12,16 +12,16 @@ namespace TwitchLib.Api.Sections
     {
         public Videos(TwitchAPI api)
         {
-            v5 = new V5(api);
-            helix = new Helix(api);
+            v5 = new V5Api(api);
+            helix = new HelixApi(api);
         }
-        
-        public V5 v5 { get; }
-        public Helix helix { get; }
 
-        public class V5 : ApiSection
+        public V5Api v5 { get; }
+        public HelixApi helix { get; }
+
+        public class V5Api : ApiSection
         {
-            public V5(TwitchAPI api) : base(api)
+            public V5Api(TwitchAPI api) : base(api)
             {
             }
             #region GetVideo
@@ -58,7 +58,7 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("language", string.Join(",", language)));
                 if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
                     getParams.Add(new KeyValuePair<string, string>("sort", sort));
-                
+
                 return Api.TwitchGetGenericAsync<Models.v5.Videos.TopVideos>("/videos/top", ApiVersion.v5, getParams);
             }
             #endregion
@@ -86,7 +86,7 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("language", string.Join(",", language)));
                 if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
                     getParams.Add(new KeyValuePair<string, string>("sort", sort));
-                
+
                 return Api.TwitchGetGenericAsync<Models.v5.Videos.FollowedVideos>("/videos/followed", ApiVersion.v5, getParams, authToken);
             }
             #endregion
@@ -116,7 +116,7 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("tagList", tagList));
                 if (!string.IsNullOrWhiteSpace(title))
                     getParams.Add(new KeyValuePair<string, string>("title", title));
-                
+
                 return Api.TwitchPutGenericAsync<Models.v5.Videos.Video>($"/videos/{videoId}", ApiVersion.v5, null, getParams, authToken);
             }
             #endregion
@@ -206,9 +206,9 @@ namespace TwitchLib.Api.Sections
             }
         }
 
-        public class Helix :ApiSection
+        public class HelixApi : ApiSection
         {
-            public Helix(TwitchAPI api) : base(api)
+            public HelixApi(TwitchAPI api) : base(api)
             {
             }
             public Task<Models.Helix.Videos.GetVideos.GetVideosResponse> GetVideoAsync(List<string> videoIds = null, string userId = null, string gameId = null, string after = null, string before = null, int first = 20, string language = null, Period period = Period.All, VideoSort sort = VideoSort.Time, VideoType type = VideoType.All)
