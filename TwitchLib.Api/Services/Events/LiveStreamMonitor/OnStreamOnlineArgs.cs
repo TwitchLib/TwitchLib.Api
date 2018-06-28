@@ -1,5 +1,5 @@
 ﻿using System;
-using TwitchLib.Api.Models.Helix.Streams;
+using TwitchLib.Api.Models.v5.Streams;
 
 namespace TwitchLib.Api.Services.Events.LiveStreamMonitor
 {

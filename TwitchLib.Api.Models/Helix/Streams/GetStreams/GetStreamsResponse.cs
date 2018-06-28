@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.Helix.Streams
+namespace TwitchLib.Api.Models.Helix.Streams.GetStreams
 {
     public class GetStreamsResponse
     {

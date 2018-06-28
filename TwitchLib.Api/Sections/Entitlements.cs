@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
@@ -19,12 +21,13 @@ namespace TwitchLib.Api.Sections
             {
             }
             #region CreateEntitlementGrantsUploadURL
-            public Task<Models.Helix.Entitlements.CreateEntitlementGrantsUploadURLResponse> CreateEntitlementGrantsUploadURL(string manifestId, Enums.EntitleGrantType type, string url = null, string applicationAccessToken = null)
+            public Task<Models.Helix.Entitlements.CreateEntitlementGrantsUploadURL.CreateEntitlementGrantsUploadURLResponse> CreateEntitlementGrantsUploadURL(string manifestId, Enums.EntitleGrantType type, string url = null, string applicationAccessToken = null)
             {
                 if (manifestId == null)
                     throw new BadParameterException("manifestId cannot be null");
 
-                var getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("manifest_id", manifestId) };
+                var getParams = new List<KeyValuePair<string, string>>();
+                getParams.Add(new KeyValuePair<string, string>("manifest_id", manifestId));
                 switch(type)
                 {
                     case Enums.EntitleGrantType.BulkDropsGrant:
@@ -34,7 +37,7 @@ namespace TwitchLib.Api.Sections
                         throw new BadParameterException("Unknown entitlement grant type");
                 }
 
-                return Api.TwitchGetGenericAsync<Models.Helix.Entitlements.CreateEntitlementGrantsUploadURLResponse>("/entitlements/upload", ApiVersion.Helix, getParams);
+                return Api.TwitchGetGenericAsync<Models.Helix.Entitlements.CreateEntitlementGrantsUploadURL.CreateEntitlementGrantsUploadURLResponse>("/entitlements/upload", ApiVersion.Helix, getParams);
             }
             #endregion
         }

@@ -16,10 +16,10 @@ namespace TwitchLib.Api.Services
     {
         #region Private Variables
         private int _checkIntervalSeconds;
-        private bool _isStarting;
+        private bool _isStartup;
         private List<string> _channelIds;
         private readonly ConcurrentDictionary<string, string> _channelToId;
-        private readonly ConcurrentDictionary<string, Models.Helix.Streams.Stream> _statuses;
+        private readonly ConcurrentDictionary<string, Models.v5.Streams.Stream> _statuses;
         private readonly Timer _streamMonitorTimer = new Timer();
         private readonly bool _checkStatusOnStart;
         private readonly bool _invokeEventsOnStart;
@@ -37,7 +37,7 @@ namespace TwitchLib.Api.Services
         /// <summary> Property representing Twitch channels service is monitoring. </summary>
         public ReadOnlyCollection<string> Channels => _channelToId.Keys.ToList().AsReadOnly();
         /// <summary> </summary>
-        public List<Models.Helix.Streams.Stream> CurrentLiveStreams { get { return _statuses.Where(x => x.Value != null).Select(x => x.Value).ToList(); } }
+        public List<Models.v5.Streams.Stream> CurrentLiveStreams { get { return _statuses.Where(x => x.Value != null).Select(x => x.Value).ToList(); } }
         /// <summary> </summary>
         public List<string> CurrentOfflineStreams { get { return _statuses.Where(x => x.Value == null).Select(x => x.Key).ToList(); } }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
@@ -60,9 +60,9 @@ namespace TwitchLib.Api.Services
         #endregion
 
         /// <summary>Service constructor.</summary>
-        /// <exception cref="ArgumentNullException">If the provided api is null.</exception>
+        /// <exception cref="BadResourceException">If channel is invalid, an InvalidChannelException will be thrown.</exception>
         /// <param name="api">Instance of the Twitch Api Interface.</param>
-        /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api. Note: Lowering the number of seconds may increase the chance that you will hit rate limits.</param>
+        /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
         /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
         /// <param name="checkStatusOnStart">Checks the channel statuses on starting the service</param>
         /// <param name="invokeEventsOnStart">If checking the status on service start, optionally fire the OnStream Events (OnStreamOnline, OnStreamOffline, OnStreamUpdate)</param>
@@ -70,12 +70,12 @@ namespace TwitchLib.Api.Services
         {
             _api = api ?? throw new ArgumentNullException(nameof(api));
             _channelIds = new List<string>();
-            _statuses = new ConcurrentDictionary<string, Models.Helix.Streams.Stream>();
+            _statuses = new ConcurrentDictionary<string, Models.v5.Streams.Stream>();
             _channelToId = new ConcurrentDictionary<string, string>();
             _checkStatusOnStart = checkStatusOnStart;
             _invokeEventsOnStart = invokeEventsOnStart;
             CheckIntervalSeconds = checkIntervalSeconds;
-            _streamMonitorTimer.Elapsed += CheckForOnlineStreamChangesAsync;
+            _streamMonitorTimer.Elapsed += _streamMonitorTimerElapsed;
         }
 
         #region CONTROLS
@@ -88,11 +88,11 @@ namespace TwitchLib.Api.Services
 
             if (_checkStatusOnStart)
             {
-                Task.Run(async() =>
+                Task.Run(() =>
                 {
-                    _isStarting = true;
-                    await CheckForOnlineStreamChangesAsync();
-                    _isStarting = false;
+                    _isStartup = true;
+                    _checkOnlineStreams();
+                    _isStartup = false;
 
                     OnInitialized();
                 });
@@ -123,7 +123,7 @@ namespace TwitchLib.Api.Services
         /// <param name="usernames">List of channels to monitor as usernames</param>
         public void SetStreamsByUsername(List<string> usernames)
         {
-            GetUserIdsAsync(usernames).Wait();
+            GetUserIds(usernames).Wait();
 
             foreach (var item in _channelToId.Keys.Where(x => !usernames.Any(channelToId => channelToId.Equals(x))).ToList())
                 _channelToId.TryRemove(item, out string _);
@@ -139,38 +139,35 @@ namespace TwitchLib.Api.Services
             _channelIds.ForEach(x => _statuses.TryAdd(x, null));
 
             foreach (var item in _statuses.Keys.Where(x => !_channelIds.Any(channelId => channelId.Equals(x))).ToList())
-                _statuses.TryRemove(item, out Models.Helix.Streams.Stream _);
+                _statuses.TryRemove(item, out Models.v5.Streams.Stream _);
 
             OnStreamsSet?.Invoke(this,
                 new OnStreamsSetArgs { ChannelIds = ChannelIds, Channels = _channelToId, CheckIntervalSeconds = CheckIntervalSeconds });
         }
         #endregion
 
-        private async void CheckForOnlineStreamChangesAsync(object sender, ElapsedEventArgs e)
+        private void _streamMonitorTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            await CheckForOnlineStreamChangesAsync();
+            _checkOnlineStreams();
         }
 
-        private async Task CheckForOnlineStreamChangesAsync()
+        private void _checkOnlineStreams()
         {
-            var liveStreamers = await GetLiveStreamersAsync();
+            var liveStreamers = GetLiveStreamers().GetAwaiter().GetResult();
 
             foreach (var channel in _channelIds)
             {
-                var currentStream = liveStreamers.FirstOrDefault(x => x.Id == channel);
+                var currentStream = liveStreamers.FirstOrDefault(x => x.Channel.Id == channel);
                 if (currentStream == null)
                 {
                     //offline
                     if (_statuses[channel] != null)
                     {
-                        List<string> channelID = new List<string> { _statuses[channel].Id };
-                        var userObject = (await _api.Users.helix.GetUsersAsync(channelID)).Users.First();
-                        var channelName = userObject.DisplayName;
+                        var channelName = _statuses[channel].Channel.Name;
                         //have gone offline
-
                         _statuses[channel] = null;
 
-                        if (!_isStarting || _invokeEventsOnStart)
+                        if (!_isStartup || _invokeEventsOnStart)
                         {
                             OnStreamOffline?.Invoke(this,
                                 new OnStreamOfflineArgs { ChannelId = channel, Channel = channelName, CheckIntervalSeconds = CheckIntervalSeconds });
@@ -179,14 +176,12 @@ namespace TwitchLib.Api.Services
                 }
                 else
                 {
-                    List<string> channelID = new List<string> { _statuses[channel].Id };
-                    var userObject = (await _api.Users.helix.GetUsersAsync(channelID)).Users.First();
-                    var channelName = userObject.DisplayName;
+                    var channelName = currentStream.Channel.Name;
                     //online
                     if (_statuses[channel] == null)
                     {
                         //have gone online
-                        if (!_isStarting || _invokeEventsOnStart)
+                        if (!_isStartup || _invokeEventsOnStart)
                         {
                             OnStreamOnline?.Invoke(this,
                                 new OnStreamOnlineArgs { ChannelId = channel, Channel = channelName, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
@@ -195,7 +190,7 @@ namespace TwitchLib.Api.Services
                     else
                     {
                         //stream updated
-                        if (!_isStarting || _invokeEventsOnStart)
+                        if (!_isStartup || _invokeEventsOnStart)
                         {
                             OnStreamUpdate?.Invoke(this,
                                 new OnStreamUpdateArgs { ChannelId = channel, Channel = channelName, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
@@ -206,17 +201,25 @@ namespace TwitchLib.Api.Services
             }
         }
 
-        private async Task<List<Models.Helix.Streams.Stream>> GetLiveStreamersAsync()
+        private async Task<List<Models.v5.Streams.Stream>> GetLiveStreamers()
         {
-            var livestreamers = new List<Models.Helix.Streams.Stream>();
+            var livestreamers = new List<Models.v5.Streams.Stream>();
 
-            var resultset = await _api.Streams.helix.GetStreamsAsync(userIds: _channelIds.Select(x => x.ToString()).ToList(), first: _channelIds.Count);
-            livestreamers = resultset.Streams.Where(x => x.Type == "live").ToList();
+            var resultset = await _api.Streams.v5.GetLiveStreamsAsync(_channelIds.Select(x => x.ToString()).ToList(), limit: 100);
+
+            livestreamers.AddRange(resultset.Streams.ToList());
+
+            var pages = (int)Math.Ceiling((double)resultset.Total / 100);
+            for (var i = 1; i < pages; i++)
+            {
+                resultset = await _api.Streams.v5.GetLiveStreamsAsync(_channelIds.Select(x => x.ToString()).ToList(), limit: 100, offset: i * 100);
+                livestreamers.AddRange(resultset.Streams.ToList());
+            }
 
             return livestreamers;
         }
 
-        private async Task GetUserIdsAsync(IEnumerable<string> usernames)
+        private async Task GetUserIds(IEnumerable<string> usernames)
         {
             var usernamesToGet = usernames.Where(u => !_channelToId.Any(c => c.Key.Equals(u))).ToList();
             var pages = (usernamesToGet.Count + 100 - 1) / 100;
@@ -224,10 +227,10 @@ namespace TwitchLib.Api.Services
             for (var i = 0; i < pages; i++)
             {
                 var selectedSet = usernamesToGet.Skip(i * 100).Take(100).ToList();
-                var users = await _api.Users.helix.GetUsersAsync(logins: selectedSet);
+                var users = await _api.Users.v5.GetUsersByNameAsync(selectedSet);
 
-                foreach (var user in users.Users)
-                    _channelToId.TryAdd(user.DisplayName, user.Id);
+                foreach (var user in users.Matches)
+                    _channelToId.TryAdd(user.Name, user.Id);
             }
         }
     }

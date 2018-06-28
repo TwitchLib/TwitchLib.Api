@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.Helix.Videos
+namespace TwitchLib.Api.Models.Helix.Videos.GetVideos
 {
     public class Video
     {
