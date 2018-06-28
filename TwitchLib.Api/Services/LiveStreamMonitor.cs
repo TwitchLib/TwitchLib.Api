@@ -68,7 +68,7 @@ namespace TwitchLib.Api.Services
         /// <param name="invokeEventsOnStart">If checking the status on service start, optionally fire the OnStream Events (OnStreamOnline, OnStreamOffline, OnStreamUpdate)</param>
         public LiveStreamMonitor(ITwitchAPI api, int checkIntervalSeconds = 60, bool checkStatusOnStart = true, bool invokeEventsOnStart = false)
         {
-            _api = api;
+            _api = api ?? throw new ArgumentNullException(nameof(api));
             _channelIds = new List<string>();
             _statuses = new ConcurrentDictionary<string, Models.Helix.Streams.GetStreams.Stream>();
             _channelToId = new ConcurrentDictionary<string, string>();
@@ -88,10 +88,22 @@ namespace TwitchLib.Api.Services
 
             if (_checkStatusOnStart)
             {
-                _isStartup = true;
-                _checkOnlineStreams();
-                _isStartup = false;
+                Task.Run(() =>
+                {
+                    _isStartup = true;
+                    _checkOnlineStreams();
+                    _isStartup = false;
+
+                    OnInitialized();
+                });
+                return;
             }
+
+            OnInitialized();
+        }
+
+        private void OnInitialized()
+        {
             //Timer not started until initial check complete
             _streamMonitorTimer.Start();
             OnStreamMonitorStarted?.Invoke(this,
@@ -141,8 +153,7 @@ namespace TwitchLib.Api.Services
 
         private void _checkOnlineStreams()
         {
-
-            var liveStreamers = GetLiveStreamers().Result;
+            var liveStreamers = GetLiveStreamers().GetAwaiter().GetResult();
 
             foreach (var channel in _channelIds)
             {

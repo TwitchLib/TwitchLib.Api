@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
@@ -116,7 +117,7 @@ namespace TwitchLib.Api.Sections
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Follows_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                var optionalRequestBody = notifications.HasValue ? "{\"notifications\": " + notifications.Value + "}" : null;
+                var optionalRequestBody = notifications.HasValue ? "{\"notifications\": " + notifications.Value.ToString().ToLower() + "}" : null;
                 return Api.TwitchPutGenericAsync<Models.v5.Users.UserFollow>($"/users/{userId}/follows/channels/{channelId}", ApiVersion.v5, optionalRequestBody, accessToken: authToken);
             }
             #endregion
@@ -230,6 +231,60 @@ namespace TwitchLib.Api.Sections
             {
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("description", description) };
                 await Api.TwitchPutAsync("/users", ApiVersion.Helix, null, getParams, accessToken).ConfigureAwait(false);
+            }
+
+            public async Task<Models.Helix.Users.GetUserExtensions.GetUserExtensionsResponse> GetUserExtensionsAsync(string authToken = null)
+            {
+                return await Api.TwitchGetGenericAsync<Models.Helix.Users.GetUserExtensions.GetUserExtensionsResponse>("/users/extensions/list", ApiVersion.Helix, accessToken: authToken);
+            }
+
+            public async Task<Models.Helix.Users.GetUserActiveExtensions.GetUserActiveExtensionsResponse> GetUserActiveExtensionsAsync(string authToken = null)
+            {
+                return await Api.TwitchGetGenericAsync<Models.Helix.Users.GetUserActiveExtensions.GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, accessToken: authToken);
+            }
+
+            public async Task<Models.Helix.Users.GetUserActiveExtensions.GetUserActiveExtensionsResponse> UpdateUserExtensionsAsync(List<Models.Helix.Users.UpdateUserExtensions.ExtensionSlot> userExtensionStates, string authToken = null)
+            {
+                Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
+
+                Dictionary<string, Models.Helix.Users.UpdateUserExtensions.UserExtensionState> panels = new Dictionary<string, Models.Helix.Users.UpdateUserExtensions.UserExtensionState>();
+                Dictionary<string, Models.Helix.Users.UpdateUserExtensions.UserExtensionState> overlays = new Dictionary<string, Models.Helix.Users.UpdateUserExtensions.UserExtensionState>();
+                Dictionary<string, Models.Helix.Users.UpdateUserExtensions.UserExtensionState> components = new Dictionary<string, Models.Helix.Users.UpdateUserExtensions.UserExtensionState>();
+
+                foreach(var extension in userExtensionStates)
+                {
+                    switch(extension.Type)
+                    {
+                        case ExtensionType.Component:
+                            components.Add(extension.Slot, extension.UserExtensionState);
+                            break;
+                        case ExtensionType.Overlay:
+                            overlays.Add(extension.Slot, extension.UserExtensionState);
+                            break;
+                        case ExtensionType.Panel:
+                            panels.Add(extension.Slot, extension.UserExtensionState);
+                            break;
+                    }
+                }
+
+                JObject json = new JObject();
+                Models.Helix.Users.UpdateUserExtensions.Payload p = new Models.Helix.Users.UpdateUserExtensions.Payload();
+                if(panels.Count > 0)
+                {
+                    p.panel = panels;
+                }
+                if(overlays.Count > 0)
+                {
+                    p.overlay = overlays;
+                }
+                if(components.Count > 0)
+                {
+                    p.component = components;
+                }
+
+                json.Add(new JProperty("data", JObject.FromObject(p)));
+                string payload = json.ToString();
+                return await Api.TwitchPutGenericAsync<Models.Helix.Users.GetUserActiveExtensions.GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, payload, accessToken: authToken);
             }
         }
     }

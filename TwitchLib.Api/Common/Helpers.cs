@@ -70,66 +70,15 @@ namespace TwitchLib.Api.Common
                     return "analytics:read:extensions";
                 case AuthScopes.Helix_Bits_Read:
                     return "bits:read";
+                case AuthScopes.Helix_User_Edit_Broadcast:
+                    return "user:edit:broadcast";
+                case AuthScopes.Helix_User_Read_Broadcast:
+                    return "user:read:broadcast";
                 default:
                     return "";
             }
         }
-
-        public static AuthScopes StringToScope(string scope)
-        {
-            switch (scope)
-            {
-                case "user_read":
-                    return AuthScopes.User_Read;
-                case "user_blocks_edit":
-                    return AuthScopes.User_Blocks_Edit;
-                case "user_blocks_read":
-                    return AuthScopes.User_Blocks_Read;
-                case "user_follows_edit":
-                    return AuthScopes.User_Follows_Edit;
-                case "channel_read":
-                    return AuthScopes.Channel_Read;
-                case "channel_commercial":
-                    return AuthScopes.Channel_Commercial;
-                case "channel_stream":
-                    return AuthScopes.Channel_Subscriptions;
-                case "channel_subscriptions":
-                    return AuthScopes.Channel_Subscriptions;
-                case "user_subscriptions":
-                    return AuthScopes.User_Subscriptions;
-                case "channel_check_subscription":
-                    return AuthScopes.Channel_Check_Subscription;
-                case "chat_login":
-                    return AuthScopes.Chat_Login;
-                case "channel_feed_read":
-                    return AuthScopes.Channel_Feed_Read;
-                case "channel_feed_edit":
-                    return AuthScopes.Channel_Feed_Edit;
-                case "collections_edit":
-                    return AuthScopes.Collections_Edit;
-                case "communities_edit":
-                    return AuthScopes.Communities_Edit;
-                case "communities_moderate":
-                    return AuthScopes.Communities_Moderate;
-                case "viewing_activity_read":
-                    return AuthScopes.Viewing_Activity_Read;
-                case "user:edit":
-                    return AuthScopes.Helix_User_Edit;
-                case "user:read:email":
-                    return AuthScopes.Helix_User_Read_Email;
-                case "clips:edit":
-                    return AuthScopes.Helix_Clips_Edit;
-                case "analytics:read:games":
-                    return AuthScopes.Helix_Analytics_Read_Games;
-                case "analytics:read:extensions":
-                    return AuthScopes.Helix_Analytics_Read_Extensions;
-                case "bits:read":
-                    return AuthScopes.Helix_Bits_Read;
-                default:
-                    throw new Exception("Unknown scope");
-            }
-        }
-
+        
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
