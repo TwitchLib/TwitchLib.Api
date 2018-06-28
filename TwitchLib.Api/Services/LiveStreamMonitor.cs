@@ -164,7 +164,7 @@ namespace TwitchLib.Api.Services
                     if (_statuses[channel] != null)
                     {
                         List<string> channelID = new List<string> { _statuses[channel].Id };
-                        var userObject = _api.Users.helix.GetUsersAsync(channelID).Result.Users.First();
+                        var userObject = (await _api.Users.helix.GetUsersAsync(channelID)).Users.First();
                         var channelName = userObject.DisplayName;
                         //have gone offline
 
@@ -180,7 +180,7 @@ namespace TwitchLib.Api.Services
                 else
                 {
                     List<string> channelID = new List<string> { _statuses[channel].Id };
-                    var userObject = _api.Users.helix.GetUsersAsync(channelID).Result.Users.First();
+                    var userObject = (await _api.Users.helix.GetUsersAsync(channelID)).Users.First();
                     var channelName = userObject.DisplayName;
                     //online
                     if (_statuses[channel] == null)
