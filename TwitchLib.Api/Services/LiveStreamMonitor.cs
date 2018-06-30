@@ -58,6 +58,8 @@ namespace TwitchLib.Api.Services
         public event EventHandler<OnStreamMonitorEndedArgs> OnStreamMonitorEnded;
         /// <summary>Event fires when channels to monitor are intitialized.</summary>
         public event EventHandler<OnStreamsSetArgs> OnStreamsSet;
+        /// <summary>Event fires when timer ticks.</summary>
+        public event EventHandler<OnStreamMonitorTimerTickArgs> OnStreamMonitorTimerTick;
         #endregion
 
         /// <summary>Service constructor.</summary>
@@ -149,6 +151,8 @@ namespace TwitchLib.Api.Services
 
         private async void CheckForOnlineStreamChangesAsync(object sender, ElapsedEventArgs e)
         {
+            OnStreamMonitorTimerTick?.Invoke(this,
+                new OnStreamMonitorTimerTickArgs { CheckIntervalSeconds = CheckIntervalSeconds });
             await CheckForOnlineStreamChangesAsync();
         }
 
