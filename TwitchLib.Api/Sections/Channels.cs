@@ -365,7 +365,15 @@ namespace TwitchLib.Api.Sections
                 if (communityIds == null || communityIds.Count == 0) { throw new BadParameterException("The no community ids where specified"); }
                 if (communityIds != null && communityIds.Count > 3) { throw new BadParameterException("You can only set up to 3 communities"); }
                 if (communityIds.Any(string.IsNullOrWhiteSpace)) { throw new BadParameterException("One or more of the community ids is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                string payload = $"{{community_ids:[{string.Join(",", communityIds)}]}}";
+                string payload = "";
+                foreach(var communityId in communityIds)
+                {
+                    if (payload == "")
+                        payload = $"\"{communityId}\"";
+                    else
+                        payload += $", \"{communityId}\"";
+                }
+                payload = $"{{\"community_ids\": [{payload}]}}";
                 await Api.TwitchPutAsync($"/channels/{channelId}/communities", ApiVersion.v5, payload, accessToken: authToken).ConfigureAwait(false);
             }
             #endregion
