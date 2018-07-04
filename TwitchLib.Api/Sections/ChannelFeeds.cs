@@ -309,13 +309,12 @@ namespace TwitchLib.Api.Sections
 
                 if (string.IsNullOrWhiteSpace(commentId))
                 {
-                    throw new BadParameterException( "The comment id is not valid for fetching channel feed post comments. It is not allowed to be null, empty or filled with whitespaces.");
+                    throw new BadParameterException("The comment id is not valid for fetching channel feed post comments. It is not allowed to be null, empty or filled with whitespaces.");
                 }
 
                 if (string.IsNullOrWhiteSpace(emoteId))
                 {
-                    throw new BadParameterException(
-                        "The emote id is not valid for posting a channel feed post comment reaction. It is not allowed to be null, empty or filled with whitespaces.");
+                    throw new BadParameterException("The emote id is not valid for posting a channel feed post comment reaction. It is not allowed to be null, empty or filled with whitespaces.");
                 }
 
                 var getParams = new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("emote_id", emoteId)};

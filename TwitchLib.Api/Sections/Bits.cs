@@ -26,9 +26,7 @@ namespace TwitchLib.Api.Sections
 
             #region GetBitsLeaderboard
 
-            public Task<Models.Helix.Bits.GetBitsLeaderboardResponse> GetBitsLeaderboardAsync(int count = 10,
-                BitsLeaderboardPeriodEnum period = BitsLeaderboardPeriodEnum.All, DateTime? startedAt = null,
-                string userid = null, string accessToken = null)
+            public Task<Models.Helix.Bits.GetBitsLeaderboardResponse> GetBitsLeaderboardAsync(int count = 10, BitsLeaderboardPeriodEnum period = BitsLeaderboardPeriodEnum.All, DateTime? startedAt = null, string userid = null, string accessToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Helix_Bits_Read, accessToken);
                 List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
@@ -57,8 +55,7 @@ namespace TwitchLib.Api.Sections
                 if (userid != null)
                     getParams.Add(new KeyValuePair<string, string>("user_id", userid));
 
-                return Api.TwitchGetGenericAsync<Models.Helix.Bits.GetBitsLeaderboardResponse>("/bits/leaderboard",
-                    ApiVersion.Helix, getParams);
+                return Api.TwitchGetGenericAsync<Models.Helix.Bits.GetBitsLeaderboardResponse>("/bits/leaderboard", ApiVersion.Helix, getParams);
             }
 
             #endregion

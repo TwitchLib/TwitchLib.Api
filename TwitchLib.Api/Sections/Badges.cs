@@ -25,13 +25,10 @@ namespace TwitchLib.Api.Sections
             {
                 if (string.IsNullOrWhiteSpace(channelId))
                 {
-                    throw new BadParameterException(
-                        "The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                    throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
                 }
 
-                return Api.TwitchGetGenericAsync<Models.v5.Badges.ChannelDisplayBadges>(
-                    $"/v1/badges/channels/{channelId}/display", Enums.ApiVersion.v5,
-                    customBase: "https://badges.twitch.tv");
+                return Api.TwitchGetGenericAsync<Models.v5.Badges.ChannelDisplayBadges>($"/v1/badges/channels/{channelId}/display", Enums.ApiVersion.v5, customBase: "https://badges.twitch.tv");
             }
 
             #endregion
@@ -40,8 +37,7 @@ namespace TwitchLib.Api.Sections
 
             public Task<GlobalBadgesResponse> GetGlobalBadgesAsync()
             {
-                return Api.TwitchGetGenericAsync<Models.v5.Badges.GlobalBadgesResponse>("/v1/badges/global/display",
-                    Enums.ApiVersion.v5, customBase: "https://badges.twitch.tv");
+                return Api.TwitchGetGenericAsync<Models.v5.Badges.GlobalBadgesResponse>("/v1/badges/global/display", Enums.ApiVersion.v5, customBase: "https://badges.twitch.tv");
             }
 
             #endregion

@@ -34,20 +34,17 @@ namespace TwitchLib.Api.Sections
 
                 if (string.IsNullOrWhiteSpace(refreshToken))
                 {
-                    throw new BadParameterException(
-                        "The refresh token is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                    throw new BadParameterException("The refresh token is not valid. It is not allowed to be null, empty or filled with whitespaces.");
                 }
 
                 if (string.IsNullOrWhiteSpace(clientSecret))
                 {
-                    throw new BadParameterException(
-                        "The client secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                    throw new BadParameterException("The client secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
                 }
 
                 if (string.IsNullOrWhiteSpace(internalClientId))
                 {
-                    throw new BadParameterException(
-                        "The clientId is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                    throw new BadParameterException("The clientId is not valid. It is not allowed to be null, empty or filled with whitespaces.");
                 }
 
                 var getParams = new List<KeyValuePair<string, string>>
