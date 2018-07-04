@@ -23,7 +23,7 @@ namespace TwitchLib.Api.Exceptions
         public TooManyRequestsException(string data, string resetTime)
             : base(data)
         {
-            if(Double.TryParse(resetTime, out var time))
+            if(double.TryParse(resetTime, out var time))
             {
                 Data.Add("Ratelimit-Reset", time);
             }
