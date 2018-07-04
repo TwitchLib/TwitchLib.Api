@@ -252,7 +252,7 @@ namespace TwitchLib.Api.Sections
                 }
 
                 string payload = "{\"cover_image\": \"" + @coverImage + "\"}";
-                Api.TwitchPostAsync($"/communities/{communityId}/images/cover", ApiVersion.v5, payload,
+                return Api.TwitchPostAsync($"/communities/{communityId}/images/cover", ApiVersion.v5, payload,
                     accessToken: authToken);
             }
 
