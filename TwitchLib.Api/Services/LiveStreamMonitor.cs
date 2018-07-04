@@ -214,8 +214,8 @@ namespace TwitchLib.Api.Services
         private async Task<List<Models.Helix.Streams.Stream>> GetLiveStreamersAsync()
         {
             var livestreamers = new List<Models.Helix.Streams.Stream>();
-            int pages = _channelIds.Count - 1 / 100 + 1;
-            for (int i = 0; i < pages; i++)
+            var pages = _channelIds.Count - 1 / 100 + 1;
+            for (var i = 0; i < pages; i++)
             {
                 var selectedSet = _channelIds.Skip(i * 100).Take(100).ToList();
                 var resultset = await _api.Streams.helix.GetStreamsAsync(userIds: selectedSet.Select(x => x.ToString()).ToList(), first: 100);
