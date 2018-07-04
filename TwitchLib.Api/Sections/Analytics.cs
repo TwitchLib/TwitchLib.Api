@@ -12,6 +12,7 @@ namespace TwitchLib.Api.Sections
         {
             helix = new HelixApi(api);
         }
+
         public HelixApi helix { get; }
 
         public class HelixApi : ApiSection
@@ -19,27 +20,37 @@ namespace TwitchLib.Api.Sections
             public HelixApi(TwitchAPI api) : base(api)
             {
             }
+
             #region GetGameAnalytics
-            public Task<Models.Helix.Analytics.GetGameAnalyticsResponse> GetGameAnalyticsAsync(string gameId = null, string authToken = null)
+
+            public Task<Models.Helix.Analytics.GetGameAnalyticsResponse> GetGameAnalyticsAsync(string gameId = null,
+                string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Helix_Analytics_Read_Games, authToken);
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (gameId != null)
                     getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
 
-                return Api.TwitchGetGenericAsync<Models.Helix.Analytics.GetGameAnalyticsResponse>("/analytics/games", ApiVersion.Helix, getParams, authToken);
+                return Api.TwitchGetGenericAsync<Models.Helix.Analytics.GetGameAnalyticsResponse>("/analytics/games",
+                    ApiVersion.Helix, getParams, authToken);
             }
+
             #endregion
+
             #region GetExtensionAnalytics
-            public Task<Models.Helix.Analytics.GetExtensionAnalyticsResponse> GetExtensionAnalyticsAsync(string extensionId, string authToken = null)
+
+            public Task<Models.Helix.Analytics.GetExtensionAnalyticsResponse> GetExtensionAnalyticsAsync(
+                string extensionId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Helix_Analytics_Read_Extensions, authToken);
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (extensionId != null)
                     getParams.Add(new KeyValuePair<string, string>("extension_id", extensionId));
 
-                return Api.TwitchGetGenericAsync<Models.Helix.Analytics.GetExtensionAnalyticsResponse>("/analytics/extensions", ApiVersion.Helix, getParams, authToken);
+                return Api.TwitchGetGenericAsync<Models.Helix.Analytics.GetExtensionAnalyticsResponse>(
+                    "/analytics/extensions", ApiVersion.Helix, getParams, authToken);
             }
+
             #endregion
         }
     }

@@ -17,15 +17,16 @@ namespace TwitchLib.Api.Sections
             public V5Api(TwitchAPI api) : base(api)
             {
             }
+
             #region GetRoot
 
             public Task<Models.v5.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
             {
-                return Api.TwitchGetGenericAsync<Models.v5.Root.Root>("", ApiVersion.v5, accessToken: authToken, clientId: clientId);
+                return Api.TwitchGetGenericAsync<Models.v5.Root.Root>("", ApiVersion.v5, accessToken: authToken,
+                    clientId: clientId);
             }
 
             #endregion
         }
-
     }
 }

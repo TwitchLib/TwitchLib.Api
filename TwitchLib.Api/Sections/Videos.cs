@@ -24,15 +24,27 @@ namespace TwitchLib.Api.Sections
             public V5Api(TwitchAPI api) : base(api)
             {
             }
+
             #region GetVideo
+
             public Task<Models.v5.Videos.Video> GetVideoAsync(string videoId)
             {
-                if (string.IsNullOrWhiteSpace(videoId)) { throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(videoId))
+                {
+                    throw new BadParameterException(
+                        "The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                }
+
                 return Api.TwitchGetGenericAsync<Models.v5.Videos.Video>($"/videos/{videoId}", ApiVersion.v5);
             }
+
             #endregion
+
             #region GetTopVideos
-            public Task<Models.v5.Videos.TopVideos> GetTopVideosAsync(int? limit = null, int? offset = null, string game = null, string period = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
+
+            public Task<Models.v5.Videos.TopVideos> GetTopVideosAsync(int? limit = null, int? offset = null,
+                string game = null, string period = null, List<string> broadcastType = null,
+                List<string> language = null, string sort = null)
             {
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (limit.HasValue)
@@ -48,12 +60,22 @@ namespace TwitchLib.Api.Sections
                     var isCorrect = false;
                     foreach (var entry in broadcastType)
                     {
-                        if (entry == "archive" || entry == "highlight" || entry == "upload") { isCorrect = true; }
-                        else { isCorrect = false; break; }
+                        if (entry == "archive" || entry == "highlight" || entry == "upload")
+                        {
+                            isCorrect = true;
+                        }
+                        else
+                        {
+                            isCorrect = false;
+                            break;
+                        }
                     }
+
                     if (isCorrect)
-                        getParams.Add(new KeyValuePair<string, string>("broadcast_type", string.Join(",", broadcastType)));
+                        getParams.Add(new KeyValuePair<string, string>("broadcast_type",
+                            string.Join(",", broadcastType)));
                 }
+
                 if (language != null && language.Count > 0)
                     getParams.Add(new KeyValuePair<string, string>("language", string.Join(",", language)));
                 if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
@@ -61,9 +83,14 @@ namespace TwitchLib.Api.Sections
 
                 return Api.TwitchGetGenericAsync<Models.v5.Videos.TopVideos>("/videos/top", ApiVersion.v5, getParams);
             }
+
             #endregion
+
             #region GetFollowedVideos
-            public Task<Models.v5.Videos.FollowedVideos> GetFollowedVideosAsync(int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null, string authToken = null)
+
+            public Task<Models.v5.Videos.FollowedVideos> GetFollowedVideosAsync(int? limit = null, int? offset = null,
+                List<string> broadcastType = null, List<string> language = null, string sort = null,
+                string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Read, authToken);
                 var getParams = new List<KeyValuePair<string, string>>();
@@ -76,35 +103,62 @@ namespace TwitchLib.Api.Sections
                     var isCorrect = false;
                     foreach (var entry in broadcastType)
                     {
-                        if (entry == "archive" || entry == "highlight" || entry == "upload") { isCorrect = true; }
-                        else { isCorrect = false; break; }
+                        if (entry == "archive" || entry == "highlight" || entry == "upload")
+                        {
+                            isCorrect = true;
+                        }
+                        else
+                        {
+                            isCorrect = false;
+                            break;
+                        }
                     }
+
                     if (isCorrect)
-                        getParams.Add(new KeyValuePair<string, string>("broadcast_type", string.Join(",", broadcastType)));
+                        getParams.Add(new KeyValuePair<string, string>("broadcast_type",
+                            string.Join(",", broadcastType)));
                 }
+
                 if (language != null && language.Count > 0)
                     getParams.Add(new KeyValuePair<string, string>("language", string.Join(",", language)));
                 if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
                     getParams.Add(new KeyValuePair<string, string>("sort", sort));
 
-                return Api.TwitchGetGenericAsync<Models.v5.Videos.FollowedVideos>("/videos/followed", ApiVersion.v5, getParams, authToken);
+                return Api.TwitchGetGenericAsync<Models.v5.Videos.FollowedVideos>("/videos/followed", ApiVersion.v5,
+                    getParams, authToken);
             }
+
             #endregion
+
             #region UploadVideo
-            public async Task<Models.v5.UploadVideo.UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Viewable viewable = Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
+
+            public async Task<Models.v5.UploadVideo.UploadedVideo> UploadVideoAsync(string channelId, string videoPath,
+                string title, string description, string game, string language = "en", string tagList = "",
+                Viewable viewable = Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, accessToken);
-                var listing = await CreateVideoAsync(channelId, title, description, game, language, tagList, viewable, viewableAt);
+                var listing = await CreateVideoAsync(channelId, title, description, game, language, tagList, viewable,
+                    viewableAt);
                 UploadVideoParts(videoPath, listing.Upload);
                 await CompleteVideoUploadAsync(listing.Upload, accessToken);
                 return listing.Video;
             }
+
             #endregion
+
             #region UpdateVideo
-            public Task<Models.v5.Videos.Video> UpdateVideoAsync(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
+
+            public Task<Models.v5.Videos.Video> UpdateVideoAsync(string videoId, string description = null,
+                string game = null, string language = null, string tagList = null, string title = null,
+                string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
-                if (string.IsNullOrWhiteSpace(videoId)) { throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(videoId))
+                {
+                    throw new BadParameterException(
+                        "The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                }
+
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrWhiteSpace(description))
                     getParams.Add(new KeyValuePair<string, string>("description", description));
@@ -117,20 +171,32 @@ namespace TwitchLib.Api.Sections
                 if (!string.IsNullOrWhiteSpace(title))
                     getParams.Add(new KeyValuePair<string, string>("title", title));
 
-                return Api.TwitchPutGenericAsync<Models.v5.Videos.Video>($"/videos/{videoId}", ApiVersion.v5, null, getParams, authToken);
+                return Api.TwitchPutGenericAsync<Models.v5.Videos.Video>($"/videos/{videoId}", ApiVersion.v5, null,
+                    getParams, authToken);
             }
+
             #endregion
+
             #region DeleteVideo
-            public async Task DeleteVideoAsync(string videoId, string authToken = null)
+
+            public Task DeleteVideoAsync(string videoId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
-                if (string.IsNullOrWhiteSpace(videoId)) { throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.TwitchDeleteAsync($"/videos/{videoId}", ApiVersion.v5, accessToken: authToken).ConfigureAwait(false);
+                if (string.IsNullOrWhiteSpace(videoId))
+                {
+                    throw new BadParameterException(
+                        "The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                }
+
+                return Api.TwitchDeleteAsync($"/videos/{videoId}", ApiVersion.v5, accessToken: authToken);
             }
+
             #endregion
 
 
-            private Task<Models.v5.UploadVideo.UploadVideoListing> CreateVideoAsync(string channelId, string title, string description = null, string game = null, string language = "en", string tagList = "", Viewable viewable = Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
+            private Task<Models.v5.UploadVideo.UploadVideoListing> CreateVideoAsync(string channelId, string title,
+                string description = null, string game = null, string language = "en", string tagList = "",
+                Viewable viewable = Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
             {
                 var getParams = new List<KeyValuePair<string, string>>
                 {
@@ -152,7 +218,8 @@ namespace TwitchLib.Api.Sections
                 // Should do it?
                 if (viewableAt.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("viewable_at", viewableAt.Value.ToRfc3339String()));
-                return Api.TwitchPostGenericAsync<Models.v5.UploadVideo.UploadVideoListing>("/videos", ApiVersion.v5, null, getParams, accessToken);
+                return Api.TwitchPostGenericAsync<Models.v5.UploadVideo.UploadVideoListing>("/videos", ApiVersion.v5,
+                    null, getParams, accessToken);
             }
 
             private const long MAX_VIDEO_SIZE = 10737418240;
@@ -160,10 +227,12 @@ namespace TwitchLib.Api.Sections
             private void UploadVideoParts(string videoPath, Models.v5.UploadVideo.Upload upload)
             {
                 if (!File.Exists(videoPath))
-                    throw new BadParameterException($"The provided path for a video upload does not appear to be value: {videoPath}");
+                    throw new BadParameterException(
+                        $"The provided path for a video upload does not appear to be value: {videoPath}");
                 var videoInfo = new FileInfo(videoPath);
                 if (videoInfo.Length >= MAX_VIDEO_SIZE)
-                    throw new BadParameterException($"The provided file was too large (larger than 10gb). File size: {videoInfo.Length}");
+                    throw new BadParameterException(
+                        $"The provided file was too large (larger than 10gb). File size: {videoInfo.Length}");
 
                 const long size24Mb = 25165824;
                 var fileSize = videoInfo.Length;
@@ -180,13 +249,14 @@ namespace TwitchLib.Api.Sections
                             if (currentPart == parts)
                             {
                                 chunk = new byte[finalChunkSize];
-                                fs.Read(chunk, 0, (int)finalChunkSize);
+                                fs.Read(chunk, 0, (int) finalChunkSize);
                             }
                             else
                             {
                                 chunk = new byte[size24Mb];
-                                fs.Read(chunk, 0, (int)size24Mb);
+                                fs.Read(chunk, 0, (int) size24Mb);
                             }
+
                             Api.PutBytes($"{upload.Url}?part={currentPart}&upload_token={upload.Token}", chunk);
                             System.Threading.Thread.Sleep(1000);
                         }
@@ -200,9 +270,10 @@ namespace TwitchLib.Api.Sections
                 }
             }
 
-            private async Task CompleteVideoUploadAsync(Models.v5.UploadVideo.Upload upload, string accessToken)
+            private Task CompleteVideoUploadAsync(Models.v5.UploadVideo.Upload upload, string accessToken)
             {
-                await Api.TwitchPostAsync(null, ApiVersion.v5, null, accessToken: accessToken, customBase: $"{upload.Url}/complete?upload_token={upload.Token}");
+                return Api.TwitchPostAsync(null, ApiVersion.v5, null, accessToken: accessToken,
+                    customBase: $"{upload.Url}/complete?upload_token={upload.Token}");
             }
         }
 
@@ -211,14 +282,19 @@ namespace TwitchLib.Api.Sections
             public HelixApi(TwitchAPI api) : base(api)
             {
             }
-            public Task<Models.Helix.Videos.GetVideosResponse> GetVideoAsync(List<string> videoIds = null, string userId = null, string gameId = null, string after = null, string before = null, int first = 20, string language = null, Period period = Period.All, VideoSort sort = VideoSort.Time, VideoType type = VideoType.All)
+
+            public Task<Models.Helix.Videos.GetVideosResponse> GetVideoAsync(List<string> videoIds = null,
+                string userId = null, string gameId = null, string after = null, string before = null, int first = 20,
+                string language = null, Period period = Period.All, VideoSort sort = VideoSort.Time,
+                VideoType type = VideoType.All)
             {
                 if ((videoIds == null || videoIds.Count == 0) && userId == null && gameId == null)
                     throw new BadParameterException("VideoIds, userId, and gameId cannot all be null/empty.");
                 if (videoIds != null && videoIds.Count > 0 && userId != null ||
                     videoIds != null && videoIds.Count > 0 && gameId != null ||
                     userId != null && gameId != null)
-                    throw new BadParameterException("If videoIds are present, you may not use userid or gameid. If gameid is present, you may not use videoIds or userid. If userid is present, you may not use videoids or gameids.");
+                    throw new BadParameterException(
+                        "If videoIds are present, you may not use userid or gameid. If gameid is present, you may not use videoIds or userid. If userid is present, you may not use videoids or gameids.");
 
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (videoIds != null && videoIds.Count > 0)
@@ -238,7 +314,7 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
                     if (language != null)
                         getParams.Add(new KeyValuePair<string, string>("language", language));
-                    switch(period)
+                    switch (period)
                     {
                         case Period.All:
                             getParams.Add(new KeyValuePair<string, string>("period", "all"));
@@ -255,6 +331,7 @@ namespace TwitchLib.Api.Sections
                         default:
                             throw new ArgumentOutOfRangeException(nameof(period), period, null);
                     }
+
                     switch (sort)
                     {
                         case VideoSort.Time:
@@ -269,6 +346,7 @@ namespace TwitchLib.Api.Sections
                         default:
                             throw new ArgumentOutOfRangeException(nameof(sort), sort, null);
                     }
+
                     switch (type)
                     {
                         case VideoType.All:
@@ -288,7 +366,8 @@ namespace TwitchLib.Api.Sections
                     }
                 }
 
-                return Api.TwitchGetGenericAsync<Models.Helix.Videos.GetVideosResponse>("/videos", ApiVersion.Helix, getParams);
+                return Api.TwitchGetGenericAsync<Models.Helix.Videos.GetVideosResponse>("/videos", ApiVersion.Helix,
+                    getParams);
             }
         }
     }
