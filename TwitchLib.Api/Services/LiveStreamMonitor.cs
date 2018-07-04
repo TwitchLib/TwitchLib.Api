@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using TwitchLib.Api.Extensions.System;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Services.Events.LiveStreamMonitor;
 using TwitchLib.Api.Services.Exceptions;
@@ -57,6 +58,8 @@ namespace TwitchLib.Api.Services
         public event EventHandler<OnStreamMonitorEndedArgs> OnStreamMonitorEnded;
         /// <summary>Event fires when channels to monitor are intitialized.</summary>
         public event EventHandler<OnStreamsSetArgs> OnStreamsSet;
+        /// <summary>Event fires when timer ticks.</summary>
+        public event EventHandler<OnStreamMonitorTimerTickArgs> OnStreamMonitorTimerTick;
         #endregion
 
         /// <summary>Service constructor.</summary>
@@ -148,6 +151,8 @@ namespace TwitchLib.Api.Services
 
         private async void CheckForOnlineStreamChangesAsync(object sender, ElapsedEventArgs e)
         {
+            OnStreamMonitorTimerTick?.Invoke(this,
+                new OnStreamMonitorTimerTickArgs { CheckIntervalSeconds = CheckIntervalSeconds });
             await CheckForOnlineStreamChangesAsync();
         }
 
@@ -209,10 +214,13 @@ namespace TwitchLib.Api.Services
         private async Task<List<Models.Helix.Streams.Stream>> GetLiveStreamersAsync()
         {
             var livestreamers = new List<Models.Helix.Streams.Stream>();
-
-            var resultset = await _api.Streams.helix.GetStreamsAsync(userIds: _channelIds.Select(x => x.ToString()).ToList(), first: _channelIds.Count);
-            livestreamers = resultset.Streams.Where(x => x.Type == "live").ToList();
-
+            var pages = (_channelIds.Count + 100 - 1) / 100;
+            for (var i = 0; i < pages; i++)
+            {
+                var selectedSet = _channelIds.Skip(i * 100).Take(100).ToList();
+                var resultset = await _api.Streams.helix.GetStreamsAsync(userIds: selectedSet.Select(x => x.ToString()).ToList(), first: 100);
+                resultset?.Streams?.Where(x => x != null)?.Where(x => x.Type == "live")?.AddTo(livestreamers);
+            }
             return livestreamers;
         }
 
