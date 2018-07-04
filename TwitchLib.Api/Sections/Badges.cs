@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Models.v5.Badges;
 
 namespace TwitchLib.Api.Sections
 {
@@ -20,7 +21,7 @@ namespace TwitchLib.Api.Sections
 
             #region GetSubscriberBadgesForChannel
 
-            public Task<Models.v5.Badges.ChannelDisplayBadges> GetSubscriberBadgesForChannelAsync(string channelId)
+            public Task<ChannelDisplayBadges> GetSubscriberBadgesForChannelAsync(string channelId)
             {
                 if (string.IsNullOrWhiteSpace(channelId))
                 {
@@ -37,7 +38,7 @@ namespace TwitchLib.Api.Sections
 
             #region GetGlobalBadges
 
-            public Task<Models.v5.Badges.GlobalBadgesResponse> GetGlobalBadgesAsync()
+            public Task<GlobalBadgesResponse> GetGlobalBadgesAsync()
             {
                 return Api.TwitchGetGenericAsync<Models.v5.Badges.GlobalBadgesResponse>("/v1/badges/global/display",
                     Enums.ApiVersion.v5, customBase: "https://badges.twitch.tv");

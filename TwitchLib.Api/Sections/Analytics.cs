@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
+using TwitchLib.Api.Models.Helix.Analytics;
 
 namespace TwitchLib.Api.Sections
 {
@@ -23,8 +24,7 @@ namespace TwitchLib.Api.Sections
 
             #region GetGameAnalytics
 
-            public Task<Models.Helix.Analytics.GetGameAnalyticsResponse> GetGameAnalyticsAsync(string gameId = null,
-                string authToken = null)
+            public Task<GetGameAnalyticsResponse> GetGameAnalyticsAsync(string gameId = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Helix_Analytics_Read_Games, authToken);
                 var getParams = new List<KeyValuePair<string, string>>();
@@ -39,8 +39,7 @@ namespace TwitchLib.Api.Sections
 
             #region GetExtensionAnalytics
 
-            public Task<Models.Helix.Analytics.GetExtensionAnalyticsResponse> GetExtensionAnalyticsAsync(
-                string extensionId, string authToken = null)
+            public Task<GetExtensionAnalyticsResponse> GetExtensionAnalyticsAsync(string extensionId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Helix_Analytics_Read_Extensions, authToken);
                 var getParams = new List<KeyValuePair<string, string>>();

@@ -26,12 +26,10 @@ namespace TwitchLib.Api.Sections
             {
                 if (string.IsNullOrWhiteSpace(channelId))
                 {
-                    throw new BadParameterException(
-                        "The channel id is not valid for catching the channel badges. It is not allowed to be null, empty or filled with whitespaces.");
+                    throw new BadParameterException("The channel id is not valid for catching the channel badges. It is not allowed to be null, empty or filled with whitespaces.");
                 }
 
-                return Api.TwitchGetGenericAsync<Models.v5.Chat.ChannelBadges>($"/chat/{channelId}/badges",
-                    ApiVersion.v5);
+                return Api.TwitchGetGenericAsync<Models.v5.Chat.ChannelBadges>($"/chat/{channelId}/badges", ApiVersion.v5);
             }
 
             #endregion
@@ -46,8 +44,7 @@ namespace TwitchLib.Api.Sections
                     {
                         new KeyValuePair<string, string>("emotesets", string.Join(",", emotesets))
                     };
-                return Api.TwitchGetGenericAsync<Models.v5.Chat.EmoteSet>("/chat/emoticon_images", ApiVersion.v5,
-                    getParams);
+                return Api.TwitchGetGenericAsync<Models.v5.Chat.EmoteSet>("/chat/emoticon_images", ApiVersion.v5, getParams);
             }
 
             #endregion
@@ -63,12 +60,10 @@ namespace TwitchLib.Api.Sections
 
             #region GetChatRoomsByChannel 
 
-            public Task<Models.v5.Chat.ChatRoomsByChannelResponse> GetChatRoomsByChannelAsync(string channelId,
-                string authToken = null)
+            public Task<Models.v5.Chat.ChatRoomsByChannelResponse> GetChatRoomsByChannelAsync(string channelId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Any, authToken);
-                return Api.TwitchGetGenericAsync<Models.v5.Chat.ChatRoomsByChannelResponse>($"/chat/{channelId}/rooms",
-                    ApiVersion.v5, accessToken: authToken);
+                return Api.TwitchGetGenericAsync<Models.v5.Chat.ChatRoomsByChannelResponse>($"/chat/{channelId}/rooms", ApiVersion.v5, accessToken: authToken);
             }
 
             #endregion

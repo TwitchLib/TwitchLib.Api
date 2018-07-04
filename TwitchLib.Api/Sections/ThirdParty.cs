@@ -28,7 +28,9 @@ namespace TwitchLib.Api.Sections
             public usernameChangeApi(TwitchAPI api) : base(api)
             {
             }
+
             #region GetUsernameChanges
+
             public Task<List<Models.ThirdParty.UsernameChange.UsernameChangeListing>> GetUsernameChangesAsync(string username)
             {
                 var getParams = new List<KeyValuePair<string, string>>
@@ -38,6 +40,7 @@ namespace TwitchLib.Api.Sections
                 };
                 return Api.GetGenericAsync<List<Models.ThirdParty.UsernameChange.UsernameChangeListing>>("https://twitch-tools.rootonline.de/username_changelogs_search.php", getParams, null, ApiVersion.Void);
             }
+
             #endregion
         }
 
@@ -46,6 +49,7 @@ namespace TwitchLib.Api.Sections
             public modLookupApi(TwitchAPI api) : base(api)
             {
             }
+
             public Task<Models.ThirdParty.ModLookup.ModLookupResponse> GetChannelsModdedForByNameAsync(string username, int offset = 0, int limit = 100, bool useTls12 = true)
             {
                 if (useTls12)
@@ -136,14 +140,14 @@ namespace TwitchLib.Api.Sections
                 if (ping.Success)
                 {
                     _pingTimer.Stop();
-                    OnUserAuthorizationDetected?.Invoke(null, new OnUserAuthorizationDetectedArgs { Id = ping.Id, Scopes = ping.Scopes, Token = ping.Token, Username = ping.Username, Refresh = ping.Refresh });
+                    OnUserAuthorizationDetected?.Invoke(null, new OnUserAuthorizationDetectedArgs {Id = ping.Id, Scopes = ping.Scopes, Token = ping.Token, Username = ping.Username, Refresh = ping.Refresh});
                 }
                 else
                 {
                     if (ping.Error == 3) return;
 
                     _pingTimer.Stop();
-                    OnError?.Invoke(null, new OnAuthorizationFlowErrorArgs { Error = ping.Error, Message = ping.Message });
+                    OnError?.Invoke(null, new OnAuthorizationFlowErrorArgs {Error = ping.Error, Message = ping.Message});
                 }
             }
         }

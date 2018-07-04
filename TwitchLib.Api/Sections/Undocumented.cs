@@ -48,29 +48,24 @@ namespace TwitchLib.Api.Sections
                 new KeyValuePair<string, string>("offset_seconds", offsetSeconds.ToString())
             };
             const string rechatResource = "https://rechat.twitch.tv/rechat-messages";
-            return await Api
-                .GetGenericAsync<Models.Undocumented.ClipChat.GetClipChatResponse>(rechatResource, getParams)
-                .ConfigureAwait(false);
+            return await Api.GetGenericAsync<Models.Undocumented.ClipChat.GetClipChatResponse>(rechatResource, getParams).ConfigureAwait(false);
         }
 
         #endregion
 
         #region GetComments
 
-        public Task<Models.Undocumented.Comments.CommentsPage> GetCommentsPageAsync(string videoId,
-            int? contentOffsetSeconds = null, string cursor = null)
+        public Task<Models.Undocumented.Comments.CommentsPage> GetCommentsPageAsync(string videoId, int? contentOffsetSeconds = null, string cursor = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
             if (string.IsNullOrWhiteSpace(videoId))
             {
-                throw new BadParameterException(
-                    "The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             }
 
             if (contentOffsetSeconds.HasValue)
             {
-                getParams.Add(new KeyValuePair<string, string>("content_offset_seconds",
-                    contentOffsetSeconds.Value.ToString()));
+                getParams.Add(new KeyValuePair<string, string>("content_offset_seconds", contentOffsetSeconds.Value.ToString()));
             }
 
             if (cursor != null)
@@ -78,8 +73,7 @@ namespace TwitchLib.Api.Sections
                 getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
             }
 
-            return Api.GetGenericAsync<Models.Undocumented.Comments.CommentsPage>(
-                $"https://api.twitch.tv/kraken/videos/{videoId}/comments", getParams);
+            return Api.GetGenericAsync<Models.Undocumented.Comments.CommentsPage>($"https://api.twitch.tv/kraken/videos/{videoId}/comments", getParams);
         }
 
         public async Task<List<Models.Undocumented.Comments.CommentsPage>> GetAllCommentsAsync(string videoId)
@@ -100,8 +94,7 @@ namespace TwitchLib.Api.Sections
         public Task<Models.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers> GetTwitchPrimeOffersAsync()
         {
             var getParams = new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("on_site", "1")};
-            return Api.GetGenericAsync<Models.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers>(
-                "https://api.twitch.tv/api/premium/offers", getParams);
+            return Api.GetGenericAsync<Models.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers>("https://api.twitch.tv/api/premium/offers", getParams);
         }
 
         #endregion
@@ -115,8 +108,7 @@ namespace TwitchLib.Api.Sections
                 new KeyValuePair<string, string>("include_logins", "1"),
                 new KeyValuePair<string, string>("target", channelId)
             };
-            return Api.TwitchGetGenericAsync<Models.Undocumented.Hosting.ChannelHostsResponse>("hosts",
-                Enums.ApiVersion.v5, getParams, customBase: "https://tmi.twitch.tv/");
+            return Api.TwitchGetGenericAsync<Models.Undocumented.Hosting.ChannelHostsResponse>("hosts", Enums.ApiVersion.v5, getParams, customBase: "https://tmi.twitch.tv/");
         }
 
         #endregion
@@ -125,8 +117,7 @@ namespace TwitchLib.Api.Sections
 
         public Task<Models.Undocumented.ChatProperties.ChatProperties> GetChatPropertiesAsync(string channelName)
         {
-            return Api.GetGenericAsync<Models.Undocumented.ChatProperties.ChatProperties>(
-                $"https://api.twitch.tv/api/channels/{channelName}/chat_properties");
+            return Api.GetGenericAsync<Models.Undocumented.ChatProperties.ChatProperties>($"https://api.twitch.tv/api/channels/{channelName}/chat_properties");
         }
 
         #endregion
@@ -135,8 +126,7 @@ namespace TwitchLib.Api.Sections
 
         public Task<Models.Undocumented.ChannelPanels.Panel[]> GetChannelPanelsAsync(string channelName)
         {
-            return Api.GetGenericAsync<Models.Undocumented.ChannelPanels.Panel[]>(
-                $"https://api.twitch.tv/api/channels/{channelName}/panels");
+            return Api.GetGenericAsync<Models.Undocumented.ChannelPanels.Panel[]>($"https://api.twitch.tv/api/channels/{channelName}/panels");
         }
 
         #endregion
@@ -159,8 +149,7 @@ namespace TwitchLib.Api.Sections
                 new KeyValuePair<string, string>("limit", limit.ToString()),
                 new KeyValuePair<string, string>("offset", offset.ToString())
             };
-            return Api.GetGenericAsync<Models.Undocumented.CSStreams.CSStreams>("https://api.twitch.tv/api/cs",
-                getParams);
+            return Api.GetGenericAsync<Models.Undocumented.CSStreams.CSStreams>("https://api.twitch.tv/api/cs", getParams);
         }
 
         #endregion
@@ -169,8 +158,7 @@ namespace TwitchLib.Api.Sections
 
         public Task<Models.Undocumented.RecentMessages.RecentMessagesResponse> GetRecentMessagesAsync(string channelId)
         {
-            return Api.GetGenericAsync<Models.Undocumented.RecentMessages.RecentMessagesResponse>(
-                $"https://tmi.twitch.tv/api/rooms/{channelId}/recent_messages");
+            return Api.GetGenericAsync<Models.Undocumented.RecentMessages.RecentMessagesResponse>($"https://tmi.twitch.tv/api/rooms/{channelId}/recent_messages");
         }
 
         #endregion
@@ -179,19 +167,13 @@ namespace TwitchLib.Api.Sections
 
         public async Task<List<Models.Undocumented.Chatters.ChatterFormatted>> GetChattersAsync(string channelName)
         {
-            var resp = await Api.GetGenericAsync<Models.Undocumented.Chatters.ChattersResponse>(
-                $"https://tmi.twitch.tv/group/user/{channelName.ToLower()}/chatters");
+            var resp = await Api.GetGenericAsync<Models.Undocumented.Chatters.ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName.ToLower()}/chatters");
 
-            var chatters = resp.Chatters.Staff.Select(chatter =>
-                new Models.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Staff)).ToList();
-            chatters.AddRange(resp.Chatters.Admins.Select(chatter =>
-                new Models.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Admin)));
-            chatters.AddRange(resp.Chatters.GlobalMods.Select(chatter =>
-                new Models.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.GlobalModerator)));
-            chatters.AddRange(resp.Chatters.Moderators.Select(chatter =>
-                new Models.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Moderator)));
-            chatters.AddRange(resp.Chatters.Viewers.Select(chatter =>
-                new Models.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Viewer)));
+            var chatters = resp.Chatters.Staff.Select(chatter => new Models.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Staff)).ToList();
+            chatters.AddRange(resp.Chatters.Admins.Select(chatter => new Models.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Admin)));
+            chatters.AddRange(resp.Chatters.GlobalMods.Select(chatter => new Models.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.GlobalModerator)));
+            chatters.AddRange(resp.Chatters.Moderators.Select(chatter => new Models.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Moderator)));
+            chatters.AddRange(resp.Chatters.Viewers.Select(chatter => new Models.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Viewer)));
 
             foreach (var chatter in chatters)
                 if (string.Equals(chatter.Username, channelName, StringComparison.CurrentCultureIgnoreCase))
@@ -206,23 +188,19 @@ namespace TwitchLib.Api.Sections
 
         public Task<Models.Undocumented.RecentEvents.RecentEvents> GetRecentChannelEventsAsync(string channelId)
         {
-            return Api.GetGenericAsync<Models.Undocumented.RecentEvents.RecentEvents>(
-                $"https://api.twitch.tv/bits/channels/{channelId}/events/recent");
+            return Api.GetGenericAsync<Models.Undocumented.RecentEvents.RecentEvents>($"https://api.twitch.tv/bits/channels/{channelId}/events/recent");
         }
 
         #endregion
 
         #region GetChatUser
 
-        public Task<Models.Undocumented.ChatUser.ChatUserResponse> GetChatUserAsync(string userId,
-            string channelId = null)
+        public Task<Models.Undocumented.ChatUser.ChatUserResponse> GetChatUserAsync(string userId, string channelId = null)
         {
             if (channelId != null)
-                return Api.GetGenericAsync<Models.Undocumented.ChatUser.ChatUserResponse>(
-                    $"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}");
+                return Api.GetGenericAsync<Models.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}");
 
-            return Api.GetGenericAsync<Models.Undocumented.ChatUser.ChatUserResponse>(
-                $"https://api.twitch.tv/kraken/users/{userId}/chat/");
+            return Api.GetGenericAsync<Models.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/");
         }
 
         #endregion
@@ -231,10 +209,8 @@ namespace TwitchLib.Api.Sections
 
         public Task<bool> IsUsernameAvailableAsync(string username)
         {
-            var getParams =
-                new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("users_service", "true")};
-            var resp = Api.RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}", "HEAD",
-                getParams);
+            var getParams = new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("users_service", "true")};
+            var resp = Api.RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}", "HEAD", getParams);
             switch (resp)
             {
                 case 200:
@@ -242,8 +218,7 @@ namespace TwitchLib.Api.Sections
                 case 204:
                     return Task.FromResult(true);
                 default:
-                    throw new BadResourceException(
-                        "Unexpected response from resource. Expecting response code 200 or 204, received: " + resp);
+                    throw new BadResourceException("Unexpected response from resource. Expecting response code 200 or 204, received: " + resp);
             }
         }
 
@@ -253,8 +228,7 @@ namespace TwitchLib.Api.Sections
 
         public Task<GetChannelExtensionDataResponse> GetChannelExtensionDataAsync(string channelId)
         {
-            return Api.TwitchGetGenericAsync<GetChannelExtensionDataResponse>($"/channels/{channelId}/extensions",
-                Enums.ApiVersion.v5, customBase: "https://api.twitch.tv/v5");
+            return Api.TwitchGetGenericAsync<GetChannelExtensionDataResponse>($"/channels/{channelId}/extensions", Enums.ApiVersion.v5, customBase: "https://api.twitch.tv/v5");
         }
 
         #endregion

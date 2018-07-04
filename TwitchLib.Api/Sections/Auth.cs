@@ -28,8 +28,7 @@ namespace TwitchLib.Api.Sections
             /// <para>Throws a BadRequest Exception if the request fails due to a bad refresh token</para>
             /// </summary>
             /// <returns>A RefreshResponse object that holds your new auth and refresh token and the list of scopes for that token</returns>
-            public Task<Models.v5.Auth.RefreshResponse> RefreshAuthTokenAsync(string refreshToken, string clientSecret,
-                string clientId = null)
+            public Task<Models.v5.Auth.RefreshResponse> RefreshAuthTokenAsync(string refreshToken, string clientSecret, string clientId = null)
             {
                 var internalClientId = clientId ?? Api.Settings.ClientId;
 
@@ -59,8 +58,7 @@ namespace TwitchLib.Api.Sections
                     new KeyValuePair<string, string>("client_secret", clientSecret)
                 };
 
-                return Api.TwitchPostGenericAsync<Models.v5.Auth.RefreshResponse>("/oauth2/token", ApiVersion.v5, null,
-                    getParams, customBase: "https://id.twitch.tv");
+                return Api.TwitchPostGenericAsync<Models.v5.Auth.RefreshResponse>("/oauth2/token", ApiVersion.v5, null, getParams, customBase: "https://id.twitch.tv");
             }
 
             #endregion

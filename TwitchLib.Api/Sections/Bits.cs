@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Extensions.System;
+using TwitchLib.Api.Models.v5.Bits;
 
 namespace TwitchLib.Api.Sections
 {
@@ -71,7 +72,7 @@ namespace TwitchLib.Api.Sections
 
             #region GetCheermotes
 
-            public Task<Models.v5.Bits.Cheermotes> GetCheermotesAsync(string channelId = null)
+            public Task<Cheermotes> GetCheermotesAsync(string channelId = null)
             {
                 List<KeyValuePair<string, string>> getParams = null;
                 if (channelId != null)
@@ -79,7 +80,7 @@ namespace TwitchLib.Api.Sections
                     {
                         new KeyValuePair<string, string>("channel_id", channelId)
                     };
-                return Api.TwitchGetGenericAsync<Models.v5.Bits.Cheermotes>("/bits/actions", ApiVersion.v5, getParams);
+                return Api.TwitchGetGenericAsync<Cheermotes>("/bits/actions", ApiVersion.v5, getParams);
             }
 
             #endregion
