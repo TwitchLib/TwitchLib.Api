@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Models.Helix.Analytics;
@@ -31,7 +29,7 @@ namespace TwitchLib.Api.Sections
                 if (gameId != null)
                     getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
 
-                return Api.TwitchGetGenericAsync<Models.Helix.Analytics.GetGameAnalyticsResponse>("/analytics/games", ApiVersion.Helix, getParams, authToken);
+                return Api.TwitchGetGenericAsync<GetGameAnalyticsResponse>("/analytics/games", ApiVersion.Helix, getParams, authToken);
             }
 
             #endregion
@@ -45,7 +43,7 @@ namespace TwitchLib.Api.Sections
                 if (extensionId != null)
                     getParams.Add(new KeyValuePair<string, string>("extension_id", extensionId));
 
-                return Api.TwitchGetGenericAsync<Models.Helix.Analytics.GetExtensionAnalyticsResponse>("/analytics/extensions", ApiVersion.Helix, getParams, authToken);
+                return Api.TwitchGetGenericAsync<GetExtensionAnalyticsResponse>("/analytics/extensions", ApiVersion.Helix, getParams, authToken);
             }
 
             #endregion

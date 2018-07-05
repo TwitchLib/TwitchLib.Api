@@ -2,17 +2,18 @@
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Models.v5.Auth;
 
 namespace TwitchLib.Api.Sections
 {
     public class Auth
     {
-        public V5Api v5 { get; }
-
         public Auth(TwitchAPI api)
         {
             v5 = new V5Api(api);
         }
+
+        public V5Api v5 { get; }
 
         public class V5Api : ApiSection
         {
@@ -23,29 +24,20 @@ namespace TwitchLib.Api.Sections
             #region GetFreshToken
 
             /// <summary>
-            /// <para>[ASYNC] Refreshes an expired auth token</para>
-            /// <para>ATTENTION: Client Secret required. Never expose it to consumers!</para>
-            /// <para>Throws a BadRequest Exception if the request fails due to a bad refresh token</para>
+            ///     <para>[ASYNC] Refreshes an expired auth token</para>
+            ///     <para>ATTENTION: Client Secret required. Never expose it to consumers!</para>
+            ///     <para>Throws a BadRequest Exception if the request fails due to a bad refresh token</para>
             /// </summary>
             /// <returns>A RefreshResponse object that holds your new auth and refresh token and the list of scopes for that token</returns>
-            public Task<Models.v5.Auth.RefreshResponse> RefreshAuthTokenAsync(string refreshToken, string clientSecret, string clientId = null)
+            public Task<RefreshResponse> RefreshAuthTokenAsync(string refreshToken, string clientSecret, string clientId = null)
             {
                 var internalClientId = clientId ?? Api.Settings.ClientId;
 
-                if (string.IsNullOrWhiteSpace(refreshToken))
-                {
-                    throw new BadParameterException("The refresh token is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-                }
+                if (string.IsNullOrWhiteSpace(refreshToken)) throw new BadParameterException("The refresh token is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-                if (string.IsNullOrWhiteSpace(clientSecret))
-                {
-                    throw new BadParameterException("The client secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-                }
+                if (string.IsNullOrWhiteSpace(clientSecret)) throw new BadParameterException("The client secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-                if (string.IsNullOrWhiteSpace(internalClientId))
-                {
-                    throw new BadParameterException("The clientId is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-                }
+                if (string.IsNullOrWhiteSpace(internalClientId)) throw new BadParameterException("The clientId is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 var getParams = new List<KeyValuePair<string, string>>
                 {
@@ -55,7 +47,7 @@ namespace TwitchLib.Api.Sections
                     new KeyValuePair<string, string>("client_secret", clientSecret)
                 };
 
-                return Api.TwitchPostGenericAsync<Models.v5.Auth.RefreshResponse>("/oauth2/token", ApiVersion.v5, null, getParams, customBase: "https://id.twitch.tv");
+                return Api.TwitchPostGenericAsync<RefreshResponse>("/oauth2/token", ApiVersion.v5, null, getParams, customBase: "https://id.twitch.tv");
             }
 
             #endregion

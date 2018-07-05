@@ -2,6 +2,9 @@
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Models.Helix.Games.GetGames;
+using TwitchLib.Api.Models.Helix.Games.GetTopGames;
+using TwitchLib.Api.Models.v5.Games;
 
 namespace TwitchLib.Api.Sections
 {
@@ -24,7 +27,7 @@ namespace TwitchLib.Api.Sections
 
             #region GetTopGames
 
-            public Task<Models.v5.Games.TopGames> GetTopGamesAsync(int? limit = null, int? offset = null)
+            public Task<TopGames> GetTopGamesAsync(int? limit = null, int? offset = null)
             {
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (limit.HasValue)
@@ -32,7 +35,7 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-                return Api.TwitchGetGenericAsync<Models.v5.Games.TopGames>("/games/top", ApiVersion.v5, getParams);
+                return Api.TwitchGetGenericAsync<TopGames>("/games/top", ApiVersion.v5, getParams);
             }
 
             #endregion
@@ -46,7 +49,7 @@ namespace TwitchLib.Api.Sections
 
             #region GetGames
 
-            public Task<Models.Helix.Games.GetGames.GetGamesResponse> GetGamesAsync(List<string> gameIds = null, List<string> gameNames = null)
+            public Task<GetGamesResponse> GetGamesAsync(List<string> gameIds = null, List<string> gameNames = null)
             {
                 if (gameIds == null && gameNames == null || gameIds != null && gameIds.Count == 0 && gameNames == null || gameNames != null && gameNames.Count == 0 && gameIds == null)
                     throw new BadParameterException("Either gameIds or gameNames must have at least one value");
@@ -57,20 +60,25 @@ namespace TwitchLib.Api.Sections
 
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (gameIds != null && gameIds.Count > 0)
+                {
                     foreach (var gameId in gameIds)
                         getParams.Add(new KeyValuePair<string, string>("id", gameId));
+                }
+
                 if (gameNames != null && gameNames.Count > 0)
+                {
                     foreach (var gameName in gameNames)
                         getParams.Add(new KeyValuePair<string, string>("name", gameName));
+                }
 
-                return Api.TwitchGetGenericAsync<Models.Helix.Games.GetGames.GetGamesResponse>("/games", ApiVersion.Helix, getParams);
+                return Api.TwitchGetGenericAsync<GetGamesResponse>("/games", ApiVersion.Helix, getParams);
             }
 
             #endregion
 
             #region GetTopGames
 
-            public Task<Models.Helix.Games.GetTopGames.GetTopGamesResponse> GetTopGamesAsync(string before = null, string after = null, int first = 20)
+            public Task<GetTopGamesResponse> GetTopGamesAsync(string before = null, string after = null, int first = 20)
             {
                 if (first < 0 || first > 100)
                     throw new BadParameterException("'first' parameter must be between 1 (inclusive) and 100 (inclusive).");
@@ -82,7 +90,7 @@ namespace TwitchLib.Api.Sections
                 if (after != null)
                     getParams.Add(new KeyValuePair<string, string>("after", after));
 
-                return Api.TwitchGetGenericAsync<Models.Helix.Games.GetTopGames.GetTopGamesResponse>("/games/top", ApiVersion.Helix, getParams);
+                return Api.TwitchGetGenericAsync<GetTopGamesResponse>("/games/top", ApiVersion.Helix, getParams);
             }
 
             #endregion
