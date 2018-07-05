@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Models.Helix.Entitlements;
 
 namespace TwitchLib.Api.Sections
 {
@@ -21,14 +22,16 @@ namespace TwitchLib.Api.Sections
             {
             }
             #region CreateEntitlementGrantsUploadURL
-            public Task<Models.Helix.Entitlements.CreateEntitlementGrantsUploadURL.CreateEntitlementGrantsUploadURLResponse> CreateEntitlementGrantsUploadURL(string manifestId, Enums.EntitleGrantType type, string url = null, string applicationAccessToken = null)
+            public Task<CreateEntitlementGrantsUploadURLResponse> CreateEntitlementGrantsUploadURL(string manifestId, Enums.EntitleGrantType type, string url = null, string applicationAccessToken = null)
             {
                 if (manifestId == null)
                     throw new BadParameterException("manifestId cannot be null");
 
-                var getParams = new List<KeyValuePair<string, string>>();
-                getParams.Add(new KeyValuePair<string, string>("manifest_id", manifestId));
-                switch(type)
+                var getParams = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("manifest_id", manifestId)
+                };
+                switch (type)
                 {
                     case Enums.EntitleGrantType.BulkDropsGrant:
                         getParams.Add(new KeyValuePair<string, string>("type", "bulk_drops_grant"));
@@ -37,7 +40,7 @@ namespace TwitchLib.Api.Sections
                         throw new BadParameterException("Unknown entitlement grant type");
                 }
 
-                return Api.TwitchGetGenericAsync<Models.Helix.Entitlements.CreateEntitlementGrantsUploadURL.CreateEntitlementGrantsUploadURLResponse>("/entitlements/upload", ApiVersion.Helix, getParams);
+                return Api.TwitchGetGenericAsync<CreateEntitlementGrantsUploadURLResponse>("/entitlements/upload", ApiVersion.Helix, getParams);
             }
             #endregion
         }
