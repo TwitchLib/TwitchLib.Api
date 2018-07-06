@@ -30,10 +30,12 @@ namespace TwitchLib.Api.Sections
 
             public Task<StreamByUser> GetStreamByUserAsync(string channelId, string streamType = null)
             {
-                if (string.IsNullOrWhiteSpace(channelId)) throw new BadParameterException("The channel id is not valid for fetching streams. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(channelId))
+                    throw new BadParameterException("The channel id is not valid for fetching streams. It is not allowed to be null, empty or filled with whitespaces.");
 
                 var getParams = new List<KeyValuePair<string, string>>();
-                if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party")) getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));
+                if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
+                    getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));
 
                 return Api.TwitchGetGenericAsync<StreamByUser>($"/streams/{channelId}", ApiVersion.v5, getParams);
             }
@@ -70,6 +72,7 @@ namespace TwitchLib.Api.Sections
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (game != null)
                     getParams.Add(new KeyValuePair<string, string>("game", game));
+
                 return Api.TwitchGetGenericAsync<StreamsSummary>("/streams/summary", ApiVersion.v5, getParams);
             }
 

@@ -24,12 +24,12 @@ namespace TwitchLib.Api.Services
         private bool _checkingForNewFollowers;
 
         /// <summary>Property representing the number of followers to compare a fresh query against for new followers. Default: 1000.</summary>
-        public int CacheSize { get; set; } = 1000;
+        public int CacheSize { get; } = 1000;
         /// <summary>Property representing number of recent followers that service should request. Recommended: 25, increase for larger channels. MAX: 100, MINIMUM: 1</summary>
         /// <exception cref="BadQueryCountException">Throws BadQueryCountException if queryCount is larger than 100 or smaller than 1.</exception>
         public int QueryCount { get => _queryCount; set { if (value < 1 || value > 100) { throw new BadQueryCountException("Query count was smaller than 1 or exceeded 100"); } _queryCount = value; } }
         /// <summary>Property representing the cache where detected followers are stored and compared against</summary>
-        public Dictionary<string, List<IFollow>> FollowerCache { get; set; } = new Dictionary<string, List<IFollow>>();
+        public Dictionary<string, List<IFollow>> FollowerCache { get; } = new Dictionary<string, List<IFollow>>();
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get => _checkIntervalSeconds; set { _checkIntervalSeconds = value; _followerServiceTimer.Interval = value * 1000; } } 
 

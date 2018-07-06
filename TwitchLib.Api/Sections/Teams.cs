@@ -40,7 +40,8 @@ namespace TwitchLib.Api.Sections
 
             public Task<Team> GetTeamAsync(string teamName)
             {
-                if (string.IsNullOrWhiteSpace(teamName)) throw new BadParameterException("The team name is not valid for fetching teams. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(teamName))
+                    throw new BadParameterException("The team name is not valid for fetching teams. It is not allowed to be null, empty or filled with whitespaces.");
 
                 return Api.TwitchGetGenericAsync<Team>($"/teams/{teamName}", ApiVersion.v5);
             }

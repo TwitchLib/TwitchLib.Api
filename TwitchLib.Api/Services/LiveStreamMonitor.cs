@@ -66,7 +66,6 @@ namespace TwitchLib.Api.Services
         /// <exception cref="ArgumentNullException">If the provided api is null.</exception>
         /// <param name="api">Instance of the Twitch Api Interface.</param>
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api. Note: Lowering the number of seconds may increase the chance that you will hit rate limits.</param>
-        /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
         /// <param name="checkStatusOnStart">Checks the channel statuses on starting the service</param>
         /// <param name="invokeEventsOnStart">If checking the status on service start, optionally fire the OnStream Events (OnStreamOnline, OnStreamOffline, OnStreamUpdate)</param>
         public LiveStreamMonitor(ITwitchAPI api, int checkIntervalSeconds = 60, bool checkStatusOnStart = true, bool invokeEventsOnStart = false)
@@ -129,7 +128,7 @@ namespace TwitchLib.Api.Services
             GetUserIdsAsync(usernames).Wait();
 
             foreach (var item in _channelToId.Keys.Where(x => !usernames.Any(channelToId => channelToId.Equals(x))).ToList())
-                _channelToId.TryRemove(item, out string _);
+                _channelToId.TryRemove(item, out _);
 
             SetStreamsByUserId(_channelToId.Values.ToList());
         }
@@ -142,7 +141,7 @@ namespace TwitchLib.Api.Services
             _channelIds.ForEach(x => _statuses.TryAdd(x, null));
 
             foreach (var item in _statuses.Keys.Where(x => !_channelIds.Any(channelId => channelId.Equals(x))).ToList())
-                _statuses.TryRemove(item, out Models.Helix.Streams.Stream _);
+                _statuses.TryRemove(item, out _);
 
             OnStreamsSet?.Invoke(this,
                 new OnStreamsSetArgs { ChannelIds = ChannelIds, Channels = _channelToId, CheckIntervalSeconds = CheckIntervalSeconds });
@@ -168,8 +167,8 @@ namespace TwitchLib.Api.Services
                     //offline
                     if (_statuses[channel] != null)
                     {
-                        List<string> channelID = new List<string> { _statuses[channel].Id };
-                        var userObject = (await _api.Users.helix.GetUsersAsync(channelID)).Users.First();
+                        var channelId = new List<string> { _statuses[channel].Id };
+                        var userObject = (await _api.Users.helix.GetUsersAsync(channelId)).Users.First();
                         var channelName = userObject.DisplayName;
                         //have gone offline
 
@@ -184,8 +183,8 @@ namespace TwitchLib.Api.Services
                 }
                 else
                 {
-                    List<string> channelID = new List<string> { _statuses[channel].Id };
-                    var userObject = (await _api.Users.helix.GetUsersAsync(channelID)).Users.First();
+                    var channelId = new List<string> { _statuses[channel].Id };
+                    var userObject = (await _api.Users.helix.GetUsersAsync(channelId)).Users.First();
                     var channelName = userObject.DisplayName;
                     //online
                     if (_statuses[channel] == null)

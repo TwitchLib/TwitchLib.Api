@@ -32,6 +32,7 @@ namespace TwitchLib.Api.Sections
                 {
                     new KeyValuePair<string, string>("manifest_id", manifestId)
                 };
+
                 switch (type)
                 {
                     case EntitleGrantType.BulkDropsGrant:

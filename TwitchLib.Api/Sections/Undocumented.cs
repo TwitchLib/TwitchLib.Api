@@ -70,6 +70,7 @@ namespace TwitchLib.Api.Sections
         public Task<TwitchPrimeOffers> GetTwitchPrimeOffersAsync()
         {
             var getParams = new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("on_site", "1")};
+
             return Api.GetGenericAsync<TwitchPrimeOffers>("https://api.twitch.tv/api/premium/offers", getParams);
         }
 
@@ -84,6 +85,7 @@ namespace TwitchLib.Api.Sections
                 new KeyValuePair<string, string>("include_logins", "1"),
                 new KeyValuePair<string, string>("target", channelId)
             };
+
             return Api.TwitchGetGenericAsync<ChannelHostsResponse>("hosts", ApiVersion.v5, getParams, customBase: "https://tmi.twitch.tv/");
         }
 
@@ -173,10 +175,9 @@ namespace TwitchLib.Api.Sections
 
         public Task<ChatUserResponse> GetChatUserAsync(string userId, string channelId = null)
         {
-            if (channelId != null)
-                return Api.GetGenericAsync<ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}");
-
-            return Api.GetGenericAsync<ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/");
+            return Api.GetGenericAsync<ChatUserResponse>(channelId != null 
+                ? $"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}" 
+                : $"https://api.twitch.tv/kraken/users/{userId}/chat/");
         }
 
         #endregion
@@ -214,7 +215,8 @@ namespace TwitchLib.Api.Sections
         public Task<CommentsPage> GetCommentsPageAsync(string videoId, int? contentOffsetSeconds = null, string cursor = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
-            if (string.IsNullOrWhiteSpace(videoId)) throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+            if (string.IsNullOrWhiteSpace(videoId))
+                throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
             if (contentOffsetSeconds.HasValue) getParams.Add(new KeyValuePair<string, string>("content_offset_seconds", contentOffsetSeconds.Value.ToString()));
 

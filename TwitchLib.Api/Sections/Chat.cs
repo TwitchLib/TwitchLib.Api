@@ -25,7 +25,8 @@ namespace TwitchLib.Api.Sections
 
             public Task<ChannelBadges> GetChatBadgesByChannelAsync(string channelId)
             {
-                if (string.IsNullOrWhiteSpace(channelId)) throw new BadParameterException("The channel id is not valid for catching the channel badges. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(channelId))
+                    throw new BadParameterException("The channel id is not valid for catching the channel badges. It is not allowed to be null, empty or filled with whitespaces.");
 
                 return Api.TwitchGetGenericAsync<ChannelBadges>($"/chat/{channelId}/badges", ApiVersion.v5);
             }

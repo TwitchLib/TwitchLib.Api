@@ -1,30 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
-using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.HttpCallHandlers;
 using TwitchLib.Api.Interfaces;
-using TwitchLib.Api.Internal;
 using TwitchLib.Api.RateLimiter;
 using TwitchLib.Api.Sections;
-using System.Text;
 
 namespace TwitchLib.Api
 {
     public class TwitchAPI : ITwitchAPI
     {
-        private readonly ILogger<TwitchAPI> _logger;
         private readonly IHttpCallHandler _http;
         private readonly TwitchLibJsonSerializer _jsonSerializer;
         private readonly IRateLimiter _rateLimiter;
 
-        internal const string BaseV5 = "https://api.twitch.tv/kraken";
-        internal const string BaseHelix = "https://api.twitch.tv/helix";
+        private const string BaseV5 = "https://api.twitch.tv/kraken";
+        private const string BaseHelix = "https://api.twitch.tv/helix";
 
         public IApiSettings Settings { get; }
         public Analytics Analytics { get; }
@@ -54,11 +50,10 @@ namespace TwitchLib.Api
         /// <summary>
         /// Creates an Instance of the TwitchAPI Class.
         /// </summary>
-        /// <param name="logger">Instance Of Logger, otherwise no logging is used,  </param>
+        /// <param name="loggerFactory">Instance Of LoggerFactory, otherwise no logging is used,  </param>
         /// <param name="rateLimiter">Instance Of RateLimiter, otherwise no ratelimiter is used. </param>
         public TwitchAPI(ILoggerFactory loggerFactory = null, IRateLimiter rateLimiter = null, IHttpCallHandler http = null)
         {
-            _logger = loggerFactory?.CreateLogger<TwitchAPI>();
             _http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             _rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
             Analytics = new Analytics(this);
@@ -93,7 +88,7 @@ namespace TwitchLib.Api
         #region TwitchResources
         internal Task<T> TwitchGetGenericAsync<T>(string resource, ApiVersion api, List <KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
             
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
                 clientId = Settings.ClientId;
@@ -105,7 +100,7 @@ namespace TwitchLib.Api
 
         internal Task<string> TwitchDeleteAsync(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
                 clientId = Settings.ClientId;
@@ -117,7 +112,7 @@ namespace TwitchLib.Api
 
         internal Task<T> TwitchPostGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
                 clientId = Settings.ClientId;
@@ -129,7 +124,7 @@ namespace TwitchLib.Api
 
         internal Task<T> TwitchPostGenericModelAsync<T>(string resource, ApiVersion api, Models.RequestModel model, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, api: api, overrideUrl: customBase);
+            var url = ConstructResourceUrl(resource, api: api, overrideUrl: customBase);
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
                 clientId = Settings.ClientId;
@@ -141,7 +136,7 @@ namespace TwitchLib.Api
 
         internal Task<T> TwitchDeleteGenericAsync<T>(string resource, ApiVersion api, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, null, api, customBase);
+            var url = ConstructResourceUrl(resource, null, api, customBase);
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
                 clientId = Settings.ClientId;
@@ -153,7 +148,7 @@ namespace TwitchLib.Api
 
         internal Task<T> TwitchPutGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
                 clientId = Settings.ClientId;
@@ -165,7 +160,7 @@ namespace TwitchLib.Api
 
         internal Task<string> TwitchPutAsync(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
             
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
                 clientId = Settings.ClientId;
@@ -177,7 +172,7 @@ namespace TwitchLib.Api
 
         internal Task<KeyValuePair<int, string>> TwitchPostAsync(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
             
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
                 clientId = Settings.ClientId;
@@ -189,7 +184,7 @@ namespace TwitchLib.Api
 
         private string ConstructResourceUrl(string resource = null, List<KeyValuePair<string, string>> getParams = null, ApiVersion api = ApiVersion.v5, string overrideUrl = null)
         {
-            string url = "";
+            var url = "";
             if(overrideUrl == null)
             {
                 if (resource == null)
@@ -205,10 +200,7 @@ namespace TwitchLib.Api
                 }
             } else
             {
-                if (resource == null)
-                    url = overrideUrl;
-                else
-                    url = $"{overrideUrl}{resource}";
+                url = resource == null ? overrideUrl : $"{overrideUrl}{resource}";
             }
             if (getParams != null)
             {

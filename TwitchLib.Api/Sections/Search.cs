@@ -28,6 +28,7 @@ namespace TwitchLib.Api.Sections
                 {
                     new KeyValuePair<string, string>("query", encodedSearchQuery)
                 };
+
                 if (limit.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("limit", limit.Value.ToString()));
                 if (offset.HasValue)
@@ -42,8 +43,11 @@ namespace TwitchLib.Api.Sections
 
             public Task<SearchGames> SearchGamesAsync(string encodedSearchQuery, bool? live = null)
             {
-                var getParams = new List<KeyValuePair<string, string>>();
-                getParams.Add(new KeyValuePair<string, string>("query", encodedSearchQuery));
+                var getParams = new List<KeyValuePair<string, string>>
+                {
+                        new KeyValuePair<string, string>("query", encodedSearchQuery)
+                };
+
                 if (live.HasValue) getParams.Add(live.Value ? new KeyValuePair<string, string>("live", "true") : new KeyValuePair<string, string>("live", "false"));
 
                 return Api.TwitchGetGenericAsync<SearchGames>("/search/games", ApiVersion.v5, getParams);
@@ -59,6 +63,7 @@ namespace TwitchLib.Api.Sections
                 {
                     new KeyValuePair<string, string>("query", encodedSearchQuery)
                 };
+
                 if (limit.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("limit", limit.Value.ToString()));
                 if (offset.HasValue)

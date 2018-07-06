@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
 using TwitchLib.Api.Models.Helix.Users.GetUserActiveExtensions;
@@ -36,7 +37,8 @@ namespace TwitchLib.Api.Sections
 
             public Task<Models.v5.Users.Users> GetUsersByNameAsync(List<string> usernames)
             {
-                if (usernames == null || usernames.Count == 0) throw new BadParameterException("The username list is not valid. It is not allowed to be null or empty.");
+                if (usernames == null || usernames.Count == 0)
+                    throw new BadParameterException("The username list is not valid. It is not allowed to be null or empty.");
 
                 var getParams = new List<KeyValuePair<string, string>>
                 {
@@ -52,6 +54,7 @@ namespace TwitchLib.Api.Sections
             public Task<UserAuthed> GetUserAsync(string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Read, authToken);
+
                 return Api.TwitchGetGenericAsync<UserAuthed>("/user", ApiVersion.v5, accessToken: authToken);
             }
 
@@ -61,7 +64,8 @@ namespace TwitchLib.Api.Sections
 
             public Task<User> GetUserByIDAsync(string userId)
             {
-                if (string.IsNullOrWhiteSpace(userId)) throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(userId))
+                    throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 return Api.TwitchGetGenericAsync<User>($"/users/{userId}", ApiVersion.v5);
             }
@@ -72,7 +76,8 @@ namespace TwitchLib.Api.Sections
 
             public Task<Models.v5.Users.Users> GetUserByNameAsync(string username)
             {
-                if (string.IsNullOrEmpty(username)) throw new BadParameterException("The username is not valid.");
+                if (string.IsNullOrEmpty(username))
+                    throw new BadParameterException("The username is not valid.");
 
                 var getParams = new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("login", username)};
                 return Api.TwitchGetGenericAsync<Models.v5.Users.Users>("/users", ApiVersion.v5, getParams);
@@ -85,7 +90,8 @@ namespace TwitchLib.Api.Sections
             public Task<UserEmotes> GetUserEmotesAsync(string userId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Subscriptions, authToken);
-                if (string.IsNullOrWhiteSpace(userId)) throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(userId))
+                    throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 return Api.TwitchGetGenericAsync<UserEmotes>($"/users/{userId}/emotes", ApiVersion.v5, accessToken: authToken);
             }
@@ -97,9 +103,11 @@ namespace TwitchLib.Api.Sections
             public Task<Subscription> CheckUserSubscriptionByChannelAsync(string userId, string channelId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Subscriptions, authToken);
-                if (string.IsNullOrWhiteSpace(userId)) throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(userId))
+                    throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-                if (string.IsNullOrWhiteSpace(channelId)) throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(channelId))
+                    throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 return Api.TwitchGetGenericAsync<Subscription>($"/users/{userId}/subscriptions/{channelId}", ApiVersion.v5, accessToken: authToken);
             }
@@ -110,7 +118,8 @@ namespace TwitchLib.Api.Sections
 
             public Task<UserFollows> GetUserFollowsAsync(string userId, int? limit = null, int? offset = null, string direction = null, string sortby = null)
             {
-                if (string.IsNullOrWhiteSpace(userId)) throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(userId))
+                    throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (limit.HasValue)
@@ -131,9 +140,11 @@ namespace TwitchLib.Api.Sections
 
             public Task<UserFollow> CheckUserFollowsByChannelAsync(string userId, string channelId)
             {
-                if (string.IsNullOrWhiteSpace(userId)) throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(userId))
+                    throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-                if (string.IsNullOrWhiteSpace(channelId)) throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(channelId))
+                    throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 return Api.TwitchGetGenericAsync<UserFollow>($"/users/{userId}/follows/channels/{channelId}", ApiVersion.v5);
             }
@@ -144,9 +155,11 @@ namespace TwitchLib.Api.Sections
 
             public async Task<bool> UserFollowsChannelAsync(string userId, string channelId)
             {
-                if (string.IsNullOrWhiteSpace(userId)) throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(userId))
+                    throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-                if (string.IsNullOrWhiteSpace(channelId)) throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(channelId))
+                    throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 try
                 {
@@ -166,9 +179,11 @@ namespace TwitchLib.Api.Sections
             public Task<UserFollow> FollowChannelAsync(string userId, string channelId, bool? notifications = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Follows_Edit, authToken);
-                if (string.IsNullOrWhiteSpace(userId)) throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(userId))
+                    throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-                if (string.IsNullOrWhiteSpace(channelId)) throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(channelId))
+                    throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 var optionalRequestBody = notifications.HasValue ? "{\"notifications\": " + notifications.Value.ToString().ToLower() + "}" : null;
                 return Api.TwitchPutGenericAsync<UserFollow>($"/users/{userId}/follows/channels/{channelId}", ApiVersion.v5, optionalRequestBody, accessToken: authToken);
@@ -181,9 +196,11 @@ namespace TwitchLib.Api.Sections
             public Task UnfollowChannelAsync(string userId, string channelId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Follows_Edit, authToken);
-                if (string.IsNullOrWhiteSpace(userId)) throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(userId))
+                    throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-                if (string.IsNullOrWhiteSpace(channelId)) throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(channelId))
+                    throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 return Api.TwitchDeleteAsync($"/users/{userId}/follows/channels/{channelId}", ApiVersion.v5, accessToken: authToken);
             }
@@ -195,7 +212,8 @@ namespace TwitchLib.Api.Sections
             public Task<UserBlocks> GetUserBlockListAsync(string userId, int? limit = null, int? offset = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Blocks_Read, authToken);
-                if (string.IsNullOrWhiteSpace(userId)) throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(userId))
+                    throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (limit.HasValue)
@@ -213,9 +231,11 @@ namespace TwitchLib.Api.Sections
             public Task<UserBlock> BlockUserAsync(string sourceUserId, string targetUserId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Blocks_Edit, authToken);
-                if (string.IsNullOrWhiteSpace(sourceUserId)) throw new BadParameterException("The source user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(sourceUserId))
+                    throw new BadParameterException("The source user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-                if (string.IsNullOrWhiteSpace(targetUserId)) throw new BadParameterException("The target user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(targetUserId))
+                    throw new BadParameterException("The target user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 return Api.TwitchPutGenericAsync<UserBlock>($"/users/{sourceUserId}/blocks/{targetUserId}", ApiVersion.v5, null, accessToken: authToken);
             }
@@ -227,9 +247,11 @@ namespace TwitchLib.Api.Sections
             public Task UnblockUserAsync(string sourceUserId, string targetUserId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Blocks_Edit, authToken);
-                if (string.IsNullOrWhiteSpace(sourceUserId)) throw new BadParameterException("The source user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(sourceUserId))
+                    throw new BadParameterException("The source user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-                if (string.IsNullOrWhiteSpace(targetUserId)) throw new BadParameterException("The target user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(targetUserId))
+                    throw new BadParameterException("The target user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 return Api.TwitchDeleteAsync($"/users/{sourceUserId}/blocks/{targetUserId}", ApiVersion.v5, accessToken: authToken);
             }
@@ -243,7 +265,8 @@ namespace TwitchLib.Api.Sections
             public Task CreateUserConnectionToViewerHeartbeatServiceAsync(string identifier, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Viewing_Activity_Read, authToken);
-                if (string.IsNullOrWhiteSpace(identifier)) throw new BadParameterException("The identifier is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(identifier))
+                    throw new BadParameterException("The identifier is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 var payload = "{\"identifier\": \"" + identifier + "\"}";
                 return Api.TwitchPutAsync("/user/vhs", ApiVersion.v5, payload, accessToken: authToken);
@@ -256,6 +279,7 @@ namespace TwitchLib.Api.Sections
             public Task<VHSConnectionCheck> CheckUserConnectionToViewerHeartbeatServiceAsync(string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Read, authToken);
+
                 return Api.TwitchGetGenericAsync<VHSConnectionCheck>("/user/vhs", ApiVersion.v5, accessToken: authToken);
             }
 
@@ -266,6 +290,7 @@ namespace TwitchLib.Api.Sections
             public Task DeleteUserConnectionToViewerHeartbeatServicechStreamsAsync(string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Viewing_Activity_Read, authToken);
+
                 return Api.TwitchDeleteAsync("/user/vhs", ApiVersion.v5, accessToken: authToken);
             }
 
@@ -322,6 +347,7 @@ namespace TwitchLib.Api.Sections
                 {
                     new KeyValuePair<string, string>("description", description)
                 };
+
                 return Api.TwitchPutAsync("/users", ApiVersion.Helix, null, getParams, accessToken);
             }
 
@@ -335,7 +361,7 @@ namespace TwitchLib.Api.Sections
                 return Api.TwitchGetGenericAsync<GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, accessToken: authToken);
             }
 
-            public Task<GetUserActiveExtensionsResponse> UpdateUserExtensionsAsync(List<ExtensionSlot> userExtensionStates, string authToken = null)
+            public Task<GetUserActiveExtensionsResponse> UpdateUserExtensionsAsync(IEnumerable<ExtensionSlot> userExtensionStates, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
 
@@ -355,18 +381,25 @@ namespace TwitchLib.Api.Sections
                         case ExtensionType.Panel:
                             panels.Add(extension.Slot, extension.UserExtensionState);
                             break;
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(ExtensionType));
                     }
 
                 var json = new JObject();
                 var p = new Payload();
-                if (panels.Count > 0) p.panel = panels;
 
-                if (overlays.Count > 0) p.overlay = overlays;
+                if (panels.Count > 0)
+                    p.panel = panels;
 
-                if (components.Count > 0) p.component = components;
+                if (overlays.Count > 0)
+                    p.overlay = overlays;
+
+                if (components.Count > 0)
+                    p.component = components;
 
                 json.Add(new JProperty("data", JObject.FromObject(p)));
                 var payload = json.ToString();
+
                 return Api.TwitchPutGenericAsync<GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, payload, accessToken: authToken);
             }
         }
