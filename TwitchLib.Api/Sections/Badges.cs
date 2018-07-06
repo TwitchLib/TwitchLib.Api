@@ -1,16 +1,18 @@
 ﻿using System.Threading.Tasks;
+using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Models.v5.Badges;
 
 namespace TwitchLib.Api.Sections
 {
     public class Badges
     {
-        public V5Api v5 { get; }
-
         public Badges(TwitchAPI api)
         {
             v5 = new V5Api(api);
         }
+
+        public V5Api v5 { get; }
 
         public class V5Api : ApiSection
         {
@@ -19,18 +21,23 @@ namespace TwitchLib.Api.Sections
             }
 
             #region GetSubscriberBadgesForChannel
-            public Task<Models.v5.Badges.ChannelDisplayBadges> GetSubscriberBadgesForChannelAsync(string channelId)
+
+            public Task<ChannelDisplayBadges> GetSubscriberBadgesForChannelAsync(string channelId)
             {
-                if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return Api.TwitchGetGenericAsync<Models.v5.Badges.ChannelDisplayBadges>($"/v1/badges/channels/{channelId}/display", Enums.ApiVersion.v5, customBase: "https://badges.twitch.tv");
+                if (string.IsNullOrWhiteSpace(channelId)) throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+
+                return Api.TwitchGetGenericAsync<ChannelDisplayBadges>($"/v1/badges/channels/{channelId}/display", ApiVersion.v5, customBase: "https://badges.twitch.tv");
             }
+
             #endregion
 
             #region GetGlobalBadges
-            public Task<Models.v5.Badges.GlobalBadgesResponse> GetGlobalBadgesAsync()
+
+            public Task<GlobalBadgesResponse> GetGlobalBadgesAsync()
             {
-                return Api.TwitchGetGenericAsync<Models.v5.Badges.GlobalBadgesResponse>("/v1/badges/global/display", Enums.ApiVersion.v5, customBase: "https://badges.twitch.tv");
+                return Api.TwitchGetGenericAsync<GlobalBadgesResponse>("/v1/badges/global/display", ApiVersion.v5, customBase: "https://badges.twitch.tv");
             }
+
             #endregion
         }
     }

@@ -17,6 +17,7 @@ namespace TwitchLib.Api.Sections
             public V5Api(TwitchAPI api) : base(api)
             {
             }
+
             #region GetRoot
 
             public Task<Models.v5.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
@@ -26,6 +27,5 @@ namespace TwitchLib.Api.Sections
 
             #endregion
         }
-
     }
 }
