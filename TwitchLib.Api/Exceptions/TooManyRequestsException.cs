@@ -7,13 +7,6 @@ namespace TwitchLib.Api.Exceptions
     public sealed class TooManyRequestsException : Exception
     {
         /// <inheritdoc />
-        /// <summary>Exception constructor</summary>
-        public TooManyRequestsException(string data)
-            : base(data)
-        {
-        }
-
-        /// <inheritdoc />
         /// <summary>
         /// Constructor that allows a reset time to be added
         /// </summary>
