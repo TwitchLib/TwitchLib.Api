@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace TwitchLib.Api
             if (string.IsNullOrEmpty(clientId) && string.IsNullOrEmpty(accessToken))
                 throw new InvalidCredentialException("A Client-Id or OAuth token is required to use the Twitch API. If you previously set them in InitializeAsync, please be sure to await the method.");
 
-            if (!string.IsNullOrEmpty(clientId) )
+            if (!string.IsNullOrEmpty(clientId))
             {
                 request.Headers.Add("Client-ID", clientId);
             }
@@ -69,10 +70,10 @@ namespace TwitchLib.Api
                 request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
 
 
-            var response =  _http.SendAsync(request).GetAwaiter().GetResult();
+            var response = _http.SendAsync(request).GetAwaiter().GetResult();
             if (response.IsSuccessStatusCode)
             {
-                string respStr =  response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                string respStr = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 return new KeyValuePair<int, string>((int)response.StatusCode, respStr);
             }
 
@@ -101,7 +102,7 @@ namespace TwitchLib.Api
             var response = _http.SendAsync(request).GetAwaiter().GetResult();
             return (int)response.StatusCode;
         }
-        
+
         private void HandleWebException(HttpResponseMessage errorResp)
         {
             switch (errorResp.StatusCode)
@@ -119,7 +120,8 @@ namespace TwitchLib.Api
                 case (HttpStatusCode)422:
                     throw new NotPartneredException("The resource you requested is only available to channels that have been partnered by Twitch.");
                 case (HttpStatusCode)429:
-                    throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made");
+                    errorResp.Headers.TryGetValues("Ratelimit-Reset", out var resetTime);
+                    throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made", resetTime.FirstOrDefault());
                 case HttpStatusCode.BadGateway:
                     throw new BadGatewayException("The API answered with a 502 Bad Gateway. Please retry your request");
                 case HttpStatusCode.GatewayTimeout:
