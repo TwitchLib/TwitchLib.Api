@@ -214,12 +214,12 @@ namespace TwitchLib.Api.Services
         private async Task<List<Models.Helix.Streams.Stream>> GetLiveStreamersAsync()
         {
             var livestreamers = new List<Models.Helix.Streams.Stream>();
-            var pages = (_channelIds.Count + 100 - 1) / 100;
+            var pages = _channelIds.Count - 1 / 100 + 1;
             for (var i = 0; i < pages; i++)
             {
                 var selectedSet = _channelIds.Skip(i * 100).Take(100).ToList();
                 var resultset = await _api.Streams.helix.GetStreamsAsync(userIds: selectedSet.Select(x => x.ToString()).ToList(), first: 100);
-                resultset?.Streams?.Where(x => x != null)?.Where(x => x.Type == "live")?.AddTo(livestreamers);
+                resultset?.Streams?.Where(x => x != null).Where(x => x.Type == "live").AddTo(livestreamers);
             }
             return livestreamers;
         }
