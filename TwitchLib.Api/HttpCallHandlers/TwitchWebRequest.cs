@@ -122,7 +122,8 @@ namespace TwitchLib.Api
                 case HttpStatusCode.NotFound:
                     throw new BadResourceException("The resource you tried to access was not valid.");
                 case (HttpStatusCode)429:
-                    throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made");
+                    var resetTime = errorResp.Headers.Get("Ratelimit-Reset");
+                    throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made", resetTime);
                 case (HttpStatusCode)422:
                     throw new NotPartneredException("The resource you requested is only available to channels that have been partnered by Twitch.");
                 default:
