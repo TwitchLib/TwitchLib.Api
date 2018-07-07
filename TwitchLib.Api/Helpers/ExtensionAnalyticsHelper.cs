@@ -10,19 +10,19 @@ namespace TwitchLib.Api.Helpers
 {
     public static class ExtensionAnalyticsHelper
     {
-        public async static Task<List<ExtensionAnalytics>> HandleURLAsync(string url)
+        public static async Task<List<ExtensionAnalytics>> HandleURLAsync(string url)
         {
             List<ExtensionAnalytics> results = new List<ExtensionAnalytics>();
 
-            var cnts = await getContentsAsync(url);
-            var data = extractData(cnts);
+            var cnts = await GetContentsAsync(url);
+            var data = ExtractData(cnts);
             foreach (var line in data)
                 results.Add(new ExtensionAnalytics(line));
 
             return results;
         }
 
-        private static List<string> extractData(string[] cnts)
+        private static List<string> ExtractData(string[] cnts)
         {
             List<string> results = new List<string>();
             foreach (string line in cnts)
@@ -32,7 +32,7 @@ namespace TwitchLib.Api.Helpers
             return results;
         }
 
-        private async static Task<string[]> getContentsAsync(string url)
+        private static async Task<string[]> GetContentsAsync(string url)
         {
             var client = new HttpClient();
             string[] lines = (await client.GetStringAsync(url)).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
