@@ -22,6 +22,7 @@ namespace TwitchLib.Api
 
         internal const string BaseV5 = "https://api.twitch.tv/kraken";
         internal const string BaseHelix = "https://api.twitch.tv/helix";
+        internal const string BaseOauthToken = "https://id.twitch.tv/oauth2/token";
 
         public ApiBase(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
@@ -76,14 +77,38 @@ namespace TwitchLib.Api
         }
 
 
+        internal string GetAccessToken(string accessToken = null)
+        {
+            if (!string.IsNullOrEmpty(accessToken))
+                return accessToken;
+            if (!string.IsNullOrEmpty(_settings.AccessToken))
+                return _settings.AccessToken;
+            if (!string.IsNullOrEmpty(_settings.Secret) && !string.IsNullOrEmpty(_settings.ClientId) && !_settings.SkipAutoServerTokenGeneration)
+                return GenerateServerBasedAccessToken();
+
+            return null;
+        }
+
+        internal string GenerateServerBasedAccessToken()
+        {
+            var result = _http.GeneralRequest($"{BaseOauthToken}?client_id={_settings.ClientId}&client_secret={_settings.Secret}&grant_type=client_credentials", "POST", null, ApiVersion.Helix, _settings.ClientId, null);
+            if (result.Key == 200)
+            {
+                dynamic user = JsonConvert.DeserializeObject<dynamic>(result.Value);
+                var offset = (int)user.expires_in;
+                return (string)user.access_token;
+            }
+            return null;
+        }
+
         internal Task<T> TwitchGetGenericAsync<T>(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             string url = ConstructResourceUrl(resource, getParams, api, customBase);
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
                 clientId = _settings.ClientId;
-            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(_settings.AccessToken))
-                accessToken = _settings.AccessToken;
+
+            accessToken = GetAccessToken(accessToken);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
@@ -94,8 +119,8 @@ namespace TwitchLib.Api
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
                 clientId = _settings.ClientId;
-            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(_settings.AccessToken))
-                accessToken = _settings.AccessToken;
+
+            accessToken = GetAccessToken(accessToken);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => _http.GeneralRequest(url, "DELETE", null, api, clientId, accessToken).Value).ConfigureAwait(false));
         }
@@ -106,8 +131,8 @@ namespace TwitchLib.Api
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
                 clientId = _settings.ClientId;
-            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(_settings.AccessToken))
-                accessToken = _settings.AccessToken;
+
+            accessToken = GetAccessToken(accessToken);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "POST", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
@@ -118,8 +143,8 @@ namespace TwitchLib.Api
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
                 clientId = _settings.ClientId;
-            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(_settings.AccessToken))
-                accessToken = _settings.AccessToken;
+
+            accessToken = GetAccessToken(accessToken);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "POST", model != null ? _jsonSerializer.SerializeObject(model) : "", api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
@@ -130,8 +155,8 @@ namespace TwitchLib.Api
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
                 clientId = _settings.ClientId;
-            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(_settings.AccessToken))
-                accessToken = _settings.AccessToken;
+
+            accessToken = GetAccessToken(accessToken);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "DELETE", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
@@ -142,8 +167,8 @@ namespace TwitchLib.Api
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
                 clientId = _settings.ClientId;
-            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(_settings.AccessToken))
-                accessToken = _settings.AccessToken;
+
+            accessToken = GetAccessToken(accessToken);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "PUT", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
@@ -154,8 +179,8 @@ namespace TwitchLib.Api
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
                 clientId = _settings.ClientId;
-            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(_settings.AccessToken))
-                accessToken = _settings.AccessToken;
+
+            accessToken = GetAccessToken(accessToken);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => _http.GeneralRequest(url, "PUT", payload, api, clientId, accessToken).Value).ConfigureAwait(false));
         }
@@ -166,8 +191,8 @@ namespace TwitchLib.Api
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
                 clientId = _settings.ClientId;
-            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(_settings.AccessToken))
-                accessToken = _settings.AccessToken;
+
+            accessToken = GetAccessToken(accessToken);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => _http.GeneralRequest(url, "POST", payload, api, clientId, accessToken)).ConfigureAwait(false));
         }
@@ -198,8 +223,8 @@ namespace TwitchLib.Api
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
                 clientId = _settings.ClientId;
-            if (string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(_settings.AccessToken))
-                accessToken = _settings.AccessToken;
+
+            accessToken = GetAccessToken(accessToken);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
