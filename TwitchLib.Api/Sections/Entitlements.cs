@@ -2,22 +2,23 @@
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Helix.Entitlements;
 
 namespace TwitchLib.Api.Sections
 {
     public class Entitlements
     {
-        public Entitlements(TwitchAPI api)
+        public Entitlements(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            helix = new HelixApi(api);
+            Helix = new HelixApi(settings, rateLimiter, http);
         }
 
-        public HelixApi helix { get; }
+        public HelixApi Helix { get; }
 
-        public class HelixApi : ApiSection
+        public class HelixApi : ApiBase
         {
-            public HelixApi(TwitchAPI api) : base(api)
+            public HelixApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -42,7 +43,7 @@ namespace TwitchLib.Api.Sections
                         throw new BadParameterException("Unknown entitlement grant type");
                 }
 
-                return Api.TwitchGetGenericAsync<CreateEntitlementGrantsUploadURLResponse>("/entitlements/upload", ApiVersion.Helix, getParams);
+                return TwitchGetGenericAsync<CreateEntitlementGrantsUploadURLResponse>("/entitlements/upload", ApiVersion.Helix, getParams);
             }
 
             #endregion

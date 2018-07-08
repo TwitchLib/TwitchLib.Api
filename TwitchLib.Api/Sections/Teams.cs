@@ -2,22 +2,23 @@
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.v5.Teams;
 
 namespace TwitchLib.Api.Sections
 {
     public class Teams
     {
-        public Teams(TwitchAPI api)
+        public Teams(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            v5 = new V5Api(api);
+            V5 = new V5Api(settings, rateLimiter, http);
         }
 
-        public V5Api v5 { get; }
+        public V5Api V5 { get; }
 
-        public class V5Api : ApiSection
+        public class V5Api : ApiBase
         {
-            public V5Api(TwitchAPI api) : base(api)
+            public V5Api(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -31,7 +32,7 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-                return Api.TwitchGetGenericAsync<AllTeams>("/teams", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<AllTeams>("/teams", ApiVersion.v5, getParams);
             }
 
             #endregion
@@ -43,7 +44,7 @@ namespace TwitchLib.Api.Sections
                 if (string.IsNullOrWhiteSpace(teamName))
                     throw new BadParameterException("The team name is not valid for fetching teams. It is not allowed to be null, empty or filled with whitespaces.");
 
-                return Api.TwitchGetGenericAsync<Team>($"/teams/{teamName}", ApiVersion.v5);
+                return TwitchGetGenericAsync<Team>($"/teams/{teamName}", ApiVersion.v5);
             }
 
             #endregion

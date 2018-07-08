@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
-using TwitchLib.Api.Models;
 
 namespace TwitchLib.Api.Interfaces
 {
@@ -9,9 +7,7 @@ namespace TwitchLib.Api.Interfaces
     {
         string AccessToken { get; set; }
         string ClientId { get; set; }
-        ApiSettings.CredentialValidators Validators { get; }
-        List<AuthScopes> Scopes { get; }
-        void DynamicScopeValidation(AuthScopes requiredScope, string accessToken = null);
-        Task<CredentialCheckResponseModel> CheckCredentialsAsync();
+        bool SkipDynamicScopeValidation { get; set; }
+        List<AuthScopes> Scopes { get; set; }
     }
 }

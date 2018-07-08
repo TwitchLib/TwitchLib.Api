@@ -3,26 +3,28 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Helix.Streams;
 using TwitchLib.Api.Models.Helix.StreamsMetadata;
 using TwitchLib.Api.Models.v5.Streams;
+using LiveStreams = TwitchLib.Api.Models.v5.Streams.LiveStreams;
 
 namespace TwitchLib.Api.Sections
 {
     public class Streams
     {
-        public Streams(TwitchAPI api)
+        public Streams(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            v5 = new V5Api(api);
-            helix = new HelixApi(api);
+            V5 = new V5Api(settings, rateLimiter, http);
+            Helix = new HelixApi(settings, rateLimiter, http);
         }
 
-        public V5Api v5 { get; }
-        public HelixApi helix { get; }
+        public V5Api V5 { get; }
+        public HelixApi Helix { get; }
 
-        public class V5Api : ApiSection
+        public class V5Api : ApiBase
         {
-            public V5Api(TwitchAPI api) : base(api)
+            public V5Api(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -37,7 +39,7 @@ namespace TwitchLib.Api.Sections
                 if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
                     getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));
 
-                return Api.TwitchGetGenericAsync<StreamByUser>($"/streams/{channelId}", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<StreamByUser>($"/streams/{channelId}", ApiVersion.v5, getParams);
             }
 
             #endregion
@@ -60,7 +62,7 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-                return Api.TwitchGetGenericAsync<LiveStreams>("/streams", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<LiveStreams>("/streams", ApiVersion.v5, getParams);
             }
 
             #endregion
@@ -73,7 +75,7 @@ namespace TwitchLib.Api.Sections
                 if (game != null)
                     getParams.Add(new KeyValuePair<string, string>("game", game));
 
-                return Api.TwitchGetGenericAsync<StreamsSummary>("/streams/summary", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<StreamsSummary>("/streams/summary", ApiVersion.v5, getParams);
             }
 
             #endregion
@@ -88,7 +90,7 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-                return Api.TwitchGetGenericAsync<FeaturedStreams>("/streams/featured", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<FeaturedStreams>("/streams/featured", ApiVersion.v5, getParams);
             }
 
             #endregion
@@ -97,7 +99,7 @@ namespace TwitchLib.Api.Sections
 
             public Task<FollowedStreams> GetFollowedStreamsAsync(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.User_Read, authToken);
+                DynamicScopeValidation(AuthScopes.User_Read, authToken);
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
                     getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));
@@ -106,7 +108,7 @@ namespace TwitchLib.Api.Sections
                 if (offset != null)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
 
-                return Api.TwitchGetGenericAsync<FollowedStreams>("/streams/followed", ApiVersion.v5, getParams, authToken);
+                return TwitchGetGenericAsync<FollowedStreams>("/streams/followed", ApiVersion.v5, getParams, authToken);
             }
 
             #endregion
@@ -139,9 +141,9 @@ namespace TwitchLib.Api.Sections
             #endregion
         }
 
-        public class HelixApi : ApiSection
+        public class HelixApi : ApiBase
         {
-            public HelixApi(TwitchAPI api) : base(api)
+            public HelixApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -184,7 +186,7 @@ namespace TwitchLib.Api.Sections
                         getParams.Add(new KeyValuePair<string, string>("user_login", userLogin));
                 }
 
-                return Api.TwitchGetGenericAsync<GetStreamsResponse>($"/streams", ApiVersion.Helix, getParams);
+                return TwitchGetGenericAsync<GetStreamsResponse>($"/streams", ApiVersion.Helix, getParams);
             }
 
             public Task<GetStreamsMetadataResponse> GetStreamsMetadataAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
@@ -226,7 +228,7 @@ namespace TwitchLib.Api.Sections
                         getParams.Add(new KeyValuePair<string, string>("user_login", userLogin));
                 }
 
-                return Api.TwitchGetGenericAsync<GetStreamsMetadataResponse>("/streams/metadata", ApiVersion.Helix, getParams);
+                return TwitchGetGenericAsync<GetStreamsMetadataResponse>("/streams/metadata", ApiVersion.Helix, getParams);
             }
         }
     }

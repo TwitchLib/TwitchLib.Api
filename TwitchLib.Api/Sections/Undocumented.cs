@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Undocumented.ChannelExtensionData;
 using TwitchLib.Api.Models.Undocumented.ChannelPanels;
 using TwitchLib.Api.Models.Undocumented.ChatProperties;
@@ -21,17 +22,16 @@ using TwitchLib.Api.Models.Undocumented.TwitchPrimeOffers;
 namespace TwitchLib.Api.Sections
 {
     /// <summary>These endpoints are pretty cool, but they may stop working at anytime due to changes Twitch makes.</summary>
-    public class Undocumented : ApiSection
+    public class Undocumented : ApiBase
     {
-        public Undocumented(TwitchAPI api) : base(api)
+        public Undocumented(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         {
         }
 
         #region GetClipChat
 
-        public async Task<GetClipChatResponse> GetClipChatAsync(string slug)
+        public async Task<GetClipChatResponse> GetClipChatAsync(TwitchLib.Api.Models.v5.Clips.Clip clip)
         {
-            var clip = await Api.Clips.v5.GetClipAsync(slug);
             if (clip == null)
                 return null;
 
@@ -60,7 +60,7 @@ namespace TwitchLib.Api.Sections
                 new KeyValuePair<string, string>("offset_seconds", offsetSeconds.ToString())
             };
             const string rechatResource = "https://rechat.twitch.tv/rechat-messages";
-            return await Api.GetGenericAsync<GetClipChatResponse>(rechatResource, getParams).ConfigureAwait(false);
+            return await GetGenericAsync<GetClipChatResponse>(rechatResource, getParams).ConfigureAwait(false);
         }
 
         #endregion
@@ -71,7 +71,7 @@ namespace TwitchLib.Api.Sections
         {
             var getParams = new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("on_site", "1")};
 
-            return Api.GetGenericAsync<TwitchPrimeOffers>("https://api.twitch.tv/api/premium/offers", getParams);
+            return GetGenericAsync<TwitchPrimeOffers>("https://api.twitch.tv/api/premium/offers", getParams);
         }
 
         #endregion
@@ -86,7 +86,7 @@ namespace TwitchLib.Api.Sections
                 new KeyValuePair<string, string>("target", channelId)
             };
 
-            return Api.TwitchGetGenericAsync<ChannelHostsResponse>("hosts", ApiVersion.v5, getParams, customBase: "https://tmi.twitch.tv/");
+            return TwitchGetGenericAsync<ChannelHostsResponse>("hosts", ApiVersion.v5, getParams, customBase: "https://tmi.twitch.tv/");
         }
 
         #endregion
@@ -95,7 +95,7 @@ namespace TwitchLib.Api.Sections
 
         public Task<ChatProperties> GetChatPropertiesAsync(string channelName)
         {
-            return Api.GetGenericAsync<ChatProperties>($"https://api.twitch.tv/api/channels/{channelName}/chat_properties");
+            return GetGenericAsync<ChatProperties>($"https://api.twitch.tv/api/channels/{channelName}/chat_properties");
         }
 
         #endregion
@@ -104,7 +104,7 @@ namespace TwitchLib.Api.Sections
 
         public Task<Panel[]> GetChannelPanelsAsync(string channelName)
         {
-            return Api.GetGenericAsync<Panel[]>($"https://api.twitch.tv/api/channels/{channelName}/panels");
+            return GetGenericAsync<Panel[]>($"https://api.twitch.tv/api/channels/{channelName}/panels");
         }
 
         #endregion
@@ -113,7 +113,7 @@ namespace TwitchLib.Api.Sections
 
         public Task<CSMapsResponse> GetCSMapsAsync()
         {
-            return Api.GetGenericAsync<CSMapsResponse>("https://api.twitch.tv/api/cs/maps");
+            return GetGenericAsync<CSMapsResponse>("https://api.twitch.tv/api/cs/maps");
         }
 
         #endregion
@@ -127,7 +127,7 @@ namespace TwitchLib.Api.Sections
                 new KeyValuePair<string, string>("limit", limit.ToString()),
                 new KeyValuePair<string, string>("offset", offset.ToString())
             };
-            return Api.GetGenericAsync<CSStreams>("https://api.twitch.tv/api/cs", getParams);
+            return GetGenericAsync<CSStreams>("https://api.twitch.tv/api/cs", getParams);
         }
 
         #endregion
@@ -136,7 +136,7 @@ namespace TwitchLib.Api.Sections
 
         public Task<RecentMessagesResponse> GetRecentMessagesAsync(string channelId)
         {
-            return Api.GetGenericAsync<RecentMessagesResponse>($"https://tmi.twitch.tv/api/rooms/{channelId}/recent_messages");
+            return GetGenericAsync<RecentMessagesResponse>($"https://tmi.twitch.tv/api/rooms/{channelId}/recent_messages");
         }
 
         #endregion
@@ -145,7 +145,7 @@ namespace TwitchLib.Api.Sections
 
         public async Task<List<ChatterFormatted>> GetChattersAsync(string channelName)
         {
-            var resp = await Api.GetGenericAsync<ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName.ToLower()}/chatters");
+            var resp = await GetGenericAsync<ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName.ToLower()}/chatters");
 
             var chatters = resp.Chatters.Staff.Select(chatter => new ChatterFormatted(chatter, UserType.Staff)).ToList();
             chatters.AddRange(resp.Chatters.Admins.Select(chatter => new ChatterFormatted(chatter, UserType.Admin)));
@@ -166,7 +166,7 @@ namespace TwitchLib.Api.Sections
 
         public Task<RecentEvents> GetRecentChannelEventsAsync(string channelId)
         {
-            return Api.GetGenericAsync<RecentEvents>($"https://api.twitch.tv/bits/channels/{channelId}/events/recent");
+            return GetGenericAsync<RecentEvents>($"https://api.twitch.tv/bits/channels/{channelId}/events/recent");
         }
 
         #endregion
@@ -175,7 +175,7 @@ namespace TwitchLib.Api.Sections
 
         public Task<ChatUserResponse> GetChatUserAsync(string userId, string channelId = null)
         {
-            return Api.GetGenericAsync<ChatUserResponse>(channelId != null 
+            return GetGenericAsync<ChatUserResponse>(channelId != null 
                 ? $"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}" 
                 : $"https://api.twitch.tv/kraken/users/{userId}/chat/");
         }
@@ -187,7 +187,7 @@ namespace TwitchLib.Api.Sections
         public Task<bool> IsUsernameAvailableAsync(string username)
         {
             var getParams = new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("users_service", "true")};
-            var resp = Api.RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}", "HEAD", getParams);
+            var resp = RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}", "HEAD", getParams);
             switch (resp)
             {
                 case 200:
@@ -205,7 +205,7 @@ namespace TwitchLib.Api.Sections
 
         public Task<GetChannelExtensionDataResponse> GetChannelExtensionDataAsync(string channelId)
         {
-            return Api.TwitchGetGenericAsync<GetChannelExtensionDataResponse>($"/channels/{channelId}/extensions", ApiVersion.v5, customBase: "https://api.twitch.tv/v5");
+            return TwitchGetGenericAsync<GetChannelExtensionDataResponse>($"/channels/{channelId}/extensions", ApiVersion.v5, customBase: "https://api.twitch.tv/v5");
         }
 
         #endregion
@@ -222,7 +222,7 @@ namespace TwitchLib.Api.Sections
 
             if (cursor != null) getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
 
-            return Api.GetGenericAsync<CommentsPage>($"https://api.twitch.tv/kraken/videos/{videoId}/comments", getParams);
+            return GetGenericAsync<CommentsPage>($"https://api.twitch.tv/kraken/videos/{videoId}/comments", getParams);
         }
 
         public async Task<List<CommentsPage>> GetAllCommentsAsync(string videoId)

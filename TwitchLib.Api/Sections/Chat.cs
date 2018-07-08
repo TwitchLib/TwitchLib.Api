@@ -2,22 +2,23 @@
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.v5.Chat;
 
 namespace TwitchLib.Api.Sections
 {
     public class Chat
     {
-        public Chat(TwitchAPI api)
+        public Chat(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            v5 = new V5Api(api);
+            V5 = new V5Api(settings, rateLimiter, http);
         }
 
-        public V5Api v5 { get; }
+        public V5Api V5 { get; }
 
-        public class V5Api : ApiSection
+        public class V5Api : ApiBase
         {
-            public V5Api(TwitchAPI api) : base(api)
+            public V5Api(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -28,7 +29,7 @@ namespace TwitchLib.Api.Sections
                 if (string.IsNullOrWhiteSpace(channelId))
                     throw new BadParameterException("The channel id is not valid for catching the channel badges. It is not allowed to be null, empty or filled with whitespaces.");
 
-                return Api.TwitchGetGenericAsync<ChannelBadges>($"/chat/{channelId}/badges", ApiVersion.v5);
+                return TwitchGetGenericAsync<ChannelBadges>($"/chat/{channelId}/badges", ApiVersion.v5);
             }
 
             #endregion
@@ -46,7 +47,7 @@ namespace TwitchLib.Api.Sections
                     };
                 }
 
-                return Api.TwitchGetGenericAsync<EmoteSet>("/chat/emoticon_images", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<EmoteSet>("/chat/emoticon_images", ApiVersion.v5, getParams);
             }
 
             #endregion
@@ -55,7 +56,7 @@ namespace TwitchLib.Api.Sections
 
             public Task<AllChatEmotes> GetAllChatEmoticonsAsync()
             {
-                return Api.TwitchGetGenericAsync<AllChatEmotes>("/chat/emoticons", ApiVersion.v5);
+                return TwitchGetGenericAsync<AllChatEmotes>("/chat/emoticons", ApiVersion.v5);
             }
 
             #endregion
@@ -64,8 +65,8 @@ namespace TwitchLib.Api.Sections
 
             public Task<ChatRoomsByChannelResponse> GetChatRoomsByChannelAsync(string channelId, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.Any, authToken);
-                return Api.TwitchGetGenericAsync<ChatRoomsByChannelResponse>($"/chat/{channelId}/rooms", ApiVersion.v5, accessToken: authToken);
+                DynamicScopeValidation(AuthScopes.Any, authToken);
+                return TwitchGetGenericAsync<ChatRoomsByChannelResponse>($"/chat/{channelId}/rooms", ApiVersion.v5, accessToken: authToken);
             }
 
             #endregion
