@@ -1,7 +1,4 @@
-﻿
-
-using System.Threading.Tasks;
-using TwitchLib.Api.Sections;
+﻿using TwitchLib.Api.Sections;
 
 namespace TwitchLib.Api.Interfaces
 {

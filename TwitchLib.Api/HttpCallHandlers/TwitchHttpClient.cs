@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Internal;
-using System.Text;
 
-namespace TwitchLib.Api
+namespace TwitchLib.Api.HttpCallHandlers
 {
     public class TwitchHttpClient : IHttpCallHandler
     {
@@ -73,7 +72,7 @@ namespace TwitchLib.Api
             var response = _http.SendAsync(request).GetAwaiter().GetResult();
             if (response.IsSuccessStatusCode)
             {
-                string respStr = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                var respStr =  response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 return new KeyValuePair<int, string>((int)response.StatusCode, respStr);
             }
 

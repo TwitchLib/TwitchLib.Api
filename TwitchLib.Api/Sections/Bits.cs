@@ -30,8 +30,12 @@ namespace TwitchLib.Api.Sections
             public Task<GetBitsLeaderboardResponse> GetBitsLeaderboardAsync(int count = 10, BitsLeaderboardPeriodEnum period = BitsLeaderboardPeriodEnum.All, DateTime? startedAt = null, string userid = null, string accessToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Helix_Bits_Read, accessToken);
-                var getParams = new List<KeyValuePair<string, string>>();
-                getParams.Add(new KeyValuePair<string, string>("count", count.ToString()));
+
+                var getParams = new List<KeyValuePair<string, string>>
+                    {
+                        new KeyValuePair<string, string>("count", count.ToString())
+                    };
+
                 switch (period)
                 {
                     case BitsLeaderboardPeriodEnum.Day:

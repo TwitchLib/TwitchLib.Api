@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
-using Newtonsoft.Json;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Events;
 using TwitchLib.Api.Models.ThirdParty.AuthorizationFlow;
@@ -17,18 +17,18 @@ namespace TwitchLib.Api.Sections
     {
         public ThirdParty(TwitchAPI api)
         {
-            UsernameChange = new usernameChangeApi(api);
-            ModLookup = new modLookupApi(api);
-            AuthorizationFlow = new authorizationFlowApi(api);
+            UsernameChange = new UsernameChangeApi(api);
+            ModLookup = new ModLookupApi(api);
+            AuthorizationFlow = new AuthorizationFlowApi(api);
         }
 
-        public usernameChangeApi UsernameChange { get; }
-        public modLookupApi ModLookup { get; }
-        public authorizationFlowApi AuthorizationFlow { get; }
+        public UsernameChangeApi UsernameChange { get; }
+        public ModLookupApi ModLookup { get; }
+        public AuthorizationFlowApi AuthorizationFlow { get; }
 
-        public class usernameChangeApi : ApiSection
+        public class UsernameChangeApi : ApiSection
         {
-            public usernameChangeApi(TwitchAPI api) : base(api)
+            public UsernameChangeApi(TwitchAPI api) : base(api)
             {
             }
 
@@ -41,15 +41,16 @@ namespace TwitchLib.Api.Sections
                     new KeyValuePair<string, string>("q", username),
                     new KeyValuePair<string, string>("format", "json")
                 };
+
                 return Api.GetGenericAsync<List<UsernameChangeListing>>("https://twitch-tools.rootonline.de/username_changelogs_search.php", getParams, null, ApiVersion.Void);
             }
 
             #endregion
         }
 
-        public class modLookupApi : ApiSection
+        public class ModLookupApi : ApiSection
         {
-            public modLookupApi(TwitchAPI api) : base(api)
+            public ModLookupApi(TwitchAPI api) : base(api)
             {
             }
 
@@ -57,18 +58,20 @@ namespace TwitchLib.Api.Sections
             {
                 if (useTls12)
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
                 var getParams = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("offset", offset.ToString()),
                     new KeyValuePair<string, string>("limit", limit.ToString())
                 };
-                return Api.GetGenericAsync<ModLookupResponse>($"https://twitchstuff.3v.fi/modlookup/api/user/{username}");
+                return Api.GetGenericAsync<ModLookupResponse>($"https://twitchstuff.3v.fi/modlookup/api/user/{username}", getParams, null, ApiVersion.Void);
             }
 
             public Task<TopResponse> GetChannelsModdedForByTopAsync(bool useTls12 = true)
             {
                 if (useTls12)
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
                 return Api.GetGenericAsync<TopResponse>("https://twitchstuff.3v.fi/modlookup/api/top");
             }
 
@@ -76,17 +79,18 @@ namespace TwitchLib.Api.Sections
             {
                 if (useTls12)
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
                 return Api.GetGenericAsync<StatsResponse>("https://twitchstuff.3v.fi/modlookup/api/stats");
             }
         }
 
-        public class authorizationFlowApi : ApiSection
+        public class AuthorizationFlowApi : ApiSection
         {
             private const string BaseUrl = "https://twitchtokengenerator.com/api";
             private string _apiId;
             private Timer _pingTimer;
 
-            public authorizationFlowApi(TwitchAPI api) : base(api)
+            public AuthorizationFlowApi(TwitchAPI api) : base(api)
             {
             }
 

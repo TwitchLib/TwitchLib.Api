@@ -36,7 +36,8 @@ namespace TwitchLib.Api.Sections
 
             public Task<Video> GetVideoAsync(string videoId)
             {
-                if (string.IsNullOrWhiteSpace(videoId)) throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(videoId))
+                    throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 return Api.TwitchGetGenericAsync<Video>($"/videos/{videoId}", ApiVersion.v5);
             }
@@ -126,6 +127,7 @@ namespace TwitchLib.Api.Sections
                 var listing = await CreateVideoAsync(channelId, title, description, game, language, tagList, viewable, viewableAt);
                 UploadVideoParts(videoPath, listing.Upload);
                 await CompleteVideoUploadAsync(listing.Upload, accessToken);
+
                 return listing.Video;
             }
 
@@ -136,7 +138,8 @@ namespace TwitchLib.Api.Sections
             public Task<Video> UpdateVideoAsync(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
-                if (string.IsNullOrWhiteSpace(videoId)) throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(videoId))
+                    throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrWhiteSpace(description))
@@ -160,7 +163,8 @@ namespace TwitchLib.Api.Sections
             public Task DeleteVideoAsync(string videoId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
-                if (string.IsNullOrWhiteSpace(videoId)) throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                if (string.IsNullOrWhiteSpace(videoId))
+                    throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
                 return Api.TwitchDeleteAsync($"/videos/{videoId}", ApiVersion.v5, accessToken: authToken);
             }
@@ -184,8 +188,7 @@ namespace TwitchLib.Api.Sections
                 if (tagList != null)
                     getParams.Add(new KeyValuePair<string, string>("tag_list", tagList));
                 getParams.Add(viewable == Viewable.Public ? new KeyValuePair<string, string>("viewable", "public") : new KeyValuePair<string, string>("viewable", "private"));
-                //TODO: Create RFC3339 date out of viewableAt
-                // Should do it?
+
                 if (viewableAt.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("viewable_at", viewableAt.Value.ToRfc3339String()));
                 return Api.TwitchPostGenericAsync<UploadVideoListing>("/videos", ApiVersion.v5, null, getParams, accessToken);
