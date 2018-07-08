@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using Microsoft.Extensions.Logging;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
 using TwitchLib.Api.Interfaces;
-using System.IO;
 
-namespace TwitchLib.Api
+namespace TwitchLib.Api.HttpCallHandlers
 {
     public class TwitchWebRequest : IHttpCallHandler
     {
@@ -72,7 +72,7 @@ namespace TwitchLib.Api
             {
                 var response = (HttpWebResponse)request.GetResponse();
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(response.GetResponseStream() ?? throw new InvalidOperationException()))
                 {
                     var data = reader.ReadToEnd();
                     return new KeyValuePair<int, string>((int)response.StatusCode, data);
@@ -112,7 +112,7 @@ namespace TwitchLib.Api
                     throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set. \n 2. Your refresh token was invalid. \n 3. You requested a username when the server was expecting a user ID.");
                 case HttpStatusCode.Unauthorized:
                     var authenticateHeader = errorResp.Headers.GetValues("WWW-Authenticate");
-                    if (authenticateHeader.Length ==0 || string.IsNullOrEmpty(authenticateHeader[0]))
+                    if (authenticateHeader?.Length ==0 || string.IsNullOrEmpty(authenticateHeader?[0]))
                         throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
 
                     var invalidTokenFound = authenticateHeader[0].Contains("error='invalid_token'");
@@ -122,7 +122,8 @@ namespace TwitchLib.Api
                 case HttpStatusCode.NotFound:
                     throw new BadResourceException("The resource you tried to access was not valid.");
                 case (HttpStatusCode)429:
-                    throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made");
+                    var resetTime = errorResp.Headers.Get("Ratelimit-Reset");
+                    throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made", resetTime);
                 case (HttpStatusCode)422:
                     throw new NotPartneredException("The resource you requested is only available to channels that have been partnered by Twitch.");
                 default:

@@ -17,11 +17,14 @@ namespace TwitchLib.Api.Sections
             public V5Api(TwitchAPI api) : base(api)
             {
             }
+
             #region GetIngestServerList
+
             public Task<Models.v5.Ingests.Ingests> GetIngestServerListAsync()
             {
                 return Api.TwitchGetGenericAsync<Models.v5.Ingests.Ingests>("/ingests", ApiVersion.v5);
             }
+
             #endregion
         }
     }

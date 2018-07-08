@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
+using TwitchLib.Api.Models.v5.Search;
 
 namespace TwitchLib.Api.Sections
 {
@@ -19,36 +19,51 @@ namespace TwitchLib.Api.Sections
             public V5Api(TwitchAPI api) : base(api)
             {
             }
+
             #region SearchChannels
-            public Task<Models.v5.Search.SearchChannels> SearchChannelsAsync(string encodedSearchQuery, int? limit = null, int? offset = null)
+
+            public Task<SearchChannels> SearchChannelsAsync(string encodedSearchQuery, int? limit = null, int? offset = null)
             {
-                var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("query", encodedSearchQuery) };
+                var getParams = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("query", encodedSearchQuery)
+                };
+
                 if (limit.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("limit", limit.Value.ToString()));
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-                return Api.TwitchGetGenericAsync<Models.v5.Search.SearchChannels>("/search/channels", ApiVersion.v5, getParams);
+                return Api.TwitchGetGenericAsync<SearchChannels>("/search/channels", ApiVersion.v5, getParams);
             }
+
             #endregion
+
             #region SearchGames
-            public Task<Models.v5.Search.SearchGames> SearchGamesAsync(string encodedSearchQuery, bool? live = null)
+
+            public Task<SearchGames> SearchGamesAsync(string encodedSearchQuery, bool? live = null)
             {
-                var getParams = new List<KeyValuePair<string, string>>();
-                getParams.Add(new KeyValuePair<string, string>("query", encodedSearchQuery));
-                if(live.HasValue)
+                var getParams = new List<KeyValuePair<string, string>>
                 {
-                    getParams.Add(live.Value
-                        ? new KeyValuePair<string, string>("live", "true")
-                        : new KeyValuePair<string, string>("live", "false"));
-                }
-                return Api.TwitchGetGenericAsync<Models.v5.Search.SearchGames>("/search/games", ApiVersion.v5, getParams);
+                        new KeyValuePair<string, string>("query", encodedSearchQuery)
+                };
+
+                if (live.HasValue) getParams.Add(live.Value ? new KeyValuePair<string, string>("live", "true") : new KeyValuePair<string, string>("live", "false"));
+
+                return Api.TwitchGetGenericAsync<SearchGames>("/search/games", ApiVersion.v5, getParams);
             }
+
             #endregion
+
             #region SearchStreams
-            public Task<Models.v5.Search.SearchStreams> SearchStreamsAsync(string encodedSearchQuery, int? limit = null, int? offset = null, bool? hls = null)
+
+            public Task<SearchStreams> SearchStreamsAsync(string encodedSearchQuery, int? limit = null, int? offset = null, bool? hls = null)
             {
-                var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("query", encodedSearchQuery) };
+                var getParams = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("query", encodedSearchQuery)
+                };
+
                 if (limit.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("limit", limit.Value.ToString()));
                 if (offset.HasValue)
@@ -56,8 +71,9 @@ namespace TwitchLib.Api.Sections
                 if (hls.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("hls", hls.Value.ToString()));
 
-                return Api.TwitchGetGenericAsync<Models.v5.Search.SearchStreams>("/search/streams", ApiVersion.v5, getParams);
+                return Api.TwitchGetGenericAsync<SearchStreams>("/search/streams", ApiVersion.v5, getParams);
             }
+
             #endregion
         }
     }
