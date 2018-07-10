@@ -1,20 +1,21 @@
 ﻿using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
+using TwitchLib.Api.Interfaces;
 
 namespace TwitchLib.Api.Sections
 {
     public class Ingests
     {
-        public Ingests(TwitchAPI api)
+        public Ingests(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            v5 = new V5Api(api);
+            V5 = new V5Api(settings, rateLimiter, http);
         }
 
-        public V5Api v5 { get; }
+        public V5Api V5 { get; }
 
-        public class V5Api : ApiSection
+        public class V5Api : ApiBase
         {
-            public V5Api(TwitchAPI api) : base(api)
+            public V5Api(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -22,7 +23,7 @@ namespace TwitchLib.Api.Sections
 
             public Task<Models.v5.Ingests.Ingests> GetIngestServerListAsync()
             {
-                return Api.TwitchGetGenericAsync<Models.v5.Ingests.Ingests>("/ingests", ApiVersion.v5);
+                return TwitchGetGenericAsync<Models.v5.Ingests.Ingests>("/ingests", ApiVersion.v5);
             }
 
             #endregion

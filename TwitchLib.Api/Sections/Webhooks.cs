@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Interfaces;
 
 namespace TwitchLib.Api.Sections
 {
     public class Webhooks
     {
-        public Webhooks(TwitchAPI api)
+        public Webhooks(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            helix = new HelixApi(api);
+            Helix = new HelixApi(settings, rateLimiter, http);
         }
 
-        public HelixApi helix { get; }
+        public HelixApi Helix { get; }
 
-        public class HelixApi : ApiSection
+        public class HelixApi : ApiBase
         {
-            public HelixApi(TwitchAPI api) : base(api)
+            public HelixApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -80,7 +81,7 @@ namespace TwitchLib.Api.Sections
 
             public Task<bool> GameAnalyticsAsync(string callbackUrl, WebhookCallMode mode, string gameId, TimeSpan? duration = null, string signingSecret = null, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.Helix_Analytics_Read_Games, authToken);
+                DynamicScopeValidation(AuthScopes.Helix_Analytics_Read_Games, authToken);
                 var leaseSeconds = (int) ValidateTimespan(duration).TotalSeconds;
 
                 return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/analytics/games?game_id={gameId}", callbackUrl, leaseSeconds, signingSecret);
@@ -109,7 +110,7 @@ namespace TwitchLib.Api.Sections
 
                 if (signingSecret != null)
                     getParams.Add(new KeyValuePair<string, string>("hub.secret", signingSecret));
-                var resp = await Api.TwitchPostAsync("/webhooks/hub", ApiVersion.Helix, null, getParams, accessToken).ConfigureAwait(false);
+                var resp = await TwitchPostAsync("/webhooks/hub", ApiVersion.Helix, null, getParams, accessToken).ConfigureAwait(false);
 
                 return resp.Key == 202;
             }

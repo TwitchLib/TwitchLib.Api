@@ -140,7 +140,7 @@ namespace TwitchLib.Api.Services
 
         private async Task InitializeWithLatestFollowersAsyncInternal(string channelId)
         {
-            var response = await _api.Channels.v5.GetChannelFollowersAsync(channelId, QueryCount);
+            var response = await _api.Channels.V5.GetChannelFollowersAsync(channelId, QueryCount);
 
             FollowerCache[channelId].Clear();
 
@@ -161,7 +161,7 @@ namespace TwitchLib.Api.Services
             {
                 try
                 {
-                    var followers = await _api.Channels.v5.GetChannelFollowersAsync(channelId, QueryCount);
+                    var followers = await _api.Channels.V5.GetChannelFollowersAsync(channelId, QueryCount);
                     HandleNewFollowers(channelId, followers.Follows);
                 }
                 catch (WebException) { return; }

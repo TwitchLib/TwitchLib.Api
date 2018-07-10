@@ -168,7 +168,7 @@ namespace TwitchLib.Api.Services
                     if (_statuses[channel] != null)
                     {
                         var channelId = new List<string> { _statuses[channel].Id };
-                        var userObject = (await _api.Users.helix.GetUsersAsync(channelId)).Users.First();
+                        var userObject = (await _api.Users.Helix.GetUsersAsync(channelId)).Users.First();
                         var channelName = userObject.DisplayName;
                         //have gone offline
 
@@ -184,7 +184,7 @@ namespace TwitchLib.Api.Services
                 else
                 {
                     var channelId = new List<string> { _statuses[channel].Id };
-                    var userObject = (await _api.Users.helix.GetUsersAsync(channelId)).Users.First();
+                    var userObject = (await _api.Users.Helix.GetUsersAsync(channelId)).Users.First();
                     var channelName = userObject.DisplayName;
                     //online
                     if (_statuses[channel] == null)
@@ -217,7 +217,7 @@ namespace TwitchLib.Api.Services
             for (var i = 0; i < pages; i++)
             {
                 var selectedSet = _channelIds.Skip(i * 100).Take(100).ToList();
-                var resultset = await _api.Streams.helix.GetStreamsAsync(userIds: selectedSet.Select(x => x.ToString()).ToList(), first: 100);
+                var resultset = await _api.Streams.Helix.GetStreamsAsync(userIds: selectedSet.Select(x => x.ToString()).ToList(), first: 100);
                 resultset?.Streams?.Where(x => x != null).Where(x => x.Type == "live").AddTo(livestreamers);
             }
             return livestreamers;
@@ -231,7 +231,7 @@ namespace TwitchLib.Api.Services
             for (var i = 0; i < pages; i++)
             {
                 var selectedSet = usernamesToGet.Skip(i * 100).Take(100).ToList();
-                var users = await _api.Users.helix.GetUsersAsync(logins: selectedSet);
+                var users = await _api.Users.Helix.GetUsersAsync(logins: selectedSet);
 
                 foreach (var user in users.Users)
                     _channelToId.TryAdd(user.DisplayName, user.Id);

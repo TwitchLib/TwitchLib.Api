@@ -2,22 +2,23 @@
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.v5.Collections;
 
 namespace TwitchLib.Api.Sections
 {
     public class Collections
     {
-        public Collections(TwitchAPI api)
+        public Collections(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            v5 = new V5Api(api);
+            V5 = new V5Api(settings, rateLimiter, http);
         }
 
-        public V5Api v5 { get; }
+        public V5Api V5 { get; }
 
-        public class V5Api : ApiSection
+        public class V5Api : ApiBase
         {
-            public V5Api(TwitchAPI api) : base(api)
+            public V5Api(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -28,7 +29,7 @@ namespace TwitchLib.Api.Sections
                 if (string.IsNullOrWhiteSpace(collectionId))
                     throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces.");
 
-                return Api.TwitchGetGenericAsync<CollectionMetadata>($"/collections/{collectionId}", ApiVersion.v5);
+                return TwitchGetGenericAsync<CollectionMetadata>($"/collections/{collectionId}", ApiVersion.v5);
             }
 
             #endregion
@@ -44,7 +45,7 @@ namespace TwitchLib.Api.Sections
                 if (includeAllItems.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("include_all_items", ((bool) includeAllItems).ToString()));
 
-                return Api.TwitchGetGenericAsync<Collection>($"/collections/{collectionId}/items", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<Collection>($"/collections/{collectionId}/items", ApiVersion.v5, getParams);
             }
 
             #endregion
@@ -64,7 +65,7 @@ namespace TwitchLib.Api.Sections
                 if (!string.IsNullOrWhiteSpace(containingItem))
                     getParams.Add(new KeyValuePair<string, string>("containing_item", containingItem.StartsWith("video:") ? containingItem : $"video:{containingItem}"));
 
-                return Api.TwitchGetGenericAsync<CollectionsByChannel>($"/channels/{channelId}/collections", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<CollectionsByChannel>($"/channels/{channelId}/collections", ApiVersion.v5, getParams);
             }
 
             #endregion
@@ -73,7 +74,7 @@ namespace TwitchLib.Api.Sections
 
             public Task<CollectionMetadata> CreateCollectionAsync(string channelId, string collectionTitle, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
+                DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(channelId))
                     throw new BadParameterException("The channel id is not valid for a collection creation. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -81,7 +82,7 @@ namespace TwitchLib.Api.Sections
                     throw new BadParameterException("The collection title is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces.");
 
                 var payload = "{\"title\": \"" + collectionTitle + "\"}";
-                return Api.TwitchPostGenericAsync<CollectionMetadata>($"/channels/{channelId}/collections", ApiVersion.v5, payload, accessToken: authToken);
+                return TwitchPostGenericAsync<CollectionMetadata>($"/channels/{channelId}/collections", ApiVersion.v5, payload, accessToken: authToken);
             }
 
             #endregion
@@ -90,7 +91,7 @@ namespace TwitchLib.Api.Sections
 
             public Task UpdateCollectionAsync(string collectionId, string newCollectionTitle, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
+                DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(collectionId))
                     throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -98,7 +99,7 @@ namespace TwitchLib.Api.Sections
                     throw new BadParameterException("The new collection title is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces.");
 
                 var payload = "{\"title\": \"" + newCollectionTitle + "\"}";
-                return Api.TwitchPutAsync($"/collections/{collectionId}", ApiVersion.v5, payload, accessToken: authToken);
+                return TwitchPutAsync($"/collections/{collectionId}", ApiVersion.v5, payload, accessToken: authToken);
             }
 
             #endregion
@@ -107,7 +108,7 @@ namespace TwitchLib.Api.Sections
 
             public Task CreateCollectionThumbnailAsync(string collectionId, string itemId, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
+                DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(collectionId))
                     throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -115,7 +116,7 @@ namespace TwitchLib.Api.Sections
                     throw new BadParameterException("The item id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces.");
 
                 var payload = "{\"item_id\": \"" + itemId + "\"}";
-                return Api.TwitchPutAsync($"/collections/{collectionId}/thumbnail", ApiVersion.v5, payload, accessToken: authToken);
+                return TwitchPutAsync($"/collections/{collectionId}/thumbnail", ApiVersion.v5, payload, accessToken: authToken);
             }
 
             #endregion
@@ -124,11 +125,11 @@ namespace TwitchLib.Api.Sections
 
             public Task DeleteCollectionAsync(string collectionId, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
+                DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(collectionId))
                     throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces.");
 
-                return Api.TwitchDeleteAsync($"/collections/{collectionId}", ApiVersion.v5, accessToken: authToken);
+                return TwitchDeleteAsync($"/collections/{collectionId}", ApiVersion.v5, accessToken: authToken);
             }
 
             #endregion
@@ -137,7 +138,7 @@ namespace TwitchLib.Api.Sections
 
             public Task<CollectionItem> AddItemToCollectionAsync(string collectionId, string itemId, string itemType, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
+                DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(collectionId))
                     throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -148,7 +149,7 @@ namespace TwitchLib.Api.Sections
                     throw new BadParameterException($"The item_type {itemType} is not valid for a collection. Item type MUST be \"video\".");
 
                 var payload = "{\"id\": \"" + itemId + "\", \"type\": \"" + itemType + "\"}";
-                return Api.TwitchPostGenericAsync<CollectionItem>($"/collections/{collectionId}/items", ApiVersion.v5, payload, accessToken: authToken);
+                return TwitchPostGenericAsync<CollectionItem>($"/collections/{collectionId}/items", ApiVersion.v5, payload, accessToken: authToken);
             }
 
             #endregion
@@ -157,14 +158,14 @@ namespace TwitchLib.Api.Sections
 
             public Task DeleteItemFromCollectionAsync(string collectionId, string itemId, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
+                DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(collectionId))
                     throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces.");
 
                 if (string.IsNullOrWhiteSpace(itemId))
                     throw new BadParameterException("The item id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces.");
 
-                return Api.TwitchDeleteAsync($"/collections/{collectionId}/items/{itemId}", ApiVersion.v5, accessToken: authToken);
+                return TwitchDeleteAsync($"/collections/{collectionId}/items/{itemId}", ApiVersion.v5, accessToken: authToken);
             }
 
             #endregion
@@ -173,7 +174,7 @@ namespace TwitchLib.Api.Sections
 
             public Task MoveItemWithinCollectionAsync(string collectionId, string itemId, int position, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
+                DynamicScopeValidation(AuthScopes.Collections_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(collectionId))
                     throw new BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -184,7 +185,7 @@ namespace TwitchLib.Api.Sections
                     throw new BadParameterException("The position is not valid for a collection. It is not allowed to be less than 1.");
 
                 var payload = "{\"position\": \"" + position + "\"}";
-                return Api.TwitchPutAsync($"/collections/{collectionId}/items/{itemId}", ApiVersion.v5, payload, accessToken: authToken);
+                return TwitchPutAsync($"/collections/{collectionId}/items/{itemId}", ApiVersion.v5, payload, accessToken: authToken);
             }
 
             #endregion

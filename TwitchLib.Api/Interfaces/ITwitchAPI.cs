@@ -13,10 +13,8 @@ namespace TwitchLib.Api.Interfaces
         Clips Clips { get; }
         Collections Collections { get; }
         Communities Communities { get; }
-        Debugging Debugging { get; }
         Games Games { get; }
         Ingests Ingests { get; }
-        Root Root { get; }
         Search Search { get; }
         IApiSettings Settings { get; }
         Streams Streams { get; }
@@ -26,6 +24,5 @@ namespace TwitchLib.Api.Interfaces
         Users Users { get; }
         Videos Videos { get; }
         Webhooks Webhooks { get; }
-        
     }
 }

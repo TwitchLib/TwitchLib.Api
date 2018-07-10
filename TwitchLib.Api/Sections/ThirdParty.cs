@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Events;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.ThirdParty.AuthorizationFlow;
 using TwitchLib.Api.Models.ThirdParty.ModLookup;
 using TwitchLib.Api.Models.ThirdParty.UsernameChange;
@@ -15,20 +16,20 @@ namespace TwitchLib.Api.Sections
     /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>
     public class ThirdParty
     {
-        public ThirdParty(TwitchAPI api)
+        public ThirdParty(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            UsernameChange = new UsernameChangeApi(api);
-            ModLookup = new ModLookupApi(api);
-            AuthorizationFlow = new AuthorizationFlowApi(api);
+            UsernameChange = new UsernameChangeApi(settings, rateLimiter, http);
+            ModLookup = new ModLookupApi(settings, rateLimiter, http);
+            AuthorizationFlow = new AuthorizationFlowApi(settings, rateLimiter, http);
         }
 
         public UsernameChangeApi UsernameChange { get; }
         public ModLookupApi ModLookup { get; }
         public AuthorizationFlowApi AuthorizationFlow { get; }
 
-        public class UsernameChangeApi : ApiSection
+        public class UsernameChangeApi : ApiBase
         {
-            public UsernameChangeApi(TwitchAPI api) : base(api)
+            public UsernameChangeApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -42,15 +43,15 @@ namespace TwitchLib.Api.Sections
                     new KeyValuePair<string, string>("format", "json")
                 };
 
-                return Api.GetGenericAsync<List<UsernameChangeListing>>("https://twitch-tools.rootonline.de/username_changelogs_search.php", getParams, null, ApiVersion.Void);
+                return GetGenericAsync<List<UsernameChangeListing>>("https://twitch-tools.rootonline.de/username_changelogs_search.php", getParams, null, ApiVersion.Void);
             }
 
             #endregion
         }
 
-        public class ModLookupApi : ApiSection
+        public class ModLookupApi : ApiBase
         {
-            public ModLookupApi(TwitchAPI api) : base(api)
+            public ModLookupApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -64,7 +65,7 @@ namespace TwitchLib.Api.Sections
                     new KeyValuePair<string, string>("offset", offset.ToString()),
                     new KeyValuePair<string, string>("limit", limit.ToString())
                 };
-                return Api.GetGenericAsync<ModLookupResponse>($"https://twitchstuff.3v.fi/modlookup/api/user/{username}", getParams, null, ApiVersion.Void);
+                return GetGenericAsync<ModLookupResponse>($"https://twitchstuff.3v.fi/modlookup/api/user/{username}", getParams, null, ApiVersion.Void);
             }
 
             public Task<TopResponse> GetChannelsModdedForByTopAsync(bool useTls12 = true)
@@ -72,7 +73,7 @@ namespace TwitchLib.Api.Sections
                 if (useTls12)
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                return Api.GetGenericAsync<TopResponse>("https://twitchstuff.3v.fi/modlookup/api/top");
+                return GetGenericAsync<TopResponse>("https://twitchstuff.3v.fi/modlookup/api/top");
             }
 
             public Task<StatsResponse> GetChannelsModdedForStatsAsync(bool useTls12 = true)
@@ -80,17 +81,17 @@ namespace TwitchLib.Api.Sections
                 if (useTls12)
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                return Api.GetGenericAsync<StatsResponse>("https://twitchstuff.3v.fi/modlookup/api/stats");
+                return GetGenericAsync<StatsResponse>("https://twitchstuff.3v.fi/modlookup/api/stats");
             }
         }
 
-        public class AuthorizationFlowApi : ApiSection
+        public class AuthorizationFlowApi : ApiBase
         {
             private const string BaseUrl = "https://twitchtokengenerator.com/api";
             private string _apiId;
             private Timer _pingTimer;
 
-            public AuthorizationFlowApi(TwitchAPI api) : base(api)
+            public AuthorizationFlowApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 

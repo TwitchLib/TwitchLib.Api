@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Helix.Clips.CreateClip;
 using TwitchLib.Api.Models.Helix.Clips.GetClip;
 using TwitchLib.Api.Models.v5.Clips;
@@ -13,19 +14,18 @@ namespace TwitchLib.Api.Sections
 {
     public class Clips
     {
-        public Clips(TwitchAPI api)
+        public Clips(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            v5 = new V5Api(api);
-            helix = new HelixApi(api);
+            V5 = new V5Api(settings, rateLimiter, http);
+            Helix = new HelixApi(settings, rateLimiter, http);
         }
 
-        public V5Api v5 { get; }
-        public HelixApi helix { get; }
-
-
-        public class V5Api : ApiSection
+        public V5Api V5 { get; }
+        public HelixApi Helix { get; }
+        
+        public class V5Api : ApiBase
         {
-            public V5Api(TwitchAPI api) : base(api)
+            public V5Api(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -33,7 +33,7 @@ namespace TwitchLib.Api.Sections
 
             public Task<Clip> GetClipAsync(string slug)
             {
-                return Api.TwitchGetGenericAsync<Clip>($"/clips/{slug}", ApiVersion.v5);
+                return TwitchGetGenericAsync<Clip>($"/clips/{slug}", ApiVersion.v5);
             }
 
             #endregion
@@ -71,7 +71,7 @@ namespace TwitchLib.Api.Sections
                         throw new ArgumentOutOfRangeException(nameof(period), period, null);
                 }
 
-                return Api.TwitchGetGenericAsync<TopClipsResponse>("/clips/top", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<TopClipsResponse>("/clips/top", ApiVersion.v5, getParams);
             }
 
             #endregion
@@ -80,7 +80,7 @@ namespace TwitchLib.Api.Sections
 
             public Task<FollowClipsResponse> GetFollowedClipsAsync(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.User_Read, authToken);
+                DynamicScopeValidation(AuthScopes.User_Read, authToken);
                 var getParams = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("limit", limit.ToString())
@@ -89,15 +89,15 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
                 getParams.Add(trending ? new KeyValuePair<string, string>("trending", "true") : new KeyValuePair<string, string>("trending", "false"));
 
-                return Api.TwitchGetGenericAsync<FollowClipsResponse>("/clips/followed", ApiVersion.v5, getParams, authToken);
+                return TwitchGetGenericAsync<FollowClipsResponse>("/clips/followed", ApiVersion.v5, getParams, authToken);
             }
 
             #endregion
         }
 
-        public class HelixApi : ApiSection
+        public class HelixApi : ApiBase
         {
-            public HelixApi(TwitchAPI api) : base(api)
+            public HelixApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -125,7 +125,7 @@ namespace TwitchLib.Api.Sections
                     getParams.Add(new KeyValuePair<string, string>("after", after));
                 getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
 
-                return Api.TwitchGetGenericAsync<GetClipResponse>("/clips", ApiVersion.Helix, getParams);
+                return TwitchGetGenericAsync<GetClipResponse>("/clips", ApiVersion.Helix, getParams);
             }
 
             #endregion
@@ -134,12 +134,12 @@ namespace TwitchLib.Api.Sections
 
             public Task<CreatedClipResponse> CreateClipAsync(string broadcasterId, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.Helix_Clips_Edit);
+                DynamicScopeValidation(AuthScopes.Helix_Clips_Edit);
                 var getParams = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
                 };
-                return Api.TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, authToken);
+                return TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, authToken);
             }
 
             #endregion

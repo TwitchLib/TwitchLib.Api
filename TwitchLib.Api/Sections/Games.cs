@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Helix.Games.GetGames;
 using TwitchLib.Api.Models.Helix.Games.GetTopGames;
 using TwitchLib.Api.Models.v5.Games;
@@ -10,18 +11,18 @@ namespace TwitchLib.Api.Sections
 {
     public class Games
     {
-        public Games(TwitchAPI api)
+        public Games(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            v5 = new V5Api(api);
-            helix = new HelixApi(api);
+            V5 = new V5Api(settings, rateLimiter, http);
+            Helix = new HelixApi(settings, rateLimiter, http);
         }
 
-        public V5Api v5 { get; }
-        public HelixApi helix { get; }
+        public V5Api V5 { get; }
+        public HelixApi Helix { get; }
 
-        public class V5Api : ApiSection
+        public class V5Api : ApiBase
         {
-            public V5Api(TwitchAPI api) : base(api)
+            public V5Api(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -35,15 +36,15 @@ namespace TwitchLib.Api.Sections
                 if (offset.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-                return Api.TwitchGetGenericAsync<TopGames>("/games/top", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<TopGames>("/games/top", ApiVersion.v5, getParams);
             }
 
             #endregion
         }
 
-        public class HelixApi : ApiSection
+        public class HelixApi : ApiBase
         {
-            public HelixApi(TwitchAPI api) : base(api)
+            public HelixApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -73,7 +74,7 @@ namespace TwitchLib.Api.Sections
                         getParams.Add(new KeyValuePair<string, string>("name", gameName));
                 }
 
-                return Api.TwitchGetGenericAsync<GetGamesResponse>("/games", ApiVersion.Helix, getParams);
+                return TwitchGetGenericAsync<GetGamesResponse>("/games", ApiVersion.Helix, getParams);
             }
 
             #endregion
@@ -95,7 +96,7 @@ namespace TwitchLib.Api.Sections
                 if (after != null)
                     getParams.Add(new KeyValuePair<string, string>("after", after));
 
-                return Api.TwitchGetGenericAsync<GetTopGamesResponse>("/games/top", ApiVersion.Helix, getParams);
+                return TwitchGetGenericAsync<GetTopGamesResponse>("/games/top", ApiVersion.Helix, getParams);
             }
 
             #endregion

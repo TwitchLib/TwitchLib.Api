@@ -1,22 +1,23 @@
 ﻿using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.v5.Badges;
 
 namespace TwitchLib.Api.Sections
 {
     public class Badges
     {
-        public Badges(TwitchAPI api)
+        public Badges(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            v5 = new V5Api(api);
+            V5 = new V5Api(settings, rateLimiter, http);
         }
 
-        public V5Api v5 { get; }
+        public V5Api V5 { get; }
 
-        public class V5Api : ApiSection
+        public class V5Api : ApiBase
         {
-            public V5Api(TwitchAPI api) : base(api)
+            public V5Api(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -26,7 +27,7 @@ namespace TwitchLib.Api.Sections
             {
                 if (string.IsNullOrWhiteSpace(channelId)) throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-                return Api.TwitchGetGenericAsync<ChannelDisplayBadges>($"/v1/badges/channels/{channelId}/display", ApiVersion.v5, customBase: "https://badges.twitch.tv");
+                return TwitchGetGenericAsync<ChannelDisplayBadges>($"/v1/badges/channels/{channelId}/display", ApiVersion.v5, customBase: "https://badges.twitch.tv");
             }
 
             #endregion
@@ -35,7 +36,7 @@ namespace TwitchLib.Api.Sections
 
             public Task<GlobalBadgesResponse> GetGlobalBadgesAsync()
             {
-                return Api.TwitchGetGenericAsync<GlobalBadgesResponse>("/v1/badges/global/display", ApiVersion.v5, customBase: "https://badges.twitch.tv");
+                return TwitchGetGenericAsync<GlobalBadgesResponse>("/v1/badges/global/display", ApiVersion.v5, customBase: "https://badges.twitch.tv");
             }
 
             #endregion

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Extensions.System;
+using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Helix.Bits;
 using TwitchLib.Api.Models.v5.Bits;
 
@@ -10,18 +11,18 @@ namespace TwitchLib.Api.Sections
 {
     public class Bits
     {
-        public Bits(TwitchAPI api)
+        public Bits(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            v5 = new V5Api(api);
-            helix = new HelixApi(api);
+            V5 = new V5Api(settings, rateLimiter, http);
+            Helix = new HelixApi(settings, rateLimiter, http);
         }
 
-        public V5Api v5 { get; }
-        public HelixApi helix { get; }
+        public V5Api V5 { get; }
+        public HelixApi Helix { get; }
 
-        public class HelixApi : ApiSection
+        public class HelixApi : ApiBase
         {
-            public HelixApi(TwitchAPI api) : base(api)
+            public HelixApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -29,7 +30,7 @@ namespace TwitchLib.Api.Sections
 
             public Task<GetBitsLeaderboardResponse> GetBitsLeaderboardAsync(int count = 10, BitsLeaderboardPeriodEnum period = BitsLeaderboardPeriodEnum.All, DateTime? startedAt = null, string userid = null, string accessToken = null)
             {
-                Api.Settings.DynamicScopeValidation(AuthScopes.Helix_Bits_Read, accessToken);
+                DynamicScopeValidation(AuthScopes.Helix_Bits_Read, accessToken);
 
                 var getParams = new List<KeyValuePair<string, string>>
                     {
@@ -60,15 +61,15 @@ namespace TwitchLib.Api.Sections
                 if (userid != null)
                     getParams.Add(new KeyValuePair<string, string>("user_id", userid));
 
-                return Api.TwitchGetGenericAsync<GetBitsLeaderboardResponse>("/bits/leaderboard", ApiVersion.Helix, getParams);
+                return TwitchGetGenericAsync<GetBitsLeaderboardResponse>("/bits/leaderboard", ApiVersion.Helix, getParams);
             }
 
             #endregion
         }
 
-        public class V5Api : ApiSection
+        public class V5Api : ApiBase
         {
-            public V5Api(TwitchAPI api) : base(api)
+            public V5Api(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
             {
             }
 
@@ -85,7 +86,7 @@ namespace TwitchLib.Api.Sections
                     };
                 }
 
-                return Api.TwitchGetGenericAsync<Cheermotes>("/bits/actions", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<Cheermotes>("/bits/actions", ApiVersion.v5, getParams);
             }
 
             #endregion
