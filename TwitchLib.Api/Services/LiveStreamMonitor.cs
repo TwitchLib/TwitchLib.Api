@@ -127,7 +127,7 @@ namespace TwitchLib.Api.Services
         {
             GetUserIdsAsync(usernames).Wait();
 
-            foreach (var item in _channelToId.Keys.Where(x => !usernames.Any(channelToId => channelToId.Equals(x))).ToList())
+            foreach (var item in _channelToId.Keys.Where(x => !usernames.Any(channelToId => channelToId.Equals(x, StringComparison.OrdinalIgnoreCase))))
                 _channelToId.TryRemove(item, out _);
 
             SetStreamsByUserId(_channelToId.Values.ToList());
@@ -140,7 +140,7 @@ namespace TwitchLib.Api.Services
             _channelIds = userids;
             _channelIds.ForEach(x => _statuses.TryAdd(x, null));
 
-            foreach (var item in _statuses.Keys.Where(x => !_channelIds.Any(channelId => channelId.Equals(x))).ToList())
+            foreach (var item in _statuses.Keys.Where(x => !_channelIds.Any(channelId => channelId.Equals(x, StringComparison.OrdinalIgnoreCase))))
                 _statuses.TryRemove(item, out _);
 
             OnStreamsSet?.Invoke(this,
@@ -161,13 +161,13 @@ namespace TwitchLib.Api.Services
 
             foreach (var channel in _channelIds)
             {
-                var currentStream = liveStreamers.FirstOrDefault(x => x.Id == channel);
+                var currentStream = liveStreamers.FirstOrDefault(x => x.UserId == channel);
                 if (currentStream == null)
                 {
                     //offline
                     if (_statuses[channel] != null)
                     {
-                        var channelId = new List<string> { _statuses[channel].Id };
+                        var channelId = new List<string> { channel };
                         var userObject = (await _api.Users.Helix.GetUsersAsync(channelId)).Users.First();
                         var channelName = userObject.DisplayName;
                         //have gone offline
@@ -183,7 +183,7 @@ namespace TwitchLib.Api.Services
                 }
                 else
                 {
-                    var channelId = new List<string> { _statuses[channel].Id };
+                    var channelId = new List<string> { channel };
                     var userObject = (await _api.Users.Helix.GetUsersAsync(channelId)).Users.First();
                     var channelName = userObject.DisplayName;
                     //online
@@ -217,8 +217,8 @@ namespace TwitchLib.Api.Services
             for (var i = 0; i < pages; i++)
             {
                 var selectedSet = _channelIds.Skip(i * 100).Take(100).ToList();
-                var resultset = await _api.Streams.Helix.GetStreamsAsync(userIds: selectedSet.Select(x => x.ToString()).ToList(), first: 100);
-                resultset?.Streams?.Where(x => x != null).Where(x => x.Type == "live").AddTo(livestreamers);
+                var resultset = await _api.Streams.Helix.GetStreamsAsync(userIds: selectedSet, first: 100);
+                resultset?.Streams?.Where(x => x != null && x.Type == "live").AddTo(livestreamers);
             }
             return livestreamers;
         }
@@ -234,7 +234,7 @@ namespace TwitchLib.Api.Services
                 var users = await _api.Users.Helix.GetUsersAsync(logins: selectedSet);
 
                 foreach (var user in users.Users)
-                    _channelToId.TryAdd(user.DisplayName, user.Id);
+                    _channelToId.TryAdd(user.Login, user.Id);
             }
         }
     }
