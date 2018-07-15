@@ -24,6 +24,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwitchLib.Api.Enums\TwitchLib.Api.Core.Enums.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api.Core.Enums\TwitchLib.Api.Core.Enums.csproj" />
   </ItemGroup>
 </Project>
