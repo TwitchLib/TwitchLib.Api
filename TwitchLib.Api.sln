@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api", "TwitchLib.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Test", "TwitchLib.Api.Test\TwitchLib.Api.Test.csproj", "{73F87B04-276A-463A-A33E-97416E0F232F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Core.Models", "TwitchLib.Api.Models\TwitchLib.Api.Core.Models.csproj", "{561F9311-FE81-4C01-BF36-00D1CF94B898}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Core.Models", "TwitchLib.Api.Core.Models\TwitchLib.Api.Core.Models.csproj", "{561F9311-FE81-4C01-BF36-00D1CF94B898}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Core.Interfaces", "TwitchLib.Api.Interfaces\TwitchLib.Api.Core.Interfaces.csproj", "{9439C796-255F-488C-9FEA-83745F7FAA62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Core.Interfaces", "TwitchLib.Api.Core.Interfaces\TwitchLib.Api.Core.Interfaces.csproj", "{9439C796-255F-488C-9FEA-83745F7FAA62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Core.Enums", "TwitchLib.Api.Enums\TwitchLib.Api.Core.Enums.csproj", "{0CD099DD-E0F3-4997-901A-86EC7D89183E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Core.Enums", "TwitchLib.Api.Core.Enums\TwitchLib.Api.Core.Enums.csproj", "{0CD099DD-E0F3-4997-901A-86EC7D89183E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Helix", "TwitchLib.Api.Helix\TwitchLib.Api.Helix.csproj", "{4BD65B59-9877-4067-953F-A47D83E35008}"
 EndProject
