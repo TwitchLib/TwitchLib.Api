@@ -22,6 +22,7 @@
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
+
   <ItemGroup>
     <ProjectReference Include="..\TwitchLib.Api.Core\TwitchLib.Api.Core.csproj" />
     <ProjectReference Include="..\TwitchLib.Api.V5.Models\TwitchLib.Api.V5.Models.csproj" />

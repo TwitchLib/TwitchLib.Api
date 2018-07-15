@@ -27,10 +27,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwitchLib.Api.Core\TwitchLib.Api.Core.csproj" />
-    <ProjectReference Include="..\TwitchLib.Api.Helix.Models\TwitchLib.Api.Helix.Models.csproj" />
     <ProjectReference Include="..\TwitchLib.Api.Helix\TwitchLib.Api.Helix.csproj" />
-    <ProjectReference Include="..\TwitchLib.Api.Models\TwitchLib.Api.Core.Models.csproj" />
-    <ProjectReference Include="..\TwitchLib.Api.V5.Models\TwitchLib.Api.V5.Models.csproj" />
     <ProjectReference Include="..\TwitchLib.Api.V5\TwitchLib.Api.V5.csproj" />
   </ItemGroup>
 </Project>
