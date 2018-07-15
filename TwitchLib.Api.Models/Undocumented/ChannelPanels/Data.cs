@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.Undocumented.ChannelPanels
+namespace TwitchLib.Api.Core.Models.Undocumented.ChannelPanels
 {
     public class Data
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using TwitchLib.Api.Models.Helpers;
+using TwitchLib.Api.Helix.Models.Helpers;
 
 namespace TwitchLib.Api.Helpers
 {

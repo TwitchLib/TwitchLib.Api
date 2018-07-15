@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.Undocumented.RecentMessages
+namespace TwitchLib.Api.Core.Models.Undocumented.RecentMessages
 {
     public class RecentMessagesResponse
     {

@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>TwitchLib.Api.Core</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Project containing the core of TwitchLib.Api</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>swiftyspiffy, Prom3theu5, Syzuna, LuckyNoS7evin</Authors>
+    <Company></Company>
+    <PackageIconUrl>http://swiftyspiffy.com/img/twitchlib.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <Copyright>Copyright 2018</Copyright>
+    <PackageReleaseNotes>Initial release of TwitchLib.Api.Core</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TwitchLib.Api.Enums\TwitchLib.Api.Core.Enums.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api.Interfaces\TwitchLib.Api.Core.Interfaces.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api.Models\TwitchLib.Api.Core.Models.csproj" />
+  </ItemGroup>
+
+</Project>

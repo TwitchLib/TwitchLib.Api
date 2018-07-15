@@ -1,7 +1,3 @@
-using Moq;
-using System;
-using System.Linq;
-using TwitchLib.Api.Interfaces;
 using Xunit;
 
 namespace TwitchLib.Api.Test
@@ -13,7 +9,7 @@ namespace TwitchLib.Api.Test
         {
             var mockHandler = HelixSetup.GetMockHttpCallHandler(GetGetBitsLeaderboardResponse);
             var api = new TwitchAPI(http: mockHandler.Object);
-            var result = await api.Bits.Helix.GetBitsLeaderboardAsync(accessToken: "RandomTokenThatDoesntMatter");
+            var result = await api.Helix.Bits.GetBitsLeaderboardAsync(accessToken: "RandomTokenThatDoesntMatter");
 
             Assert.True(result.Total == 2);
             Assert.Contains(result.Listings, x => x.UserId == "158010205");

@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Api.Models
+﻿namespace TwitchLib.Api.Core.Models
 {
     public abstract class RequestModel
     {

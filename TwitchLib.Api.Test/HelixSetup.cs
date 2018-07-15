@@ -1,8 +1,6 @@
 ﻿using Moq;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using TwitchLib.Api.Interfaces;
+using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Test
 {
@@ -15,10 +13,10 @@ namespace TwitchLib.Api.Test
         {
             var mockHandler = new Mock<IHttpCallHandler>();
             mockHandler
-                .Setup(x => x.GeneralRequest(It.Is<string>(y => y == V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(x => x.GeneralRequest(It.Is<string>(y => y == V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new KeyValuePair<int, string>(200, GetRootScopesResponse));
             mockHandler
-                .Setup(x => x.GeneralRequest(It.IsNotIn(V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(x => x.GeneralRequest(It.IsNotIn(V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new KeyValuePair<int, string>(200, response));
 
             return mockHandler;

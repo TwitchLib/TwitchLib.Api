@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.Undocumented.ClipChat
+namespace TwitchLib.Api.Core.Models.Undocumented.ClipChat
 {
     public class GetClipChatResponse
     {

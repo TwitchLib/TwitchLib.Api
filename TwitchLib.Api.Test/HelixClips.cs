@@ -1,6 +1,3 @@
-using Moq;
-using System;
-using TwitchLib.Api.Interfaces;
 using Xunit;
 
 namespace TwitchLib.Api.Test
@@ -12,7 +9,7 @@ namespace TwitchLib.Api.Test
         {
             var mockHandler = HelixSetup.GetMockHttpCallHandler(CreateClipResponse);
             var api = new TwitchAPI(http: mockHandler.Object);
-            var result = await api.Clips.Helix.CreateClipAsync("493057", "RandomTokenThatDoesntMatter");
+            var result = await api.Helix.Clips.CreateClipAsync("493057", "RandomTokenThatDoesntMatter");
             Assert.True(result.CreatedClips[0].Id == "FiveWordsForClipSlug");
         }
 
@@ -21,7 +18,7 @@ namespace TwitchLib.Api.Test
         {
             var mockHandler = HelixSetup.GetMockHttpCallHandler(GetClipsResponse);
             var api = new TwitchAPI(http: mockHandler.Object);
-            var result = await api.Clips.Helix.GetClipAsync("AwkwardHelplessSalamanderSwiftRage");
+            var result = await api.Helix.Clips.GetClipAsync("AwkwardHelplessSalamanderSwiftRage");
             Assert.True(result.Clips[0].VideoId == "205586603");
         }
 

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.Undocumented.ChatProperties
+namespace TwitchLib.Api.Core.Models.Undocumented.ChatProperties
 {
     public class ChatProperties
     {

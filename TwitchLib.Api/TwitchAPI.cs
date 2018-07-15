@@ -1,8 +1,9 @@
 using Microsoft.Extensions.Logging;
-using TwitchLib.Api.HttpCallHandlers;
+using TwitchLib.Api.Core.HttpCallHandlers;
+using TwitchLib.Api.Core.Interfaces;
+using TwitchLib.Api.Core.RateLimiter;
+using TwitchLib.Api.Core.Undocumented;
 using TwitchLib.Api.Interfaces;
-using TwitchLib.Api.RateLimiter;
-using TwitchLib.Api.Sections;
 
 namespace TwitchLib.Api
 {
@@ -10,28 +11,11 @@ namespace TwitchLib.Api
     {
         private readonly ILogger<TwitchAPI> _logger;
         public IApiSettings Settings { get; }
-        public Analytics Analytics { get; }
-        public Auth Auth { get; }
-        public Badges Badges { get; }
-        public Bits Bits { get; }
-        public ChannelFeeds ChannelFeeds { get; }
-        public Channels Channels { get; }
-        public Chat Chat { get; }
-        public Clips Clips { get; }
-        public Collections Collections { get; }
-        public Communities Communities { get; }
-        public Entitlements Entitlements { get; }
-        public Games Games { get; }
-        public Ingests Ingests { get; }
-        public Search Search { get; }
-        public Streams Streams { get; }
-        public Teams Teams { get; }
-        public Videos Videos { get; }
-        public Users Users { get; }
+      
+        public V5.V5 V5 { get; }
+        public Helix.Helix Helix { get; }
+        public ThirdParty.ThirdParty ThirdParty { get; }
         public Undocumented Undocumented { get; }
-        public ThirdParty ThirdParty { get; }
-        public Webhooks Webhooks { get; }
-
 
         /// <summary>
         /// Creates an Instance of the TwitchAPI Class.
@@ -47,27 +31,10 @@ namespace TwitchLib.Api
             var _http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             Settings = settings ?? new ApiSettings();
 
-            Analytics = new Analytics(Settings, _rateLimiter, _http);
-            Auth = new Auth(Settings, _rateLimiter, _http);
-            Badges = new Badges(Settings, _rateLimiter, _http);
-            Bits = new Bits(Settings, _rateLimiter, _http);
-            ChannelFeeds = new ChannelFeeds(Settings, _rateLimiter, _http);
-            Channels = new Channels(Settings, _rateLimiter, _http);
-            Chat = new Chat(Settings, _rateLimiter, _http);
-            Clips = new Clips(Settings, _rateLimiter, _http);
-            Collections = new Collections(Settings, _rateLimiter, _http);
-            Communities = new Communities(Settings, _rateLimiter, _http);
-            Entitlements = new Entitlements(Settings, _rateLimiter, _http);
-            Games = new Games(Settings, _rateLimiter, _http);
-            Ingests = new Ingests(Settings, _rateLimiter, _http);
-            Search = new Search(Settings, _rateLimiter, _http);
-            Streams = new Streams(Settings, _rateLimiter, _http);
-            Teams = new Teams(Settings, _rateLimiter, _http);
-            ThirdParty = new ThirdParty(Settings, _rateLimiter, _http);
+            Helix = new Helix.Helix(loggerFactory, rateLimiter, Settings, _http);
+            V5 = new V5.V5(loggerFactory, _rateLimiter, Settings, _http);
+            ThirdParty = new ThirdParty.ThirdParty(Settings, _rateLimiter, _http);
             Undocumented = new Undocumented(Settings, _rateLimiter, _http);
-            Users = new Users(Settings, _rateLimiter, _http);
-            Videos = new Videos(Settings, _rateLimiter, _http);
-            Webhooks = new Webhooks(Settings, _rateLimiter, _http);
         }
     }
 }

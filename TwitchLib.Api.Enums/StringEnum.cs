@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Api.Enums
+﻿namespace TwitchLib.Api.Core.Enums
 {
     ///<summary>Really cool way of doing string enums, credits to RogueException (https://github.com/RogueException)</summary>
     public abstract class StringEnum

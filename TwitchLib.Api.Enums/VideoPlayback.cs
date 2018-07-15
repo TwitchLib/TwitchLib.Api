@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Api.Enums
+﻿namespace TwitchLib.Api.Core.Enums
 {
     /// <summary>Valid playback types.</summary>
     public enum VideoPlaybackType

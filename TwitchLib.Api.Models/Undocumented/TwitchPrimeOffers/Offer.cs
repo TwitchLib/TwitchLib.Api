@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.Undocumented.TwitchPrimeOffers
+namespace TwitchLib.Api.Core.Models.Undocumented.TwitchPrimeOffers
 {
     public class Offer
     {

@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.Undocumented.Comments
+namespace TwitchLib.Api.Core.Models.Undocumented.Comments
 {
     public class Fragment
     {

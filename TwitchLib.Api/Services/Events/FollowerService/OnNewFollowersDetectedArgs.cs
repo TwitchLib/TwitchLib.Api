@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwitchLib.Api.Interfaces;
+using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Services.Events.FollowerService
 {

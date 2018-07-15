@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Api.Interfaces
+namespace TwitchLib.Api.Core.Interfaces
 {
     public interface IUser
     {

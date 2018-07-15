@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TwitchLib.Api.Interfaces
+namespace TwitchLib.Api.Core.Interfaces
 {
     public interface IRateLimiter
     {

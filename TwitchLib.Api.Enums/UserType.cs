@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Api.Enums
+﻿namespace TwitchLib.Api.Core.Enums
 {
     /// <summary>Enum representing various user-types.</summary>
     public enum UserType : byte
