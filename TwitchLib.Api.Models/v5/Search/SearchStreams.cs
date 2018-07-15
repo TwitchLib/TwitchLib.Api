@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Search
+namespace TwitchLib.Api.Models.V5.Search
 {
     public class SearchStreams
     {

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using TwitchLib.Api.Interfaces;
 
-namespace TwitchLib.Api.Models.v5.Users
+namespace TwitchLib.Api.Models.V5.Users
 {
     public class UserAuthed : IUser
     {

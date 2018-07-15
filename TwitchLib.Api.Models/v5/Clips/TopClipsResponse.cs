@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
-namespace TwitchLib.Api.Models.v5.Clips
+namespace TwitchLib.Api.Models.V5.Clips
 {
     public class TopClipsResponse
     {

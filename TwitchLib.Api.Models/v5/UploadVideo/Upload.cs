@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.UploadVideo
+namespace TwitchLib.Api.Models.V5.UploadVideo
 {
     public class Upload
     {

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Streams
+namespace TwitchLib.Api.Models.V5.Streams
 {
     public class FollowedStreams
     {

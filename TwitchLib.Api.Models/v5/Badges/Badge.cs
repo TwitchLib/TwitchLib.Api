@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Badges
+namespace TwitchLib.Api.Models.V5.Badges
 {
     public class Badge
     {

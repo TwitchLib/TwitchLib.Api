@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Channels
+namespace TwitchLib.Api.Models.V5.Channels
 {
     /// <summary>
     /// Class representing a privileged channel object from Twitch API.

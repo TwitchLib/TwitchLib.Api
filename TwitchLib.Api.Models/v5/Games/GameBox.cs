@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Games
+namespace TwitchLib.Api.Models.V5.Games
 {
     public class GameBox
     {

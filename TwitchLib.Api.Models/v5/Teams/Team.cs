@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Teams
+namespace TwitchLib.Api.Models.V5.Teams
 {
     /// <summary>Class representing a more detailed team object from Twitch API</summary>
     public class Team

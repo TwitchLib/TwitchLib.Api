@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.ViewerHeartbeatService
+namespace TwitchLib.Api.Models.V5.ViewerHeartbeatService
 {
     public class VHSConnectionCheck
     {

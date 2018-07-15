@@ -2,7 +2,7 @@
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
 using TwitchLib.Api.Interfaces;
-using TwitchLib.Api.Models.v5.Badges;
+using TwitchLib.Api.Models.V5.Badges;
 
 namespace TwitchLib.Api.Sections
 {

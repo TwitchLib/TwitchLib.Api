@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TwitchLib.Api.Models.v5.Chat
+namespace TwitchLib.Api.Models.V5.Chat
 {
     public class ChatRoomsByChannelResponse
     {

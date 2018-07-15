@@ -1,9 +1,9 @@
 ﻿using System;
 using Newtonsoft.Json;
 using TwitchLib.Api.Interfaces;
-using TwitchLib.Api.Models.v5.Users;
+using TwitchLib.Api.Models.V5.Users;
 
-namespace TwitchLib.Api.Models.v5.Channels
+namespace TwitchLib.Api.Models.V5.Channels
 {
     /// <summary>Class representing a follow object from Twitch API.</summary>
     public class ChannelFollow : IFollow

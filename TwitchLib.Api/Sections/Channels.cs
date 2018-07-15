@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
 using TwitchLib.Api.Interfaces;
-using TwitchLib.Api.Models.v5.Channels;
-using TwitchLib.Api.Models.v5.Communities;
-using TwitchLib.Api.Models.v5.Subscriptions;
+using TwitchLib.Api.Models.V5.Channels;
+using TwitchLib.Api.Models.V5.Communities;
+using TwitchLib.Api.Models.V5.Subscriptions;
 
 namespace TwitchLib.Api.Sections
 {

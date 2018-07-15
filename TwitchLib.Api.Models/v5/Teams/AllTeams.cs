@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Teams
+namespace TwitchLib.Api.Models.V5.Teams
 {
     public class AllTeams
     {

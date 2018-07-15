@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Subscriptions
+namespace TwitchLib.Api.Models.V5.Subscriptions
 {
     /// <summary>Class representing a subscription object from Twitch API.</summary>
     public class Subscription

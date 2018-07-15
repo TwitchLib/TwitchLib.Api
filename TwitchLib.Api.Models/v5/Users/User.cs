@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Users
+namespace TwitchLib.Api.Models.V5.Users
 {
     /// <summary>Class representing a User object from Twitch API.</summary>
     public class User : Interfaces.IUser

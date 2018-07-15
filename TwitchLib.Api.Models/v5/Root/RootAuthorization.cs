@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Root
+namespace TwitchLib.Api.Models.V5.Root
 {
     public class RootAuthorization
     {

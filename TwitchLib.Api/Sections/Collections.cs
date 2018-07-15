@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Exceptions;
 using TwitchLib.Api.Interfaces;
-using TwitchLib.Api.Models.v5.Collections;
+using TwitchLib.Api.Models.V5.Collections;
 
 namespace TwitchLib.Api.Sections
 {
