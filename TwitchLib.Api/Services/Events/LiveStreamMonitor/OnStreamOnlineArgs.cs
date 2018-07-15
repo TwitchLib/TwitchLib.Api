@@ -1,5 +1,9 @@
 ﻿using System;
+<<<<<<< HEAD
 using TwitchLib.Api.Helix.Models.Streams;
+=======
+using TwitchLib.Api.Models.v5.Streams;
+>>>>>>> master
 
 namespace TwitchLib.Api.Services.Events.LiveStreamMonitor
 {
