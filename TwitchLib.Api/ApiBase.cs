@@ -71,9 +71,9 @@ namespace TwitchLib.Api
         }
 
 
-        public Task<Models.v5.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
+        public Task<Models.V5.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
         {
-            return TwitchGetGenericAsync<Models.v5.Root.Root>("", ApiVersion.v5, accessToken: authToken, clientId: clientId);
+            return TwitchGetGenericAsync<Models.V5.Root.Root>("", ApiVersion.v5, accessToken: authToken, clientId: clientId);
         }
 
 
@@ -323,7 +323,7 @@ namespace TwitchLib.Api
             }
         }
 
-        private static List<AuthScopes> BuildScopesList(Models.v5.Root.RootToken token)
+        private static List<AuthScopes> BuildScopesList(Models.V5.Root.RootToken token)
         {
             var scopes = new List<AuthScopes>();
             foreach (var scope in token.Auth.Scopes)

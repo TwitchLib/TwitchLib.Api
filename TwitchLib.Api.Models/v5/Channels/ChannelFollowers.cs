@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using TwitchLib.Api.Interfaces;
 
-namespace TwitchLib.Api.Models.v5.Channels
+namespace TwitchLib.Api.Models.V5.Channels
 {
     /// <summary>Class representing the Channel Followers response from Twitch API.</summary>
     public class ChannelFollowers : IFollows

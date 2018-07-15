@@ -8,9 +8,9 @@ using TwitchLib.Api.Exceptions;
 using TwitchLib.Api.Extensions.System;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Helix.Videos;
-using TwitchLib.Api.Models.v5.UploadVideo;
-using TwitchLib.Api.Models.v5.Videos;
-using Video = TwitchLib.Api.Models.v5.Videos.Video;
+using TwitchLib.Api.Models.V5.UploadVideo;
+using TwitchLib.Api.Models.V5.Videos;
+using Video = TwitchLib.Api.Models.V5.Videos.Video;
 
 namespace TwitchLib.Api.Sections
 {

@@ -6,9 +6,9 @@ using TwitchLib.Api.Exceptions;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Helix.Clips.CreateClip;
 using TwitchLib.Api.Models.Helix.Clips.GetClip;
-using TwitchLib.Api.Models.v5.Clips;
-using Clip = TwitchLib.Api.Models.v5.Clips.Clip;
-using Period = TwitchLib.Api.Models.v5.Clips.Period;
+using TwitchLib.Api.Models.V5.Clips;
+using Clip = TwitchLib.Api.Models.V5.Clips.Clip;
+using Period = TwitchLib.Api.Models.V5.Clips.Period;
 
 namespace TwitchLib.Api.Sections
 {

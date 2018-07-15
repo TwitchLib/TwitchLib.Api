@@ -21,9 +21,9 @@ namespace TwitchLib.Api.Sections
 
             #region GetIngestServerList
 
-            public Task<Models.v5.Ingests.Ingests> GetIngestServerListAsync()
+            public Task<Models.V5.Ingests.Ingests> GetIngestServerListAsync()
             {
-                return TwitchGetGenericAsync<Models.v5.Ingests.Ingests>("/ingests", ApiVersion.v5);
+                return TwitchGetGenericAsync<Models.V5.Ingests.Ingests>("/ingests", ApiVersion.v5);
             }
 
             #endregion

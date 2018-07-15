@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Chat
+namespace TwitchLib.Api.Models.V5.Chat
 {
     /// <summary>[deprecated] Class representing the channel badges response from Twitch API.</summary>
     public class ChannelBadges

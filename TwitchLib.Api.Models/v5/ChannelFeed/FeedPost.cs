@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.ChannelFeed
+namespace TwitchLib.Api.Models.V5.ChannelFeed
 {
     public class FeedPost
     {

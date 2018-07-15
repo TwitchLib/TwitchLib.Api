@@ -6,8 +6,8 @@ using TwitchLib.Api.Exceptions;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Helix.Streams;
 using TwitchLib.Api.Models.Helix.StreamsMetadata;
-using TwitchLib.Api.Models.v5.Streams;
-using LiveStreams = TwitchLib.Api.Models.v5.Streams.LiveStreams;
+using TwitchLib.Api.Models.V5.Streams;
+using LiveStreams = TwitchLib.Api.Models.V5.Streams.LiveStreams;
 
 namespace TwitchLib.Api.Sections
 {

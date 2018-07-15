@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Communities
+namespace TwitchLib.Api.Models.V5.Communities
 {
     public class Moderator
     {

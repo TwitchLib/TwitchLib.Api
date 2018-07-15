@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Ingests
+namespace TwitchLib.Api.Models.V5.Ingests
 {
     public class Ingest
     {

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Auth
+namespace TwitchLib.Api.Models.V5.Auth
 {
     public class RefreshResponse
     {

@@ -5,7 +5,7 @@ using TwitchLib.Api.Enums;
 using TwitchLib.Api.Extensions.System;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Helix.Bits;
-using TwitchLib.Api.Models.v5.Bits;
+using TwitchLib.Api.Models.V5.Bits;
 
 namespace TwitchLib.Api.Sections
 {

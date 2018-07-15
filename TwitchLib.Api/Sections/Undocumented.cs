@@ -30,7 +30,7 @@ namespace TwitchLib.Api.Sections
 
         #region GetClipChat
 
-        public async Task<GetClipChatResponse> GetClipChatAsync(TwitchLib.Api.Models.v5.Clips.Clip clip)
+        public async Task<GetClipChatResponse> GetClipChatAsync(TwitchLib.Api.Models.V5.Clips.Clip clip)
         {
             if (clip == null)
                 return null;

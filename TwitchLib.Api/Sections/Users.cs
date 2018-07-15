@@ -10,10 +10,10 @@ using TwitchLib.Api.Models.Helix.Users.GetUserExtensions;
 using TwitchLib.Api.Models.Helix.Users.GetUsers;
 using TwitchLib.Api.Models.Helix.Users.GetUsersFollows;
 using TwitchLib.Api.Models.Helix.Users.UpdateUserExtensions;
-using TwitchLib.Api.Models.v5.Subscriptions;
-using TwitchLib.Api.Models.v5.Users;
-using TwitchLib.Api.Models.v5.ViewerHeartbeatService;
-using User = TwitchLib.Api.Models.v5.Users.User;
+using TwitchLib.Api.Models.V5.Subscriptions;
+using TwitchLib.Api.Models.V5.Users;
+using TwitchLib.Api.Models.V5.ViewerHeartbeatService;
+using User = TwitchLib.Api.Models.V5.Users.User;
 
 namespace TwitchLib.Api.Sections
 {
@@ -37,7 +37,7 @@ namespace TwitchLib.Api.Sections
 
             #region GetUsersByName
 
-            public Task<Models.v5.Users.Users> GetUsersByNameAsync(List<string> usernames)
+            public Task<Models.V5.Users.Users> GetUsersByNameAsync(List<string> usernames)
             {
                 if (usernames == null || usernames.Count == 0)
                     throw new BadParameterException("The username list is not valid. It is not allowed to be null or empty.");
@@ -46,7 +46,7 @@ namespace TwitchLib.Api.Sections
                 {
                     new KeyValuePair<string, string>("login", string.Join(",", usernames))
                 };
-                return TwitchGetGenericAsync<Models.v5.Users.Users>("/users", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<Models.V5.Users.Users>("/users", ApiVersion.v5, getParams);
             }
 
             #endregion
@@ -76,13 +76,13 @@ namespace TwitchLib.Api.Sections
 
             #region GetUserByName
 
-            public Task<Models.v5.Users.Users> GetUserByNameAsync(string username)
+            public Task<Models.V5.Users.Users> GetUserByNameAsync(string username)
             {
                 if (string.IsNullOrEmpty(username))
                     throw new BadParameterException("The username is not valid.");
 
                 var getParams = new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("login", username)};
-                return TwitchGetGenericAsync<Models.v5.Users.Users>("/users", ApiVersion.v5, getParams);
+                return TwitchGetGenericAsync<Models.V5.Users.Users>("/users", ApiVersion.v5, getParams);
             }
 
             #endregion

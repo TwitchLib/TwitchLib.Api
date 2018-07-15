@@ -5,7 +5,7 @@ using TwitchLib.Api.Exceptions;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Helix.Games.GetGames;
 using TwitchLib.Api.Models.Helix.Games.GetTopGames;
-using TwitchLib.Api.Models.v5.Games;
+using TwitchLib.Api.Models.V5.Games;
 
 namespace TwitchLib.Api.Sections
 {

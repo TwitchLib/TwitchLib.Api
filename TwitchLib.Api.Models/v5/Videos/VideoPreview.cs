@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Videos
+namespace TwitchLib.Api.Models.V5.Videos
 {
     public class VideoPreview
     {

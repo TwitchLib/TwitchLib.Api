@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Api.Models.v5.Clips
+﻿namespace TwitchLib.Api.Models.V5.Clips
 {
     public enum Period
     {

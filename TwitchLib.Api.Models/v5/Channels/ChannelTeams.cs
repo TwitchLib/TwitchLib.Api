@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.v5.Channels
+namespace TwitchLib.Api.Models.V5.Channels
 {
     /// <summary>Class representing the teams response of a channel from Twitch API.</summary>
     public class ChannelTeams
