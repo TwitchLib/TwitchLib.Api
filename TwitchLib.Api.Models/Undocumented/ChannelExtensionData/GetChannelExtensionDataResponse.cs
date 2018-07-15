@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TwitchLib.Api.Models.Undocumented.ChannelExtensionData
+namespace TwitchLib.Api.Core.Models.Undocumented.ChannelExtensionData
 {
     public class GetChannelExtensionDataResponse
     {

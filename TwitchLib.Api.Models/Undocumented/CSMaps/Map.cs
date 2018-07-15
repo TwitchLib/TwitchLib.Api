@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.Undocumented.CSMaps
+namespace TwitchLib.Api.Core.Models.Undocumented.CSMaps
 {
     public class Map
     {

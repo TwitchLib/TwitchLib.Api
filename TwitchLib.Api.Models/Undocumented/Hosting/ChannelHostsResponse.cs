@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.Undocumented.Hosting
+namespace TwitchLib.Api.Core.Models.Undocumented.Hosting
 {
     public class ChannelHostsResponse
     {

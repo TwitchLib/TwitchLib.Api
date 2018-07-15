@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace TwitchLib.Api.Models.Undocumented.ChatUser
+namespace TwitchLib.Api.Core.Models.Undocumented.ChatUser
 {
     public class ChatUserResponse
     {

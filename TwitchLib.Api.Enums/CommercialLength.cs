@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Api.Enums
+﻿namespace TwitchLib.Api.Core.Enums
 {
     /// <summary>A list of valid commercial lengths.</summary>
     public enum CommercialLength

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.Undocumented.RecentEvents
+namespace TwitchLib.Api.Core.Models.Undocumented.RecentEvents
 {
     public class RecentEvents
     {

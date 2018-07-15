@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
+using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Services.Events.FollowerService;
 using TwitchLib.Api.Services.Exceptions;
@@ -140,7 +141,7 @@ namespace TwitchLib.Api.Services
 
         private async Task InitializeWithLatestFollowersAsyncInternal(string channelId)
         {
-            var response = await _api.Channels.V5.GetChannelFollowersAsync(channelId, QueryCount);
+            var response = await _api.V5.Channels.GetChannelFollowersAsync(channelId, QueryCount);
 
             FollowerCache[channelId].Clear();
 
@@ -161,7 +162,7 @@ namespace TwitchLib.Api.Services
             {
                 try
                 {
-                    var followers = await _api.Channels.V5.GetChannelFollowersAsync(channelId, QueryCount);
+                    var followers = await _api.V5.Channels.GetChannelFollowersAsync(channelId, QueryCount);
                     HandleNewFollowers(channelId, followers.Follows);
                 }
                 catch (WebException) { return; }

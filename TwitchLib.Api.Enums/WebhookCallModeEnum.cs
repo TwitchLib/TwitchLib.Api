@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TwitchLib.Api.Enums
+namespace TwitchLib.Api.Core.Enums
 {
     public enum WebhookCallMode
     {

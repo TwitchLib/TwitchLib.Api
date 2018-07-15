@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using TwitchLib.Api.Enums;
+using TwitchLib.Api.Core.Enums;
 
-namespace TwitchLib.Api.Interfaces
+namespace TwitchLib.Api.Core.Interfaces
 {
     public interface IHttpCallHandler
     {

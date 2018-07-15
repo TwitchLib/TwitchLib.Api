@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Api.Enums
+﻿namespace TwitchLib.Api.Core.Enums
 {
     /// <summary>Enum representing sort keys available for /follows/channels/</summary>
     public enum SortKey

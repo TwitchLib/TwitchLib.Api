@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Models.Undocumented.CSStreams
+namespace TwitchLib.Api.Core.Models.Undocumented.CSStreams
 {
     public class Logo
     {

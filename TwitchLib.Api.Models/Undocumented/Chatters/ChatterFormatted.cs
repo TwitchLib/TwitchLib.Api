@@ -1,5 +1,5 @@
 ﻿
-namespace TwitchLib.Api.Models.Undocumented.Chatters
+namespace TwitchLib.Api.Core.Models.Undocumented.Chatters
 {
     public class ChatterFormatted
     {
