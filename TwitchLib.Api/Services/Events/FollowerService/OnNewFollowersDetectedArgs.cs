@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwitchLib.Api.Interfaces;
+using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Services.Events.FollowerService
 {
@@ -9,11 +9,7 @@ namespace TwitchLib.Api.Services.Events.FollowerService
     public class OnNewFollowersDetectedArgs : EventArgs
     {
         /// <summary>Event property representing channel the service is currently monitoring.</summary>
-        public string ChannelData;
-        /// <summary>Event property representing number of recent followers a query to Twitch Api should return.</summary>
-        public int QueryCount;
-        /// <summary>Event property representing seconds between queries to Twitch Api.</summary>
-        public int CheckIntervalSeconds;
+        public string ChannelId;
         /// <summary>Event property representing all new followers detected.</summary>
         public List<IFollow> NewFollowers;
     }
