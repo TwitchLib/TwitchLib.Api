@@ -35,34 +35,34 @@ namespace TwitchLib.Api
             ThirdParty = new ThirdParty.ThirdParty(Settings, _rateLimiter, _http);
             Undocumented = new Undocumented(Settings, _rateLimiter, _http);
 
-            settings.PropertyChanged += Settings_PropertyChanged;
+            settings.PropertyChanged += SettingsPropertyChanged;
         }
 
-        private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void SettingsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
-                case "AccessToken":
+                case nameof(IApiSettings.AccessToken):
                     V5.Settings.AccessToken = Settings.AccessToken;
                     Helix.Settings.AccessToken = Settings.AccessToken;
                     break;
-                case "Secret":
+                case nameof(IApiSettings.Secret):
                     V5.Settings.Secret = Settings.Secret;
                     Helix.Settings.Secret = Settings.Secret;
                     break;
-                case "ClientId":
+                case nameof(IApiSettings.ClientId):
                     V5.Settings.ClientId = Settings.ClientId;
                     Helix.Settings.ClientId = Settings.ClientId;
                     break;
-                case "SkipDynamicScopeValidation":
+                case nameof(IApiSettings.SkipDynamicScopeValidation):
                     V5.Settings.SkipDynamicScopeValidation = Settings.SkipDynamicScopeValidation;
                     Helix.Settings.SkipDynamicScopeValidation = Settings.SkipDynamicScopeValidation;
                     break;
-                case "SkipAutoServerTokenGeneration":
+                case nameof(IApiSettings.SkipAutoServerTokenGeneration):
                     V5.Settings.SkipAutoServerTokenGeneration = Settings.SkipAutoServerTokenGeneration;
                     Helix.Settings.SkipAutoServerTokenGeneration = Settings.SkipAutoServerTokenGeneration;
                     break;
-                case "Scopes":
+                case nameof(IApiSettings.Scopes):
                     V5.Settings.Scopes = Settings.Scopes;
                     Helix.Settings.Scopes = Settings.Scopes;
                     break;
