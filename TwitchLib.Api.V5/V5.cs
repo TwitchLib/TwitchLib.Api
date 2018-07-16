@@ -1,6 +1,4 @@
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
-using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.HttpCallHandlers;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Core.RateLimiter;
@@ -21,6 +19,7 @@ namespace TwitchLib.Api.V5
         public Communities Communities { get; }
         public Games Games { get; }
         public Ingests Ingests { get; }
+        public Root Root { get; }
         public Search Search { get; }
         public Streams Streams { get; }
         public Teams Teams { get; }
@@ -52,6 +51,7 @@ namespace TwitchLib.Api.V5
             Communities = new Communities(Settings, rateLimiter, http);
             Games = new Games(Settings, rateLimiter, http);
             Ingests = new Ingests(Settings, rateLimiter, http);
+            Root = new Root(Settings, rateLimiter, http);
             Search = new Search(Settings, rateLimiter, http);
             Streams = new Streams(Settings, rateLimiter, http);
             Teams = new Teams(Settings, rateLimiter, http);
