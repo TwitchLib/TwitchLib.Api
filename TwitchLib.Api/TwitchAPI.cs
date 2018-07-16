@@ -26,14 +26,14 @@ namespace TwitchLib.Api
         public TwitchAPI(ILoggerFactory loggerFactory = null, IRateLimiter rateLimiter = null, IApiSettings settings = null, IHttpCallHandler http = null)
         {
             _logger = loggerFactory?.CreateLogger<TwitchAPI>();
-            var _rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
-            var _http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
+            rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
+            http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             Settings = settings ?? new ApiSettings();
 
-            Helix = new Helix.Helix(loggerFactory, rateLimiter, Settings, _http);
-            V5 = new V5.V5(loggerFactory, _rateLimiter, Settings, _http);
-            ThirdParty = new ThirdParty.ThirdParty(Settings, _rateLimiter, _http);
-            Undocumented = new Undocumented(Settings, _rateLimiter, _http);
+            Helix = new Helix.Helix(loggerFactory, rateLimiter, Settings, http);
+            V5 = new V5.V5(loggerFactory, rateLimiter, Settings, http);
+            ThirdParty = new ThirdParty.ThirdParty(Settings, rateLimiter, http);
+            Undocumented = new Undocumented(Settings, rateLimiter, http);
 
             settings.PropertyChanged += SettingsPropertyChanged;
         }
