@@ -31,19 +31,19 @@ namespace TwitchLib.Api.Helix
         public Helix(ILoggerFactory loggerFactory = null, IRateLimiter rateLimiter = null, IApiSettings settings = null, IHttpCallHandler http = null)
         {
             _logger = loggerFactory?.CreateLogger<Helix>();
-            var _rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
-            var _http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
+            rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
+            http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             Settings = settings ?? new ApiSettings();
 
-            Analytics = new Analytics(Settings, _rateLimiter, _http);
-            Bits = new Bits(Settings, _rateLimiter, _http);
-            Clips = new Clips(Settings, _rateLimiter, _http);
-            Entitlements = new Entitlements(Settings, _rateLimiter, _http);
-            Games = new Games(Settings, _rateLimiter, _http);
-            Streams = new Streams(Settings, _rateLimiter, _http);
-            Users = new Users(Settings, _rateLimiter, _http);
-            Videos = new Videos(Settings, _rateLimiter, _http);
-            Webhooks = new Webhooks(Settings, _rateLimiter, _http);
+            Analytics = new Analytics(Settings, rateLimiter, http);
+            Bits = new Bits(Settings, rateLimiter, http);
+            Clips = new Clips(Settings, rateLimiter, http);
+            Entitlements = new Entitlements(Settings, rateLimiter, http);
+            Games = new Games(Settings, rateLimiter, http);
+            Streams = new Streams(Settings, rateLimiter, http);
+            Users = new Users(Settings, rateLimiter, http);
+            Videos = new Videos(Settings, rateLimiter, http);
+            Webhooks = new Webhooks(Settings, rateLimiter, http);
         }
     }
 }
