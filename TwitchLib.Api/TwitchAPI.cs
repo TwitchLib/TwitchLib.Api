@@ -38,7 +38,7 @@ namespace TwitchLib.Api
             Undocumented = new Undocumented(Settings, rateLimiter, http);
             Root = new Root(Settings, rateLimiter, http);
 
-            settings.PropertyChanged += SettingsPropertyChanged;
+            Settings.PropertyChanged += SettingsPropertyChanged;
         }
 
         private void SettingsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
