@@ -1,11 +1,13 @@
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.HttpCallHandlers;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Core.RateLimiter;
 
 namespace TwitchLib.Api.V5
 {
-    public class V5 
+    public class V5
     {
         private readonly ILogger<V5> _logger;
         public IApiSettings Settings { get; }
@@ -56,5 +58,7 @@ namespace TwitchLib.Api.V5
             Users = new Users(Settings, rateLimiter, http);
             Videos = new Videos(Settings, rateLimiter, http);
         }
+
+        
     }
 }

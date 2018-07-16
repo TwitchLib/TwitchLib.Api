@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using TwitchLib.Api.Core.HttpCallHandlers;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Core.RateLimiter;
+using TwitchLib.Api.Core.Root;
 using TwitchLib.Api.Core.Undocumented;
 using TwitchLib.Api.Interfaces;
 
@@ -15,6 +16,7 @@ namespace TwitchLib.Api
         public Helix.Helix Helix { get; }
         public ThirdParty.ThirdParty ThirdParty { get; }
         public Undocumented Undocumented { get; }
+        public Root Root { get; }
 
         /// <summary>
         /// Creates an Instance of the TwitchAPI Class.
@@ -34,6 +36,7 @@ namespace TwitchLib.Api
             V5 = new V5.V5(loggerFactory, rateLimiter, Settings, http);
             ThirdParty = new ThirdParty.ThirdParty(Settings, rateLimiter, http);
             Undocumented = new Undocumented(Settings, rateLimiter, http);
+            Root = new Root(Settings, rateLimiter, http);
 
             settings.PropertyChanged += SettingsPropertyChanged;
         }
