@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Interfaces;
-using RootMNodel = TwitchLib.Api.Core.Models.Root.Root;
+using RootModel = TwitchLib.Api.Core.Models.Root.Root;
 
 namespace TwitchLib.Api.V5
 {
@@ -15,9 +15,9 @@ namespace TwitchLib.Api.V5
 
         #region GetRoot
 
-        public Task<RootMNodel> GetRootAsync(string authToken = null, string clientId = null)
+        public Task<RootModel> GetRootAsync(string authToken = null, string clientId = null)
         {
-            return TwitchGetGenericAsync<RootMNodel>("", ApiVersion.v5, accessToken: authToken, clientId: clientId);
+            return TwitchGetGenericAsync<RootModel>("", ApiVersion.v5, accessToken: authToken, clientId: clientId);
         }
 
         #endregion
