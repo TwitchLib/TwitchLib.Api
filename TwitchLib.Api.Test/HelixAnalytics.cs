@@ -1,6 +1,3 @@
-using Moq;
-using System;
-using TwitchLib.Api.Interfaces;
 using Xunit;
 
 namespace TwitchLib.Api.Test
