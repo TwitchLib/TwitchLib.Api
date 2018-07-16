@@ -6,7 +6,7 @@ namespace TwitchLib.Api.Interfaces
 {
     public interface ITwitchAPI
     {
-        IApiSettings Settings {get;}
+        IApiSettings Settings { get; }
         V5.V5 V5 { get; }
         Helix.Helix Helix { get; }
         ThirdParty.ThirdParty ThirdParty { get; }
