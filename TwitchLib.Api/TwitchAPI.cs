@@ -67,7 +67,6 @@ namespace TwitchLib.Api
                     Helix.Settings.Scopes = Settings.Scopes;
                     break;
             }
-            throw new System.NotImplementedException();
         }
     }
 }
