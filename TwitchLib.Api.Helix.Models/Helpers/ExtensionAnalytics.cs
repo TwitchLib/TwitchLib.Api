@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TwitchLib.Api.Helix.Models.Helpers
+﻿namespace TwitchLib.Api.Helix.Models.Helpers
 {
     public class ExtensionAnalytics
     {
@@ -24,7 +20,7 @@ namespace TwitchLib.Api.Helix.Models.Helpers
 
         public ExtensionAnalytics(string row)
         {
-            string[] p = row.Split(',');
+            var p = row.Split(',');
             Date = p[0];
             ExtensionName = p[1];
             ExtensionClientId = p[2];

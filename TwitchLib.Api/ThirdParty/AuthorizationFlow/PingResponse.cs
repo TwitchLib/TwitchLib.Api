@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using TwitchLib.Api.Core.Enums;
 
-namespace TwitchLib.Api.ThirdParty.Models.AuthorizationFlow
+namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
 {
     public class PingResponse
     {
