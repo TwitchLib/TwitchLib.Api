@@ -70,13 +70,11 @@ namespace TwitchLib.Api.Core
             if (!_settings.Scopes.Contains(requiredScope) || requiredScope == AuthScopes.Any && _settings.Scopes.Any(x => x == AuthScopes.None))
                 throw new InvalidCredentialException($"The current access token ({String.Join(",", _settings.Scopes)}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: IApiSettings.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
         }
-
-
-        public Task<Models.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
+        
+        internal virtual Task<Models.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
         {
             return TwitchGetGenericAsync<Models.Root.Root>("", ApiVersion.v5, accessToken: authToken, clientId: clientId);
         }
-
 
         internal string GetAccessToken(string accessToken = null)
         {

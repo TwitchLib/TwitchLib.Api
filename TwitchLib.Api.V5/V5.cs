@@ -5,7 +5,7 @@ using TwitchLib.Api.Core.RateLimiter;
 
 namespace TwitchLib.Api.V5
 {
-    public class V5 
+    public class V5
     {
         private readonly ILogger<V5> _logger;
         public IApiSettings Settings { get; }
@@ -19,6 +19,7 @@ namespace TwitchLib.Api.V5
         public Communities Communities { get; }
         public Games Games { get; }
         public Ingests Ingests { get; }
+        public Root Root { get; }
         public Search Search { get; }
         public Streams Streams { get; }
         public Teams Teams { get; }
@@ -36,25 +37,28 @@ namespace TwitchLib.Api.V5
         public V5(ILoggerFactory loggerFactory = null, IRateLimiter rateLimiter = null, IApiSettings settings = null, IHttpCallHandler http = null)
         {
             _logger = loggerFactory?.CreateLogger<V5>();
-            var _rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
-            var _http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
+            rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
+            http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             Settings = settings ?? new ApiSettings();
-            
-            Auth = new Auth(Settings, _rateLimiter, _http);
-            Badges = new Badges(Settings, _rateLimiter, _http);
-            Bits = new Bits(Settings, _rateLimiter, _http);
-            Channels = new Channels(Settings, _rateLimiter, _http);
-            Chat = new Chat(Settings, _rateLimiter, _http);
-            Clips = new Clips(Settings, _rateLimiter, _http);
-            Collections = new Collections(Settings, _rateLimiter, _http);
-            Communities = new Communities(Settings, _rateLimiter, _http);
-            Games = new Games(Settings, _rateLimiter, _http);
-            Ingests = new Ingests(Settings, _rateLimiter, _http);
-            Search = new Search(Settings, _rateLimiter, _http);
-            Streams = new Streams(Settings, _rateLimiter, _http);
-            Teams = new Teams(Settings, _rateLimiter, _http);
-            Users = new Users(Settings, _rateLimiter, _http);
-            Videos = new Videos(Settings, _rateLimiter, _http);
+
+            Auth = new Auth(Settings, rateLimiter, http);
+            Badges = new Badges(Settings, rateLimiter, http);
+            Bits = new Bits(Settings, rateLimiter, http);
+            Channels = new Channels(Settings, rateLimiter, http);
+            Chat = new Chat(Settings, rateLimiter, http);
+            Clips = new Clips(Settings, rateLimiter, http);
+            Collections = new Collections(Settings, rateLimiter, http);
+            Communities = new Communities(Settings, rateLimiter, http);
+            Games = new Games(Settings, rateLimiter, http);
+            Ingests = new Ingests(Settings, rateLimiter, http);
+            Root = new Root(Settings, rateLimiter, http);
+            Search = new Search(Settings, rateLimiter, http);
+            Streams = new Streams(Settings, rateLimiter, http);
+            Teams = new Teams(Settings, rateLimiter, http);
+            Users = new Users(Settings, rateLimiter, http);
+            Videos = new Videos(Settings, rateLimiter, http);
         }
+
+        
     }
 }

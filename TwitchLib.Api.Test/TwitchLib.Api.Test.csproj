@@ -23,10 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TwitchLib.Api.Enums\TwitchLib.Api.Core.Enums.csproj" />
-    <ProjectReference Include="..\TwitchLib.Api.Interfaces\TwitchLib.Api.Core.Interfaces.csproj" />
-    <ProjectReference Include="..\TwitchLib.Api.Models\TwitchLib.Api.Core.Models.csproj" />
     <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.csproj" />
   </ItemGroup>
+
 
 </Project>
