@@ -3,11 +3,11 @@ using System.Timers;
 
 namespace TwitchLib.Api.Services.Core
 {
-    public class ServiceTimer : Timer
+    internal class ServiceTimer : Timer
     {
         public int IntervalInSeconds { get; }
 
-        public delegate Task ServiceTimerTick(bool listen = true);
+        public delegate Task ServiceTimerTick();
 
         private readonly ServiceTimerTick _serviceTimerTickAsyncCallback;
 

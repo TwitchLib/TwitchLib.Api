@@ -5,7 +5,9 @@ using TwitchLib.Api.Helix.Models.Users.Internal;
 namespace TwitchLib.Api.Services.Events.FollowerService
 {
     /// <inheritdoc />
-    /// <summary>Class representing event args for OnNewFollowersDetected event.</summary>
+    /// <summary>
+    /// Class representing EventArgs for OnNewFollowersDetected event.
+    /// </summary>
     public class OnNewFollowersDetectedArgs : EventArgs
     {
         /// <summary>Event property representing channel the service is currently monitoring.</summary>

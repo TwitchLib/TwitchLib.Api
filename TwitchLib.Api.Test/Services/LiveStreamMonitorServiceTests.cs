@@ -66,6 +66,18 @@ namespace TwitchLib.Api.Test.Services
             }
 
             [Fact]
+            public void OnChannelsSet_Raised_When_ChannelsSet()
+            {
+                var eventRaised = false;
+
+                _liveStreamMonitor = new LiveStreamMonitorService(_api);
+                _liveStreamMonitor.OnChannelsSet += (sender, e) => eventRaised = true;
+                _liveStreamMonitor.SetChannelsById(Utils.CreateListWithEmptyString());
+
+                Assert.True(eventRaised);
+            }
+
+            [Fact]
             public void OnServiceTick_Raised_When_ServiceTicked()
             {
                 var usersFollowsResponseJson = JMock.Of<GetStreamsResponse>(o =>
@@ -179,7 +191,7 @@ namespace TwitchLib.Api.Test.Services
 
         public class Exceptions
         {
-            private const string ChannelsNotSetExceptionMessage = "You must atleast add 1 channel to monitor before starting the Service.";
+            private const string ChannelsNotSetExceptionMessage = "You must atleast add 1 channel to service before starting it.";
             private const string ChannelListEmptyExceptionMessage = "The provided list is empty.";
             private const string AlreadyStartedExceptionMessage = "The service has already been started.";
             private const string AlreadyStoppedExceptionMessage = "The service hasn't started yet, or has already been stopped.";

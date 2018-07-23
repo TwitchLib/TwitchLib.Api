@@ -8,8 +8,6 @@ using TwitchLib.Api.Helix.Models.Users;
 
 namespace TwitchLib.Api.Services.Core.FollowerService
 {
-
-    /// <summary>Service that allows customizability and subscribing to detection of new Twitch followers.</summary>
     internal class NameBasedMonitor : CoreMonitor
     {
         private readonly ConcurrentDictionary<string, string> _channelToId = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);

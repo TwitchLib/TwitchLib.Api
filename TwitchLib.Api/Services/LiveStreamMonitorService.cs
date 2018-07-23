@@ -15,17 +15,42 @@ namespace TwitchLib.Api.Services
         private IdBasedMonitor _idBasedMonitor;
         private NameBasedMonitor _nameBasedMonitor;
 
+        /// <summary>
+        /// A cache with streams that are currently live.
+        /// </summary>
         public Dictionary<string, Stream> LiveStreams { get; } = new Dictionary<string, Stream>(StringComparer.OrdinalIgnoreCase);
+        /// <summary>
+        /// The maximum amount of streams to collect per request.
+        /// </summary>
         public int MaxStreamRequestCountPerRequest { get; }
 
         private IdBasedMonitor IdBasedMonitor => _idBasedMonitor ?? (_idBasedMonitor = new IdBasedMonitor(_api));
         private NameBasedMonitor NameBasedMonitor => _nameBasedMonitor ?? (_nameBasedMonitor = new NameBasedMonitor(_api));
 
+        /// <summary>
+        /// Invoked when a monitored stream went online.
+        /// </summary>
         public event EventHandler<OnStreamOnlineArgs> OnStreamOnline;
+        /// <summary>
+        /// Invoked when a monitored stream went offline.
+        /// </summary>
         public event EventHandler<OnStreamOfflineArgs> OnStreamOffline;
+        /// <summary>
+        /// Invoked when a monitored stream was already online, but is updated with it's latest information (might be the same).
+        /// </summary>
         public event EventHandler<OnStreamUpdateArgs> OnStreamUpdate;
 
-        public LiveStreamMonitorService(ITwitchAPI api, int checkIntervalInSeconds = 60, int maxStreamRequestCountPerRequest = 100) : base (api, checkIntervalInSeconds)
+        /// <summary>
+        /// The constructor from the LiveStreamMonitorService
+        /// </summary>
+        /// <exception cref="ArgumentNullException">When the <paramref name="api"/> is null.</exception>
+        /// <exception cref="ArgumentException">When the <paramref name="checkIntervalInSeconds"/> is lower than one second.</exception> 
+        /// <exception cref="ArgumentException">When the <paramref name="maxStreamRequestCountPerRequest"/> is less than 1 or more than 100.</exception> 
+        /// <param name="api">The api used to query information.</param>
+        /// <param name="checkIntervalInSeconds"></param>
+        /// <param name="maxStreamRequestCountPerRequest"></param>
+        public LiveStreamMonitorService(ITwitchAPI api, int checkIntervalInSeconds = 60, int maxStreamRequestCountPerRequest = 100) : 
+            base (api, checkIntervalInSeconds)
         {
             if (maxStreamRequestCountPerRequest < 1 || maxStreamRequestCountPerRequest > 100)
                 throw new ArgumentException("Twitch doesn't support less than 1 or more than 100 streams per request.", nameof(maxStreamRequestCountPerRequest));
@@ -76,10 +101,10 @@ namespace TwitchLib.Api.Services
             }
         }
 
-        protected override async Task OnServiceTimerTick(bool callEvents = true)
+        protected override async Task OnServiceTimerTick()
         {
-            await base.OnServiceTimerTick(callEvents);
-            await UpdateLiveStreamersAsync(callEvents);
+            await base.OnServiceTimerTick();
+            await UpdateLiveStreamersAsync();
         }
 
         private void HandleLiveStreamUpdate(string channel, Stream liveStream, bool callEvents)

@@ -6,7 +6,6 @@ using TwitchLib.Api.Helix.Models.Streams;
 
 namespace TwitchLib.Api.Services.Core.LiveStreamMonitor
 {
-    /// <summary>Service that allows customizability and subscribing to detection of new Twitch followers.</summary>
     internal class IdBasedMonitor : CoreMonitor
     {
         public IdBasedMonitor(ITwitchAPI api) : base(api) { }

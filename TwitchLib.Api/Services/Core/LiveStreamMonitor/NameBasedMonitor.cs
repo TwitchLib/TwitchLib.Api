@@ -8,7 +8,6 @@ using TwitchLib.Api.Interfaces;
 
 namespace TwitchLib.Api.Services.Core.LiveStreamMonitor
 {
-    /// <summary>Service that allows customizability and subscribing to detection of new Twitch followers.</summary>
     internal class NameBasedMonitor : CoreMonitor
     {
         private readonly ConcurrentDictionary<string, string> _channelToId = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);

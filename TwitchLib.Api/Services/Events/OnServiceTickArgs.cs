@@ -3,7 +3,9 @@
 namespace TwitchLib.Api.Services.Events
 {
     /// <inheritdoc />
-    /// <summary>Class representing event args for OnServiceStarted event.</summary>
+    /// <summary>
+    /// Class representing EventArgs for the OnServiceTick event.
+    /// </summary>
     public class OnServiceTickArgs : EventArgs
     {
     }
