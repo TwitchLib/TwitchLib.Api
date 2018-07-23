@@ -1,255 +1,137 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System.Timers;
-using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Interfaces;
+using TwitchLib.Api.Services.Core.FollowerService;
 using TwitchLib.Api.Services.Events.FollowerService;
-using TwitchLib.Api.Services.Exceptions;
+using TwitchLib.Api.Helix.Models.Users.Internal;
 
 namespace TwitchLib.Api.Services
 {
-    /// <summary>Service that allows customizability and subscribing to detection of new Twitch followers.</summary>
-    public class FollowerService
+    public class FollowerService : ApiService
     {
-        private readonly ITwitchAPI _api;
-        private readonly Timer _followerServiceTimer = new Timer();
-        
-        private readonly HashSet<string> _channelsToRemove = new HashSet<string>();
-        private readonly HashSet<string> _channelsToAdd = new HashSet<string>();
+        private readonly Dictionary<string, DateTime> _lastFollowerDates = new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
 
-        private int _queryCount;
-        private int _checkIntervalSeconds;
-        private bool _checkingForNewFollowers;
+        private CoreMonitor _monitor;
+        private IdBasedMonitor _idBasedMonitor;
+        private NameBasedMonitor _nameBasedMonitor;
 
-        /// <summary>Property representing the number of followers to compare a fresh query against for new followers. Default: 1000.</summary>
-        public int CacheSize { get; } = 1000;
-        /// <summary>Property representing number of recent followers that service should request. Recommended: 25, increase for larger channels. MAX: 100, MINIMUM: 1</summary>
-        /// <exception cref="BadQueryCountException">Throws BadQueryCountException if queryCount is larger than 100 or smaller than 1.</exception>
-        public int QueryCount { get => _queryCount; set { if (value < 1 || value > 100) { throw new BadQueryCountException("Query count was smaller than 1 or exceeded 100"); } _queryCount = value; } }
-        /// <summary>Property representing the cache where detected followers are stored and compared against</summary>
-        public Dictionary<string, List<IFollow>> FollowerCache { get; } = new Dictionary<string, List<IFollow>>();
-        /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
-        public int CheckIntervalSeconds { get => _checkIntervalSeconds; set { _checkIntervalSeconds = value; _followerServiceTimer.Interval = value * 1000; } } 
+        public Dictionary<string, List<Follow>> KnownFollowers { get; } = new Dictionary<string, List<Follow>>(StringComparer.OrdinalIgnoreCase);
+        public int QueryCountPerRequest { get; }
+        public int CacheSize { get; }
 
-        private bool CheckingForNewFollowers
-        {
-            get => _checkingForNewFollowers;
-            set
-            {
-                _checkingForNewFollowers = value;
-                if (!_checkingForNewFollowers)
-                    UpdateCache();
-            }
-        }
+        private IdBasedMonitor IdBasedMonitor => _idBasedMonitor ?? (_idBasedMonitor = new IdBasedMonitor(_api));
+        private NameBasedMonitor NameBasedMonitor => _nameBasedMonitor ?? (_nameBasedMonitor = new NameBasedMonitor(_api));
 
-        /// <summary>Event fires when service starts.</summary>
-        public event EventHandler<OnServiceStartedArgs> OnServiceStarted;
-        /// <summary>Event fires when service stops.</summary>
-        public event EventHandler<OnServiceStoppedArgs> OnServiceStopped;
-        /// <summary>Event fires when new followers are detected.</summary>
         public event EventHandler<OnNewFollowersDetectedArgs> OnNewFollowersDetected;
 
-        /// <summary>Service constructor.</summary>
-        /// <exception cref="ArgumentNullException">If the provided api is invalid, an ArgumentNullException will be thrown.</exception>
-        /// <param name="api">TwitchApi instance</param>
-        /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
-        /// <param name="queryCount">Number of recent followers service should request from Twitch Api. Max: 100, Min: 1</param>
-        public FollowerService(ITwitchAPI api, int checkIntervalSeconds = 60, int queryCount = 25)
+        public FollowerService(ITwitchAPI api, int checkIntervalInSeconds = 60, int queryCountPerRequest = 100, int cacheSize = 1000) : 
+            base(api, checkIntervalInSeconds)
         {
-            _api = api ?? throw new ArgumentNullException(nameof(api));
-            _followerServiceTimer.Elapsed += CheckForNewFollowers;
+            if (queryCountPerRequest < 1 || queryCountPerRequest > 100)
+                throw new ArgumentException("Twitch doesn't support less than 1 or more than 100 followers per request.", nameof(queryCountPerRequest));
 
-            CheckIntervalSeconds = checkIntervalSeconds;
-            QueryCount = queryCount;
+            if (cacheSize < queryCountPerRequest)
+                throw new ArgumentException($"The cache size must be at least the size of the {nameof(queryCountPerRequest)} parameter.", nameof(cacheSize));
+
+            QueryCountPerRequest = queryCountPerRequest;
+            CacheSize = cacheSize;
         }
 
-        /// <summary>
-        /// Starts the service and calls the OnServiceStarted event
-        /// </summary>
-        public void StartService()
+        public void ClearCache()
         {
-            _followerServiceTimer.Start();
+            KnownFollowers.Clear();
 
-            OnServiceStarted?.Invoke(this,
-                new OnServiceStartedArgs { ChannelIds = FollowerCache.Keys.ToList() });
+            _lastFollowerDates.Clear();
+
+            _nameBasedMonitor?.ClearCache();
+
+            _nameBasedMonitor = null;
+            _idBasedMonitor = null;
         }
 
-        /// <summary>
-        /// Stops the service and calls the OnServiceStopped event
-        /// </summary>
-        public void StopService()
+        public void SetChannelsById(List<string> channelsToMonitor)
         {
-            _followerServiceTimer.Stop();
-            OnServiceStopped?.Invoke(this,
-                new OnServiceStoppedArgs { ChannelIds = FollowerCache.Keys.ToList() });
+            SetChannels(channelsToMonitor);
+
+            _monitor = IdBasedMonitor;
         }
 
-        /// <summary>
-        /// Sets the followercache from all of the added channels to contain the last followers based on the queryCount
-        /// </summary>
-        public async Task InitializeWithLatestFollowersAsync()
+        public void SetChannelsByName(List<string> channelsToMonitor)
         {
-            foreach (var channelId in FollowerCache.Keys)
-                await InitializeWithLatestFollowersAsync(channelId);
+            SetChannels(channelsToMonitor);
+
+            _monitor = NameBasedMonitor;
         }
 
-        /// <summary>
-        /// Sets the followercache from the given channelId to contain the last followers based on the queryCount
-        /// </summary>
-        /// <exception cref="ArgumentNullException">If the provided channelId is null.</exception>
-        /// <exception cref="UninitializedChannelDataException">If the provided channelId is invalid.</exception>
-        /// <param name="channelId">The id of the channel, this channel must be added through AddChannel()</param>
-        public async Task InitializeWithLatestFollowersAsync(string channelId)
+        public async Task UpdateLatestFollowersAsync(bool callEvents = true)
         {
-            if (channelId == null)
-                throw new ArgumentNullException(nameof(channelId));
+            if (ChannelsToMonitor == null)
+                return;
 
-            if (!FollowerCache.ContainsKey(channelId))
-                throw new UninitializedChannelDataException("ChannelId must be set before starting the FollowerService. Use AddChannel() to set the channel to monitor");
-
-            await InitializeWithLatestFollowersAsyncInternal(channelId);
-        }
-
-        /// <summary>
-        /// Adds a channel to get NewFollowersDetected callbacks from by id.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">If the provided channelId is null.</exception>
-        /// <param name="channelId">The id from the channel</param>
-        public void AddChannel(string channelId)
-        {
-            if (channelId == null)
-                throw new ArgumentNullException(nameof(channelId));
-
-            AddChannelInternal(channelId);
-        }
-
-        /// <summary>
-        /// Removes a channel to get NewFollowersDetected callbacks from by id.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">If the provided channelId is null.</exception>
-        /// <param name="channelId">The id from the channel</param>
-        public void RemoveChannelById(string channelId)
-        {
-            if (channelId == null)
-                throw new ArgumentNullException(nameof(channelId));
-
-            RemoveChannelInternal(channelId);
-        }
-
-        private async Task InitializeWithLatestFollowersAsyncInternal(string channelId)
-        {
-            var response = await _api.V5.Channels.GetChannelFollowersAsync(channelId, QueryCount);
-
-            FollowerCache[channelId].Clear();
-
-            foreach (var follower in response.Follows)
-                FollowerCache[channelId].Add(follower);
-        }
-
-        private async void CheckForNewFollowers(object sender, ElapsedEventArgs e)
-        {
-            CheckingForNewFollowers = true; //'Prevents' the UpdateCache from being be modified while looping through it.
-            await CheckForNewFollowersAsync();
-            CheckingForNewFollowers = false; //When setting CheckingForNewFollowers to false, it'll call UpdateCache to add/remove channels which were added during the check.
-        }
-
-        private async Task CheckForNewFollowersAsync()
-        {
-            foreach (var channelId in FollowerCache.Keys)
+            foreach (var channel in ChannelsToMonitor)
             {
-                try
+                List<Follow> newFollowers;
+                var latestFollowers = await GetLatestFollowersAsync(channel);
+
+                if (latestFollowers.Count == 0)
+                    return;
+
+                if (!KnownFollowers.TryGetValue(channel, out var knownFollowers))
                 {
-                    var followers = await _api.V5.Channels.GetChannelFollowersAsync(channelId, QueryCount);
-                    HandleNewFollowers(channelId, followers.Follows);
+                    newFollowers = latestFollowers;
+                    KnownFollowers[channel] = latestFollowers.Take(CacheSize).ToList();
+                    _lastFollowerDates[channel] = latestFollowers.Last().FollowedAt;
                 }
-                catch (WebException) { return; }
-            }
-        }
-        
-        private void HandleNewFollowers(string channelId, IEnumerable<IFollow> followers)
-        {
-            var newFollowers = new List<IFollow>();
-            var knownFollowers = FollowerCache[channelId];
-
-            var existingFollowerIds = new HashSet<string>(knownFollowers.Select(f => f.User.Id));
-
-            foreach (var follower in followers)
-            {
-                if (existingFollowerIds.Add(follower.User.Id))
+                else
                 {
-                    newFollowers.Add(follower);
-                    knownFollowers.Add(follower);
+                    var existingFollowerIds = new HashSet<string>(knownFollowers.Select(f => f.FromUserId));
+                    var latestKnownFollowerDate = _lastFollowerDates[channel];
+                    newFollowers = new List<Follow>();
+
+                    foreach (var follower in latestFollowers)
+                    {
+                        if (!existingFollowerIds.Add(follower.FromUserId)) continue;
+
+                        if (follower.FollowedAt < latestKnownFollowerDate) continue;
+
+                        newFollowers.Add(follower);
+                        latestKnownFollowerDate = follower.FollowedAt;
+                        knownFollowers.Add(follower);
+                    }
+
+                    existingFollowerIds.Clear();
+                    existingFollowerIds.TrimExcess();
+
+                    // prune cache so we don't use too much space unnecessarily
+                    if (knownFollowers.Count > CacheSize)
+                        knownFollowers.RemoveRange(0, knownFollowers.Count - CacheSize);
+
+                    if (newFollowers.Count <= 0)
+                        return;
+
+                    _lastFollowerDates[channel] = latestKnownFollowerDate;
                 }
-            }
 
-            existingFollowerIds.Clear();
-            existingFollowerIds.TrimExcess();
+                if (!callEvents)
+                    return;
 
-            // Check for new followers
-            if (newFollowers.Count <= 0)
-                return;
-
-            // prune cache so we don't use too much space unnecessarily
-            if (knownFollowers.Count > CacheSize)
-                knownFollowers.RemoveRange(0, knownFollowers.Count - CacheSize);
-
-            // Invoke followers event with list of follows - IFollow
-            OnNewFollowersDetected?.Invoke(this,
-                new OnNewFollowersDetectedArgs
-                {
-                    ChannelId = channelId,
-                    NewFollowers = newFollowers
-                });
-        }
-
-        private void AddChannelInternal(string channelId)
-        {
-            channelId = channelId.ToLower();
-
-            if (FollowerCache.ContainsKey(channelId))
-                return;
-
-            //If we're currently checking for new followers, changing the FollowerCache might throw a collection modified exception, so we add it to a list instead to handle later
-            if (CheckingForNewFollowers)
-            {
-                _channelsToRemove.Remove(channelId);
-                _channelsToAdd.Add(channelId);
-            }
-            else
-            {
-                FollowerCache[channelId] = new List<IFollow>();
+                OnNewFollowersDetected?.Invoke(this, new OnNewFollowersDetectedArgs { Channel = channel, NewFollowers = newFollowers });
             }
         }
 
-        private void RemoveChannelInternal(string channelId)
+        protected override async Task OnServiceTimerTick(bool callEvents = true)
         {
-            channelId = channelId.ToLower();
-
-            if (!FollowerCache.ContainsKey(channelId))
-                return;
-
-            //If we're currently checking for new followers, changing the FollowerCache might throw a collection modified exception, so we add it to a list instead to handle later
-            if (CheckingForNewFollowers)
-            {
-                _channelsToAdd.Remove(channelId);
-                _channelsToRemove.Add(channelId);
-            }
-            else
-            {
-                FollowerCache.Remove(channelId);
-            }
+            await base.OnServiceTimerTick(callEvents);
+            await UpdateLatestFollowersAsync(callEvents);
         }
 
-        private void UpdateCache()
+        private async Task<List<Follow>> GetLatestFollowersAsync(string channel)
         {
-            foreach (var channel in _channelsToAdd)
-                FollowerCache[channel] = new List<IFollow>();
-
-            foreach (var channel in _channelsToRemove)
-                FollowerCache.Remove(channel);
+            var resultset = await _monitor.GetUsersFollowsAsync(channel, QueryCountPerRequest);
+            
+            return resultset.Follows.Reverse().ToList();
         }
     }
 }

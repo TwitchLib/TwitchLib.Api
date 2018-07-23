@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using TwitchLib.Api.Interfaces;
+using TwitchLib.Api.Helix.Models.Users;
+
+namespace TwitchLib.Api.Services.Core.FollowerService
+{
+    /// <summary>Service that allows customizability and subscribing to detection of new Twitch followers.</summary>
+    internal class IdBasedMonitor : CoreMonitor
+    {
+        public IdBasedMonitor(ITwitchAPI api) : base(api) { }
+
+        public override Task<GetUsersFollowsResponse> GetUsersFollowsAsync(string channel, int queryCount)
+        {
+            return _api.Helix.Users.GetUsersFollowsAsync(first: queryCount, toId: channel);
+        }
+    }
+}
