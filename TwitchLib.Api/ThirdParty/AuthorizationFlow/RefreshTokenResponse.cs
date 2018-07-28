@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.ThirdParty.Models.AuthorizationFlow
+namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
 {
     public class RefreshTokenResponse
     {

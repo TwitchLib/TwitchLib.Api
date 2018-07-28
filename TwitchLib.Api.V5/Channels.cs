@@ -29,7 +29,7 @@ namespace TwitchLib.Api.V5
         /// <returns>A ChannelPrivileged object including all Channel object info plus email and streamkey.</returns>
         public Task<ChannelAuthed> GetChannelAsync(string authToken = null)
         {
-            return TwitchGetGenericAsync<ChannelAuthed>("/channel", ApiVersion.v5, accessToken: authToken);
+            return TwitchGetGenericAsync<ChannelAuthed>("/channel", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion
@@ -47,7 +47,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<Channel>($"/channels/{channelId}", ApiVersion.v5);
+            return TwitchGetGenericAsync<Channel>($"/channels/{channelId}", ApiVersion.V5);
         }
 
         #endregion
@@ -109,7 +109,7 @@ namespace TwitchLib.Api.V5
 
             payload = "{ \"channel\": {" + payload + "} }";
 
-            return TwitchPutGenericAsync<Channel>($"/channels/{channelId}", ApiVersion.v5, payload, accessToken: authToken);
+            return TwitchPutGenericAsync<Channel>($"/channels/{channelId}", ApiVersion.V5, payload, accessToken: authToken);
         }
 
         #endregion
@@ -129,7 +129,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<ChannelEditors>($"/channels/{channelId}/editors", ApiVersion.v5, accessToken: authToken);
+            return TwitchGetGenericAsync<ChannelEditors>($"/channels/{channelId}/editors", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion
@@ -163,7 +163,7 @@ namespace TwitchLib.Api.V5
             if (!string.IsNullOrEmpty(direction) && (direction == "asc" || direction == "desc"))
                 getParams.Add(new KeyValuePair<string, string>("direction", direction));
 
-            return TwitchGetGenericAsync<ChannelFollowers>($"/channels/{channelId}/follows", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<ChannelFollowers>($"/channels/{channelId}/follows", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -221,7 +221,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<ChannelTeams>($"/channels/{channelId}/teams", ApiVersion.v5);
+            return TwitchGetGenericAsync<ChannelTeams>($"/channels/{channelId}/teams", ApiVersion.V5);
         }
 
         #endregion
@@ -252,7 +252,7 @@ namespace TwitchLib.Api.V5
             if (!string.IsNullOrEmpty(direction) && (direction == "asc" || direction == "desc"))
                 getParams.Add(new KeyValuePair<string, string>("direction", direction));
 
-            return TwitchGetGenericAsync<ChannelSubscribers>($"/channels/{channelId}/subscriptions", ApiVersion.v5, getParams, authToken);
+            return TwitchGetGenericAsync<ChannelSubscribers>($"/channels/{channelId}/subscriptions", ApiVersion.V5, getParams, authToken);
         }
 
         #endregion
@@ -328,7 +328,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<Subscription>($"/channels/{channelId}/subscriptions/{userId}", ApiVersion.v5, accessToken: authToken);
+            return TwitchGetGenericAsync<Subscription>($"/channels/{channelId}/subscriptions/{userId}", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion
@@ -366,7 +366,7 @@ namespace TwitchLib.Api.V5
             if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
                 getParams.Add(new KeyValuePair<string, string>("sort", sort));
 
-            return TwitchGetGenericAsync<ChannelVideos>($"/channels/{channelId}/videos", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<ChannelVideos>($"/channels/{channelId}/videos", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -380,7 +380,7 @@ namespace TwitchLib.Api.V5
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
             var payload = "{\"duration\": " + (int)duration + "}";
-            return TwitchPostGenericAsync<ChannelCommercial>($"/channels/{channelId}/commercial", ApiVersion.v5, payload, accessToken: authToken);
+            return TwitchPostGenericAsync<ChannelCommercial>($"/channels/{channelId}/commercial", ApiVersion.V5, payload, accessToken: authToken);
         }
 
         #endregion
@@ -410,7 +410,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchDeleteGenericAsync<ChannelAuthed>($"/channels/{channelId}/stream_key", ApiVersion.v5, authToken);
+            return TwitchDeleteGenericAsync<ChannelAuthed>($"/channels/{channelId}/stream_key", ApiVersion.V5, authToken);
         }
 
         #endregion
@@ -431,7 +431,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<Community>($"/channels/{channelId}/community", ApiVersion.v5, accessToken: authToken);
+            return TwitchGetGenericAsync<Community>($"/channels/{channelId}/community", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion
@@ -443,7 +443,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrEmpty(channelId))
                 throw new BadParameterException("The channel id is not valid. It is now allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<CommunitiesResponse>($"/channels/{channelId}/communities", ApiVersion.v5, accessToken: authToken);
+            return TwitchGetGenericAsync<CommunitiesResponse>($"/channels/{channelId}/communities", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion
@@ -480,7 +480,7 @@ namespace TwitchLib.Api.V5
                     payload += $", \"{communityId}\"";
 
             payload = $"{{\"community_ids\": [{payload}]}}";
-            return TwitchPutAsync($"/channels/{channelId}/communities", ApiVersion.v5, payload, accessToken: authToken);
+            return TwitchPutAsync($"/channels/{channelId}/communities", ApiVersion.V5, payload, accessToken: authToken);
         }
 
         #endregion
@@ -497,7 +497,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchDeleteAsync($"/channels/{channelId}/community", ApiVersion.v5, accessToken: authToken);
+            return TwitchDeleteAsync($"/channels/{channelId}/community", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion

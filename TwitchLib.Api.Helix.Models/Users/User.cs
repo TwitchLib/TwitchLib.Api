@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Users.Internal
+namespace TwitchLib.Api.Helix.Models.Users
 {
     public class User
     {

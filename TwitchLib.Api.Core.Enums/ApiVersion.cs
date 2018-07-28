@@ -2,7 +2,7 @@
 {
     public enum ApiVersion
     {
-        v5 = 5,
+        V5 = 5,
         Helix = 6,
         Void = 0
     }

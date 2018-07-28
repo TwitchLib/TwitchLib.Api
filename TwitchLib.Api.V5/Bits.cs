@@ -26,7 +26,7 @@ namespace TwitchLib.Api.V5
                     };
             }
 
-            return TwitchGetGenericAsync<Cheermotes>("/bits/actions", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<Cheermotes>("/bits/actions", ApiVersion.V5, getParams);
         }
 
         #endregion

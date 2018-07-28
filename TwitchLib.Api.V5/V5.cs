@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.HttpCallHandlers;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Core.RateLimiter;

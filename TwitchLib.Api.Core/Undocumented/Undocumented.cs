@@ -87,7 +87,7 @@ namespace TwitchLib.Api.Core.Undocumented
                 new KeyValuePair<string, string>("target", channelId)
             };
 
-            return TwitchGetGenericAsync<ChannelHostsResponse>("hosts", ApiVersion.v5, getParams, customBase: "https://tmi.twitch.tv/");
+            return TwitchGetGenericAsync<ChannelHostsResponse>("hosts", ApiVersion.V5, getParams, customBase: "https://tmi.twitch.tv/");
         }
 
         #endregion
@@ -206,7 +206,7 @@ namespace TwitchLib.Api.Core.Undocumented
 
         public Task<GetChannelExtensionDataResponse> GetChannelExtensionDataAsync(string channelId)
         {
-            return TwitchGetGenericAsync<GetChannelExtensionDataResponse>($"/channels/{channelId}/extensions", ApiVersion.v5, customBase: "https://api.twitch.tv/v5");
+            return TwitchGetGenericAsync<GetChannelExtensionDataResponse>($"/channels/{channelId}/extensions", ApiVersion.V5, customBase: "https://api.twitch.tv/v5");
         }
 
         #endregion
