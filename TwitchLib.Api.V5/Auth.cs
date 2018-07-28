@@ -24,7 +24,7 @@ namespace TwitchLib.Api.V5
         /// <returns>A RefreshResponse object that holds your new auth and refresh token and the list of scopes for that token</returns>
         public Task<RefreshResponse> RefreshAuthTokenAsync(string refreshToken, string clientSecret, string clientId = null)
         {
-            var internalClientId = clientId ?? _settings.ClientId;
+            var internalClientId = clientId ?? Settings.ClientId;
 
             if (string.IsNullOrWhiteSpace(refreshToken))
                 throw new BadParameterException("The refresh token is not valid. It is not allowed to be null, empty or filled with whitespaces.");
@@ -43,7 +43,7 @@ namespace TwitchLib.Api.V5
                     new KeyValuePair<string, string>("client_secret", clientSecret)
                 };
 
-            return TwitchPostGenericAsync<RefreshResponse>("/oauth2/token", ApiVersion.v5, null, getParams, customBase: "https://id.twitch.tv");
+            return TwitchPostGenericAsync<RefreshResponse>("/oauth2/token", ApiVersion.V5, null, getParams, customBase: "https://id.twitch.tv");
         }
 
         #endregion

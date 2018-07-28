@@ -54,7 +54,5 @@ namespace TwitchLib.Api.Helix
         }
 
         #endregion
-
-
     }
 }

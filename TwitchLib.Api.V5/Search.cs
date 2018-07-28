@@ -27,7 +27,7 @@ namespace TwitchLib.Api.V5
             if (offset.HasValue)
                 getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-            return TwitchGetGenericAsync<SearchChannels>("/search/channels", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<SearchChannels>("/search/channels", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -43,7 +43,7 @@ namespace TwitchLib.Api.V5
 
             if (live.HasValue) getParams.Add(live.Value ? new KeyValuePair<string, string>("live", "true") : new KeyValuePair<string, string>("live", "false"));
 
-            return TwitchGetGenericAsync<SearchGames>("/search/games", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<SearchGames>("/search/games", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -64,7 +64,7 @@ namespace TwitchLib.Api.V5
             if (hls.HasValue)
                 getParams.Add(new KeyValuePair<string, string>("hls", hls.Value.ToString()));
 
-            return TwitchGetGenericAsync<SearchStreams>("/search/streams", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<SearchStreams>("/search/streams", ApiVersion.V5, getParams);
         }
 
         #endregion
