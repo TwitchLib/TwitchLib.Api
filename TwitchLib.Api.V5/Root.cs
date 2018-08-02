@@ -17,7 +17,7 @@ namespace TwitchLib.Api.V5
 
         public Task<RootModel> GetRootAsync(string authToken = null, string clientId = null)
         {
-            return TwitchGetGenericAsync<RootModel>("", ApiVersion.v5, accessToken: authToken, clientId: clientId);
+            return TwitchGetGenericAsync<RootModel>("", ApiVersion.V5, accessToken: authToken, clientId: clientId);
         }
 
         #endregion

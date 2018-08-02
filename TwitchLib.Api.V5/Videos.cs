@@ -29,7 +29,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(videoId))
                 throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<Video>($"/videos/{videoId}", ApiVersion.v5);
+            return TwitchGetGenericAsync<Video>($"/videos/{videoId}", ApiVersion.V5);
         }
 
         #endregion
@@ -68,7 +68,7 @@ namespace TwitchLib.Api.V5
             if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
                 getParams.Add(new KeyValuePair<string, string>("sort", sort));
 
-            return TwitchGetGenericAsync<TopVideos>("/videos/top", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<TopVideos>("/videos/top", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -104,7 +104,7 @@ namespace TwitchLib.Api.V5
             if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
                 getParams.Add(new KeyValuePair<string, string>("sort", sort));
 
-            return TwitchGetGenericAsync<FollowedVideos>("/videos/followed", ApiVersion.v5, getParams, authToken);
+            return TwitchGetGenericAsync<FollowedVideos>("/videos/followed", ApiVersion.V5, getParams, authToken);
         }
 
         #endregion
@@ -143,7 +143,7 @@ namespace TwitchLib.Api.V5
             if (!string.IsNullOrWhiteSpace(title))
                 getParams.Add(new KeyValuePair<string, string>("title", title));
 
-            return TwitchPutGenericAsync<Video>($"/videos/{videoId}", ApiVersion.v5, null, getParams, authToken);
+            return TwitchPutGenericAsync<Video>($"/videos/{videoId}", ApiVersion.V5, null, getParams, authToken);
         }
 
         #endregion
@@ -156,7 +156,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(videoId))
                 throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchDeleteAsync($"/videos/{videoId}", ApiVersion.v5, accessToken: authToken);
+            return TwitchDeleteAsync($"/videos/{videoId}", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion
@@ -181,7 +181,7 @@ namespace TwitchLib.Api.V5
 
             if (viewableAt.HasValue)
                 getParams.Add(new KeyValuePair<string, string>("viewable_at", viewableAt.Value.ToRfc3339String()));
-            return TwitchPostGenericAsync<UploadVideoListing>("/videos", ApiVersion.v5, null, getParams, accessToken);
+            return TwitchPostGenericAsync<UploadVideoListing>("/videos", ApiVersion.V5, null, getParams, accessToken);
         }
 
         private void UploadVideoParts(string videoPath, Upload upload)
@@ -230,7 +230,7 @@ namespace TwitchLib.Api.V5
 
         private Task CompleteVideoUploadAsync(Upload upload, string accessToken)
         {
-            return TwitchPostAsync(null, ApiVersion.v5, null, accessToken: accessToken, customBase: $"{upload.Url}/complete?upload_token={upload.Token}");
+            return TwitchPostAsync(null, ApiVersion.V5, null, accessToken: accessToken, customBase: $"{upload.Url}/complete?upload_token={upload.Token}");
         }
     }
 

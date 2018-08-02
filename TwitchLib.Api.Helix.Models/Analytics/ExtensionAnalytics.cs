@@ -7,6 +7,6 @@ namespace TwitchLib.Api.Helix.Models.Analytics
         [JsonProperty(PropertyName = "extension_id")]
         public string ExtensionId { get; protected set; }
         [JsonProperty(PropertyName = "URL")]
-        public string URL { get; protected set; }
+        public string Url { get; protected set; }
     }
 }

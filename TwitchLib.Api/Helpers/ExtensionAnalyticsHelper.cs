@@ -9,7 +9,7 @@ namespace TwitchLib.Api.Helpers
 {
     public static class ExtensionAnalyticsHelper
     {
-        public static async Task<List<ExtensionAnalytics>> HandleURLAsync(string url)
+        public static async Task<List<ExtensionAnalytics>> HandleUrlAsync(string url)
         {
             var cnts = await GetContentsAsync(url);
             var data = ExtractData(cnts);

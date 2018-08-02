@@ -28,7 +28,7 @@ namespace TwitchLib.Api.V5
                 {
                     new KeyValuePair<string, string>("login", string.Join(",", usernames))
                 };
-            return TwitchGetGenericAsync<Models.Users.Users>("/users", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<Models.Users.Users>("/users", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -39,7 +39,7 @@ namespace TwitchLib.Api.V5
         {
             DynamicScopeValidation(AuthScopes.User_Read, authToken);
 
-            return TwitchGetGenericAsync<UserAuthed>("/user", ApiVersion.v5, accessToken: authToken);
+            return TwitchGetGenericAsync<UserAuthed>("/user", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion
@@ -51,7 +51,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<User>($"/users/{userId}", ApiVersion.v5);
+            return TwitchGetGenericAsync<User>($"/users/{userId}", ApiVersion.V5);
         }
 
         #endregion
@@ -64,7 +64,7 @@ namespace TwitchLib.Api.V5
                 throw new BadParameterException("The username is not valid.");
 
             var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("login", username) };
-            return TwitchGetGenericAsync<Models.Users.Users>("/users", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<Models.Users.Users>("/users", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -77,7 +77,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<UserEmotes>($"/users/{userId}/emotes", ApiVersion.v5, accessToken: authToken);
+            return TwitchGetGenericAsync<UserEmotes>($"/users/{userId}/emotes", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion
@@ -93,7 +93,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<Subscription>($"/users/{userId}/subscriptions/{channelId}", ApiVersion.v5, accessToken: authToken);
+            return TwitchGetGenericAsync<Subscription>($"/users/{userId}/subscriptions/{channelId}", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion
@@ -115,7 +115,7 @@ namespace TwitchLib.Api.V5
             if (!string.IsNullOrEmpty(sortby) && (sortby == "created_at" || sortby == "last_broadcast" || sortby == "login"))
                 getParams.Add(new KeyValuePair<string, string>("sortby", sortby));
 
-            return TwitchGetGenericAsync<UserFollows>($"/users/{userId}/follows/channels", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<UserFollows>($"/users/{userId}/follows/channels", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -130,7 +130,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<UserFollow>($"/users/{userId}/follows/channels/{channelId}", ApiVersion.v5);
+            return TwitchGetGenericAsync<UserFollow>($"/users/{userId}/follows/channels/{channelId}", ApiVersion.V5);
         }
 
         #endregion
@@ -147,7 +147,7 @@ namespace TwitchLib.Api.V5
 
             try
             {
-                await TwitchGetGenericAsync<UserFollow>($"/users/{userId}/follows/channels/{channelId}", ApiVersion.v5);
+                await TwitchGetGenericAsync<UserFollow>($"/users/{userId}/follows/channels/{channelId}", ApiVersion.V5);
                 return true;
             }
             catch (BadResourceException)
@@ -170,7 +170,7 @@ namespace TwitchLib.Api.V5
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
             var optionalRequestBody = notifications.HasValue ? "{\"notifications\": " + notifications.Value.ToString().ToLower() + "}" : null;
-            return TwitchPutGenericAsync<UserFollow>($"/users/{userId}/follows/channels/{channelId}", ApiVersion.v5, optionalRequestBody, accessToken: authToken);
+            return TwitchPutGenericAsync<UserFollow>($"/users/{userId}/follows/channels/{channelId}", ApiVersion.V5, optionalRequestBody, accessToken: authToken);
         }
 
         #endregion
@@ -186,7 +186,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchDeleteAsync($"/users/{userId}/follows/channels/{channelId}", ApiVersion.v5, accessToken: authToken);
+            return TwitchDeleteAsync($"/users/{userId}/follows/channels/{channelId}", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion
@@ -205,7 +205,7 @@ namespace TwitchLib.Api.V5
             if (offset.HasValue)
                 getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-            return TwitchGetGenericAsync<UserBlocks>($"/users/{userId}/blocks", ApiVersion.v5, getParams, authToken);
+            return TwitchGetGenericAsync<UserBlocks>($"/users/{userId}/blocks", ApiVersion.V5, getParams, authToken);
         }
 
         #endregion
@@ -221,7 +221,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(targetUserId))
                 throw new BadParameterException("The target user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchPutGenericAsync<UserBlock>($"/users/{sourceUserId}/blocks/{targetUserId}", ApiVersion.v5, null, accessToken: authToken);
+            return TwitchPutGenericAsync<UserBlock>($"/users/{sourceUserId}/blocks/{targetUserId}", ApiVersion.V5, null, accessToken: authToken);
         }
 
         #endregion
@@ -237,7 +237,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(targetUserId))
                 throw new BadParameterException("The target user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchDeleteAsync($"/users/{sourceUserId}/blocks/{targetUserId}", ApiVersion.v5, accessToken: authToken);
+            return TwitchDeleteAsync($"/users/{sourceUserId}/blocks/{targetUserId}", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion
@@ -253,7 +253,7 @@ namespace TwitchLib.Api.V5
                 throw new BadParameterException("The identifier is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
             var payload = "{\"identifier\": \"" + identifier + "\"}";
-            return TwitchPutAsync("/user/vhs", ApiVersion.v5, payload, accessToken: authToken);
+            return TwitchPutAsync("/user/vhs", ApiVersion.V5, payload, accessToken: authToken);
         }
 
         #endregion
@@ -264,7 +264,7 @@ namespace TwitchLib.Api.V5
         {
             DynamicScopeValidation(AuthScopes.User_Read, authToken);
 
-            return TwitchGetGenericAsync<VHSConnectionCheck>("/user/vhs", ApiVersion.v5, accessToken: authToken);
+            return TwitchGetGenericAsync<VHSConnectionCheck>("/user/vhs", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion
@@ -275,7 +275,7 @@ namespace TwitchLib.Api.V5
         {
             DynamicScopeValidation(AuthScopes.Viewing_Activity_Read, authToken);
 
-            return TwitchDeleteAsync("/user/vhs", ApiVersion.v5, accessToken: authToken);
+            return TwitchDeleteAsync("/user/vhs", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion

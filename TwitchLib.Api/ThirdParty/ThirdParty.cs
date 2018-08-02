@@ -8,9 +8,9 @@ using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Events;
-using TwitchLib.Api.ThirdParty.Models.AuthorizationFlow;
-using TwitchLib.Api.ThirdParty.Models.ModLookup;
-using TwitchLib.Api.ThirdParty.Models.UsernameChange;
+using TwitchLib.Api.ThirdParty.AuthorizationFlow;
+using TwitchLib.Api.ThirdParty.ModLookup;
+using TwitchLib.Api.ThirdParty.UsernameChange;
 
 namespace TwitchLib.Api.ThirdParty
 {

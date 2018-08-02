@@ -7,10 +7,10 @@ namespace TwitchLib.Api.Helix.Models.Users
     public class UpdateUserExtensionsRequest
     {
         [JsonProperty(PropertyName = "panel")]
-        public Dictionary<string, UserExtensionState> panel { get; set; }
+        public Dictionary<string, UserExtensionState> Panel { get; set; }
         [JsonProperty(PropertyName = "component")]
-        public Dictionary<string, UserExtensionState> component { get; set; }
+        public Dictionary<string, UserExtensionState> Component { get; set; }
         [JsonProperty(PropertyName = "overlay")]
-        public Dictionary<string, UserExtensionState> overlay { get; set; }
+        public Dictionary<string, UserExtensionState> Overlay { get; set; }
     }
 }
