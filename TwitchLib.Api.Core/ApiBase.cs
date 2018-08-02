@@ -76,7 +76,7 @@ namespace TwitchLib.Api.Core
             return TwitchGetGenericAsync<Models.Root.Root>("", ApiVersion.V5, accessToken: authToken, clientId: clientId);
         }
 
-        internal string GetAccessToken(string accessToken = null)
+        public string GetAccessToken(string accessToken = null)
         {
             if (!string.IsNullOrEmpty(accessToken))
                 return accessToken;
