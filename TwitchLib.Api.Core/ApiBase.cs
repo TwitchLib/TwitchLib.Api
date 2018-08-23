@@ -67,7 +67,7 @@ namespace TwitchLib.Api.Core
             if (Settings.Scopes == null)
                 throw new InvalidCredentialException($"The current access token does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: IApiSettings.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
 
-            if (!Settings.Scopes.Contains(requiredScope) || requiredScope == AuthScopes.Any && Settings.Scopes.Any(x => x == AuthScopes.None))
+            if ((!Settings.Scopes.Contains(requiredScope) && requiredScope != AuthScopes.Any) || (requiredScope == AuthScopes.Any && Settings.Scopes.Any(x=>x == AuthScopes.None)))
                 throw new InvalidCredentialException($"The current access token ({String.Join(",", Settings.Scopes)}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: IApiSettings.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
         }
         

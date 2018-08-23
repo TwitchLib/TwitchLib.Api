@@ -1,7 +1,7 @@
 using TwitchLib.Api.Core.Exceptions;
 using Xunit;
 
-namespace TwitchLib.Api.Test
+namespace TwitchLib.Api.Test.Unit.Helix
 {
     public class HelixWebhooks
     {
