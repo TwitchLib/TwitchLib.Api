@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <Copyright>Copyright 2018</Copyright>
-    <PackageReleaseNotes>Restructure </PackageReleaseNotes>
+    <PackageReleaseNotes>settings cascade, abstracted followerservice and livestreammonitor (thanks RRickert), Helix name space fixes, GetWebhookSubscriptions added, TopClipsResponse cursor fixed,</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
