@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace TwitchLib.Api.Test
+namespace TwitchLib.Api.Test.Unit.Helix
 {
     public class HelixBits
     {

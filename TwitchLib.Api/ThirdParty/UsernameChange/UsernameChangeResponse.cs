@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Api.ThirdParty.Models.UsernameChange
+﻿namespace TwitchLib.Api.ThirdParty.UsernameChange
 {
     public class UsernameChangeResponse
     {

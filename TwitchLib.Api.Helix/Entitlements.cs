@@ -16,7 +16,7 @@ namespace TwitchLib.Api.Helix
 
         #region CreateEntitlementGrantsUploadURL
 
-        public Task<CreateEntitlementGrantsUploadURLResponse> CreateEntitlementGrantsUploadURL(string manifestId, EntitleGrantType type, string url = null, string applicationAccessToken = null)
+        public Task<CreateEntitlementGrantsUploadUrlResponse> CreateEntitlementGrantsUploadUrl(string manifestId, EntitleGrantType type, string url = null, string applicationAccessToken = null)
         {
             if (manifestId == null)
                 throw new BadParameterException("manifestId cannot be null");
@@ -35,7 +35,7 @@ namespace TwitchLib.Api.Helix
                     throw new BadParameterException("Unknown entitlement grant type");
             }
 
-            return TwitchGetGenericAsync<CreateEntitlementGrantsUploadURLResponse>("/entitlements/upload", ApiVersion.Helix, getParams);
+            return TwitchGetGenericAsync<CreateEntitlementGrantsUploadUrlResponse>("/entitlements/upload", ApiVersion.Helix, getParams);
         }
 
         #endregion

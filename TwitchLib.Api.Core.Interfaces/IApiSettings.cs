@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using TwitchLib.Api.Core.Enums;
 
 namespace TwitchLib.Api.Core.Interfaces
@@ -11,5 +12,7 @@ namespace TwitchLib.Api.Core.Interfaces
         bool SkipDynamicScopeValidation { get; set; }
         bool SkipAutoServerTokenGeneration { get; set; }
         List<AuthScopes> Scopes { get; set; }
+
+        event PropertyChangedEventHandler PropertyChanged;
     }
 }

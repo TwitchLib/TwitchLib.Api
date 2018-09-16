@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
-using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Api.Helix.Models.Users.Internal;
@@ -101,13 +100,13 @@ namespace TwitchLib.Api.Helix
             var p = new UpdateUserExtensionsRequest();
 
             if (panels.Count > 0)
-                p.panel = panels;
+                p.Panel = panels;
 
             if (overlays.Count > 0)
-                p.overlay = overlays;
+                p.Overlay = overlays;
 
             if (components.Count > 0)
-                p.component = components;
+                p.Component = components;
 
             json.Add(new JProperty("data", JObject.FromObject(p)));
             var payload = json.ToString();

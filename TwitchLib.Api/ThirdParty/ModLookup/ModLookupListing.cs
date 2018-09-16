@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.ThirdParty.Models.ModLookup
+namespace TwitchLib.Api.ThirdParty.ModLookup
 {
     public class ModLookupListing
     {
