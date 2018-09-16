@@ -26,5 +26,9 @@
     <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Integration\Helix\" />
+  </ItemGroup>
+
 
 </Project>

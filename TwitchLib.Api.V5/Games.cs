@@ -23,7 +23,7 @@ namespace TwitchLib.Api.V5
             if (offset.HasValue)
                 getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-            return TwitchGetGenericAsync<TopGames>("/games/top", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<TopGames>("/games/top", ApiVersion.V5, getParams);
         }
 
         #endregion

@@ -5,6 +5,7 @@ using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
+using TwitchLib.Api.Helix.Models.Webhooks;
 
 namespace TwitchLib.Api.Helix
 {
@@ -13,6 +14,30 @@ namespace TwitchLib.Api.Helix
         public Webhooks(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         {
         }
+
+        #region GetWebhookSubscriptions
+        public Task<GetWebhookSubscriptionsResponse> GetWebhookSubscriptionsAsync(string after = null, int first = 20, string accessToken = null)
+        {
+            if (first < 1 || first > 100)
+                throw new BadParameterException("'first' must between 1 (inclusive) and 100 (inclusive).");
+
+            var getParams = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("first", first.ToString())
+                };
+            if (after != null)
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+
+
+            accessToken = GetAccessToken(accessToken);
+
+            if (string.IsNullOrEmpty(accessToken))
+                throw new BadParameterException("'accessToken' be supplied, set AccessToken in settings or ClientId and Secret in settings");
+
+            return TwitchGetGenericAsync<GetWebhookSubscriptionsResponse>("/webhooks/subscriptions", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
 
         #region UserFollowsSomeone
 

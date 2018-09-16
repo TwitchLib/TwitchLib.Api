@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Interfaces;
 
-namespace TwitchLib.Api
+namespace TwitchLib.Api.Core
 {
     public class ApiSettings : IApiSettings, INotifyPropertyChanged
     {
@@ -16,10 +16,7 @@ namespace TwitchLib.Api
         private List<AuthScopes> _scopes;
         public string ClientId
         {
-            get
-            {
-                return _clientId;
-            }
+            get => _clientId;
             set
             {
                 if (value != _clientId)
@@ -31,10 +28,7 @@ namespace TwitchLib.Api
         }
         public string Secret
         {
-            get
-            {
-                return _secret;
-            }
+            get => _secret;
             set
             {
                 if (value != _secret)
@@ -46,10 +40,7 @@ namespace TwitchLib.Api
         }
         public string AccessToken
         {
-            get
-            {
-                return _accessToken;
-            }
+            get => _accessToken;
             set
             {
                 if (value != _accessToken)
@@ -61,10 +52,7 @@ namespace TwitchLib.Api
         }
         public bool SkipDynamicScopeValidation
         {
-            get
-            {
-                return _skipDynamicScopeValidation;
-            }
+            get => _skipDynamicScopeValidation;
             set
             {
                 if (value != _skipDynamicScopeValidation)
@@ -76,10 +64,7 @@ namespace TwitchLib.Api
         }
         public bool SkipAutoServerTokenGeneration
         {
-            get
-            {
-                return _skipAutoServerTokenGeneration;
-            }
+            get => _skipAutoServerTokenGeneration;
             set
             {
                 if (value != _skipAutoServerTokenGeneration)
@@ -91,10 +76,7 @@ namespace TwitchLib.Api
         }
         public List<AuthScopes> Scopes
         {
-            get
-            {
-                return _scopes;
-            }
+            get => _scopes;
             set
             {
                 if (value != _scopes)

@@ -20,7 +20,7 @@ namespace TwitchLib.Api.V5
 
         public Task<Clip> GetClipAsync(string slug)
         {
-            return TwitchGetGenericAsync<Clip>($"/clips/{slug}", ApiVersion.v5);
+            return TwitchGetGenericAsync<Clip>($"/clips/{slug}", ApiVersion.V5);
         }
 
         #endregion
@@ -58,7 +58,7 @@ namespace TwitchLib.Api.V5
                     throw new ArgumentOutOfRangeException(nameof(period), period, null);
             }
 
-            return TwitchGetGenericAsync<TopClipsResponse>("/clips/top", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<TopClipsResponse>("/clips/top", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -76,7 +76,7 @@ namespace TwitchLib.Api.V5
                 getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
             getParams.Add(trending ? new KeyValuePair<string, string>("trending", "true") : new KeyValuePair<string, string>("trending", "false"));
 
-            return TwitchGetGenericAsync<FollowClipsResponse>("/clips/followed", ApiVersion.v5, getParams, authToken);
+            return TwitchGetGenericAsync<FollowClipsResponse>("/clips/followed", ApiVersion.V5, getParams, authToken);
         }
 
         #endregion

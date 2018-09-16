@@ -24,7 +24,7 @@ namespace TwitchLib.Api.V5
             if (offset.HasValue)
                 getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-            return TwitchGetGenericAsync<AllTeams>("/teams", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<AllTeams>("/teams", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -36,7 +36,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(teamName))
                 throw new BadParameterException("The team name is not valid for fetching teams. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<Team>($"/teams/{teamName}", ApiVersion.v5);
+            return TwitchGetGenericAsync<Team>($"/teams/{teamName}", ApiVersion.V5);
         }
 
         #endregion

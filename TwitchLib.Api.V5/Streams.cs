@@ -27,7 +27,7 @@ namespace TwitchLib.Api.V5
             if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
                 getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));
 
-            return TwitchGetGenericAsync<StreamByUser>($"/streams/{channelId}", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<StreamByUser>($"/streams/{channelId}", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -50,7 +50,7 @@ namespace TwitchLib.Api.V5
             if (offset.HasValue)
                 getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-            return TwitchGetGenericAsync<LiveStreams>("/streams", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<LiveStreams>("/streams", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -63,7 +63,7 @@ namespace TwitchLib.Api.V5
             if (game != null)
                 getParams.Add(new KeyValuePair<string, string>("game", game));
 
-            return TwitchGetGenericAsync<StreamsSummary>("/streams/summary", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<StreamsSummary>("/streams/summary", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -78,7 +78,7 @@ namespace TwitchLib.Api.V5
             if (offset.HasValue)
                 getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
 
-            return TwitchGetGenericAsync<FeaturedStreams>("/streams/featured", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<FeaturedStreams>("/streams/featured", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -96,7 +96,7 @@ namespace TwitchLib.Api.V5
             if (offset != null)
                 getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
 
-            return TwitchGetGenericAsync<FollowedStreams>("/streams/followed", ApiVersion.v5, getParams, authToken);
+            return TwitchGetGenericAsync<FollowedStreams>("/streams/followed", ApiVersion.V5, getParams, authToken);
         }
 
         #endregion

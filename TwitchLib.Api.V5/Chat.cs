@@ -21,7 +21,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid for catching the channel badges. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<ChannelBadges>($"/chat/{channelId}/badges", ApiVersion.v5);
+            return TwitchGetGenericAsync<ChannelBadges>($"/chat/{channelId}/badges", ApiVersion.V5);
         }
 
         #endregion
@@ -39,7 +39,7 @@ namespace TwitchLib.Api.V5
                     };
             }
 
-            return TwitchGetGenericAsync<EmoteSet>("/chat/emoticon_images", ApiVersion.v5, getParams);
+            return TwitchGetGenericAsync<EmoteSet>("/chat/emoticon_images", ApiVersion.V5, getParams);
         }
 
         #endregion
@@ -48,7 +48,7 @@ namespace TwitchLib.Api.V5
 
         public Task<AllChatEmotes> GetAllChatEmoticonsAsync()
         {
-            return TwitchGetGenericAsync<AllChatEmotes>("/chat/emoticons", ApiVersion.v5);
+            return TwitchGetGenericAsync<AllChatEmotes>("/chat/emoticons", ApiVersion.V5);
         }
 
         #endregion
@@ -58,7 +58,7 @@ namespace TwitchLib.Api.V5
         public Task<ChatRoomsByChannelResponse> GetChatRoomsByChannelAsync(string channelId, string authToken = null)
         {
             DynamicScopeValidation(AuthScopes.Any, authToken);
-            return TwitchGetGenericAsync<ChatRoomsByChannelResponse>($"/chat/{channelId}/rooms", ApiVersion.v5, accessToken: authToken);
+            return TwitchGetGenericAsync<ChatRoomsByChannelResponse>($"/chat/{channelId}/rooms", ApiVersion.V5, accessToken: authToken);
         }
 
         #endregion

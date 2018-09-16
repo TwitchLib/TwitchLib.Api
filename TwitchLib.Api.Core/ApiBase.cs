@@ -16,7 +16,7 @@ namespace TwitchLib.Api.Core
     public class ApiBase
     {
         private readonly TwitchLibJsonSerializer _jsonSerializer;
-        protected readonly IApiSettings _settings;
+        protected readonly IApiSettings Settings;
         private readonly IRateLimiter _rateLimiter;
         private readonly IHttpCallHandler _http;
 
@@ -26,7 +26,7 @@ namespace TwitchLib.Api.Core
 
         public ApiBase(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            _settings = settings;
+            Settings = settings;
             _rateLimiter = rateLimiter;
             _http = http;
             _jsonSerializer = new TwitchLibJsonSerializer();
@@ -41,13 +41,13 @@ namespace TwitchLib.Api.Core
             var message = "Check successful";
             var failMessage = "";
             var result = true;
-            if (!string.IsNullOrWhiteSpace(_settings.ClientId) && !ValidClientId(_settings.ClientId))
+            if (!string.IsNullOrWhiteSpace(Settings.ClientId) && !ValidClientId(Settings.ClientId))
             {
                 result = false;
                 failMessage = "The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new";
             }
 
-            if (!string.IsNullOrWhiteSpace(_settings.AccessToken) && ValidAccessToken(_settings.AccessToken) == null)
+            if (!string.IsNullOrWhiteSpace(Settings.AccessToken) && ValidAccessToken(Settings.AccessToken) == null)
             {
                 result = false;
                 failMessage += "The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/";
@@ -59,30 +59,30 @@ namespace TwitchLib.Api.Core
         public void DynamicScopeValidation(AuthScopes requiredScope, string accessToken = null)
         {
             //Skip validation if skip is set or access token is null
-            if (_settings.SkipDynamicScopeValidation || string.IsNullOrWhiteSpace(accessToken)) return;
+            if (Settings.SkipDynamicScopeValidation || string.IsNullOrWhiteSpace(accessToken)) return;
 
             //set the scopes based on access token
-            _settings.Scopes = ValidAccessToken(accessToken);
+            Settings.Scopes = ValidAccessToken(accessToken);
             //skip if no scopes
-            if (_settings.Scopes == null)
+            if (Settings.Scopes == null)
                 throw new InvalidCredentialException($"The current access token does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: IApiSettings.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
 
-            if (!_settings.Scopes.Contains(requiredScope) || requiredScope == AuthScopes.Any && _settings.Scopes.Any(x => x == AuthScopes.None))
-                throw new InvalidCredentialException($"The current access token ({String.Join(",", _settings.Scopes)}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: IApiSettings.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
+            if ((!Settings.Scopes.Contains(requiredScope) && requiredScope != AuthScopes.Any) || (requiredScope == AuthScopes.Any && Settings.Scopes.Any(x=>x == AuthScopes.None)))
+                throw new InvalidCredentialException($"The current access token ({String.Join(",", Settings.Scopes)}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: IApiSettings.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
         }
         
         internal virtual Task<Models.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
         {
-            return TwitchGetGenericAsync<Models.Root.Root>("", ApiVersion.v5, accessToken: authToken, clientId: clientId);
+            return TwitchGetGenericAsync<Models.Root.Root>("", ApiVersion.V5, accessToken: authToken, clientId: clientId);
         }
 
-        internal string GetAccessToken(string accessToken = null)
+        public string GetAccessToken(string accessToken = null)
         {
             if (!string.IsNullOrEmpty(accessToken))
                 return accessToken;
-            if (!string.IsNullOrEmpty(_settings.AccessToken))
-                return _settings.AccessToken;
-            if (!string.IsNullOrEmpty(_settings.Secret) && !string.IsNullOrEmpty(_settings.ClientId) && !_settings.SkipAutoServerTokenGeneration)
+            if (!string.IsNullOrEmpty(Settings.AccessToken))
+                return Settings.AccessToken;
+            if (!string.IsNullOrEmpty(Settings.Secret) && !string.IsNullOrEmpty(Settings.ClientId) && !Settings.SkipAutoServerTokenGeneration)
                 return GenerateServerBasedAccessToken();
 
             return null;
@@ -90,10 +90,10 @@ namespace TwitchLib.Api.Core
 
         internal string GenerateServerBasedAccessToken()
         {
-            var result = _http.GeneralRequest($"{BaseOauthToken}?client_id={_settings.ClientId}&client_secret={_settings.Secret}&grant_type=client_credentials", "POST", null, ApiVersion.Helix, _settings.ClientId, null);
+            var result = _http.GeneralRequest($"{BaseOauthToken}?client_id={Settings.ClientId}&client_secret={Settings.Secret}&grant_type=client_credentials", "POST", null, ApiVersion.Helix, Settings.ClientId, null);
             if (result.Key == 200)
             {
-                dynamic user = JsonConvert.DeserializeObject<dynamic>(result.Value);
+                var user = JsonConvert.DeserializeObject<dynamic>(result.Value);
                 var offset = (int)user.expires_in;
                 return (string)user.access_token;
             }
@@ -102,10 +102,10 @@ namespace TwitchLib.Api.Core
 
         protected Task<T> TwitchGetGenericAsync<T>(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
-                clientId = _settings.ClientId;
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
 
@@ -114,10 +114,10 @@ namespace TwitchLib.Api.Core
 
         protected Task<string> TwitchDeleteAsync(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
-                clientId = _settings.ClientId;
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
 
@@ -126,22 +126,22 @@ namespace TwitchLib.Api.Core
 
         protected Task<T> TwitchPostGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
-                clientId = _settings.ClientId;
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "POST", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
 
-        protected Task<T> TwitchPostGenericModelAsync<T>(string resource, ApiVersion api, Models.RequestModel model, string accessToken = null, string clientId = null, string customBase = null)
+        protected Task<T> TwitchPostGenericModelAsync<T>(string resource, ApiVersion api, RequestModel model, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, api: api, overrideUrl: customBase);
+            var url = ConstructResourceUrl(resource, api: api, overrideUrl: customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
-                clientId = _settings.ClientId;
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
 
@@ -150,10 +150,10 @@ namespace TwitchLib.Api.Core
 
         protected Task<T> TwitchDeleteGenericAsync<T>(string resource, ApiVersion api, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, null, api, customBase);
+            var url = ConstructResourceUrl(resource, null, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
-                clientId = _settings.ClientId;
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
 
@@ -162,10 +162,10 @@ namespace TwitchLib.Api.Core
 
         protected Task<T> TwitchPutGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
-                clientId = _settings.ClientId;
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
 
@@ -174,10 +174,10 @@ namespace TwitchLib.Api.Core
 
         protected Task<string> TwitchPutAsync(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
-                clientId = _settings.ClientId;
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
 
@@ -186,10 +186,10 @@ namespace TwitchLib.Api.Core
 
         protected Task<KeyValuePair<int, string>> TwitchPostAsync(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            string url = ConstructResourceUrl(resource, getParams, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
-                clientId = _settings.ClientId;
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
 
@@ -207,7 +207,7 @@ namespace TwitchLib.Api.Core
             return _http.RequestReturnResponseCode(url, method, getParams);
         }
 
-        protected Task<T> GetGenericAsync<T>(string url, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
+        protected Task<T> GetGenericAsync<T>(string url, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, ApiVersion api = ApiVersion.V5, string clientId = null)
         {
             if (getParams != null)
             {
@@ -220,8 +220,8 @@ namespace TwitchLib.Api.Core
                 }
             }
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(_settings.ClientId))
-                clientId = _settings.ClientId;
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
 
@@ -418,16 +418,16 @@ namespace TwitchLib.Api.Core
             return scopes;
         }
 
-        private string ConstructResourceUrl(string resource = null, List<KeyValuePair<string, string>> getParams = null, ApiVersion api = ApiVersion.v5, string overrideUrl = null)
+        private string ConstructResourceUrl(string resource = null, List<KeyValuePair<string, string>> getParams = null, ApiVersion api = ApiVersion.V5, string overrideUrl = null)
         {
-            string url = "";
+            var url = "";
             if (overrideUrl == null)
             {
                 if (resource == null)
                     throw new Exception("Cannot pass null resource with null override url");
                 switch (api)
                 {
-                    case ApiVersion.v5:
+                    case ApiVersion.V5:
                         url = $"{BaseV5}{resource}";
                         break;
                     case ApiVersion.Helix:
@@ -437,10 +437,7 @@ namespace TwitchLib.Api.Core
             }
             else
             {
-                if (resource == null)
-                    url = overrideUrl;
-                else
-                    url = $"{overrideUrl}{resource}";
+                url = resource == null ? overrideUrl : $"{overrideUrl}{resource}";
             }
             if (getParams != null)
             {

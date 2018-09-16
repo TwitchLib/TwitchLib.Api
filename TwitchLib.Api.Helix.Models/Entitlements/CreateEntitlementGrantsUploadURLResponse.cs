@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TwitchLib.Api.Helix.Models.Entitlements
 {
-    public class CreateEntitlementGrantsUploadURLResponse
+    public class CreateEntitlementGrantsUploadUrlResponse
     {
         [JsonProperty(PropertyName = "data")]
-        public UploadURL[] Data { get; protected set; }
+        public UploadUrl[] Data { get; protected set; }
     }
 }
