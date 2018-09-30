@@ -5,11 +5,13 @@ For a general overview and example, refer to https://github.com/TwitchLib/Twitch
 
 ```csharp
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using TwitchLib.Api;
 using TwitchLib.Api.Services;
+using TwitchLib.Api.Services.Events;
 using TwitchLib.Api.Services.Events.LiveStreamMonitor;
-using System.Collections.Generic;
 
 namespace Example
 {
@@ -33,7 +35,7 @@ namespace Example
             Monitor = new LiveStreamMonitorService(API, 60);
             
             List<string> lst = new List<string>{ "ID1", "ID2" };
-            Monitor.SetChannelsById(lst);
+            Monitor.SetChannelsById(lst);            
 
             Monitor.OnStreamOnline += Monitor_OnStreamOnline;
             Monitor.OnStreamOffline += Monitor_OnStreamOffline;
@@ -64,12 +66,12 @@ namespace Example
             throw new NotImplementedException();
         }
 
-        private void Monitor_OnChannelsSet(object sender, TwitchLib.Api.Services.Events.OnChannelsSetArgs e)       
+        private void Monitor_OnChannelsSet(object sender, OnChannelsSetArgs e)       
         {
             throw new NotImplementedException();
         }
 
-        private void Monitor_OnServiceStarted(object sender, TwitchLib.Api.Services.Events.OnServiceStartedArgs e)
+        private void Monitor_OnServiceStarted(object sender, OnServiceStartedArgs e)
         {
             throw new NotImplementedException();
         }        
