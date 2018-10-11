@@ -100,6 +100,11 @@ namespace TwitchLib.Api.Services
         {
             SetChannels(channelsToMonitor);
 
+            foreach (string channel in channelsToMonitor)
+            {
+                _lastFollowerDates[channel] = DateTime.UtcNow;
+            }
+
             _monitor = NameBasedMonitor;
         }
 
