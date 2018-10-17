@@ -4,5 +4,7 @@
     {
          string Id { get; }
          string Url { get; }
+         int Offset { get; }
+         string PreviewImageUrl { get; }
     }
 }

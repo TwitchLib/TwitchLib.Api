@@ -4,7 +4,7 @@ using TwitchLib.Api.Core.Interfaces.Clips;
 
 namespace TwitchLib.Api.V5.Models.Clips
 {
-    public class Clip : IClip
+    public class Clip
     {
         [JsonProperty(PropertyName = "broadcaster")]
         public Broadcaster Broadcaster { get; protected set; }
@@ -33,6 +33,6 @@ namespace TwitchLib.Api.V5.Models.Clips
         [JsonProperty(PropertyName = "views")]
         public int Views { get; protected set; }
         [JsonProperty(PropertyName = "vod")]
-        public IVOD VOD { get; protected set; }
+        public VOD VOD { get; protected set; }
     }
 }
