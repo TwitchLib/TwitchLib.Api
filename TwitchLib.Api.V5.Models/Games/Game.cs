@@ -5,7 +5,7 @@ namespace TwitchLib.Api.V5.Models.Games
     public class Game
     {
         #region Id
-        [JsonProperty(PropertyName = "id")]
+        [JsonProperty(PropertyName = "_id")]
         public int Id { get; protected set; }
         #endregion
         #region Viewers
