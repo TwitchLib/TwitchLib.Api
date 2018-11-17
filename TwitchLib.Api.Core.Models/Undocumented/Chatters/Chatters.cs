@@ -12,7 +12,7 @@ namespace TwitchLib.Api.Core.Models.Undocumented.Chatters
         public string[] Admins { get; protected set; }
         [JsonProperty(PropertyName = "global_mods")]
         public string[] GlobalMods { get; protected set; }
-        [JsonProperty(PropertyName = "vip")]
+        [JsonProperty(PropertyName = "vips")]
         public string[] VIP { get; protected set; }
         [JsonProperty(PropertyName = "viewers")]
         public string[] Viewers { get; protected set; }
