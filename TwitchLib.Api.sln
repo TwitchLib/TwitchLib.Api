@@ -5,13 +5,21 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api", "TwitchLib.Api\TwitchLib.Api.csproj", "{878BA490-E720-4C25-9621-ED75F5A698DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchLib.Api.Test", "TwitchLib.Api.Test\TwitchLib.Api.Test.csproj", "{73F87B04-276A-463A-A33E-97416E0F232F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Core.Models", "TwitchLib.Api.Core.Models\TwitchLib.Api.Core.Models.csproj", "{561F9311-FE81-4C01-BF36-00D1CF94B898}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchLib.Api.Models", "TwitchLib.Api.Models\TwitchLib.Api.Models.csproj", "{561F9311-FE81-4C01-BF36-00D1CF94B898}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Core.Interfaces", "TwitchLib.Api.Core.Interfaces\TwitchLib.Api.Core.Interfaces.csproj", "{9439C796-255F-488C-9FEA-83745F7FAA62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchLib.Api.Interfaces", "TwitchLib.Api.Interfaces\TwitchLib.Api.Interfaces.csproj", "{9439C796-255F-488C-9FEA-83745F7FAA62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Core.Enums", "TwitchLib.Api.Core.Enums\TwitchLib.Api.Core.Enums.csproj", "{0CD099DD-E0F3-4997-901A-86EC7D89183E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchLib.Api.Enums", "TwitchLib.Api.Enums\TwitchLib.Api.Enums.csproj", "{0CD099DD-E0F3-4997-901A-86EC7D89183E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Helix", "TwitchLib.Api.Helix\TwitchLib.Api.Helix.csproj", "{4BD65B59-9877-4067-953F-A47D83E35008}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.V5", "TwitchLib.Api.V5\TwitchLib.Api.V5.csproj", "{6BB7F9D4-A65A-46D1-A8F7-ED93764EA45E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Core", "TwitchLib.Api.Core\TwitchLib.Api.Core.csproj", "{3B39D166-2278-4160-BB6B-56908E97BAAA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Helix.Models", "TwitchLib.Api.Helix.Models\TwitchLib.Api.Helix.Models.csproj", "{B952B6A7-3D35-4AB7-85BE-D7D7703EB0A5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.V5.Models", "TwitchLib.Api.V5.Models\TwitchLib.Api.V5.Models.csproj", "{1169B16B-AC4C-4197-BD12-2A16DB2D7C1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +31,6 @@ Global
 		{878BA490-E720-4C25-9621-ED75F5A698DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{878BA490-E720-4C25-9621-ED75F5A698DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{878BA490-E720-4C25-9621-ED75F5A698DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73F87B04-276A-463A-A33E-97416E0F232F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73F87B04-276A-463A-A33E-97416E0F232F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73F87B04-276A-463A-A33E-97416E0F232F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73F87B04-276A-463A-A33E-97416E0F232F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{561F9311-FE81-4C01-BF36-00D1CF94B898}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{561F9311-FE81-4C01-BF36-00D1CF94B898}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{561F9311-FE81-4C01-BF36-00D1CF94B898}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +43,26 @@ Global
 		{0CD099DD-E0F3-4997-901A-86EC7D89183E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CD099DD-E0F3-4997-901A-86EC7D89183E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CD099DD-E0F3-4997-901A-86EC7D89183E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BD65B59-9877-4067-953F-A47D83E35008}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BD65B59-9877-4067-953F-A47D83E35008}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BD65B59-9877-4067-953F-A47D83E35008}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BD65B59-9877-4067-953F-A47D83E35008}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BB7F9D4-A65A-46D1-A8F7-ED93764EA45E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB7F9D4-A65A-46D1-A8F7-ED93764EA45E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BB7F9D4-A65A-46D1-A8F7-ED93764EA45E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BB7F9D4-A65A-46D1-A8F7-ED93764EA45E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B39D166-2278-4160-BB6B-56908E97BAAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B39D166-2278-4160-BB6B-56908E97BAAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B39D166-2278-4160-BB6B-56908E97BAAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B39D166-2278-4160-BB6B-56908E97BAAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B952B6A7-3D35-4AB7-85BE-D7D7703EB0A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B952B6A7-3D35-4AB7-85BE-D7D7703EB0A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B952B6A7-3D35-4AB7-85BE-D7D7703EB0A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B952B6A7-3D35-4AB7-85BE-D7D7703EB0A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1169B16B-AC4C-4197-BD12-2A16DB2D7C1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1169B16B-AC4C-4197-BD12-2A16DB2D7C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1169B16B-AC4C-4197-BD12-2A16DB2D7C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1169B16B-AC4C-4197-BD12-2A16DB2D7C1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
