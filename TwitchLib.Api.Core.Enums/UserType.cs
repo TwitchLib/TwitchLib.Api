@@ -5,6 +5,8 @@
     {
         /// <summary>The standard user-type representing a standard viewer.</summary>
         Viewer,
+        /// <summary>User-type representing viewers with channel-specific vip powers.</summary>
+        VIP,
         /// <summary>User-type representing viewers with channel-specific moderation powers.</summary>
         Moderator,
         /// <summary>User-type representing viewers with Twitch-wide moderation powers.</summary>
