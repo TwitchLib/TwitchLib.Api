@@ -63,6 +63,8 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                     return AuthScopes.Channel_Check_Subscription;
                 case "chat_login":
                     return AuthScopes.Chat_Login;
+                case "channel_editor":
+                    return AuthScopes.Channel_Editor;
                 case "channel_feed_read":
                     return AuthScopes.Channel_Feed_Read;
                 case "channel_feed_edit":
