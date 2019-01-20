@@ -97,6 +97,37 @@ namespace TwitchLib.Api.Helix
 
             return TwitchGetGenericAsync<GetStreamsMetadataResponse>("/streams/metadata", ApiVersion.Helix, getParams);
         }
+
+        public Task<GetStreamTagsResponse> GetStreamTagsAsync(string broadcasterId, string accessToken = null)
+        {
+            var getParams = new List<KeyValuePair<string, string>>();
+            getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
+
+            return TwitchGetGenericAsync<GetStreamTagsResponse>("/streams/tags", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        public Task ReplaceStreamTags(string broadcasterId, List<string> tagIds = null, string accessToken = null)
+        {
+            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Broadcast, accessToken);
+
+            var getParams = new List<KeyValuePair<string, string>>();
+            getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
+
+            string payload = null;
+            if (tagIds != null && tagIds.Count > 0)
+            {
+                payload = "{\"tag_ids\": [";
+                for (var i = 0; i < tagIds.Count; i++)
+                {
+                    payload += $"\"{tagIds[i]}\"";
+                    if (i != tagIds.Count - 1)
+                        payload += ",";
+                }
+                payload += "]}";
+            }
+
+            return TwitchPutAsync("/streams/tags", ApiVersion.Helix, payload, getParams, accessToken);
+        }
     }
 
 }
