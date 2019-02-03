@@ -18,17 +18,17 @@ namespace TwitchLib.Api.Helix
         public Task<GetAllStreamTagsResponse> GetAllStreamTagsAsync(string after = null, int first = 20, List<string> tagIds = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
-            if(after != null) {
+            if (after != null) {
                 getParams.Add(new KeyValuePair<string, string>("after", after));
             }
-            if(first >= 0 && first <= 100)
+            if (first >= 0 && first <= 100)
             {
                 getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
             } else
             {
-                throw new ArgumentOutOfRangeException($"'first' value cannot exceed 100 and cannot be less than 1");
+                throw new ArgumentOutOfRangeException(nameof(first), $"{nameof(first)} value cannot exceed 100 and cannot be less than 1");
             }
-            if(tagIds != null && tagIds.Count > 0)
+            if (tagIds != null && tagIds.Count > 0)
             {
                 foreach (var tagId in tagIds)
                     getParams.Add(new KeyValuePair<string, string>("tag_id", tagId));

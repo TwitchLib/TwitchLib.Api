@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
+using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Streams;
 using TwitchLib.Api.Helix.Models.StreamsMetadata;
@@ -100,6 +103,11 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetStreamTagsResponse> GetStreamTagsAsync(string broadcasterId, string accessToken = null)
         {
+            if (string.IsNullOrEmpty(broadcasterId))
+            {
+                throw new BadParameterException("BroadcasterId must be set");
+            }
+
             var getParams = new List<KeyValuePair<string, string>>();
             getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
 
@@ -116,14 +124,9 @@ namespace TwitchLib.Api.Helix
             string payload = null;
             if (tagIds != null && tagIds.Count > 0)
             {
-                payload = "{\"tag_ids\": [";
-                for (var i = 0; i < tagIds.Count; i++)
-                {
-                    payload += $"\"{tagIds[i]}\"";
-                    if (i != tagIds.Count - 1)
-                        payload += ",";
-                }
-                payload += "]}";
+                dynamic dynamicPayload = new JObject();
+                dynamicPayload.tag_ids = new JArray(tagIds);
+                payload = dynamicPayload.ToString(Formatting.None);
             }
 
             return TwitchPutAsync("/streams/tags", ApiVersion.Helix, payload, getParams, accessToken);
