@@ -127,6 +127,8 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                     throw new GatewayTimeoutException("The API answered with a 504 Gateway Timeout. Please retry your request");
                 case HttpStatusCode.InternalServerError:
                     throw new InternalServerErrorException("The API answered with a 500 Internal Server Error. Please retry your request");
+                case HttpStatusCode.Forbidden:
+                    throw new BadTokenException("The token provided in the request did not match the associated user. Make sure the token you're using is from the resource owner (streamer? viewer?)");
                 default:
                     throw new HttpRequestException("Something went wrong during the request! Please try again later");
             }
