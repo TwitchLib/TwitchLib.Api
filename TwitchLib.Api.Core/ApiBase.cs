@@ -410,6 +410,9 @@ namespace TwitchLib.Api.Core
                     case "analytics:read:extensions":
                         scopes.Add(AuthScopes.Helix_Analytics_Read_Extensions);
                         break;
+                    case "channel:read:subscriptions":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Subscriptions);
+                        break;
                 }
             }
 
