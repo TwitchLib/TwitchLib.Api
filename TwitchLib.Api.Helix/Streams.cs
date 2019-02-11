@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
+using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Streams;
 using TwitchLib.Api.Helix.Models.StreamsMetadata;
@@ -96,6 +99,37 @@ namespace TwitchLib.Api.Helix
             }
 
             return TwitchGetGenericAsync<GetStreamsMetadataResponse>("/streams/metadata", ApiVersion.Helix, getParams);
+        }
+
+        public Task<GetStreamTagsResponse> GetStreamTagsAsync(string broadcasterId, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+            {
+                throw new BadParameterException("BroadcasterId must be set");
+            }
+
+            var getParams = new List<KeyValuePair<string, string>>();
+            getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
+
+            return TwitchGetGenericAsync<GetStreamTagsResponse>("/streams/tags", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        public Task ReplaceStreamTags(string broadcasterId, List<string> tagIds = null, string accessToken = null)
+        {
+            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Broadcast, accessToken);
+
+            var getParams = new List<KeyValuePair<string, string>>();
+            getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
+
+            string payload = null;
+            if (tagIds != null && tagIds.Count > 0)
+            {
+                dynamic dynamicPayload = new JObject();
+                dynamicPayload.tag_ids = new JArray(tagIds);
+                payload = dynamicPayload.ToString();
+            }
+
+            return TwitchPutAsync("/streams/tags", ApiVersion.Helix, payload, getParams, accessToken);
         }
     }
 
