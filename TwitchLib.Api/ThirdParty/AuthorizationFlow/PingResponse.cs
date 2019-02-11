@@ -87,6 +87,8 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                     return AuthScopes.Helix_Analytics_Read_Games;
                 case "bits:read":
                     return AuthScopes.Helix_Bits_Read;
+                case "channel:read:subscriptions":
+                    return AuthScopes.Helix_Channel_Read_Subscriptions;
                 default:
                     throw new Exception("Unknown scope");
             }

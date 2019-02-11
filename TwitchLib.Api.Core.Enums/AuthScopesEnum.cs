@@ -30,6 +30,7 @@
         Helix_Analytics_Read_Extensions,
         Helix_User_Edit_Broadcast,
         Helix_User_Read_Broadcast,
+        Helix_Channel_Read_Subscriptions,
         None
     }
 }
