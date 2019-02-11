@@ -126,7 +126,7 @@ namespace TwitchLib.Api.Helix
             {
                 dynamic dynamicPayload = new JObject();
                 dynamicPayload.tag_ids = new JArray(tagIds);
-                payload = dynamicPayload.ToString(Formatting.None);
+                payload = dynamicPayload.ToString();
             }
 
             return TwitchPutAsync("/streams/tags", ApiVersion.Helix, payload, getParams, accessToken);
