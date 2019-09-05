@@ -16,7 +16,9 @@ namespace TwitchLib.Api.Helix
         public Clips Clips { get; }
         public Entitlements Entitlements { get; }
         public Games Games { get; }
+        public Subscriptions Subscriptions { get; }
         public Streams Streams { get; }
+        public Tags Tags { get; }
         public Videos Videos { get; }
         public Users Users { get; }
         public Webhooks Webhooks { get; }
@@ -42,6 +44,8 @@ namespace TwitchLib.Api.Helix
             Entitlements = new Entitlements(Settings, rateLimiter, http);
             Games = new Games(Settings, rateLimiter, http);
             Streams = new Streams(Settings, rateLimiter, http);
+            Subscriptions = new Subscriptions(Settings, rateLimiter, http);
+            Tags = new Tags(Settings, rateLimiter, http);
             Users = new Users(Settings, rateLimiter, http);
             Videos = new Videos(Settings, rateLimiter, http);
             Webhooks = new Webhooks(Settings, rateLimiter, http);
