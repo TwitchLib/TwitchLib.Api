@@ -16,6 +16,7 @@ namespace TwitchLib.Api.Helix
         public Clips Clips { get; }
         public Entitlements Entitlements { get; }
         public Games Games { get; }
+        public Moderation Moderation { get; }
         public Subscriptions Subscriptions { get; }
         public Streams Streams { get; }
         public Tags Tags { get; }
@@ -43,6 +44,7 @@ namespace TwitchLib.Api.Helix
             Clips = new Clips(Settings, rateLimiter, http);
             Entitlements = new Entitlements(Settings, rateLimiter, http);
             Games = new Games(Settings, rateLimiter, http);
+            Moderation = new Moderation(Settings, rateLimiter, http);
             Streams = new Streams(Settings, rateLimiter, http);
             Subscriptions = new Subscriptions(Settings, rateLimiter, http);
             Tags = new Tags(Settings, rateLimiter, http);
