@@ -4,7 +4,9 @@ using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
-using TwitchLib.Api.Helix.Models.Entitlements;
+using TwitchLib.Api.Helix.Models.Entitlements.CreateEntitlementGrantsUploadURL;
+using TwitchLib.Api.Helix.Models.Entitlements.GetCodeStatus;
+using TwitchLib.Api.Helix.Models.Entitlements.RedeemCode;
 
 namespace TwitchLib.Api.Helix
 {
@@ -16,15 +18,15 @@ namespace TwitchLib.Api.Helix
 
         #region CreateEntitlementGrantsUploadURL
 
-        public Task<CreateEntitlementGrantsUploadUrlResponse> CreateEntitlementGrantsUploadUrl(string manifestId, EntitleGrantType type, string url = null, string applicationAccessToken = null)
+        public Task<CreateEntitlementGrantsUploadUrlResponse> CreateEntitlementGrantsUploadUrlAsync(string manifestId, EntitleGrantType type, string url = null, string applicationAccessToken = null)
         {
             if (manifestId == null)
                 throw new BadParameterException("manifestId cannot be null");
 
-            var getParams = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("manifest_id", manifestId)
-                };
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("manifest_id", manifestId)
+            };
 
             switch (type)
             {
@@ -35,9 +37,45 @@ namespace TwitchLib.Api.Helix
                     throw new BadParameterException("Unknown entitlement grant type");
             }
 
-            return TwitchGetGenericAsync<CreateEntitlementGrantsUploadUrlResponse>("/entitlements/upload", ApiVersion.Helix, getParams);
+            return TwitchGetGenericAsync<CreateEntitlementGrantsUploadUrlResponse>("/entitlements/upload", ApiVersion.Helix, getParams, applicationAccessToken);
         }
 
+        #endregion
+
+        #region GetCodeStatus
+        public Task<GetCodeStatusResponse> GetCodeStatusAsync(List<string> codes, string userId, string accessToken = null)
+        {
+            if (codes == null || codes.Count == 0 || codes.Count > 20)
+                throw new BadParameterException("codes cannot be null and must ahve between 1 and 20 items");
+
+            if (userId == null)
+                throw new BadParameterException("userId cannot be null");
+
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("user_id", userId)
+            };
+
+            foreach (var code in codes)
+                getParams.Add(new KeyValuePair<string, string>("code", code));
+
+            return TwitchPostGenericAsync<GetCodeStatusResponse>("/entitlements/codes", ApiVersion.Helix, null, getParams, accessToken);
+        }
+        #endregion
+
+        #region RedeemCode
+        public Task<RedeemCodeResponse> RedeemCodeAsync(List<string> codes, string accessToken = null)
+        {
+            if (codes == null || codes.Count == 0 || codes.Count > 20)
+                throw new BadParameterException("codes cannot be null and must ahve between 1 and 20 items");
+
+            var getParams = new List<KeyValuePair<string, string>>();
+
+            foreach (var code in codes)
+                getParams.Add(new KeyValuePair<string, string>("code", code));
+
+            return TwitchPostGenericAsync<RedeemCodeResponse>("/entitlements/codes", ApiVersion.Helix, null, getParams, accessToken);
+        }
         #endregion
 
     }
