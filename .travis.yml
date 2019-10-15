@@ -4,7 +4,7 @@ dotnet: 2.0.0
 dist: trusty
 script:
  - dotnet restore
- - dotnet build /home/travis/build/TwitchLib/TwitchLib.Api/TwitchLib.Api/TwitchLib.Api.csproj --framework netstandard2.0
+ - dotnet build /home/travis/build/TwitchLib/TwitchLib.Api/TwitchLib.Api/TwitchLib.Api.csproj --framework netstandard2.0 --verbosity detailed
 
 addons:
   apt:
