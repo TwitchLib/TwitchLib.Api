@@ -413,6 +413,9 @@ namespace TwitchLib.Api.Core
                     case "channel:read:subscriptions":
                         scopes.Add(AuthScopes.Helix_Channel_Read_Subscriptions);
                         break;
+                    case "moderation:read":
+                        scopes.Add(AuthScopes.Helix_Moderation_Read);
+                        break;
                 }
             }
 
