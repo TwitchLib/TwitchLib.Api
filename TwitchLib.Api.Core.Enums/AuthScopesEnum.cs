@@ -31,6 +31,7 @@
         Helix_User_Edit_Broadcast,
         Helix_User_Read_Broadcast,
         Helix_Channel_Read_Subscriptions,
+        Helix_Moderation_Read,
         None
     }
 }
