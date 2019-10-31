@@ -16,6 +16,6 @@ namespace TwitchLib.Api.Core.Models.Undocumented.ChatUser
         [JsonProperty(PropertyName = "is_verified_bot")]
         public bool IsVerifiedBot { get; protected set; }
         [JsonProperty(PropertyName = "badges")]
-        public KeyValuePair<string, string>[] Badges { get; protected set; }
+        public List<ChatUser> Badges { get; protected set; }
     }
 }
