@@ -8,9 +8,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>swiftyspiffy, Prom3theu5, Syzuna, LuckyNoS7evin</Authors>
     <Company></Company>
-    <PackageIconUrl>http://swiftyspiffy.com/img/twitchlib.png</PackageIconUrl>
+    <PackageIcon>twitchlib.png</PackageIcon>
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2018</Copyright>
     <PackageReleaseNotes>Incremental changes.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
@@ -30,6 +30,9 @@
     <ProjectReference Include="..\TwitchLib.Api.Core.Enums\TwitchLib.Api.Core.Enums.csproj" />
     <ProjectReference Include="..\TwitchLib.Api.Core.Interfaces\TwitchLib.Api.Core.Interfaces.csproj" />
     <ProjectReference Include="..\TwitchLib.Api.Core.Models\TwitchLib.Api.Core.Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="twitchlib.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
