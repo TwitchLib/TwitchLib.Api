@@ -100,6 +100,15 @@ namespace TwitchLib.Api.Core
             return null;
         }
 
+        internal void ForceAccessTokenAndClientIdForHelix(string clientId, string accessToken, ApiVersion api)
+        {
+            if (api != ApiVersion.Helix)
+                return;
+            if (!string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(accessToken))
+                return;
+            throw new ClientIdAndOAuthTokenRequired("As of May 1, all calls to Twitch's Helix API require Client-ID and OAuth access token be set. Example: api.Settings.AccessToken = \"twitch-oauth-access-token-here\"; api.Settings.ClientId = \"twitch-client-id-here\";");
+        }
+
         protected Task<T> TwitchGetGenericAsync<T>(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
@@ -108,6 +117,7 @@ namespace TwitchLib.Api.Core
                 clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
@@ -120,6 +130,7 @@ namespace TwitchLib.Api.Core
                 clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => _http.GeneralRequest(url, "DELETE", null, api, clientId, accessToken).Value).ConfigureAwait(false));
         }
@@ -132,6 +143,7 @@ namespace TwitchLib.Api.Core
                 clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "POST", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
@@ -144,6 +156,7 @@ namespace TwitchLib.Api.Core
                 clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "POST", model != null ? _jsonSerializer.SerializeObject(model) : "", api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
@@ -156,6 +169,7 @@ namespace TwitchLib.Api.Core
                 clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "DELETE", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
@@ -168,6 +182,7 @@ namespace TwitchLib.Api.Core
                 clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "PUT", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
@@ -180,6 +195,7 @@ namespace TwitchLib.Api.Core
                 clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => _http.GeneralRequest(url, "PUT", payload, api, clientId, accessToken).Value).ConfigureAwait(false));
         }
@@ -192,6 +208,7 @@ namespace TwitchLib.Api.Core
                 clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => _http.GeneralRequest(url, "POST", payload, api, clientId, accessToken)).ConfigureAwait(false));
         }
@@ -224,6 +241,7 @@ namespace TwitchLib.Api.Core
                 clientId = Settings.ClientId;
 
             accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
