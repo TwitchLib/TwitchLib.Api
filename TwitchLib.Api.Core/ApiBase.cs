@@ -104,7 +104,7 @@ namespace TwitchLib.Api.Core
         {
             if (api != ApiVersion.Helix)
                 return;
-            if (clientId != null && accessToken != null)
+            if (!string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(accessToken))
                 return;
             throw new ClientIdAndOAuthTokenRequired("As of May 1, all calls to Twitch's Helix API require Client-ID and OAuth access token be set. Example: api.Settings.AccessToken = \"twitch-oauth-access-token-here\"; api.Settings.ClientId = \"twitch-client-id-here\";");
         }
