@@ -6,11 +6,11 @@ namespace TwitchLib.Api.Core.Exceptions
 {
     /// <inheritdoc />
     /// <summary>Exception representing a Helix request sent without an OAuth access token</summary>
-    public class OAuthTokenRequired : Exception
+    public class ClientIdAndOAuthTokenRequired : Exception
     {
         /// <inheritdoc />
         /// <summary>Exception constructor</summary>
-        public OAuthTokenRequired(string explanation)
+        public ClientIdAndOAuthTokenRequired(string explanation)
             : base(explanation)
         {
         }
