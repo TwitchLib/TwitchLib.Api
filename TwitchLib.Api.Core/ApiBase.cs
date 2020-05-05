@@ -264,9 +264,9 @@ namespace TwitchLib.Api.Core
         }
 
 
-        protected void PutBytes(string url, byte[] payload)
+        protected Task PutBytesAsync(string url, byte[] payload)
         {
-            _http.PutBytes(url, payload);
+            return _http.PutBytes(url, payload);
         }
 
         internal Task<int> RequestReturnResponseCodeAsync(string url, string method, List<KeyValuePair<string, string>> getParams = null)

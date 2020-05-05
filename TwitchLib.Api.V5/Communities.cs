@@ -95,9 +95,9 @@ namespace TwitchLib.Api.V5
 
         #region GetCommunityBannedUsers
 
-        public Task<BannedUsers> GetCommunityBannedUsersAsync(string communityId, long? limit = null, string cursor = null, string authToken = null)
+        public async Task<BannedUsers> GetCommunityBannedUsersAsync(string communityId, long? limit = null, string cursor = null, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Moderate, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Moderate, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -107,48 +107,48 @@ namespace TwitchLib.Api.V5
             if (!string.IsNullOrEmpty(cursor))
                 getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
 
-            return TwitchGetGenericAsync<BannedUsers>($"/communities/{communityId}/bans", ApiVersion.V5, getParams, authToken);
+            return await TwitchGetGenericAsync<BannedUsers>($"/communities/{communityId}/bans", ApiVersion.V5, getParams, authToken).ConfigureAwait(false);
         }
 
         #endregion
 
         #region BanCommunityUser
 
-        public Task BanCommunityUserAsync(string communityId, string userId, string authToken = null)
+        public async Task BanCommunityUserAsync(string communityId, string userId, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Moderate, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Moderate, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
             if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchPutAsync($"/communities/{communityId}/bans/{userId}", ApiVersion.V5, null, accessToken: authToken);
+            await TwitchPutAsync($"/communities/{communityId}/bans/{userId}", ApiVersion.V5, null, accessToken: authToken).ConfigureAwait(false);
         }
 
         #endregion
 
         #region UnBanCommunityUser
 
-        public Task UnBanCommunityUserAsync(string communityId, string userId, string authToken = null)
+        public async Task UnBanCommunityUserAsync(string communityId, string userId, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Moderate, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Moderate, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
             if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchDeleteAsync($"/communities/{communityId}/bans/{userId}", ApiVersion.V5, accessToken: authToken);
+            await TwitchDeleteAsync($"/communities/{communityId}/bans/{userId}", ApiVersion.V5, accessToken: authToken).ConfigureAwait(false);
         }
 
         #endregion
 
         #region CreateCommunityAvatarImage
 
-        public Task CreateCommunityAvatarImageAsync(string communityId, string avatarImage, string authToken = null)
+        public async Task CreateCommunityAvatarImageAsync(string communityId, string avatarImage, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -156,29 +156,29 @@ namespace TwitchLib.Api.V5
                 throw new BadParameterException("The avatar image is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
             var payload = "{\"avatar_image\": \"" + avatarImage + "\"}";
-            return TwitchPostAsync($"/communities/{communityId}/images/avatar", ApiVersion.V5, payload, accessToken: authToken);
+            await TwitchPostAsync($"/communities/{communityId}/images/avatar", ApiVersion.V5, payload, accessToken: authToken).ConfigureAwait(false);
         }
 
         #endregion
 
         #region DeleteCommunityAvatarImage
 
-        public Task DeleteCommunityAvatarImageAsync(string communityId, string authToken = null)
+        public async Task DeleteCommunityAvatarImageAsync(string communityId, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchDeleteAsync($"/communities/{communityId}/images/avatar", ApiVersion.V5, accessToken: authToken);
+            await TwitchDeleteAsync($"/communities/{communityId}/images/avatar", ApiVersion.V5, accessToken: authToken).ConfigureAwait(false);
         }
 
         #endregion
 
         #region CreateCommunityCoverImage
 
-        public Task CreateCommunityCoverImageAsync(string communityId, string coverImage, string authToken = null)
+        public async Task CreateCommunityCoverImageAsync(string communityId, string coverImage, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -186,7 +186,7 @@ namespace TwitchLib.Api.V5
                 throw new BadParameterException("The cover image is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
             var payload = "{\"cover_image\": \"" + coverImage + "\"}";
-            return TwitchPostAsync($"/communities/{communityId}/images/cover", ApiVersion.V5, payload, accessToken: authToken);
+            await TwitchPostAsync($"/communities/{communityId}/images/cover", ApiVersion.V5, payload, accessToken: authToken).ConfigureAwait(false);
         }
 
         #endregion
@@ -195,7 +195,7 @@ namespace TwitchLib.Api.V5
 
         public async Task DeleteCommunityCoverImageAsync(string communityId, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -206,13 +206,13 @@ namespace TwitchLib.Api.V5
 
         #region GetCommunityModerators
 
-        public Task<Moderators> GetCommunityModeratorsAsync(string communityId, string authToken)
+        public async Task<Moderators> GetCommunityModeratorsAsync(string communityId, string authToken)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<Moderators>($"/communities/{communityId}/moderators", ApiVersion.V5, accessToken: authToken);
+            return await TwitchGetGenericAsync<Moderators>($"/communities/{communityId}/moderators", ApiVersion.V5, accessToken: authToken).ConfigureAwait(false);
         }
 
         #endregion
@@ -221,7 +221,7 @@ namespace TwitchLib.Api.V5
 
         public async Task AddCommunityModeratorAsync(string communityId, string userId, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -237,7 +237,7 @@ namespace TwitchLib.Api.V5
 
         public async Task DeleteCommunityModeratorAsync(string communityId, string userId, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Edit, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -251,13 +251,13 @@ namespace TwitchLib.Api.V5
 
         #region GetCommunityPermissions
 
-        public Task<Dictionary<string, bool>> GetCommunityPermissionsAsync(string communityId, string authToken = null)
+        public async Task<Dictionary<string, bool>> GetCommunityPermissionsAsync(string communityId, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Any, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Any, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchGetGenericAsync<Dictionary<string, bool>>($"/communities/{communityId}/permissions", ApiVersion.V5, accessToken: authToken);
+            return await TwitchGetGenericAsync<Dictionary<string, bool>>($"/communities/{communityId}/permissions", ApiVersion.V5, accessToken: authToken).ConfigureAwait(false);
         }
 
         #endregion
@@ -280,9 +280,9 @@ namespace TwitchLib.Api.V5
 
         #region GetCommunityTimedOutUsers
 
-        public Task<TimedOutUsers> GetCommunityTimedOutUsersAsync(string communityId, long? limit = null, string cursor = null, string authToken = null)
+        public async Task<TimedOutUsers> GetCommunityTimedOutUsersAsync(string communityId, long? limit = null, string cursor = null, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Moderate, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Moderate, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -292,7 +292,7 @@ namespace TwitchLib.Api.V5
             if (!string.IsNullOrEmpty(cursor))
                 getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
 
-            return TwitchGetGenericAsync<TimedOutUsers>($"/communities/{communityId}/timeouts", ApiVersion.V5, getParams, authToken);
+            return await TwitchGetGenericAsync<TimedOutUsers>($"/communities/{communityId}/timeouts", ApiVersion.V5, getParams, authToken).ConfigureAwait(false);
         }
 
         #endregion
@@ -301,7 +301,7 @@ namespace TwitchLib.Api.V5
 
         public async Task AddCommunityTimedOutUserAsync(string communityId, string userId, int duration, string reason = null, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Moderate, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Moderate, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -318,7 +318,7 @@ namespace TwitchLib.Api.V5
 
         public async Task DeleteCommunityTimedOutUserAsync(string communityId, string userId, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Communities_Moderate, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Communities_Moderate, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(communityId))
                 throw new BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 

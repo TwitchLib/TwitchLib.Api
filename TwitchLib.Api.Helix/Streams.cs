@@ -114,9 +114,9 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetStreamTagsResponse>("/streams/tags", ApiVersion.Helix, getParams, accessToken);
         }
 
-        public Task ReplaceStreamTags(string broadcasterId, List<string> tagIds = null, string accessToken = null)
+        public async Task ReplaceStreamTags(string broadcasterId, List<string> tagIds = null, string accessToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Helix_User_Edit_Broadcast, accessToken);
+            await DynamicScopeValidationAsync(AuthScopes.Helix_User_Edit_Broadcast, accessToken).ConfigureAwait(false);
 
             var getParams = new List<KeyValuePair<string, string>>();
             getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
@@ -129,7 +129,7 @@ namespace TwitchLib.Api.Helix
                 payload = dynamicPayload.ToString();
             }
 
-            return TwitchPutAsync("/streams/tags", ApiVersion.Helix, payload, getParams, accessToken);
+            await TwitchPutAsync("/streams/tags", ApiVersion.Helix, payload, getParams, accessToken).ConfigureAwait(false);
         }
     }
 

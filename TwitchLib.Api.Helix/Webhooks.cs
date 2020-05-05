@@ -96,12 +96,12 @@ namespace TwitchLib.Api.Helix
 
         #region GameAnalytics
 
-        public Task<bool> GameAnalyticsAsync(string callbackUrl, WebhookCallMode mode, string gameId, TimeSpan? duration = null, string signingSecret = null, string authToken = null)
+        public async Task<bool> GameAnalyticsAsync(string callbackUrl, WebhookCallMode mode, string gameId, TimeSpan? duration = null, string signingSecret = null, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Helix_Analytics_Read_Games, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Helix_Analytics_Read_Games, authToken).ConfigureAwait(false);
             var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
 
-            return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/analytics/games?game_id={gameId}", callbackUrl, leaseSeconds, signingSecret);
+            return await PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/analytics/games?game_id={gameId}", callbackUrl, leaseSeconds, signingSecret).ConfigureAwait(false);
         }
 
         #endregion

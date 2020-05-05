@@ -55,14 +55,14 @@ namespace TwitchLib.Api.Helix
 
         #region CreateClip
 
-        public Task<CreatedClipResponse> CreateClipAsync(string broadcasterId, string authToken = null)
+        public async Task<CreatedClipResponse> CreateClipAsync(string broadcasterId, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Helix_Clips_Edit);
+            await DynamicScopeValidationAsync(AuthScopes.Helix_Clips_Edit).ConfigureAwait(false);
             var getParams = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
                 };
-            return TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, authToken);
+            return await TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, authToken).ConfigureAwait(false);
         }
 
         #endregion

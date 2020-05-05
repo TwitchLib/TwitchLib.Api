@@ -113,10 +113,10 @@ namespace TwitchLib.Api.V5
 
         public async Task<UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Viewable viewable = Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Channel_Editor, accessToken);
+            await DynamicScopeValidationAsync(AuthScopes.Channel_Editor, accessToken).ConfigureAwait(false);
             var listing = await CreateVideoAsync(channelId, title, description, game, language, tagList, viewable, viewableAt);
-            UploadVideoParts(videoPath, listing.Upload);
-            await CompleteVideoUploadAsync(listing.Upload, accessToken);
+            await UploadVideoPartsAsync(videoPath, listing.Upload).ConfigureAwait(false);
+            await CompleteVideoUploadAsync(listing.Upload, accessToken).ConfigureAwait(false);
 
             return listing.Video;
         }
@@ -125,9 +125,9 @@ namespace TwitchLib.Api.V5
 
         #region UpdateVideo
 
-        public Task<Video> UpdateVideoAsync(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
+        public async Task<Video> UpdateVideoAsync(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Channel_Editor, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Channel_Editor, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(videoId))
                 throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -143,20 +143,20 @@ namespace TwitchLib.Api.V5
             if (!string.IsNullOrWhiteSpace(title))
                 getParams.Add(new KeyValuePair<string, string>("title", title));
 
-            return TwitchPutGenericAsync<Video>($"/videos/{videoId}", ApiVersion.V5, null, getParams, authToken);
+            return await TwitchPutGenericAsync<Video>($"/videos/{videoId}", ApiVersion.V5, null, getParams, authToken).ConfigureAwait(false);
         }
 
         #endregion
 
         #region DeleteVideo
 
-        public Task DeleteVideoAsync(string videoId, string authToken = null)
+        public async Task DeleteVideoAsync(string videoId, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Channel_Editor, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Channel_Editor, authToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(videoId))
                 throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchDeleteAsync($"/videos/{videoId}", ApiVersion.V5, accessToken: authToken);
+            await TwitchDeleteAsync($"/videos/{videoId}", ApiVersion.V5, accessToken: authToken).ConfigureAwait(false);
         }
 
         #endregion
@@ -184,7 +184,7 @@ namespace TwitchLib.Api.V5
             return TwitchPostGenericAsync<UploadVideoListing>("/videos", ApiVersion.V5, null, getParams, accessToken);
         }
 
-        private void UploadVideoParts(string videoPath, Upload upload)
+        private async Task UploadVideoPartsAsync(string videoPath, Upload upload)
         {
             if (!File.Exists(videoPath))
                 throw new BadParameterException($"The provided path for a video upload does not appear to be value: {videoPath}");
@@ -215,7 +215,7 @@ namespace TwitchLib.Api.V5
                             fs.Read(chunk, 0, (int)size24Mb);
                         }
 
-                        PutBytes($"{upload.Url}?part={currentPart}&upload_token={upload.Token}", chunk);
+                        await PutBytesAsync($"{upload.Url}?part={currentPart}&upload_token={upload.Token}", chunk).ConfigureAwait(false);
                         Thread.Sleep(1000);
                     }
                 }
@@ -224,7 +224,7 @@ namespace TwitchLib.Api.V5
             {
                 // Upload entire file at once if small enough
                 var file = File.ReadAllBytes(videoPath);
-                PutBytes($"{upload.Url}?part=1&upload_token={upload.Token}", file);
+                await PutBytesAsync($"{upload.Url}?part=1&upload_token={upload.Token}", file).ConfigureAwait(false);
             }
         }
 

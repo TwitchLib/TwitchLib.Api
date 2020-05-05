@@ -15,28 +15,28 @@ namespace TwitchLib.Api.Helix
 
         #region GetGameAnalytics
 
-        public Task<GetGameAnalyticsResponse> GetGameAnalyticsAsync(string gameId = null, string authToken = null)
+        public async Task<GetGameAnalyticsResponse> GetGameAnalyticsAsync(string gameId = null, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Helix_Analytics_Read_Games, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Helix_Analytics_Read_Games, authToken).ConfigureAwait(false);
             var getParams = new List<KeyValuePair<string, string>>();
             if (gameId != null)
                 getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
 
-            return TwitchGetGenericAsync<GetGameAnalyticsResponse>("/analytics/games", ApiVersion.Helix, getParams, authToken);
+            return await TwitchGetGenericAsync<GetGameAnalyticsResponse>("/analytics/games", ApiVersion.Helix, getParams, authToken).ConfigureAwait(false);
         }
 
         #endregion
 
         #region GetExtensionAnalytics
 
-        public Task<GetExtensionAnalyticsResponse> GetExtensionAnalyticsAsync(string extensionId, string authToken = null)
+        public async Task<GetExtensionAnalyticsResponse> GetExtensionAnalyticsAsync(string extensionId, string authToken = null)
         {
-            DynamicScopeValidationAsync(AuthScopes.Helix_Analytics_Read_Extensions, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Helix_Analytics_Read_Extensions, authToken).ConfigureAwait(false);
             var getParams = new List<KeyValuePair<string, string>>();
             if (extensionId != null)
                 getParams.Add(new KeyValuePair<string, string>("extension_id", extensionId));
 
-            return TwitchGetGenericAsync<GetExtensionAnalyticsResponse>("/analytics/extensions", ApiVersion.Helix, getParams, authToken);
+            return await TwitchGetGenericAsync<GetExtensionAnalyticsResponse>("/analytics/extensions", ApiVersion.Helix, getParams, authToken).ConfigureAwait(false);
         }
 
         #endregion
