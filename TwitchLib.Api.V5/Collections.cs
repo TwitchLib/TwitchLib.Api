@@ -157,7 +157,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(itemId))
                 throw new BadParameterException("The item id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces.");
 
-            await TwitchDeleteAsync($"/collections/{collectionId}/items/{itemId}", ApiVersion.V5, accessToken: authToken);
+            await TwitchDeleteAsync($"/collections/{collectionId}/items/{itemId}", ApiVersion.V5, accessToken: authToken).ConfigureAwait(false);
         }
 
         #endregion
