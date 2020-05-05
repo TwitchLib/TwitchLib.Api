@@ -223,7 +223,7 @@ namespace TwitchLib.Api.Test.Services
                 var mockHandler = new Mock<IHttpCallHandler>();
 
                 mockHandler
-                    .Setup(x => x.GeneralRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .Setup(x => x.GeneralRequestAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
                     .Returns(Task.FromResult(new KeyValuePair<int, string>(200, usersFollowsResponseFirstUserJson)));
 
                 _api = TwitchLibMock.TwitchApi(mockHandler);
@@ -246,7 +246,7 @@ namespace TwitchLib.Api.Test.Services
                 mockHandler.Reset();
 
                 mockHandler
-                    .Setup(x => x.GeneralRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .Setup(x => x.GeneralRequestAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
                     .Returns(Task.FromResult(new KeyValuePair<int, string>(200, usersFollowsResponseSecondUserJson)));
 
                 await _followerService.UpdateLatestFollowersAsync();

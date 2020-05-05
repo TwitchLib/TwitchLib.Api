@@ -21,7 +21,7 @@ namespace TwitchLib.Api.Services.Core
 
         private async void TimerElapsedAsync(object sender, ElapsedEventArgs e)
         {
-            await _serviceTimerTickAsyncCallback();
+            await _serviceTimerTickAsyncCallback().ConfigureAwait(false);
         }
     }
 }

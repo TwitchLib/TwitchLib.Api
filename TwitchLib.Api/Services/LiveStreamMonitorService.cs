@@ -84,11 +84,11 @@ namespace TwitchLib.Api.Services
 
         public async Task UpdateLiveStreamersAsync(bool callEvents = true)
         {
-            var result = await GetLiveStreamersAsync();
+            var result = await GetLiveStreamersAsync().ConfigureAwait(false);
 
             foreach (var channel in ChannelsToMonitor)
             {
-                var liveStream = result.FirstOrDefault(await _monitor.CompareStream(channel));
+                var liveStream = result.FirstOrDefault(await _monitor.CompareStream(channel).ConfigureAwait(false));
 
                 if (liveStream != null)
                 {
@@ -103,8 +103,8 @@ namespace TwitchLib.Api.Services
 
         protected override async Task OnServiceTimerTick()
         {
-            await base.OnServiceTimerTick();
-            await UpdateLiveStreamersAsync();
+            await base.OnServiceTimerTick().ConfigureAwait(false);
+            await UpdateLiveStreamersAsync().ConfigureAwait(false);
         }
 
         private void HandleLiveStreamUpdate(string channel, Stream liveStream, bool callEvents)
@@ -149,7 +149,7 @@ namespace TwitchLib.Api.Services
             for (var i = 0; i < pages; i++)
             {
                 var selectedSet = ChannelsToMonitor.Skip(i * MaxStreamRequestCountPerRequest).Take(MaxStreamRequestCountPerRequest).ToList();
-                var resultset = await _monitor.GetStreamsAsync(selectedSet);
+                var resultset = await _monitor.GetStreamsAsync(selectedSet).ConfigureAwait(false);
 
                 if (resultset.Streams == null)
                     continue;

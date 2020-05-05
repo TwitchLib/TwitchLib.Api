@@ -114,7 +114,7 @@ namespace TwitchLib.Api.V5
         public async Task<UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Viewable viewable = Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
         {
             await DynamicScopeValidationAsync(AuthScopes.Channel_Editor, accessToken).ConfigureAwait(false);
-            var listing = await CreateVideoAsync(channelId, title, description, game, language, tagList, viewable, viewableAt);
+            var listing = await CreateVideoAsync(channelId, title, description, game, language, tagList, viewable, viewableAt).ConfigureAwait(false);
             await UploadVideoPartsAsync(videoPath, listing.Upload).ConfigureAwait(false);
             await CompleteVideoUploadAsync(listing.Upload, accessToken).ConfigureAwait(false);
 

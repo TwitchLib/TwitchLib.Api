@@ -19,7 +19,7 @@ namespace TwitchLib.Api.Test
                 .Returns(new System.Collections.Generic.KeyValuePair<int, string>(200, GetGameAnalyticsResponse));
             var api = new TwitchAPI(http: mockHandler.Object);
 
-           var result= await api.Analytics.Helix.GetGameAnalyticsAsync("493057", "RandomTokenThatDoesntMatter");
+            var result= await api.Analytics.Helix.GetGameAnalyticsAsync("493057", "RandomTokenThatDoesntMatter");
 
             Assert.True(result.Data[0].Type == "overview_v2");
             Assert.True(result.Data[0].GameId == "493057");

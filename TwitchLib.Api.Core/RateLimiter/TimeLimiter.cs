@@ -16,17 +16,17 @@ namespace TwitchLib.Api.Core.RateLimiter
             _ac = ac;
         }
 
-        public Task Perform(Func<Task> perform) 
+        public Task PerformAsync(Func<Task> perform) 
         {
-            return Perform(perform, CancellationToken.None);
+            return PerformAsync(perform, CancellationToken.None);
         }
 
-        public Task<T> Perform<T>(Func<Task<T>> perform) 
+        public Task<T> PerformAsync<T>(Func<Task<T>> perform) 
         {
-            return Perform(perform, CancellationToken.None);
+            return PerformAsync(perform, CancellationToken.None);
         }
 
-        public async Task Perform(Func<Task> perform, CancellationToken cancellationToken) 
+        public async Task PerformAsync(Func<Task> perform, CancellationToken cancellationToken) 
         {
             cancellationToken.ThrowIfCancellationRequested();
             using (await _ac.WaitForReadiness(cancellationToken).ConfigureAwait(false)) 
@@ -35,7 +35,7 @@ namespace TwitchLib.Api.Core.RateLimiter
             }
         }
 
-        public async Task<T> Perform<T>(Func<Task<T>> perform, CancellationToken cancellationToken) 
+        public async Task<T> PerformAsync<T>(Func<Task<T>> perform, CancellationToken cancellationToken) 
         {
             cancellationToken.ThrowIfCancellationRequested();
             using (await _ac.WaitForReadiness(cancellationToken).ConfigureAwait(false)) 
@@ -54,28 +54,28 @@ namespace TwitchLib.Api.Core.RateLimiter
             return () =>  Task.FromResult(compute()); 
         }
 
-        public Task Perform(Action perform, CancellationToken cancellationToken) 
+        public Task PerformAsync(Action perform, CancellationToken cancellationToken) 
         {
            var transformed = Transform(perform);
-           return Perform(transformed, cancellationToken);
+           return PerformAsync(transformed, cancellationToken);
         }
 
-        public Task Perform(Action perform) 
+        public Task PerformAsync(Action perform) 
         {
             var transformed = Transform(perform);
-            return Perform(transformed);
+            return PerformAsync(transformed);
         }
 
-        public Task<T> Perform<T>(Func<T> perform) 
+        public Task<T> PerformAsync<T>(Func<T> perform) 
         {
             var transformed = Transform(perform);
-            return Perform(transformed);
+            return PerformAsync(transformed);
         }
 
-        public Task<T> Perform<T>(Func<T> perform, CancellationToken cancellationToken) 
+        public Task<T> PerformAsync<T>(Func<T> perform, CancellationToken cancellationToken) 
         {
             var transformed = Transform(perform);
-            return Perform(transformed, cancellationToken);
+            return PerformAsync(transformed, cancellationToken);
         }
 
         public static TimeLimiter GetFromMaxCountByInterval(int maxCount, TimeSpan timeSpan)

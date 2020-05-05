@@ -19,7 +19,7 @@ namespace TwitchLib.Api.Core.RateLimiter
 
         public async Task<IDisposable> WaitForReadiness(CancellationToken cancellationToken)
         {
-            await _semafore.WaitAsync(cancellationToken);
+            await _semafore.WaitAsync(cancellationToken).ConfigureAwait(false);
             IDisposable[] diposables;
             try 
             {
@@ -32,11 +32,17 @@ namespace TwitchLib.Api.Core.RateLimiter
             } 
             return new DisposeAction(() => 
             {
-                foreach (var diposable in diposables)
+                try
                 {
-                    diposable.Dispose();
+                    foreach (var disposable in diposables)
+                    {
+                        disposable.Dispose();
+                    }
                 }
-                _semafore.Release();
+                finally
+                {
+                    _semafore.Release();
+                }
             });
         }
     }

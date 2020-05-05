@@ -189,7 +189,7 @@ namespace TwitchLib.Api.V5
             var leftOverFollowers = (totalFollowers - amount) % 100;
             var requiredRequests = (totalFollowers - amount - leftOverFollowers) / 100;
 
-            await Task.Delay(1000);
+            await Task.Delay(1000).ConfigureAwait(false);
             for (var i = 0; i < requiredRequests; i++)
             {
                 var requestedFollowers = await GetChannelFollowersAsync(channelId, 100, cursor: cursor).ConfigureAwait(false);
@@ -197,7 +197,7 @@ namespace TwitchLib.Api.V5
                 followers.AddRange(requestedFollowers.Follows.OfType<ChannelFollow>().ToList());
 
                 // we should wait a second before performing another request per Twitch requirements
-                await Task.Delay(1000);
+                await Task.Delay(1000).ConfigureAwait(false);
             }
 
             // get leftover subs
@@ -271,7 +271,7 @@ namespace TwitchLib.Api.V5
             await DynamicScopeValidationAsync(AuthScopes.Channel_Subscriptions, accessToken).ConfigureAwait(false);
             // initial stuffs
             var allSubs = new List<Subscription>();
-            var firstBatch = await GetChannelSubscribersAsync(channelId, 100, 0, "asc", accessToken);
+            var firstBatch = await GetChannelSubscribersAsync(channelId, 100, 0, "asc", accessToken).ConfigureAwait(false);
             var totalSubs = firstBatch.Total;
             allSubs.AddRange(firstBatch.Subscriptions);
 
@@ -282,7 +282,7 @@ namespace TwitchLib.Api.V5
 
             // perform required requests after initial delay
             var currentOffset = amount;
-            await Task.Delay(1000);
+            await Task.Delay(1000).ConfigureAwait(false);
             for (var i = 0; i < requiredRequests; i++)
             {
                 var requestedSubs = await GetChannelSubscribersAsync(channelId, 100, currentOffset, "asc", accessToken).ConfigureAwait(false);
@@ -290,7 +290,7 @@ namespace TwitchLib.Api.V5
                 currentOffset += requestedSubs.Subscriptions.Length;
 
                 // We should wait a second before performing another request per Twitch requirements
-                await Task.Delay(1000);
+                await Task.Delay(1000).ConfigureAwait(false);
             }
 
             // get leftover subs

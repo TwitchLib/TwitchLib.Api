@@ -27,7 +27,7 @@ namespace TwitchLib.Api.Test.Helpers
             foreach (var (url, response) in urlResponses)
             {
                 mockHandler
-                    .Setup(x => x.GeneralRequest(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .Setup(x => x.GeneralRequestAsync(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
                     .Returns(Task.FromResult(new KeyValuePair<int, string>(200, response)));
             }
         }
@@ -39,7 +39,7 @@ namespace TwitchLib.Api.Test.Helpers
             foreach (var (url, response) in urlResponses)
             {
                 mockHandler
-                    .Setup(x => x.GeneralRequest(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .Setup(x => x.GeneralRequestAsync(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
                     .Returns(Task.FromResult(new KeyValuePair<int, string>(200, response)));
             }
             

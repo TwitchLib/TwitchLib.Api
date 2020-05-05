@@ -147,7 +147,7 @@ namespace TwitchLib.Api.V5
 
             try
             {
-                await TwitchGetGenericAsync<UserFollow>($"/users/{userId}/follows/channels/{channelId}", ApiVersion.V5);
+                await TwitchGetGenericAsync<UserFollow>($"/users/{userId}/follows/channels/{channelId}", ApiVersion.V5).ConfigureAwait(false);
                 return true;
             }
             catch (BadResourceException)

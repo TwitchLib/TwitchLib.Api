@@ -6,20 +6,20 @@ namespace TwitchLib.Api.Core.Interfaces
 {
     public interface IRateLimiter
     {
-        Task Perform(Func<Task> perform, CancellationToken cancellationToken);
+        Task PerformAsync(Func<Task> perform, CancellationToken cancellationToken);
 
-        Task Perform(Func<Task> perform);
+        Task PerformAsync(Func<Task> perform);
 
-        Task<T> Perform<T>(Func<Task<T>> perform);
+        Task<T> PerformAsync<T>(Func<Task<T>> perform);
 
-        Task<T> Perform<T>(Func<Task<T>> perform, CancellationToken cancellationToken);
+        Task<T> PerformAsync<T>(Func<Task<T>> perform, CancellationToken cancellationToken);
 
-        Task Perform(Action perform, CancellationToken cancellationToken);
+        Task PerformAsync(Action perform, CancellationToken cancellationToken);
 
-        Task Perform(Action perform);
+        Task PerformAsync(Action perform);
 
-        Task<T> Perform<T>(Func<T> perform);
+        Task<T> PerformAsync<T>(Func<T> perform);
 
-        Task<T> Perform<T>(Func<T> perform, CancellationToken cancellationToken);
+        Task<T> PerformAsync<T>(Func<T> perform, CancellationToken cancellationToken);
     }
 }

@@ -11,7 +11,7 @@ namespace TwitchLib.Api.Helpers
     {
         public static async Task<List<ExtensionAnalytics>> HandleUrlAsync(string url)
         {
-            var cnts = await GetContentsAsync(url);
+            var cnts = await GetContentsAsync(url).ConfigureAwait(false);
             var data = ExtractData(cnts);
 
             return data.Select(line => new ExtensionAnalytics(line)).ToList();
@@ -25,7 +25,7 @@ namespace TwitchLib.Api.Helpers
         private static async Task<string[]> GetContentsAsync(string url)
         {
             var client = new HttpClient();
-            var lines = (await client.GetStringAsync(url)).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            var lines = (await client.GetStringAsync(url).ConfigureAwait(false)).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             return lines;
         }
     }

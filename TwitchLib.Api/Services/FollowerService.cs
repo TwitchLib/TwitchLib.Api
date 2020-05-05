@@ -115,7 +115,7 @@ namespace TwitchLib.Api.Services
             foreach (var channel in ChannelsToMonitor)
             {
                 List<Follow> newFollowers;
-                var latestFollowers = await GetLatestFollowersAsync(channel);
+                var latestFollowers = await GetLatestFollowersAsync(channel).ConfigureAwait(false);
 
                 if (latestFollowers.Count == 0)
                     return;
@@ -165,13 +165,13 @@ namespace TwitchLib.Api.Services
 
         protected override async Task OnServiceTimerTick()
         {
-            await base.OnServiceTimerTick();
-            await UpdateLatestFollowersAsync();
+            await base.OnServiceTimerTick().ConfigureAwait(false);
+            await UpdateLatestFollowersAsync().ConfigureAwait(false);
         }
 
         private async Task<List<Follow>> GetLatestFollowersAsync(string channel)
         {
-            var resultset = await _monitor.GetUsersFollowsAsync(channel, QueryCountPerRequest);
+            var resultset = await _monitor.GetUsersFollowsAsync(channel, QueryCountPerRequest).ConfigureAwait(false);
             
             return resultset.Follows.Reverse().ToList();
         }

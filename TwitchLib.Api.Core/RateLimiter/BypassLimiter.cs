@@ -7,23 +7,23 @@ namespace TwitchLib.Api.Core.RateLimiter
 {
     public class BypassLimiter : IRateLimiter
     {
-        public Task Perform(Func<Task> perform)
+        public Task PerformAsync(Func<Task> perform)
         {
-            return Perform(perform, CancellationToken.None);
+            return PerformAsync(perform, CancellationToken.None);
         }
 
-        public Task<T> Perform<T>(Func<Task<T>> perform)
+        public Task<T> PerformAsync<T>(Func<Task<T>> perform)
         {
-            return Perform(perform, CancellationToken.None);
+            return PerformAsync(perform, CancellationToken.None);
         }
 
-        public Task Perform(Func<Task> perform, CancellationToken cancellationToken)
+        public Task PerformAsync(Func<Task> perform, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return perform();
         }
 
-        public Task<T> Perform<T>(Func<Task<T>> perform, CancellationToken cancellationToken)
+        public Task<T> PerformAsync<T>(Func<Task<T>> perform, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return perform();
@@ -39,28 +39,28 @@ namespace TwitchLib.Api.Core.RateLimiter
             return () => Task.FromResult(compute());
         }
 
-        public Task Perform(Action perform, CancellationToken cancellationToken)
+        public Task PerformAsync(Action perform, CancellationToken cancellationToken)
         {
             var transformed = Transform(perform);
-            return Perform(transformed, cancellationToken);
+            return PerformAsync(transformed, cancellationToken);
         }
 
-        public Task Perform(Action perform)
+        public Task PerformAsync(Action perform)
         {
             var transformed = Transform(perform);
-            return Perform(transformed);
+            return PerformAsync(transformed);
         }
 
-        public Task<T> Perform<T>(Func<T> perform)
+        public Task<T> PerformAsync<T>(Func<T> perform)
         {
             var transformed = Transform(perform);
-            return Perform(transformed);
+            return PerformAsync(transformed);
         }
 
-        public Task<T> Perform<T>(Func<T> perform, CancellationToken cancellationToken)
+        public Task<T> PerformAsync<T>(Func<T> perform, CancellationToken cancellationToken)
         {
             var transformed = Transform(perform);
-            return Perform(transformed, cancellationToken);
+            return PerformAsync(transformed, cancellationToken);
         }
 
         public static BypassLimiter CreateLimiterBypassInstance()

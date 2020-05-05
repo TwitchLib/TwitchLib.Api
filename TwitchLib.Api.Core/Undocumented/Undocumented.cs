@@ -146,7 +146,7 @@ namespace TwitchLib.Api.Core.Undocumented
 
         public async Task<List<ChatterFormatted>> GetChattersAsync(string channelName)
         {
-            var resp = await GetGenericAsync<ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName.ToLower()}/chatters");
+            var resp = await GetGenericAsync<ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName.ToLower()}/chatters").ConfigureAwait(false);
 
             var chatters = resp.Chatters.Staff.Select(chatter => new ChatterFormatted(chatter, UserType.Staff)).ToList();
             chatters.AddRange(resp.Chatters.Admins.Select(chatter => new ChatterFormatted(chatter, UserType.Admin)));
@@ -229,8 +229,8 @@ namespace TwitchLib.Api.Core.Undocumented
 
         public async Task<List<CommentsPage>> GetAllCommentsAsync(string videoId)
         {
-            var pages = new List<CommentsPage> {await GetCommentsPageAsync(videoId)};
-            while (pages.Last().Next != null) pages.Add(await GetCommentsPageAsync(videoId, null, pages.Last().Next));
+            var pages = new List<CommentsPage> {await GetCommentsPageAsync(videoId).ConfigureAwait(false)};
+            while (pages.Last().Next != null) pages.Add(await GetCommentsPageAsync(videoId, null, pages.Last().Next).ConfigureAwait(false));
 
             return pages;
         }

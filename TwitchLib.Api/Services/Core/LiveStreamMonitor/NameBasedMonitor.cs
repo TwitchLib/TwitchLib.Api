@@ -18,7 +18,7 @@ namespace TwitchLib.Api.Services.Core.LiveStreamMonitor
         {
             if (!_channelToId.TryGetValue(channel, out var channelId))
             {
-                channelId = (await _api.Helix.Users.GetUsersAsync(logins: new List<string> { channel })).Users.FirstOrDefault()?.Id;
+                channelId = (await _api.Helix.Users.GetUsersAsync(logins: new List<string> { channel }).ConfigureAwait(false)).Users.FirstOrDefault()?.Id;
                 _channelToId[channel] = channelId ?? throw new InvalidOperationException($"No channel with the name \"{channel}\" could be found.");
             }
 
