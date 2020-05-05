@@ -76,9 +76,9 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, getParams, accessToken: authToken);
         }
 
-        public Task<GetUserActiveExtensionsResponse> UpdateUserExtensionsAsync(IEnumerable<ExtensionSlot> userExtensionStates, string authToken = null)
+        public async Task<GetUserActiveExtensionsResponse> UpdateUserExtensionsAsync(IEnumerable<ExtensionSlot> userExtensionStates, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.Channel_Editor, authToken).ConfigureAwait(false);
 
             var panels = new Dictionary<string, UserExtensionState>();
             var overlays = new Dictionary<string, UserExtensionState>();
@@ -115,7 +115,7 @@ namespace TwitchLib.Api.Helix
             json.Add(new JProperty("data", JObject.FromObject(p)));
             var payload = json.ToString();
 
-            return TwitchPutGenericAsync<GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, payload, accessToken: authToken);
+            return await TwitchPutGenericAsync<GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, payload, accessToken: authToken).ConfigureAwait(false);
         }
     }
 }

@@ -35,11 +35,11 @@ namespace TwitchLib.Api.V5
 
         #region GetUser
 
-        public Task<UserAuthed> GetUserAsync(string authToken = null)
+        public async Task<UserAuthed> GetUserAsync(string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Read, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.User_Read, authToken).ConfigureAwait(false);
 
-            return TwitchGetGenericAsync<UserAuthed>("/user", ApiVersion.V5, accessToken: authToken);
+            return await TwitchGetGenericAsync<UserAuthed>("/user", ApiVersion.V5, accessToken: authToken).ConfigureAwait(false);
         }
 
         #endregion
@@ -73,7 +73,7 @@ namespace TwitchLib.Api.V5
 
         public Task<UserEmotes> GetUserEmotesAsync(string userId, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Subscriptions, authToken);
+            DynamicScopeValidationAsync(AuthScopes.User_Subscriptions, authToken);
             if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -86,7 +86,7 @@ namespace TwitchLib.Api.V5
 
         public Task<Subscription> CheckUserSubscriptionByChannelAsync(string userId, string channelId, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Subscriptions, authToken);
+            DynamicScopeValidationAsync(AuthScopes.User_Subscriptions, authToken);
             if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -162,7 +162,7 @@ namespace TwitchLib.Api.V5
 
         public Task<UserFollow> FollowChannelAsync(string userId, string channelId, bool? notifications = null, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Follows_Edit, authToken);
+            DynamicScopeValidationAsync(AuthScopes.User_Follows_Edit, authToken);
             if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -179,7 +179,7 @@ namespace TwitchLib.Api.V5
 
         public Task UnfollowChannelAsync(string userId, string channelId, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Follows_Edit, authToken);
+            DynamicScopeValidationAsync(AuthScopes.User_Follows_Edit, authToken);
             if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -195,7 +195,7 @@ namespace TwitchLib.Api.V5
 
         public Task<UserBlocks> GetUserBlockListAsync(string userId, int? limit = null, int? offset = null, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Blocks_Read, authToken);
+            DynamicScopeValidationAsync(AuthScopes.User_Blocks_Read, authToken);
             if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -214,7 +214,7 @@ namespace TwitchLib.Api.V5
 
         public Task<UserBlock> BlockUserAsync(string sourceUserId, string targetUserId, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Blocks_Edit, authToken);
+            DynamicScopeValidationAsync(AuthScopes.User_Blocks_Edit, authToken);
             if (string.IsNullOrWhiteSpace(sourceUserId))
                 throw new BadParameterException("The source user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -230,7 +230,7 @@ namespace TwitchLib.Api.V5
 
         public Task UnblockUserAsync(string sourceUserId, string targetUserId, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Blocks_Edit, authToken);
+            DynamicScopeValidationAsync(AuthScopes.User_Blocks_Edit, authToken);
             if (string.IsNullOrWhiteSpace(sourceUserId))
                 throw new BadParameterException("The source user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -248,7 +248,7 @@ namespace TwitchLib.Api.V5
 
         public Task CreateUserConnectionToViewerHeartbeatServiceAsync(string identifier, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Viewing_Activity_Read, authToken);
+            DynamicScopeValidationAsync(AuthScopes.Viewing_Activity_Read, authToken);
             if (string.IsNullOrWhiteSpace(identifier))
                 throw new BadParameterException("The identifier is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -262,7 +262,7 @@ namespace TwitchLib.Api.V5
 
         public Task<VHSConnectionCheck> CheckUserConnectionToViewerHeartbeatServiceAsync(string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Read, authToken);
+            DynamicScopeValidationAsync(AuthScopes.User_Read, authToken);
 
             return TwitchGetGenericAsync<VHSConnectionCheck>("/user/vhs", ApiVersion.V5, accessToken: authToken);
         }
@@ -273,7 +273,7 @@ namespace TwitchLib.Api.V5
 
         public Task DeleteUserConnectionToViewerHeartbeatServicechStreamsAsync(string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Viewing_Activity_Read, authToken);
+            DynamicScopeValidationAsync(AuthScopes.Viewing_Activity_Read, authToken);
 
             return TwitchDeleteAsync("/user/vhs", ApiVersion.V5, accessToken: authToken);
         }

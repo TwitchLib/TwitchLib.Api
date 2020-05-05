@@ -85,9 +85,9 @@ namespace TwitchLib.Api.V5
 
         #region GetFollowedStreams
 
-        public Task<FollowedStreams> GetFollowedStreamsAsync(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
+        public async Task<FollowedStreams> GetFollowedStreamsAsync(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Read, authToken);
+            await DynamicScopeValidationAsync(AuthScopes.User_Read, authToken).ConfigureAwait(false);
             var getParams = new List<KeyValuePair<string, string>>();
             if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
                 getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));
@@ -96,7 +96,7 @@ namespace TwitchLib.Api.V5
             if (offset != null)
                 getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
 
-            return TwitchGetGenericAsync<FollowedStreams>("/streams/followed", ApiVersion.V5, getParams, authToken);
+            return await TwitchGetGenericAsync<FollowedStreams>("/streams/followed", ApiVersion.V5, getParams, authToken).ConfigureAwait(false);
         }
 
         #endregion

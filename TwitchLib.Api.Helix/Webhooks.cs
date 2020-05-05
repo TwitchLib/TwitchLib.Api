@@ -16,7 +16,7 @@ namespace TwitchLib.Api.Helix
         }
 
         #region GetWebhookSubscriptions
-        public Task<GetWebhookSubscriptionsResponse> GetWebhookSubscriptionsAsync(string after = null, int first = 20, string accessToken = null)
+        public async Task<GetWebhookSubscriptionsResponse> GetWebhookSubscriptionsAsync(string after = null, int first = 20, string accessToken = null)
         {
             if (first < 1 || first > 100)
                 throw new BadParameterException("'first' must between 1 (inclusive) and 100 (inclusive).");
@@ -29,12 +29,12 @@ namespace TwitchLib.Api.Helix
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
 
-            accessToken = GetAccessToken(accessToken);
+            accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
 
             if (string.IsNullOrEmpty(accessToken))
                 throw new BadParameterException("'accessToken' be supplied, set AccessToken in settings or ClientId and Secret in settings");
 
-            return TwitchGetGenericAsync<GetWebhookSubscriptionsResponse>("/webhooks/subscriptions", ApiVersion.Helix, getParams, accessToken);
+            return await TwitchGetGenericAsync<GetWebhookSubscriptionsResponse>("/webhooks/subscriptions", ApiVersion.Helix, getParams, accessToken).ConfigureAwait(false);
         }
 
         #endregion
@@ -98,7 +98,7 @@ namespace TwitchLib.Api.Helix
 
         public Task<bool> GameAnalyticsAsync(string callbackUrl, WebhookCallMode mode, string gameId, TimeSpan? duration = null, string signingSecret = null, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Analytics_Read_Games, authToken);
+            DynamicScopeValidationAsync(AuthScopes.Helix_Analytics_Read_Games, authToken);
             var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
 
             return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/analytics/games?game_id={gameId}", callbackUrl, leaseSeconds, signingSecret);

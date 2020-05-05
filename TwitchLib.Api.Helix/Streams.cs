@@ -116,7 +116,7 @@ namespace TwitchLib.Api.Helix
 
         public Task ReplaceStreamTags(string broadcasterId, List<string> tagIds = null, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Broadcast, accessToken);
+            DynamicScopeValidationAsync(AuthScopes.Helix_User_Edit_Broadcast, accessToken);
 
             var getParams = new List<KeyValuePair<string, string>>();
             getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));

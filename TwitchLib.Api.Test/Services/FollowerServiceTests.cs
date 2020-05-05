@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Api.Services;
@@ -223,7 +224,7 @@ namespace TwitchLib.Api.Test.Services
 
                 mockHandler
                     .Setup(x => x.GeneralRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(new KeyValuePair<int, string>(200, usersFollowsResponseFirstUserJson));
+                    .Returns(Task.FromResult(new KeyValuePair<int, string>(200, usersFollowsResponseFirstUserJson)));
 
                 _api = TwitchLibMock.TwitchApi(mockHandler);
 
@@ -246,7 +247,7 @@ namespace TwitchLib.Api.Test.Services
 
                 mockHandler
                     .Setup(x => x.GeneralRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(new KeyValuePair<int, string>(200, usersFollowsResponseSecondUserJson));
+                    .Returns(Task.FromResult(new KeyValuePair<int, string>(200, usersFollowsResponseSecondUserJson)));
 
                 await _followerService.UpdateLatestFollowersAsync();
 

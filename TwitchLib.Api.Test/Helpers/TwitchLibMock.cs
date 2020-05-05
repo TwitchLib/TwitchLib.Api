@@ -1,6 +1,7 @@
 ﻿using Moq;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Test.Helpers
@@ -27,7 +28,7 @@ namespace TwitchLib.Api.Test.Helpers
             {
                 mockHandler
                     .Setup(x => x.GeneralRequest(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(new KeyValuePair<int, string>(200, response));
+                    .Returns(Task.FromResult(new KeyValuePair<int, string>(200, response)));
             }
         }
 
@@ -39,7 +40,7 @@ namespace TwitchLib.Api.Test.Helpers
             {
                 mockHandler
                     .Setup(x => x.GeneralRequest(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(new KeyValuePair<int, string>(200, response));
+                    .Returns(Task.FromResult(new KeyValuePair<int, string>(200, response)));
             }
             
             return mockHandler;

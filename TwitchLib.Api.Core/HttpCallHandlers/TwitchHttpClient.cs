@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
@@ -28,15 +29,15 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
         }
 
 
-        public void PutBytes(string url, byte[] payload)
+        public async Task PutBytes(string url, byte[] payload)
         {
-            var response = _http.PutAsync(new Uri(url), new ByteArrayContent(payload)).GetAwaiter().GetResult();
+            var response = await _http.PutAsync(new Uri(url), new ByteArrayContent(payload)).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
                 HandleWebException(response);
         }
 
-        public KeyValuePair<int, string> GeneralRequest(string url, string method, string payload = null, ApiVersion api = ApiVersion.V5, string clientId = null, string accessToken = null)
+        public async Task<KeyValuePair<int, string>> GeneralRequest(string url, string method, string payload = null, ApiVersion api = ApiVersion.V5, string clientId = null, string accessToken = null)
         {
             var request = new HttpRequestMessage
             {
@@ -69,10 +70,10 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
 
 
-            var response = _http.SendAsync(request).GetAwaiter().GetResult();
+            var response = await _http.SendAsync(request).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
-                var respStr =  response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                var respStr = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 return new KeyValuePair<int, string>((int)response.StatusCode, respStr);
             }
 
@@ -80,7 +81,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             return new KeyValuePair<int, string>(0, null);
         }
 
-        public int RequestReturnResponseCode(string url, string method, List<KeyValuePair<string, string>> getParams = null)
+        public async Task<int> RequestReturnResponseCode(string url, string method, List<KeyValuePair<string, string>> getParams = null)
         {
             if (getParams != null)
             {
@@ -98,7 +99,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 RequestUri = new Uri(url),
                 Method = new HttpMethod(method)
             };
-            var response = _http.SendAsync(request).GetAwaiter().GetResult();
+            var response = await _http.SendAsync(request);
             return (int)response.StatusCode;
         }
 

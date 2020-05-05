@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
@@ -12,7 +13,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
     public class TwitchWebRequest : IHttpCallHandler
     {
         private readonly ILogger<TwitchWebRequest> _logger;
-
+    
         /// <summary>
         /// Creates an Instance of the TwitchHttpClient Class.
         /// </summary>
@@ -21,34 +22,34 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
         {
             _logger = logger;
         }
-
-
-        public void PutBytes(string url, byte[] payload)
+    
+    
+        public async Task PutBytes(string url, byte[] payload)
         {
             try
             {
                 using (var client = new WebClient())
-                    client.UploadData(new Uri(url), "PUT", payload);
+                    await client.UploadDataTaskAsync(new Uri(url), "PUT", payload);
             }
             catch (WebException ex) { HandleWebException(ex); }
         }
-
-        public KeyValuePair<int, string> GeneralRequest(string url, string method, string payload = null, ApiVersion api = ApiVersion.V5, string clientId = null, string accessToken = null)
+    
+        public async Task<KeyValuePair<int, string>> GeneralRequest(string url, string method, string payload = null, ApiVersion api = ApiVersion.V5, string clientId = null, string accessToken = null)
         {
             var request = WebRequest.CreateHttp(url);
             if (string.IsNullOrEmpty(clientId) && string.IsNullOrEmpty(accessToken))
                 throw new InvalidCredentialException("A Client-Id or OAuth token is required to use the Twitch API. If you previously set them in InitializeAsync, please be sure to await the method.");
-
-
+    
+    
             if (!string.IsNullOrEmpty(clientId))
             {
                 request.Headers["Client-ID"] = clientId;
             }
            
-
+    
             request.Method = method;
             request.ContentType = "application/json";
-
+    
             var authPrefix = "OAuth";
             if (api == ApiVersion.Helix)
             {
@@ -59,31 +60,31 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             {
                 request.Accept = $"application/vnd.twitchtv.v{(int)api}+json";
             }
-
+    
             if (!string.IsNullOrEmpty(accessToken))
                 request.Headers["Authorization"] = $"{authPrefix} {Common.Helpers.FormatOAuth(accessToken)}";
             
-
+    
             if (payload != null)
                 using (var writer = new StreamWriter(request.GetRequestStreamAsync().GetAwaiter().GetResult()))
                     writer.Write(payload);
-
+    
             try
             {
-                var response = (HttpWebResponse)request.GetResponse();
-
+                var response = (HttpWebResponse)await Task.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null);
+    
                 using (var reader = new StreamReader(response.GetResponseStream() ?? throw new InvalidOperationException()))
                 {
-                    var data = reader.ReadToEnd();
+                    var data = await reader.ReadToEndAsync();
                     return new KeyValuePair<int, string>((int)response.StatusCode, data);
                 }
             }
             catch (WebException ex) { HandleWebException(ex); }
-
+    
             return new KeyValuePair<int, string>(0, null);
         }
-
-        public int RequestReturnResponseCode(string url, string method, List<KeyValuePair<string, string>> getParams = null)
+    
+        public async Task<int> RequestReturnResponseCode(string url, string method, List<KeyValuePair<string, string>> getParams = null)
         {
             if (getParams != null)
             {
@@ -95,13 +96,14 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                         url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
                 }
             }
-
-            var req = (HttpWebRequest)WebRequest.Create(url);
+    
+            var req = WebRequest.CreateHttp(url);
             req.Method = method;
-            var response = (HttpWebResponse)req.GetResponse();
+
+            var response = (HttpWebResponse) await Task.Factory.FromAsync(req.BeginGetResponse, req.EndGetResponse, null);
             return (int)response.StatusCode;
         }
-
+    
         private void HandleWebException(WebException e)
         {
             if (!(e.Response is HttpWebResponse errorResp))
@@ -114,7 +116,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                     var authenticateHeader = errorResp.Headers.GetValues("WWW-Authenticate");
                     if (authenticateHeader?.Length ==0 || string.IsNullOrEmpty(authenticateHeader?[0]))
                         throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
-
+    
                     var invalidTokenFound = authenticateHeader[0].Contains("error='invalid_token'");
                     if (invalidTokenFound)
                         throw new TokenExpiredException("Your request was blocked du to an expired Token. Please refresh your token and update your API instance settings.");
@@ -130,6 +132,6 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                     throw e;
             }
         }
-
+    
     }
 }

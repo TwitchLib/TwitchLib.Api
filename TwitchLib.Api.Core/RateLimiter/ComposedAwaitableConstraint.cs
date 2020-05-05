@@ -23,7 +23,7 @@ namespace TwitchLib.Api.Core.RateLimiter
             IDisposable[] diposables;
             try 
             {
-                diposables = await Task.WhenAll(_ac1.WaitForReadiness(cancellationToken), _ac2.WaitForReadiness(cancellationToken));
+                diposables = await Task.WhenAll(_ac1.WaitForReadiness(cancellationToken), _ac2.WaitForReadiness(cancellationToken)).ConfigureAwait(false);
             }
             catch (Exception) 
             {

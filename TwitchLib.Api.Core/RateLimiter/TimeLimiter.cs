@@ -29,18 +29,18 @@ namespace TwitchLib.Api.Core.RateLimiter
         public async Task Perform(Func<Task> perform, CancellationToken cancellationToken) 
         {
             cancellationToken.ThrowIfCancellationRequested();
-            using (await _ac.WaitForReadiness(cancellationToken)) 
+            using (await _ac.WaitForReadiness(cancellationToken).ConfigureAwait(false)) 
             {
-                await perform();
+                await perform().ConfigureAwait(false);
             }
         }
 
         public async Task<T> Perform<T>(Func<Task<T>> perform, CancellationToken cancellationToken) 
         {
             cancellationToken.ThrowIfCancellationRequested();
-            using (await _ac.WaitForReadiness(cancellationToken)) 
+            using (await _ac.WaitForReadiness(cancellationToken).ConfigureAwait(false)) 
             {
-                return await perform();
+                return await perform().ConfigureAwait(false);
             }
         }
 

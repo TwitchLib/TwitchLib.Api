@@ -67,7 +67,7 @@ namespace TwitchLib.Api.V5
 
         public Task<FollowClipsResponse> GetFollowedClipsAsync(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Read, authToken);
+            DynamicScopeValidationAsync(AuthScopes.User_Read, authToken).ConfigureAwait(false);
             var getParams = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("limit", limit.ToString())

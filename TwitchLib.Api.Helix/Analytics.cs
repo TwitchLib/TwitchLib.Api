@@ -17,7 +17,7 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetGameAnalyticsResponse> GetGameAnalyticsAsync(string gameId = null, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Analytics_Read_Games, authToken);
+            DynamicScopeValidationAsync(AuthScopes.Helix_Analytics_Read_Games, authToken);
             var getParams = new List<KeyValuePair<string, string>>();
             if (gameId != null)
                 getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
@@ -31,7 +31,7 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetExtensionAnalyticsResponse> GetExtensionAnalyticsAsync(string extensionId, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Analytics_Read_Extensions, authToken);
+            DynamicScopeValidationAsync(AuthScopes.Helix_Analytics_Read_Extensions, authToken);
             var getParams = new List<KeyValuePair<string, string>>();
             if (extensionId != null)
                 getParams.Add(new KeyValuePair<string, string>("extension_id", extensionId));

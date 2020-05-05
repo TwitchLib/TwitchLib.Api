@@ -34,7 +34,7 @@ namespace TwitchLib.Api.Core.RateLimiter
 
         public async Task<IDisposable> WaitForReadiness(CancellationToken cancellationToken)
         {
-            await _semafore.WaitAsync(cancellationToken);
+            await _semafore.WaitAsync(cancellationToken).ConfigureAwait(false);
             var count = 0;
             var now = _time.GetTimeNow();
             var target = now - _timeSpan;
@@ -52,7 +52,7 @@ namespace TwitchLib.Api.Core.RateLimiter
             var timetoWait = last.Value.Add(_timeSpan) - now;
             try 
             {
-                await _time.GetDelay(timetoWait, cancellationToken);
+                await _time.GetDelay(timetoWait, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception) 
             {

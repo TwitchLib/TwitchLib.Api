@@ -1,5 +1,6 @@
 ﻿using Moq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Test.Unit.V5
@@ -14,10 +15,10 @@ namespace TwitchLib.Api.Test.Unit.V5
             var mockHandler = new Mock<IHttpCallHandler>();
             mockHandler
                 .Setup(x => x.GeneralRequest(It.Is<string>(y => y == V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new KeyValuePair<int, string>(200, GetRootScopesResponse));
+                .Returns(Task.FromResult(new KeyValuePair<int, string>(200, GetRootScopesResponse)));
             mockHandler
                 .Setup(x => x.GeneralRequest(It.IsNotIn(V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new KeyValuePair<int, string>(200, response));
+                .Returns(Task.FromResult(new KeyValuePair<int, string>(200, response)));
 
             return mockHandler;
         }
