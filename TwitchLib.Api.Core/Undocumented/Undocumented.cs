@@ -224,7 +224,7 @@ namespace TwitchLib.Api.Core.Undocumented
 
             if (cursor != null) getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
 
-            return GetGenericAsync<CommentsPage>($"https://api.twitch.tv/kraken/videos/{videoId}/comments", getParams);
+            return GetGenericAsync<CommentsPage>($"https://api.twitch.tv/v5/videos/{videoId}/comments", getParams);
         }
 
         public async Task<List<CommentsPage>> GetAllCommentsAsync(string videoId)
