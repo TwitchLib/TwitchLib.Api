@@ -8,9 +8,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>swiftyspiffy, Prom3theu5, Syzuna, LuckyNoS7evin</Authors>
     <Company></Company>
-    <PackageIconUrl>http://swiftyspiffy.com/img/twitchlib.png</PackageIconUrl>
+    <PackageIcon>twitchlib.png</PackageIcon>
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2018</Copyright>
     <PackageReleaseNotes>Clips model updated. VIP support for GetChatters call. Channel Editor added for third party auth flow in StringToScope</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
@@ -28,5 +28,8 @@
     <ProjectReference Include="..\TwitchLib.Api.Core\TwitchLib.Api.Core.csproj" />
     <ProjectReference Include="..\TwitchLib.Api.Helix\TwitchLib.Api.Helix.csproj" />
     <ProjectReference Include="..\TwitchLib.Api.V5\TwitchLib.Api.V5.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="twitchlib.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>
