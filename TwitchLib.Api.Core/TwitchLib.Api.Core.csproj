@@ -23,8 +23,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +33,7 @@
     <ProjectReference Include="..\TwitchLib.Api.Core.Models\TwitchLib.Api.Core.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="twitchlib.png" Pack="true" PackagePath="\"/>
+    <None Include="twitchlib.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>

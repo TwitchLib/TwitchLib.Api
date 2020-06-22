@@ -22,12 +22,12 @@
     <FileVersion>3.1.2</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwitchLib.Api.Core.Enums\TwitchLib.Api.Core.Enums.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="twitchlib.png" Pack="true" PackagePath="\"/>
+    <None Include="twitchlib.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
