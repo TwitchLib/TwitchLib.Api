@@ -17,6 +17,7 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
         public string Token { get; protected set; }
         public string Refresh { get; protected set; }
         public string Username { get; protected set; }
+        public string ClientId { get; protected set; }
 
         public PingResponse(string jsonStr)
         {
@@ -34,6 +35,7 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                 Token = json.SelectToken("token").ToString();
                 Refresh = json.SelectToken("refresh").ToString();
                 Username = json.SelectToken("username").ToString();
+                ClientId = json.SelectToken("client_id").ToString();
             }
         }
         
@@ -63,6 +65,8 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                     return AuthScopes.Channel_Check_Subscription;
                 case "chat_login":
                     return AuthScopes.Chat_Login;
+                case "channel_editor":
+                    return AuthScopes.Channel_Editor;
                 case "channel_feed_read":
                     return AuthScopes.Channel_Feed_Read;
                 case "channel_feed_edit":
@@ -85,6 +89,8 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                     return AuthScopes.Helix_Analytics_Read_Games;
                 case "bits:read":
                     return AuthScopes.Helix_Bits_Read;
+                case "channel:read:subscriptions":
+                    return AuthScopes.Helix_Channel_Read_Subscriptions;
                 default:
                     throw new Exception("Unknown scope");
             }

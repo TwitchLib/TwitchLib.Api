@@ -3,31 +3,34 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Api</PackageId>
-    <Version>3.0.0</Version>
+    <VersionPrefix>3.1.4</VersionPrefix>
+    <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Description>Api component of TwitchLib. This component allows you to access the Twitch API using both authenticated and unauthenticated calls, as well as undocumented and third party APIs.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>swiftyspiffy, Prom3theu5, Syzuna, LuckyNoS7evin</Authors>
     <Company></Company>
-    <PackageIconUrl>http://swiftyspiffy.com/img/twitchlib.png</PackageIconUrl>
+    <PackageIcon>twitchlib.png</PackageIcon>
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2018</Copyright>
-    <PackageReleaseNotes>settings cascade, abstracted followerservice and livestreammonitor (thanks RRickert), Helix name space fixes, GetWebhookSubscriptions added, TopClipsResponse cursor fixed,</PackageReleaseNotes>
+    <PackageReleaseNotes>Clips model updated. VIP support for GetChatters call. Channel Editor added for third party auth flow in StringToScope</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <FileVersion>3.0.0.0</FileVersion>
+    <AssemblyVersion>3.1.4</AssemblyVersion>
+    <FileVersion>3.1.4</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
-    <PackageReference Include="System.Net.Http" Version="4.3.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwitchLib.Api.Core\TwitchLib.Api.Core.csproj" />
     <ProjectReference Include="..\TwitchLib.Api.Helix\TwitchLib.Api.Helix.csproj" />
     <ProjectReference Include="..\TwitchLib.Api.V5\TwitchLib.Api.V5.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="twitchlib.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

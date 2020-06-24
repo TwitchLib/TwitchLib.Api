@@ -74,6 +74,8 @@ namespace TwitchLib.Api.Core.Common
                     return "user:edit:broadcast";
                 case AuthScopes.Helix_User_Read_Broadcast:
                     return "user:read:broadcast";
+                case AuthScopes.Helix_Channel_Read_Subscriptions:
+                    return "channel:read:subscriptions";
                 default:
                     return "";
             }

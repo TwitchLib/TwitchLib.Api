@@ -153,6 +153,7 @@ namespace TwitchLib.Api.Core.Undocumented
             chatters.AddRange(resp.Chatters.GlobalMods.Select(chatter => new ChatterFormatted(chatter, UserType.GlobalModerator)));
             chatters.AddRange(resp.Chatters.Moderators.Select(chatter => new ChatterFormatted(chatter, UserType.Moderator)));
             chatters.AddRange(resp.Chatters.Viewers.Select(chatter => new ChatterFormatted(chatter, UserType.Viewer)));
+            chatters.AddRange(resp.Chatters.VIP.Select(chatter => new ChatterFormatted(chatter, UserType.VIP)));
 
             foreach (var chatter in chatters)
                 if (string.Equals(chatter.Username, channelName, StringComparison.CurrentCultureIgnoreCase))

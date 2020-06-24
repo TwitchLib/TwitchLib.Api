@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Entitlements
+namespace TwitchLib.Api.Helix.Models.Entitlements.CreateEntitlementGrantsUploadURL
 {
     public class CreateEntitlementGrantsUploadUrlResponse
     {

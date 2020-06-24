@@ -8,10 +8,6 @@ namespace TwitchLib.Api.V5.Models.Games
         [JsonProperty(PropertyName = "_id")]
         public int Id { get; protected set; }
         #endregion
-        #region Viewers
-        [JsonProperty(PropertyName = "viewers")]
-        public int Viewers { get; protected set; }
-        #endregion
         #region Box
         [JsonProperty(PropertyName = "box")]
         public GameBox Box { get; protected set; }
@@ -27,10 +23,6 @@ namespace TwitchLib.Api.V5.Models.Games
         #region Name
         [JsonProperty(PropertyName = "name")]
         public string Name { get; protected set; }
-        #endregion
-        #region Popularity
-        [JsonProperty(PropertyName = "popularity")]
-        public int Popularity { get; protected set; }
         #endregion
     }
 }

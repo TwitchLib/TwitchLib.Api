@@ -67,9 +67,13 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetUserExtensionsResponse>("/users/extensions/list", ApiVersion.Helix, accessToken: authToken);
         }
 
-        public Task<GetUserActiveExtensionsResponse> GetUserActiveExtensionsAsync(string authToken = null)
+        public Task<GetUserActiveExtensionsResponse> GetUserActiveExtensionsAsync(string userid = null, string authToken = null)
         {
-            return TwitchGetGenericAsync<GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, accessToken: authToken);
+            var getParams = new List<KeyValuePair<string, string>>();
+            if (userid != null)
+                getParams.Add(new KeyValuePair<string, string>("user_id", userid));
+
+            return TwitchGetGenericAsync<GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, getParams, accessToken: authToken);
         }
 
         public Task<GetUserActiveExtensionsResponse> UpdateUserExtensionsAsync(IEnumerable<ExtensionSlot> userExtensionStates, string authToken = null)
