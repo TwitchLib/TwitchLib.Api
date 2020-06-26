@@ -18,7 +18,7 @@ namespace TwitchLib.Api.V5.Models.Streams
         #region Channel
         /// <summary>Property representing the channel ID.</summary>
         [JsonProperty(PropertyName = "channel")]
-        public Channels.Channel Channel { get; protected set; }
+        public StreamChannel Channel { get; protected set; }
         #endregion
         #region CreatedAt
         /// <summary>Property representing the date time of channel creation.</summary>
