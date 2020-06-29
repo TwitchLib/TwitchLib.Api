@@ -76,11 +76,13 @@ namespace TwitchLib.Api.Core.Common
                     return "user:read:broadcast";
                 case AuthScopes.Helix_Channel_Read_Subscriptions:
                     return "channel:read:subscriptions";
+                case AuthScopes.Helix_Channel_Read_Hype_Train:
+                    return "channel:read:hype_train";
                 default:
                     return "";
             }
         }
-        
+
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
