@@ -200,9 +200,12 @@ namespace TwitchLib.Api.V5
                 await Task.Delay(1000);
             }
 
-            // get leftover subs
-            var leftOverFollowersRequest = await GetChannelFollowersAsync(channelId, leftOverFollowers, cursor: cursor).ConfigureAwait(false);
-            followers.AddRange(leftOverFollowersRequest.Follows.OfType<ChannelFollow>().ToList());
+			// get leftover followers
+            if (leftOverFollowers > 0)
+			{
+				var leftOverFollowersRequest = await GetChannelFollowersAsync(channelId, leftOverFollowers, cursor: cursor).ConfigureAwait(false);
+				followers.AddRange(leftOverFollowersRequest.Follows.OfType<ChannelFollow>().ToList());
+			}
 
             return followers;
         }
@@ -294,8 +297,11 @@ namespace TwitchLib.Api.V5
             }
 
             // get leftover subs
-            var leftOverSubsRequest = await GetChannelSubscribersAsync(channelId, leftOverSubs, currentOffset, "asc", accessToken).ConfigureAwait(false);
-            allSubs.AddRange(leftOverSubsRequest.Subscriptions);
+            if (leftOverSubs > 0)
+            {
+                var leftOverSubsRequest = await GetChannelSubscribersAsync(channelId, leftOverSubs, currentOffset, "asc", accessToken).ConfigureAwait(false);
+                allSubs.AddRange(leftOverSubsRequest.Subscriptions);
+            }
 
             return allSubs;
         }
