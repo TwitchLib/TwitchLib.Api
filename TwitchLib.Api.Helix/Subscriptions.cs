@@ -38,7 +38,7 @@ namespace TwitchLib.Api.Helix
         }
 
         public Task<GetBroadcasterSubscriptionsResponse> GetBroadcasterSubscriptions(string broadcasterId, string cursor = null,
-            int quantity = 20, string accessToken = null)
+            int first = 20, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
             {
@@ -47,7 +47,7 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>();
             getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
-            getParams.Add(new KeyValuePair<string, string>("first", quantity.ToString()));
+            getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
             if (cursor != null) getParams.Add(new KeyValuePair<string, string>("after", cursor));
 
             return TwitchGetGenericAsync<GetBroadcasterSubscriptionsResponse>("/subscriptions", ApiVersion.Helix, getParams, accessToken);
