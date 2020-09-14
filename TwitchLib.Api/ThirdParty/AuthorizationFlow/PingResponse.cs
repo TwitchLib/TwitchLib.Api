@@ -17,6 +17,7 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
         public string Token { get; protected set; }
         public string Refresh { get; protected set; }
         public string Username { get; protected set; }
+        public string ClientId { get; protected set; }
 
         public PingResponse(string jsonStr)
         {
@@ -34,9 +35,10 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                 Token = json.SelectToken("token").ToString();
                 Refresh = json.SelectToken("refresh").ToString();
                 Username = json.SelectToken("username").ToString();
+                ClientId = json.SelectToken("client_id").ToString();
             }
         }
-        
+
         private AuthScopes StringToScope(string scope)
         {
             switch (scope)
@@ -89,6 +91,8 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                     return AuthScopes.Helix_Bits_Read;
                 case "channel:read:subscriptions":
                     return AuthScopes.Helix_Channel_Read_Subscriptions;
+                case "channel:read:hype_train":
+                    return AuthScopes.Helix_Channel_Read_Hype_Train;
                 default:
                     throw new Exception("Unknown scope");
             }

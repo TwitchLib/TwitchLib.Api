@@ -4,7 +4,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Api.Helix.Models</PackageId>
-    <Version>3.1.3</Version>
+    <VersionPrefix>3.1.4</VersionPrefix>
+    <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Description>Project containing the Helix models used in TwitchLib.Api</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>swiftyspiffy, Prom3theu5, Syzuna, LuckyNoS7evin</Authors>
@@ -23,7 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,7 +32,7 @@
     <ProjectReference Include="..\TwitchLib.Api.Core.Interfaces\TwitchLib.Api.Core.Interfaces.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="twitchlib.png" Pack="true" PackagePath="\"/>
+    <None Include="twitchlib.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
