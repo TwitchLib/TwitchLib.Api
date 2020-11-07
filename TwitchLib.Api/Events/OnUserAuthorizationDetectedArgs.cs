@@ -10,5 +10,6 @@ namespace TwitchLib.Api.Events
         public string Username { get; set; }
         public string Token { get; set; }
         public string Refresh { get; set; }
+        public string ClientId { get; set; }
     }
 }
