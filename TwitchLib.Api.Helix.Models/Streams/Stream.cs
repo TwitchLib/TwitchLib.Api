@@ -13,6 +13,8 @@ namespace TwitchLib.Api.Helix.Models.Streams
         public string UserName { get; protected set; }
         [JsonProperty(PropertyName = "game_id")]
         public string GameId { get; protected set; }
+        [JsonProperty(PropertyName = "game_name")]
+        public string GameName { get; protected set; }
         [JsonProperty(PropertyName = "community_ids")]
         public string[] CommunityIds { get; protected set; }
         [JsonProperty(PropertyName = "type")]
