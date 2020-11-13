@@ -10,6 +10,8 @@ namespace TwitchLib.Api.Helix.Models.Users
         public string Login { get; protected set; }
         [JsonProperty(PropertyName = "display_name")]
         public string DisplayName { get; protected set; }
+        [JsonProperty(PropertyName = "created_at")]
+        public DateTime CreatedAt { get; protected set; }
         [JsonProperty(PropertyName = "type")]
         public string Type { get; protected set; }
         [JsonProperty(PropertyName = "broadcaster_type")]
