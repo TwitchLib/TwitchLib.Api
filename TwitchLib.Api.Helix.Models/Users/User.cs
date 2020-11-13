@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
+using System;
 
 namespace TwitchLib.Api.Helix.Models.Users
 {
