@@ -93,6 +93,12 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                     return AuthScopes.Helix_Channel_Read_Subscriptions;
                 case "channel:read:hype_train":
                     return AuthScopes.Helix_Channel_Read_Hype_Train;
+                case "channel:manage:redemptions":
+                    return AuthScopes.Helix_Channel_Manage_Redemptions;
+                case "channel:edit:commercial":
+                    return AuthScopes.Helix_Channel_Edit_Commercial;
+                case "channel:read:stream_key":
+                    return AuthScopes.Helix_Channel_Read_Stream_Key;
                 default:
                     throw new Exception("Unknown scope");
             }

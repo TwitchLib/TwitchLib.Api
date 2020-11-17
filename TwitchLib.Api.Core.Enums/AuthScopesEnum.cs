@@ -33,6 +33,9 @@
         Helix_Channel_Read_Hype_Train,
         Helix_Channel_Read_Subscriptions,
         Helix_Moderation_Read,
+        Helix_Channel_Manage_Redemptions,
+        Helix_Channel_Edit_Commercial,
+        Helix_Channel_Read_Stream_Key,
         None
     }
 }

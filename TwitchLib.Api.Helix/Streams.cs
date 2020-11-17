@@ -131,6 +131,18 @@ namespace TwitchLib.Api.Helix
 
             return TwitchPutAsync("/streams/tags", ApiVersion.Helix, payload, getParams, accessToken);
         }
+
+        public Task<GetStreamKeyResponse> GetStreamKey(string broadcasterId, string accessToken = null)
+        {
+            DynamicScopeValidation(AuthScopes.Helix_Channel_Read_Stream_Key, accessToken);
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+            };
+
+            return TwitchGetGenericAsync<GetStreamKeyResponse>("/streams/key", ApiVersion.Helix, getParams, accessToken);
+        }
     }
 
 }
