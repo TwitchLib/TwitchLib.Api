@@ -24,6 +24,7 @@
         OpenId,
         Helix_User_Edit,
         Helix_User_Read_Email,
+        Helix_User_Edit_Follows,
         Helix_Clips_Edit,
         Helix_Bits_Read,
         Helix_Analytics_Read_Games,
