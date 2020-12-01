@@ -12,7 +12,7 @@ using TwitchLib.Api.Helix.Models.ChannelPoints.UpdateCustomRewardRedemptionStatu
 
 namespace TwitchLib.Api.Helix
 {
-    class ChannelPoints : ApiBase
+    public class ChannelPoints : ApiBase
     {
         public ChannelPoints(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         {
@@ -85,17 +85,34 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region GetCustomRewardRedemption
-        public Task<GetCustomRewardRedemptionResponse> GetCustomRewardRedemption(string broadcasterId, string redemptionId = null, string accessToken = null)
+        public Task<GetCustomRewardRedemptionResponse> GetCustomRewardRedemption(string broadcasterId, string rewardId, string redemptionId = null, string status = null, string sort = null, string after = null, string first = null, string accessToken = null)
         {
             DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Redemptions, accessToken);
 
             var getParams = new List<KeyValuePair<string, string>>
                     {
                         new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                        new KeyValuePair<string, string>("reward_id", rewardId),
                     };
             if(redemptionId != null)
             {
                 getParams.Add(new KeyValuePair<string, string>("reward_id", redemptionId));
+            }
+            if(status != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("status", status));
+            }
+            if(sort != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("sort", sort));
+            }
+            if(after != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+            }
+            if(first != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("first", first));
             }
 
             return TwitchGetGenericAsync<GetCustomRewardRedemptionResponse>("/channel_points/custom_rewards/redemptions", ApiVersion.Helix, getParams, accessToken);
@@ -103,7 +120,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region UpdateCustomRewardRedemption
-        public Task<UpdateCustomRewardRedemptionStatusResponse> UpdateCustomRewardRedemptionStatus(string broadcasterId, string rewardId, List<string> redemptionIds, UpdateCustomRewardRequest request, string accessToken = null)
+        public Task<UpdateCustomRewardRedemptionStatusResponse> UpdateCustomRewardRedemptionStatus(string broadcasterId, string rewardId, List<string> redemptionIds, UpdateCustomRewardRedemptionStatusRequest request, string accessToken = null)
         {
             DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Redemptions, accessToken);
 

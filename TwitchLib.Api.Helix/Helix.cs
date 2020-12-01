@@ -13,9 +13,10 @@ namespace TwitchLib.Api.Helix
         public Analytics Analytics { get; }
      
         public Bits Bits { get; }
+        public ChannelPoints ChannelPoints { get; }
         public Clips Clips { get; }
         public Entitlements Entitlements { get; }
-        public Extensions Extensions;
+        public Extensions Extensions { get; }
         public Games Games { get; }
         public Moderation Moderation { get; }
         public Search Search { get; }
@@ -43,6 +44,7 @@ namespace TwitchLib.Api.Helix
 
             Analytics = new Analytics(Settings, rateLimiter, http);
             Bits = new Bits(Settings, rateLimiter, http);
+            ChannelPoints = new ChannelPoints(Settings, rateLimiter, http);
             Clips = new Clips(Settings, rateLimiter, http);
             Entitlements = new Entitlements(Settings, rateLimiter, http);
             Extensions = new Extensions(Settings, rateLimiter, http);

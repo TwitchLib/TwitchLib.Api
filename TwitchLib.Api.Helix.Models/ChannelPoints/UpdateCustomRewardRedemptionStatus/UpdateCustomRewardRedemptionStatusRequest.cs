@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,8 @@ namespace TwitchLib.Api.Helix.Models.ChannelPoints.UpdateCustomRewardRedemptionS
 {
     public class UpdateCustomRewardRedemptionStatusRequest
     {
+        [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty(PropertyName = "status")]
-        public CustomRewardRedemptionStatus Status { get; protected set; }
+        public CustomRewardRedemptionStatus Status { get; set; }
     }
 }

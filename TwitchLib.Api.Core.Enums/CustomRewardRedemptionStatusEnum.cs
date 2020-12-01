@@ -8,6 +8,6 @@ namespace TwitchLib.Api.Core.Enums
     {
         UNFULFILLED,
         FULFILLED,
-        CANCELLED
+        CANCELED
     }
 }

@@ -22,7 +22,7 @@ namespace TwitchLib.Api.Helix.Models.ChannelPoints
         [JsonProperty(PropertyName = "image")]
         public Image Image { get; protected set; }
         [JsonProperty(PropertyName = "default_image")]
-        public string DefaultImage { get; protected set; }
+        public DefaultImage DefaultImage { get; protected set; }
         [JsonProperty(PropertyName = "background_color")]
         public string BackgroundColor { get; protected set; }
         [JsonProperty(PropertyName = "is_enabled")]
