@@ -78,6 +78,12 @@ namespace TwitchLib.Api.Core.Common
                     return "channel:read:subscriptions";
                 case AuthScopes.Helix_Channel_Read_Hype_Train:
                     return "channel:read:hype_train";
+                case AuthScopes.Helix_Channel_Manage_Redemptions:
+                    return "channel:manage:redemptions";
+                case AuthScopes.Helix_Channel_Edit_Commercial:
+                    return "channel:edit:commercial";
+                case AuthScopes.Helix_Channel_Read_Stream_Key:
+                    return "channel:read:stream_key";
                 default:
                     return "";
             }

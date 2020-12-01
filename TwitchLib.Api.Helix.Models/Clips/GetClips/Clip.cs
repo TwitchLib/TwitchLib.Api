@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Clips.GetClip
+namespace TwitchLib.Api.Helix.Models.Clips.GetClips
 {
     public class Clip
     {

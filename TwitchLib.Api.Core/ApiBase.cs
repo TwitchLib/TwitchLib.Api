@@ -122,6 +122,19 @@ namespace TwitchLib.Api.Core
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
 
+        protected Task<T> TwitchPatchGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
+        {
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
+
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+
+            accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
+
+            return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "PATCH", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
+        }
+
         protected Task<string> TwitchDeleteAsync(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
@@ -436,6 +449,15 @@ namespace TwitchLib.Api.Core
                         break;
                     case "moderation:read":
                         scopes.Add(AuthScopes.Helix_Moderation_Read);
+                        break;
+                    case "channel:manage:redemptions":
+                        scopes.Add(AuthScopes.Helix_Channel_Manage_Redemptions);
+                        break;
+                    case "channel:edit:commercial":
+                        scopes.Add(AuthScopes.Helix_Channel_Edit_Commercial);
+                        break;
+                    case "channel:read:stream_key":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Stream_Key);
                         break;
                 }
             }
