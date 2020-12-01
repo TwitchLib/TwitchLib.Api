@@ -33,7 +33,7 @@ namespace TwitchLib.Api.Core
         }
 
         /// <summary>
-        /// Checks the ClientId and AccessToken against the Twitch Api Endpoints 
+        /// Checks the ClientId and AccessToken against the Twitch Api Endpoints
         /// </summary>
         /// <returns>CredentialCheckResponseModel with a success boolean and message</returns>
         public Task<CredentialCheckResponseModel> CheckCredentialsAsync()
@@ -67,10 +67,10 @@ namespace TwitchLib.Api.Core
             if (Settings.Scopes == null)
                 throw new InvalidCredentialException($"The current access token does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: IApiSettings.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
 
-            if ((!Settings.Scopes.Contains(requiredScope) && requiredScope != AuthScopes.Any) || (requiredScope == AuthScopes.Any && Settings.Scopes.Any(x=>x == AuthScopes.None)))
+            if ((!Settings.Scopes.Contains(requiredScope) && requiredScope != AuthScopes.Any) || (requiredScope == AuthScopes.Any && Settings.Scopes.Any(x => x == AuthScopes.None)))
                 throw new InvalidCredentialException($"The current access token ({String.Join(",", Settings.Scopes)}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: IApiSettings.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
         }
-        
+
         internal virtual Task<Models.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
         {
             return TwitchGetGenericAsync<Models.Root.Root>("", ApiVersion.V5, accessToken: authToken, clientId: clientId);
@@ -406,6 +406,9 @@ namespace TwitchLib.Api.Core
                         break;
                     case "user:edit":
                         scopes.Add(AuthScopes.Helix_User_Edit);
+                        break;
+                    case "user:edit:follows":
+                        scopes.Add(AuthScopes.Helix_User_Edit_Follows);
                         break;
                     case "user:edit:broadcast":
                         scopes.Add(AuthScopes.Helix_User_Edit_Broadcast);

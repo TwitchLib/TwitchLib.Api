@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
+using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Api.Helix.Models.Users.Internal;
@@ -116,6 +117,57 @@ namespace TwitchLib.Api.Helix
             var payload = json.ToString();
 
             return TwitchPutGenericAsync<GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, payload, accessToken: authToken);
+        }
+
+        public Task CreateUserFollows(string from_id, string to_id, bool? allow_notifications = null, string authToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(from_id))
+            {
+                throw new BadParameterException("from_id must be set");
+            }
+
+            if (string.IsNullOrWhiteSpace(to_id))
+            {
+                throw new BadParameterException("to_id must be set");
+            }
+
+            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Follows, authToken);
+
+            var json = new JObject();
+
+            json.Add(new JProperty("from_id", from_id));
+            json.Add(new JProperty("to_id", to_id));
+
+            if (allow_notifications.HasValue)
+            {
+                json.Add(new JProperty("allow_notifications", allow_notifications.Value));
+            }
+
+            var payload = json.ToString();
+
+            return TwitchPostAsync("/users/follows", ApiVersion.Helix, payload, accessToken: authToken);
+        }
+
+        public Task DeleteUserFollows(string from_id, string to_id, string authToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(from_id))
+            {
+                throw new BadParameterException("from_id must be set");
+            }
+
+            if (string.IsNullOrWhiteSpace(to_id))
+            {
+                throw new BadParameterException("to_id must be set");
+            }
+
+            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Follows, authToken);
+
+            var getParams = new List<KeyValuePair<string, string>>();
+
+            getParams.Add(new KeyValuePair<string, string>("from_id", from_id));
+            getParams.Add(new KeyValuePair<string, string>("to_id", to_id));
+
+            return TwitchDeleteAsync("/users/follows", ApiVersion.Helix, getParams, accessToken: authToken);
         }
     }
 }
