@@ -71,9 +71,6 @@ namespace TwitchLib.Api.V5
                 else
                     scopesStr += $"+{Core.Common.Helpers.AuthScopesToString(scope)}";
 
-            if (string.IsNullOrEmpty(scopesStr))
-                throw new BadParameterException("The scopes are not valid. 1 or more scopes required.");
-
             if (string.IsNullOrWhiteSpace(internalClientId))
                 throw new BadParameterException("The clientId is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
