@@ -22,10 +22,10 @@ jobs:
      run: dotnet pack TwitchLib.Api.sln -v normal -c Release -o nugets --no-build --version-suffix "preview-${{ github.sha }}"
    - name: Push to Nuget
      run: dotnet nuget push "./nugets/*.nupkg" -k ${{ secrets.API_NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
-   - uses: sarisia/actions-status-discord@v1
    - name: Send Discord Notification
+     uses: sarisia/actions-status-discord@v1
      if: always()
      with:
        webhook: ${{ secrets.DISCORD_WEBHOOK }}
        title: "Release Preview Nuget Package"
-       username: "TwitchLib Deploy"      
+       username: "TwitchLib Deploy"
