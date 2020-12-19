@@ -36,4 +36,4 @@ jobs:
       with:
        name: nugets
     - name: Push to Nuget
-      run: dotnet nuget push "**/*.nupkg -k ${{ secrets.API_NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "./nugets/*.nupkg -k ${{ secrets.API_NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
