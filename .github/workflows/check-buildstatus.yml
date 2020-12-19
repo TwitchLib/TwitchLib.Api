@@ -19,5 +19,3 @@ jobs:
       run: dotnet restore
     - name: Build TwitchLib.Api
       run: dotnet build --no-restore
-    - name: Run Tests
-      run: dotnet test --no-build --verbosity normal
