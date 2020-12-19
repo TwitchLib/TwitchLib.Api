@@ -1,0 +1,42 @@
+name: Release Preview Nuget Package
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  build-artifact:
+   runs-on: ubuntu-latest
+
+   steps:
+   - name: Set Version Suffix
+     id: version-suffix
+     run: echo "suffix=$(date +'%Y%m%d')-$(GITHUB_RUN_ID)" >> $GITHUB_ENV
+   - uses: actions/checkout@v2
+   - name: Setup .NET
+     uses: actions/setup-dotnet@v1
+     with:
+       dotnet-version: 5.0.x
+   - name: Restore dependencies
+     run: dotnet restore
+   - name: Build TwitchLib.Api
+     run: dotnet build --no-restore
+   - name: Pack TwitchLib.Api
+     run: dotnet pack -v normal -c Release -o nugets --no-build --version-suffix ${{ steps.version-suffix.outputs.suffix }}
+   - name: Upload Build Artifact
+     uses: actions/upload-artifact@v2
+     with:
+       name: nugets
+       path: ./nugets/*.nupkg
+     
+  prerelease:
+    needs: build-artifact
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v1
+      with:
+       name: nugets
+    - name: Push to Nuget
+      run: dotnet nuget push "**/*.nupkg -k ${{ secrets.API_NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
