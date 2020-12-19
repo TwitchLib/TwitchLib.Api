@@ -5,7 +5,7 @@ on:
     branches: [ dev ]
 
 jobs:
-  build-artifact:
+  release-preview:
    runs-on: ubuntu-latest
 
    steps:
@@ -20,20 +20,12 @@ jobs:
      run: dotnet build -c Release --no-restore
    - name: Pack TwitchLib.Api
      run: dotnet pack TwitchLib.Api.sln -v normal -c Release -o nugets --no-build --version-suffix "preview-${{ github.sha }}"
-   - name: Upload Build Artifact
-     uses: actions/upload-artifact@v2
+   - name: Push to Nuget
+     run: dotnet nuget push "./nugets/*.nupkg" -k ${{ secrets.API_NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
+   - uses: sarisia/actions-status-discord@v1
+   - name: Send Discord Notification
+     if: always()
      with:
-       name: nugets
-       path: ./nugets/*.nupkg
-     
-  prerelease:
-    needs: build-artifact
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Download Build Artifacts
-      uses: actions/download-artifact@v1
-      with:
-       name: nugets
-    - name: Push to Nuget
-      run: dotnet nuget push "./nugets/*.nupkg" -k ${{ secrets.API_NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
+       webhook: ${{ secrets.DISCORD_WEBHOOK }}
+       title: "Release Preview Nuget Package"
+       username: "TwitchLib Deploy"      
