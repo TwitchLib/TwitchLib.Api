@@ -17,9 +17,9 @@ jobs:
    - name: Restore dependencies
      run: dotnet restore
    - name: Build TwitchLib.Api
-     run: dotnet build --no-restore
+     run: dotnet build -c Release --no-restore
    - name: Pack TwitchLib.Api
-     run: dotnet pack TwitchLib.Api.sln -v normal -c Release -o nugets --no-build --version-suffix "${{ github.run_id }}"
+     run: dotnet pack TwitchLib.Api.sln -v normal -c Release -o nugets --no-build --version-suffix "preview-${{ github.sha }}"
    - name: Upload Build Artifact
      uses: actions/upload-artifact@v2
      with:
