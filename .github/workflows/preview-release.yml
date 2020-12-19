@@ -22,7 +22,7 @@ jobs:
    - name: Build TwitchLib.Api
      run: dotnet build --no-restore
    - name: Pack TwitchLib.Api
-     run: dotnet pack TwitchLib.Api.sln -v normal -c Release -o nugets --no-build --version-suffix ${{ steps.version-suffix.outputs.suffix }}
+     run: dotnet pack TwitchLib.Api.sln -v normal -c Release -o nugets --no-build --version-suffix "${{ steps.version-suffix.outputs.suffix }}"
    - name: Upload Build Artifact
      uses: actions/upload-artifact@v2
      with:
