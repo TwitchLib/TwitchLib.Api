@@ -417,47 +417,59 @@ namespace TwitchLib.Api.Core
                     case "viewing_activity_read":
                         scopes.Add(AuthScopes.Viewing_Activity_Read);
                         break;
+                    case "user:edit:broadcast":
+                        scopes.Add(AuthScopes.Helix_User_Edit_Broadcast);
+                        break;
+                    case "analytics:read:extensions":
+                        scopes.Add(AuthScopes.Helix_Analytics_Read_Extensions);
+                        break;
+                    case "analytics:read:games":
+                        scopes.Add(AuthScopes.Helix_Analytics_Read_Games);
+                        break;
+                    case "bits:read":
+                        scopes.Add(AuthScopes.Helix_Bits_Read);
+                        break;
+                    case "channel:edit:commercial":
+                        scopes.Add(AuthScopes.Helix_Channel_Edit_Commercial);
+                        break;
+                    case "channel:manage:broadcast":
+                        scopes.Add(AuthScopes.Helix_Channel_Manage_Broadcast);
+                        break;
+                    case "channel:manage:extensions":
+                        scopes.Add(AuthScopes.Helix_Channel_Manage_Extensions);
+                        break;
+                    case "channel:manage:redemptions":
+                        scopes.Add(AuthScopes.Helix_Channel_Manage_Redemptions);
+                        break;
+                    case "channel:read:hype_train":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Hype_Train);
+                        break;
+                    case "channel:read:redemptions":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Redemptions);
+                        break;
+                    case "channel:read:stream_key":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Stream_Key);
+                        break;
+                    case "channel:read:subscriptions":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Subscriptions);
+                        break;
+                    case "clips:edit":
+                        scopes.Add(AuthScopes.Helix_Clips_Edit);
+                        break;
+                    case "moderation:read":
+                        scopes.Add(AuthScopes.Helix_Moderation_Read);
+                        break;
                     case "user:edit":
                         scopes.Add(AuthScopes.Helix_User_Edit);
                         break;
                     case "user:edit:follows":
                         scopes.Add(AuthScopes.Helix_User_Edit_Follows);
                         break;
-                    case "user:edit:broadcast":
-                        scopes.Add(AuthScopes.Helix_User_Edit_Broadcast);
-                        break;
                     case "user:read:broadcast":
                         scopes.Add(AuthScopes.Helix_User_Read_Broadcast);
                         break;
                     case "user:read:email":
                         scopes.Add(AuthScopes.Helix_User_Read_Email);
-                        break;
-                    case "clips:edit":
-                        scopes.Add(AuthScopes.Helix_Clips_Edit);
-                        break;
-                    case "bits:read":
-                        scopes.Add(AuthScopes.Helix_Bits_Read);
-                        break;
-                    case "analytics:read:games":
-                        scopes.Add(AuthScopes.Helix_Analytics_Read_Games);
-                        break;
-                    case "analytics:read:extensions":
-                        scopes.Add(AuthScopes.Helix_Analytics_Read_Extensions);
-                        break;
-                    case "channel:read:subscriptions":
-                        scopes.Add(AuthScopes.Helix_Channel_Read_Subscriptions);
-                        break;
-                    case "moderation:read":
-                        scopes.Add(AuthScopes.Helix_Moderation_Read);
-                        break;
-                    case "channel:manage:redemptions":
-                        scopes.Add(AuthScopes.Helix_Channel_Manage_Redemptions);
-                        break;
-                    case "channel:edit:commercial":
-                        scopes.Add(AuthScopes.Helix_Channel_Edit_Commercial);
-                        break;
-                    case "channel:read:stream_key":
-                        scopes.Add(AuthScopes.Helix_Channel_Read_Stream_Key);
                         break;
                 }
             }
