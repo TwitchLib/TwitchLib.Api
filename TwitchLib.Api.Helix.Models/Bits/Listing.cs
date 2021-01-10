@@ -6,6 +6,8 @@ namespace TwitchLib.Api.Helix.Models.Bits
     {
         [JsonProperty(PropertyName = "user_id")]
         public string UserId { get; protected set; }
+        [JsonProperty(PropertyName = "user_name")]
+        public string UserName { get; protected set; }
         [JsonProperty(PropertyName = "rank")]
         public int Rank { get; protected set; }
         [JsonProperty(PropertyName = "score")]
