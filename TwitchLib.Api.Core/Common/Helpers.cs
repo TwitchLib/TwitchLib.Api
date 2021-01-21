@@ -84,6 +84,14 @@ namespace TwitchLib.Api.Core.Common
                     return "channel:edit:commercial";
                 case AuthScopes.Helix_Channel_Read_Stream_Key:
                     return "channel:read:stream_key";
+                case AuthScopes.Helix_Channel_Read_Editors:
+                    return "channel:read:editors";
+                case AuthScopes.Helix_Channel_Manage_Videos:
+                    return "channel:manage:videos";
+                case AuthScopes.Helix_User_Read_BlockedUsers:
+                    return "user:read:blocked_users";
+                case AuthScopes.Helix_User_Manage_BlockedUsers:
+                    return "user:manage:blocked_users";
                 default:
                     return "";
             }

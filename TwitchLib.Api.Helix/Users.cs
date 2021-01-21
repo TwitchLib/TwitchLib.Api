@@ -7,6 +7,7 @@ using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Users;
+using TwitchLib.Api.Helix.Models.Users.GetUserBlockList;
 using TwitchLib.Api.Helix.Models.Users.Internal;
 
 namespace TwitchLib.Api.Helix
@@ -15,6 +16,46 @@ namespace TwitchLib.Api.Helix
     {
         public Users(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         {
+        }
+
+        public Task<GetUserBlockListResponse> GetUserBlockList(string broadcasterId, int first = 20, string after = null, string accessToken = null)
+        {
+            DynamicScopeValidation(AuthScopes.Helix_User_Read_BlockedUsers, accessToken);
+
+            if (first > 100)
+                throw new BadParameterException($"Maximum allowed objects is 100 (you passed {first})");
+
+            var getParams = new List<KeyValuePair<string, string>>();
+            getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
+            getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
+            if (after != null)
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+
+            return TwitchGetGenericAsync<GetUserBlockListResponse>("/users/blocks", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        public Task BlockUser(string targetUserId, BlockUserSourceContextEnum? sourceContext = null, BlockUserReasonEnum? reason = null, string accessToken = null)
+        {
+            DynamicScopeValidation(AuthScopes.Helix_User_Manage_BlockedUsers, accessToken);
+
+            var getParams = new List<KeyValuePair<string, string>>();
+            getParams.Add(new KeyValuePair<string, string>("target_user_id", targetUserId));
+            if (sourceContext != null)
+                getParams.Add(new KeyValuePair<string, string>("source_context", sourceContext.Value.ToString().ToLower()));
+            if (reason != null)
+                getParams.Add(new KeyValuePair<string, string>("reason", reason.Value.ToString().ToLower()));
+
+            return TwitchPutAsync("/users/blocks", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        public Task UnblockUser(string targetUserId, string accessToken = null)
+        {
+            DynamicScopeValidation(AuthScopes.Helix_User_Manage_BlockedUsers, accessToken);
+
+            var getParams = new List<KeyValuePair<string, string>>();
+            getParams.Add(new KeyValuePair<string, string>("target_user_id", targetUserId));
+
+            return TwitchDeleteAsync("/user/blocks", ApiVersion.Helix, getParams, accessToken);
         }
 
         public Task<GetUsersResponse> GetUsersAsync(List<string> ids = null, List<string> logins = null, string accessToken = null)

@@ -37,6 +37,10 @@
         Helix_Channel_Manage_Redemptions,
         Helix_Channel_Edit_Commercial,
         Helix_Channel_Read_Stream_Key,
+        Helix_Channel_Read_Editors,
+        Helix_Channel_Manage_Videos,
+        Helix_User_Read_BlockedUsers,
+        Helix_User_Manage_BlockedUsers,
         None
     }
 }

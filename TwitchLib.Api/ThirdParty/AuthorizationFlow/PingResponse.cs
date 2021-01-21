@@ -99,6 +99,14 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                     return AuthScopes.Helix_Channel_Edit_Commercial;
                 case "channel:read:stream_key":
                     return AuthScopes.Helix_Channel_Read_Stream_Key;
+                case "channel:read:editors":
+                    return AuthScopes.Helix_Channel_Read_Editors;
+                case "channel:manage:videos":
+                    return AuthScopes.Helix_Channel_Manage_Videos;
+                case "user:read:blocked_users":
+                    return AuthScopes.Helix_User_Read_BlockedUsers;
+                case "user:manage:blocked_users":
+                    return AuthScopes.Helix_User_Manage_BlockedUsers;
                 case "":
                     return AuthScopes.None;
                 default:

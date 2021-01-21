@@ -416,7 +416,7 @@ namespace TwitchLib.Api.V5
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchDeleteGenericAsync<ChannelAuthed>($"/channels/{channelId}/stream_key", ApiVersion.V5, authToken);
+            return TwitchDeleteGenericAsync<ChannelAuthed>($"/channels/{channelId}/stream_key", ApiVersion.V5, new List<KeyValuePair<string, string>> { }, authToken);
         }
 
         #endregion
