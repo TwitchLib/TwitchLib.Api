@@ -18,7 +18,7 @@ namespace TwitchLib.Api.Helix
         {
         }
 
-        public Task<GetUserBlockListResponse> GetUserBlockList(string broadcasterId, int first = 20, string after = null, string accessToken = null)
+        public Task<GetUserBlockListResponse> GetUserBlockListAsync(string broadcasterId, int first = 20, string after = null, string accessToken = null)
         {
             DynamicScopeValidation(AuthScopes.Helix_User_Read_BlockedUsers, accessToken);
 
@@ -34,7 +34,7 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetUserBlockListResponse>("/users/blocks", ApiVersion.Helix, getParams, accessToken);
         }
 
-        public Task BlockUser(string targetUserId, BlockUserSourceContextEnum? sourceContext = null, BlockUserReasonEnum? reason = null, string accessToken = null)
+        public Task BlockUserAsync(string targetUserId, BlockUserSourceContextEnum? sourceContext = null, BlockUserReasonEnum? reason = null, string accessToken = null)
         {
             DynamicScopeValidation(AuthScopes.Helix_User_Manage_BlockedUsers, accessToken);
 
@@ -48,7 +48,7 @@ namespace TwitchLib.Api.Helix
             return TwitchPutAsync("/users/blocks", ApiVersion.Helix, null, getParams, accessToken);
         }
 
-        public Task UnblockUser(string targetUserId, string accessToken = null)
+        public Task UnblockUserAsync(string targetUserId, string accessToken = null)
         {
             DynamicScopeValidation(AuthScopes.Helix_User_Manage_BlockedUsers, accessToken);
 

@@ -16,7 +16,7 @@ namespace TwitchLib.Api.Helix
         {
         }
 
-        public Task<DeleteVideosResponse> DeleteVideos(List<string> videoIds, string accessToken = null)
+        public Task<DeleteVideosResponse> DeleteVideosAsync(List<string> videoIds, string accessToken = null)
         {
             DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Videos, accessToken);
 
