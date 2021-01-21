@@ -6,13 +6,14 @@ using TwitchLib.Api.Core.RateLimiter;
 
 namespace TwitchLib.Api.Helix
 {
-    public class Helix 
+    public class Helix
     {
         private readonly ILogger<Helix> _logger;
         public IApiSettings Settings { get; }
         public Analytics Analytics { get; }
-     
+
         public Bits Bits { get; }
+        public Channels Channels { get; }
         public ChannelPoints ChannelPoints { get; }
         public Clips Clips { get; }
         public Entitlements Entitlements { get; }
@@ -44,6 +45,7 @@ namespace TwitchLib.Api.Helix
 
             Analytics = new Analytics(Settings, rateLimiter, http);
             Bits = new Bits(Settings, rateLimiter, http);
+            Channels = new Channels(Settings, rateLimiter, http);
             ChannelPoints = new ChannelPoints(Settings, rateLimiter, http);
             Clips = new Clips(Settings, rateLimiter, http);
             Entitlements = new Entitlements(Settings, rateLimiter, http);

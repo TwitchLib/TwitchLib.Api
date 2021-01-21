@@ -40,6 +40,10 @@
         Helix_User_Edit_Follows,
         Helix_User_Read_Broadcast,
         Helix_User_Read_Email,
+        Helix_Channel_Read_Editors,
+        Helix_Channel_Manage_Videos,
+        Helix_User_Read_BlockedUsers,
+        Helix_User_Manage_BlockedUsers,
         None
     }
 }
