@@ -7,7 +7,7 @@ namespace TwitchLib.Api.Helix.Models.Users.GetUserBlockList
 {
     public class BlockedUser
     {
-        [JsonProperty(PropertyName = "id")]
+        [JsonProperty(PropertyName = "user_id")]
         public string Id { get; protected set; }
         [JsonProperty(PropertyName = "user_login")]
         public string UserLogin { get; protected set; }
