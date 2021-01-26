@@ -52,7 +52,7 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
             };
 
-            return TwitchGetGenericAsync<GetChannelEditorsResponse>("/channels", ApiVersion.Helix, getParams, accessToken);
+            return TwitchGetGenericAsync<GetChannelEditorsResponse>("/channels/editors", ApiVersion.Helix, getParams, accessToken);
         }
         #endregion
     }
