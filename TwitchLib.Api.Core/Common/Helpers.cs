@@ -94,6 +94,14 @@ namespace TwitchLib.Api.Core.Common
                     return "user:read:broadcast";
                 case AuthScopes.Helix_User_Read_Email:
                     return "user:read:email";
+                case AuthScopes.Helix_Channel_Read_Editors:
+                    return "channel:read:editors";
+                case AuthScopes.Helix_Channel_Manage_Videos:
+                    return "channel:manage:videos";
+                case AuthScopes.Helix_User_Read_BlockedUsers:
+                    return "user:read:blocked_users";
+                case AuthScopes.Helix_User_Manage_BlockedUsers:
+                    return "user:manage:blocked_users";
                 default:
                     return "";
             }

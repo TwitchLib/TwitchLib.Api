@@ -135,6 +135,19 @@ namespace TwitchLib.Api.Core
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "PATCH", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
 
+        protected Task<string> TwitchPatchAsync(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
+        {
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
+
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+
+            accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
+
+            return _rateLimiter.Perform(async () => await Task.Run(() => _http.GeneralRequest(url, "PATCH", payload, api, clientId, accessToken).Value).ConfigureAwait(false));
+        }
+
         protected Task<string> TwitchDeleteAsync(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
@@ -174,9 +187,9 @@ namespace TwitchLib.Api.Core
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "POST", model != null ? _jsonSerializer.SerializeObject(model) : "", api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
 
-        protected Task<T> TwitchDeleteGenericAsync<T>(string resource, ApiVersion api, string accessToken = null, string clientId = null, string customBase = null)
+        protected Task<T> TwitchDeleteGenericAsync<T>(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            var url = ConstructResourceUrl(resource, null, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
                 clientId = Settings.ClientId;
@@ -187,7 +200,7 @@ namespace TwitchLib.Api.Core
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "DELETE", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
 
-        protected Task<T> TwitchPutGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
+        protected Task<T> TwitchPutGenericAsync<T>(string resource, ApiVersion api, string payload = null, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
@@ -470,6 +483,18 @@ namespace TwitchLib.Api.Core
                         break;
                     case "user:read:email":
                         scopes.Add(AuthScopes.Helix_User_Read_Email);
+                        break;
+                    case "channel:read:editors":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Editors);
+                        break;
+                    case "channel:manage:videos":
+                        scopes.Add(AuthScopes.Helix_Channel_Manage_Videos);
+                        break;
+                    case "user:read:blocked_users":
+                        scopes.Add(AuthScopes.Helix_User_Read_BlockedUsers);
+                        break;
+                    case "user:manage:blocked_users":
+                        scopes.Add(AuthScopes.Helix_User_Manage_BlockedUsers);
                         break;
                 }
             }
