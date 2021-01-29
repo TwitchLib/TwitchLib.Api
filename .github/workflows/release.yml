@@ -30,3 +30,4 @@ jobs:
        webhook: ${{ secrets.DISCORD_WEBHOOK }}
        title: "Release Preview Nuget Package"
        username: "TwitchLib Deploy"
+       
