@@ -28,6 +28,5 @@ jobs:
      if: always()
      with:
        webhook: ${{ secrets.DISCORD_WEBHOOK }}
-       title: "Release Preview Nuget Package"
+       title: "Release Nuget Package"
        username: "TwitchLib Deploy"
-       
