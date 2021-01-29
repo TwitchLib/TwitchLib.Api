@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace TwitchLib.Api.Helix.Models.Streams
+namespace TwitchLib.Api.Helix.Models.Streams.GetStreams
 {
     public class Stream
     {
@@ -9,6 +9,8 @@ namespace TwitchLib.Api.Helix.Models.Streams
         public string Id { get; protected set; }
         [JsonProperty(PropertyName = "user_id")]
         public string UserId { get; protected set; }
+        [JsonProperty(PropertyName = "user_login")]
+        public string UserLogin { get; protected set; }
         [JsonProperty(PropertyName = "user_name")]
         public string UserName { get; protected set; }
         [JsonProperty(PropertyName = "game_id")]

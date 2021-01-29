@@ -10,6 +10,8 @@ namespace TwitchLib.Api.Helix.Models.Search
         public string GameId { get; protected set; }
         [JsonProperty(PropertyName = "id")]
         public string Id { get; protected set; }
+        [JsonProperty(PropertyName = "broadcaster_login")]
+        public string BroadcasterLogin { get; protected set; }
         [JsonProperty(PropertyName = "display_name")]
         public string DisplayName { get; protected set; }
         [JsonProperty(PropertyName = "broadcaster_language")]

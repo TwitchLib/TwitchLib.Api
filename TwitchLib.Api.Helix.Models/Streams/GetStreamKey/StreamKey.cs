@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TwitchLib.Api.Helix.Models.Streams
+namespace TwitchLib.Api.Helix.Models.Streams.GetStreamKey
 {
     public class StreamKey
     {

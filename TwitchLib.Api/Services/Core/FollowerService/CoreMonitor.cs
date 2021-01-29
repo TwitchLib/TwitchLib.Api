@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using TwitchLib.Api.Helix.Models.Users;
+using TwitchLib.Api.Helix.Models.Users.GetUserFollows;
 using TwitchLib.Api.Interfaces;
 
 namespace TwitchLib.Api.Services.Core.FollowerService
