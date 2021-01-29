@@ -17,6 +17,7 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
         public string Token { get; protected set; }
         public string Refresh { get; protected set; }
         public string Username { get; protected set; }
+        public string ClientId { get; protected set; }
 
         public PingResponse(string jsonStr)
         {
@@ -34,9 +35,10 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                 Token = json.SelectToken("token").ToString();
                 Refresh = json.SelectToken("refresh").ToString();
                 Username = json.SelectToken("username").ToString();
+                ClientId = json.SelectToken("client_id").ToString();
             }
         }
-        
+
         private AuthScopes StringToScope(string scope)
         {
             switch (scope)
@@ -89,6 +91,24 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                     return AuthScopes.Helix_Bits_Read;
                 case "channel:read:subscriptions":
                     return AuthScopes.Helix_Channel_Read_Subscriptions;
+                case "channel:read:hype_train":
+                    return AuthScopes.Helix_Channel_Read_Hype_Train;
+                case "channel:manage:redemptions":
+                    return AuthScopes.Helix_Channel_Manage_Redemptions;
+                case "channel:edit:commercial":
+                    return AuthScopes.Helix_Channel_Edit_Commercial;
+                case "channel:read:stream_key":
+                    return AuthScopes.Helix_Channel_Read_Stream_Key;
+                case "channel:read:editors":
+                    return AuthScopes.Helix_Channel_Read_Editors;
+                case "channel:manage:videos":
+                    return AuthScopes.Helix_Channel_Manage_Videos;
+                case "user:read:blocked_users":
+                    return AuthScopes.Helix_User_Read_BlockedUsers;
+                case "user:manage:blocked_users":
+                    return AuthScopes.Helix_User_Manage_BlockedUsers;
+                case "":
+                    return AuthScopes.None;
                 default:
                     throw new Exception("Unknown scope");
             }

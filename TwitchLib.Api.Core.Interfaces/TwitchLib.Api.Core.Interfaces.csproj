@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Api.Core.Interfaces</PackageId>
-    <Version>3.1.2</Version>
+    <VersionPrefix>3.2.0</VersionPrefix>
+    <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Description>Project containing all of the interfaces used in TwitchLib.Api</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>swiftyspiffy, Prom3theu5, Syzuna, LuckyNoS7evin</Authors>
@@ -11,22 +12,22 @@
     <PackageIcon>twitchlib.png</PackageIcon>
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright 2018</Copyright>
+    <Copyright>Copyright 2021</Copyright>
     <PackageReleaseNotes>Incremental changes.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>3.1.2</AssemblyVersion>
-    <FileVersion>3.1.2</FileVersion>
+    <AssemblyVersion>3.2.0</AssemblyVersion>
+    <FileVersion>3.2.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwitchLib.Api.Core.Enums\TwitchLib.Api.Core.Enums.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="twitchlib.png" Pack="true" PackagePath="\"/>
+    <None Include="twitchlib.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

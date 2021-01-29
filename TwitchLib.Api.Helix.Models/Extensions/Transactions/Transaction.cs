@@ -13,6 +13,8 @@ namespace TwitchLib.Api.Helix.Models.Extensions.Transactions
         public DateTime Timestamp { get; protected set; }
         [JsonProperty(PropertyName = "broadcaster_id")]
         public string BroadcasterId { get; protected set; }
+        [JsonProperty(PropertyName = "broadcaster_login")]
+        public string BroadcasterLogin { get; protected set; }
         [JsonProperty(PropertyName = "broadcaster_name")]
         public string BroadcasterName { get; protected set; }
         [JsonProperty(PropertyName = "user_id")]

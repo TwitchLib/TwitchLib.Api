@@ -33,7 +33,7 @@ namespace TwitchLib.Api.Core
         }
 
         /// <summary>
-        /// Checks the ClientId and AccessToken against the Twitch Api Endpoints 
+        /// Checks the ClientId and AccessToken against the Twitch Api Endpoints
         /// </summary>
         /// <returns>CredentialCheckResponseModel with a success boolean and message</returns>
         public Task<CredentialCheckResponseModel> CheckCredentialsAsync()
@@ -67,10 +67,10 @@ namespace TwitchLib.Api.Core
             if (Settings.Scopes == null)
                 throw new InvalidCredentialException($"The current access token does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: IApiSettings.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
 
-            if ((!Settings.Scopes.Contains(requiredScope) && requiredScope != AuthScopes.Any) || (requiredScope == AuthScopes.Any && Settings.Scopes.Any(x=>x == AuthScopes.None)))
+            if ((!Settings.Scopes.Contains(requiredScope) && requiredScope != AuthScopes.Any) || (requiredScope == AuthScopes.Any && Settings.Scopes.Any(x => x == AuthScopes.None)))
                 throw new InvalidCredentialException($"The current access token ({String.Join(",", Settings.Scopes)}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: IApiSettings.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
         }
-        
+
         internal virtual Task<Models.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
         {
             return TwitchGetGenericAsync<Models.Root.Root>("", ApiVersion.V5, accessToken: authToken, clientId: clientId);
@@ -122,6 +122,32 @@ namespace TwitchLib.Api.Core
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
 
+        protected Task<T> TwitchPatchGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
+        {
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
+
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+
+            accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
+
+            return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "PATCH", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
+        }
+
+        protected Task<string> TwitchPatchAsync(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
+        {
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
+
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+
+            accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
+
+            return _rateLimiter.Perform(async () => await Task.Run(() => _http.GeneralRequest(url, "PATCH", payload, api, clientId, accessToken).Value).ConfigureAwait(false));
+        }
+
         protected Task<string> TwitchDeleteAsync(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
@@ -161,9 +187,9 @@ namespace TwitchLib.Api.Core
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "POST", model != null ? _jsonSerializer.SerializeObject(model) : "", api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
 
-        protected Task<T> TwitchDeleteGenericAsync<T>(string resource, ApiVersion api, string accessToken = null, string clientId = null, string customBase = null)
+        protected Task<T> TwitchDeleteGenericAsync<T>(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            var url = ConstructResourceUrl(resource, null, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
                 clientId = Settings.ClientId;
@@ -174,7 +200,7 @@ namespace TwitchLib.Api.Core
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "DELETE", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
 
-        protected Task<T> TwitchPutGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
+        protected Task<T> TwitchPutGenericAsync<T>(string resource, ApiVersion api, string payload = null, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
@@ -404,11 +430,53 @@ namespace TwitchLib.Api.Core
                     case "viewing_activity_read":
                         scopes.Add(AuthScopes.Viewing_Activity_Read);
                         break;
+                    case "user:edit:broadcast":
+                        scopes.Add(AuthScopes.Helix_User_Edit_Broadcast);
+                        break;
+                    case "analytics:read:extensions":
+                        scopes.Add(AuthScopes.Helix_Analytics_Read_Extensions);
+                        break;
+                    case "analytics:read:games":
+                        scopes.Add(AuthScopes.Helix_Analytics_Read_Games);
+                        break;
+                    case "bits:read":
+                        scopes.Add(AuthScopes.Helix_Bits_Read);
+                        break;
+                    case "channel:edit:commercial":
+                        scopes.Add(AuthScopes.Helix_Channel_Edit_Commercial);
+                        break;
+                    case "channel:manage:broadcast":
+                        scopes.Add(AuthScopes.Helix_Channel_Manage_Broadcast);
+                        break;
+                    case "channel:manage:extensions":
+                        scopes.Add(AuthScopes.Helix_Channel_Manage_Extensions);
+                        break;
+                    case "channel:manage:redemptions":
+                        scopes.Add(AuthScopes.Helix_Channel_Manage_Redemptions);
+                        break;
+                    case "channel:read:hype_train":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Hype_Train);
+                        break;
+                    case "channel:read:redemptions":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Redemptions);
+                        break;
+                    case "channel:read:stream_key":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Stream_Key);
+                        break;
+                    case "channel:read:subscriptions":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Subscriptions);
+                        break;
+                    case "clips:edit":
+                        scopes.Add(AuthScopes.Helix_Clips_Edit);
+                        break;
+                    case "moderation:read":
+                        scopes.Add(AuthScopes.Helix_Moderation_Read);
+                        break;
                     case "user:edit":
                         scopes.Add(AuthScopes.Helix_User_Edit);
                         break;
-                    case "user:edit:broadcast":
-                        scopes.Add(AuthScopes.Helix_User_Edit_Broadcast);
+                    case "user:edit:follows":
+                        scopes.Add(AuthScopes.Helix_User_Edit_Follows);
                         break;
                     case "user:read:broadcast":
                         scopes.Add(AuthScopes.Helix_User_Read_Broadcast);
@@ -416,23 +484,17 @@ namespace TwitchLib.Api.Core
                     case "user:read:email":
                         scopes.Add(AuthScopes.Helix_User_Read_Email);
                         break;
-                    case "clips:edit":
-                        scopes.Add(AuthScopes.Helix_Clips_Edit);
+                    case "channel:read:editors":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Editors);
                         break;
-                    case "bits:read":
-                        scopes.Add(AuthScopes.Helix_Bits_Read);
+                    case "channel:manage:videos":
+                        scopes.Add(AuthScopes.Helix_Channel_Manage_Videos);
                         break;
-                    case "analytics:read:games":
-                        scopes.Add(AuthScopes.Helix_Analytics_Read_Games);
+                    case "user:read:blocked_users":
+                        scopes.Add(AuthScopes.Helix_User_Read_BlockedUsers);
                         break;
-                    case "analytics:read:extensions":
-                        scopes.Add(AuthScopes.Helix_Analytics_Read_Extensions);
-                        break;
-                    case "channel:read:subscriptions":
-                        scopes.Add(AuthScopes.Helix_Channel_Read_Subscriptions);
-                        break;
-                    case "moderation:read":
-                        scopes.Add(AuthScopes.Helix_Moderation_Read);
+                    case "user:manage:blocked_users":
+                        scopes.Add(AuthScopes.Helix_User_Manage_BlockedUsers);
                         break;
                 }
             }

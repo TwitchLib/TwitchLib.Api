@@ -1,12 +1,16 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Xml;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
-using TwitchLib.Api.Helix.Models.Streams;
+using TwitchLib.Api.Helix.Models.Streams.CreateStreamMarker;
+using TwitchLib.Api.Helix.Models.Streams.GetStreamKey;
+using TwitchLib.Api.Helix.Models.Streams.GetStreamMarkers;
+using TwitchLib.Api.Helix.Models.Streams.GetStreams;
+using TwitchLib.Api.Helix.Models.Streams.GetStreamTags;
 using TwitchLib.Api.Helix.Models.StreamsMetadata;
 
 namespace TwitchLib.Api.Helix
@@ -114,7 +118,7 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetStreamTagsResponse>("/streams/tags", ApiVersion.Helix, getParams, accessToken);
         }
 
-        public Task ReplaceStreamTags(string broadcasterId, List<string> tagIds = null, string accessToken = null)
+        public Task ReplaceStreamTagsAsync(string broadcasterId, List<string> tagIds = null, string accessToken = null)
         {
             DynamicScopeValidation(AuthScopes.Helix_User_Edit_Broadcast, accessToken);
 
@@ -130,6 +134,38 @@ namespace TwitchLib.Api.Helix
             }
 
             return TwitchPutAsync("/streams/tags", ApiVersion.Helix, payload, getParams, accessToken);
+        }
+
+        public Task<GetStreamKeyResponse> GetStreamKeyAsync(string broadcasterId, string accessToken = null)
+        {
+            DynamicScopeValidation(AuthScopes.Helix_Channel_Read_Stream_Key, accessToken);
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+            };
+
+            return TwitchGetGenericAsync<GetStreamKeyResponse>("/streams/key", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        public Task<CreateStreamMarkerResponse> CreateStreamMarkerAsync(CreateStreamMarkerRequest request, string accessToken = null)
+        {
+            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Broadcast, accessToken);
+
+            return TwitchPostGenericAsync<CreateStreamMarkerResponse>("/streams/markers", ApiVersion.Helix, JsonConvert.SerializeObject(request), null, accessToken);
+        }
+
+        public Task<GetStreamMarkersResponse> GetStreamMarkerAsync(string userId, string videoId, string accessToken = null)
+        {
+            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Broadcast, accessToken);
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("user_id", userId),
+                new KeyValuePair<string, string>("video_id", videoId)
+            };
+
+            return TwitchGetGenericAsync<GetStreamMarkersResponse>("/stream/markers", ApiVersion.Helix, getParams, accessToken);
         }
     }
 

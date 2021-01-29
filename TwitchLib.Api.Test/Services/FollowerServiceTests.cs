@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Users;
+using TwitchLib.Api.Helix.Models.Users.GetUserFollows;
+using TwitchLib.Api.Helix.Models.Users.GetUsers;
 using TwitchLib.Api.Services;
 using TwitchLib.Api.Test.Helpers;
 using Xunit;

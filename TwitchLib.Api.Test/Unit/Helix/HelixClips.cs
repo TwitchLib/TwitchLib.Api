@@ -18,7 +18,7 @@ namespace TwitchLib.Api.Test.Unit.Helix
         {
             var mockHandler = HelixSetup.GetMockHttpCallHandler(GetClipsResponse);
             var api = new TwitchAPI(http: mockHandler.Object);
-            var result = await api.Helix.Clips.GetClipAsync("AwkwardHelplessSalamanderSwiftRage");
+            var result = await api.Helix.Clips.GetClipsAsync(new System.Collections.Generic.List<string> { "AwkwardHelplessSalamanderSwiftRage" });
             Assert.True(result.Clips[0].VideoId == "205586603");
         }
 

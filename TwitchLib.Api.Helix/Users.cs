@@ -4,9 +4,16 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
+using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Users;
+using TwitchLib.Api.Helix.Models.Users.GetUserActiveExtensions;
+using TwitchLib.Api.Helix.Models.Users.GetUserBlockList;
+using TwitchLib.Api.Helix.Models.Users.GetUserExtensions;
+using TwitchLib.Api.Helix.Models.Users.GetUserFollows;
+using TwitchLib.Api.Helix.Models.Users.GetUsers;
 using TwitchLib.Api.Helix.Models.Users.Internal;
+using TwitchLib.Api.Helix.Models.Users.UpdateUserExtensions;
 
 namespace TwitchLib.Api.Helix
 {
@@ -14,6 +21,46 @@ namespace TwitchLib.Api.Helix
     {
         public Users(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         {
+        }
+
+        public Task<GetUserBlockListResponse> GetUserBlockListAsync(string broadcasterId, int first = 20, string after = null, string accessToken = null)
+        {
+            DynamicScopeValidation(AuthScopes.Helix_User_Read_BlockedUsers, accessToken);
+
+            if (first > 100)
+                throw new BadParameterException($"Maximum allowed objects is 100 (you passed {first})");
+
+            var getParams = new List<KeyValuePair<string, string>>();
+            getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
+            getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
+            if (after != null)
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+
+            return TwitchGetGenericAsync<GetUserBlockListResponse>("/users/blocks", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        public Task BlockUserAsync(string targetUserId, BlockUserSourceContextEnum? sourceContext = null, BlockUserReasonEnum? reason = null, string accessToken = null)
+        {
+            DynamicScopeValidation(AuthScopes.Helix_User_Manage_BlockedUsers, accessToken);
+
+            var getParams = new List<KeyValuePair<string, string>>();
+            getParams.Add(new KeyValuePair<string, string>("target_user_id", targetUserId));
+            if (sourceContext != null)
+                getParams.Add(new KeyValuePair<string, string>("source_context", sourceContext.Value.ToString().ToLower()));
+            if (reason != null)
+                getParams.Add(new KeyValuePair<string, string>("reason", reason.Value.ToString().ToLower()));
+
+            return TwitchPutAsync("/users/blocks", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        public Task UnblockUserAsync(string targetUserId, string accessToken = null)
+        {
+            DynamicScopeValidation(AuthScopes.Helix_User_Manage_BlockedUsers, accessToken);
+
+            var getParams = new List<KeyValuePair<string, string>>();
+            getParams.Add(new KeyValuePair<string, string>("target_user_id", targetUserId));
+
+            return TwitchDeleteAsync("/user/blocks", ApiVersion.Helix, getParams, accessToken);
         }
 
         public Task<GetUsersResponse> GetUsersAsync(List<string> ids = null, List<string> logins = null, string accessToken = null)
@@ -116,6 +163,57 @@ namespace TwitchLib.Api.Helix
             var payload = json.ToString();
 
             return TwitchPutGenericAsync<GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, payload, accessToken: authToken);
+        }
+
+        public Task CreateUserFollows(string from_id, string to_id, bool? allow_notifications = null, string authToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(from_id))
+            {
+                throw new BadParameterException("from_id must be set");
+            }
+
+            if (string.IsNullOrWhiteSpace(to_id))
+            {
+                throw new BadParameterException("to_id must be set");
+            }
+
+            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Follows, authToken);
+
+            var json = new JObject();
+
+            json.Add(new JProperty("from_id", from_id));
+            json.Add(new JProperty("to_id", to_id));
+
+            if (allow_notifications.HasValue)
+            {
+                json.Add(new JProperty("allow_notifications", allow_notifications.Value));
+            }
+
+            var payload = json.ToString();
+
+            return TwitchPostAsync("/users/follows", ApiVersion.Helix, payload, accessToken: authToken);
+        }
+
+        public Task DeleteUserFollows(string from_id, string to_id, string authToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(from_id))
+            {
+                throw new BadParameterException("from_id must be set");
+            }
+
+            if (string.IsNullOrWhiteSpace(to_id))
+            {
+                throw new BadParameterException("to_id must be set");
+            }
+
+            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Follows, authToken);
+
+            var getParams = new List<KeyValuePair<string, string>>();
+
+            getParams.Add(new KeyValuePair<string, string>("from_id", from_id));
+            getParams.Add(new KeyValuePair<string, string>("to_id", to_id));
+
+            return TwitchDeleteAsync("/users/follows", ApiVersion.Helix, getParams, accessToken: authToken);
         }
     }
 }

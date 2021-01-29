@@ -6,6 +6,7 @@ using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Entitlements.CreateEntitlementGrantsUploadURL;
 using TwitchLib.Api.Helix.Models.Entitlements.GetCodeStatus;
+using TwitchLib.Api.Helix.Models.Entitlements.GetDropsEntitlements;
 using TwitchLib.Api.Helix.Models.Entitlements.RedeemCode;
 
 namespace TwitchLib.Api.Helix
@@ -60,6 +61,34 @@ namespace TwitchLib.Api.Helix
                 getParams.Add(new KeyValuePair<string, string>("code", code));
 
             return TwitchPostGenericAsync<GetCodeStatusResponse>("/entitlements/codes", ApiVersion.Helix, null, getParams, accessToken);
+        }
+        #endregion
+
+        #region GetDropsEntitlements
+        public Task<GetDropsEntitlementsResponse> GetDropsEntitlements(string id = null, string userId = null, string gameId = null, string after = null, int first = 20, string accessToken = null)
+        {
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("first", first.ToString())
+            };
+            if(id != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("id", id));
+            }
+            if(userId != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("user_id", userId));
+            }
+            if(gameId != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
+            }
+            if(after != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+            }
+
+            return TwitchGetGenericAsync<GetDropsEntitlementsResponse>("/entitlements/drops", ApiVersion.Helix, getParams, accessToken);
         }
         #endregion
 

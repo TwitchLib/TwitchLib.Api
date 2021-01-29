@@ -9,6 +9,8 @@ namespace TwitchLib.Api.Helix.Models.Moderation.GetBannedUsers
     {
         [JsonProperty(PropertyName = "user_id")]
         public string UserId { get; protected set; }
+        [JsonProperty(PropertyName = "user_login")]
+        public string UserLogin { get; protected set; }
         [JsonProperty(PropertyName = "user_name")]
         public string UserName { get; protected set; }
         [JsonProperty(PropertyName = "expires_at")]

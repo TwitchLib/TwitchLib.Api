@@ -8,7 +8,7 @@ using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Extensions.System;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Clips.CreateClip;
-using TwitchLib.Api.Helix.Models.Clips.GetClip;
+using TwitchLib.Api.Helix.Models.Clips.GetClips;
 
 namespace TwitchLib.Api.Helix
 {
@@ -17,16 +17,21 @@ namespace TwitchLib.Api.Helix
         public Clips(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         { }
 
-        #region GetClip
+        #region GetClips
 
-        public Task<GetClipResponse> GetClipAsync(string clipId = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, int first = 20)
+        public Task<GetClipsResponse> GetClipsAsync(List<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, int first = 20)
         {
             if (first < 0 || first > 100)
                 throw new BadParameterException("'first' must between 0 (inclusive) and 100 (inclusive).");
 
             var getParams = new List<KeyValuePair<string, string>>();
-            if (clipId != null)
-                getParams.Add(new KeyValuePair<string, string>("id", clipId));
+            if (clipIds != null)
+            {
+                foreach(var clipId in clipIds)
+                {
+                    getParams.Add(new KeyValuePair<string, string>("id", clipId));
+                }
+            }
             if (gameId != null)
                 getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
             if (broadcasterId != null)
@@ -48,7 +53,7 @@ namespace TwitchLib.Api.Helix
                 getParams.Add(new KeyValuePair<string, string>("after", after));
             getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
 
-            return TwitchGetGenericAsync<GetClipResponse>("/clips", ApiVersion.Helix, getParams);
+            return TwitchGetGenericAsync<GetClipsResponse>("/clips", ApiVersion.Helix, getParams);
         }
 
         #endregion

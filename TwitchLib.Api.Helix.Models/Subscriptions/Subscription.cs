@@ -1,7 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TwitchLib.Api.Helix.Models.Subscriptions
 {
@@ -21,5 +18,9 @@ namespace TwitchLib.Api.Helix.Models.Subscriptions
         public string UserId { get; protected set; }
         [JsonProperty(PropertyName = "user_name")]
         public string UserName { get; protected set; }
+        [JsonProperty(PropertyName = "gifter_id")]
+        public string GiftertId { get; protected set; }
+        [JsonProperty(PropertyName = "gifter_name")]
+        public string GifterName { get; protected set; }
     }
 }

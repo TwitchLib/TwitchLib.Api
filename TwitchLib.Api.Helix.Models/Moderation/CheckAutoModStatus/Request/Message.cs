@@ -10,7 +10,7 @@ namespace TwitchLib.Api.Helix.Models.Moderation.CheckAutoModStatus
         [JsonProperty(PropertyName = "msg_id")]
         public string MsgId { get; set; }
         [JsonProperty(PropertyName = "msg_text")]
-        public bool MsgText { get; set; }
+        public string MsgText { get; set; }
         [JsonProperty(PropertyName = "user_id")]
         public string UserId { get; set; }
     }

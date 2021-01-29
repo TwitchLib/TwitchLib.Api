@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwitchLib.Api.Helix.Models.Users;
+using TwitchLib.Api.Helix.Models.Users.GetUserFollows;
 
 namespace TwitchLib.Api.Services.Events.FollowerService
 {

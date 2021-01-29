@@ -147,7 +147,7 @@ namespace TwitchLib.Api.ThirdParty
                 if (ping.Success)
                 {
                     _pingTimer.Stop();
-                    OnUserAuthorizationDetected?.Invoke(null, new OnUserAuthorizationDetectedArgs {Id = ping.Id, Scopes = ping.Scopes, Token = ping.Token, Username = ping.Username, Refresh = ping.Refresh});
+                    OnUserAuthorizationDetected?.Invoke(null, new OnUserAuthorizationDetectedArgs {Id = ping.Id, Scopes = ping.Scopes, Token = ping.Token, Username = ping.Username, Refresh = ping.Refresh, ClientId = ping.ClientId });
                 }
                 else
                 {
