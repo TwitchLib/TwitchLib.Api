@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TwitchLib.Api.Helix.Models.Streams;
+using TwitchLib.Api.Helix.Models.Streams.GetStreams;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Services.Core.LiveStreamMonitor;
 using TwitchLib.Api.Services.Events.LiveStreamMonitor;

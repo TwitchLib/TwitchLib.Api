@@ -22,6 +22,10 @@ namespace TwitchLib.Api.Helix.Models.Videos.GetVideos
         public string Title { get; protected set; }
         [JsonProperty(PropertyName = "user_id")]
         public string UserId { get; protected set; }
+        [JsonProperty(PropertyName = "user_login")]
+        public string UserLogin { get; protected set; }
+        [JsonProperty(PropertyName = "user_name")]
+        public string UserName { get; protected set; }
         [JsonProperty(PropertyName = "view_count")]
         public int ViewCount { get; protected set; }
     }
