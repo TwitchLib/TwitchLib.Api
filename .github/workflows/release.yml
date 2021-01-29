@@ -6,7 +6,7 @@ on:
 
 jobs:
   release:
-   if: "! contains(toJSON(github.event.commits.*.message), '[Release]')"
+   if: "contains(toJSON(github.event.commits.*.message), '[Release]')"
    runs-on: ubuntu-latest
 
    steps:
