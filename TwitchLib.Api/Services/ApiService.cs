@@ -39,6 +39,10 @@ namespace TwitchLib.Api.Services
         /// </summary>
         public event EventHandler<OnServiceTickArgs> OnServiceTick;
         /// <summary>
+        /// Event invoked when the service encounters an exception.
+        /// </summary>
+        public event EventHandler<OnServiceExceptionArgs> OnServiceException;
+        /// <summary>
         /// Event invoked when the channels have been set.
         /// </summary>
         public event EventHandler<OnChannelsSetArgs> OnChannelsSet;
@@ -92,6 +96,11 @@ namespace TwitchLib.Api.Services
             _serviceTimer.Stop();
 
             OnServiceStopped?.Invoke(this, new OnServiceStoppedArgs());
+        }
+
+        internal virtual void HandleException(Exception ex)
+        {
+            OnServiceException?.Invoke(this, new OnServiceExceptionArgs { Exception = ex });
         }
 
         /// <summary>

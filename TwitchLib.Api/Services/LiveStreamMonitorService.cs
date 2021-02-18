@@ -104,7 +104,13 @@ namespace TwitchLib.Api.Services
         protected override async Task OnServiceTimerTick()
         {
             await base.OnServiceTimerTick();
-            await UpdateLiveStreamersAsync();
+            try
+            {
+                await UpdateLiveStreamersAsync();
+            } catch(Exception ex)
+            {
+                base.HandleException(ex);
+            }
         }
 
         private void HandleLiveStreamUpdate(string channel, Stream liveStream, bool callEvents)
