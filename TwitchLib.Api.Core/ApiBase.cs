@@ -24,6 +24,9 @@ namespace TwitchLib.Api.Core
         internal const string BaseHelix = "https://api.twitch.tv/helix";
         internal const string BaseOauthToken = "https://id.twitch.tv/oauth2/token";
 
+        private DateTime? _serverBasedAccessTokenExpiry;
+        private string _serverBasedAccessToken;
+
         public ApiBase(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
             Settings = settings;
@@ -83,7 +86,12 @@ namespace TwitchLib.Api.Core
             if (!string.IsNullOrEmpty(Settings.AccessToken))
                 return Settings.AccessToken;
             if (!string.IsNullOrEmpty(Settings.Secret) && !string.IsNullOrEmpty(Settings.ClientId) && !Settings.SkipAutoServerTokenGeneration)
-                return GenerateServerBasedAccessToken();
+            {
+                if (_serverBasedAccessTokenExpiry == null || _serverBasedAccessTokenExpiry - TimeSpan.FromMinutes(1) < DateTime.Now)
+                    return GenerateServerBasedAccessToken();
+                else
+                    return _serverBasedAccessToken;
+            }
 
             return null;
         }
@@ -95,7 +103,9 @@ namespace TwitchLib.Api.Core
             {
                 var user = JsonConvert.DeserializeObject<dynamic>(result.Value);
                 var offset = (int)user.expires_in;
-                return (string)user.access_token;
+                _serverBasedAccessTokenExpiry = DateTime.Now + TimeSpan.FromSeconds(offset);
+                _serverBasedAccessToken = (string)user.access_token;
+                return _serverBasedAccessToken;
             }
             return null;
         }
