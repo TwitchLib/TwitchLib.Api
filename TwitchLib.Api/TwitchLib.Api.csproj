@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2021</Copyright>
-    <PackageReleaseNotes>Added various recently added Helix endpoints, added logins to many helix endpoints, fixed various bugs, some namespace changes (expect breaking change)</PackageReleaseNotes>
+    <PackageReleaseNotes>Added Team endpoints support, attempt to fix LiveMonitor crashes, the lib should not create a new token per request now</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
