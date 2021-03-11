@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Api.Helix.Models</PackageId>
-    <VersionPrefix>3.2.2</VersionPrefix>
+    <VersionPrefix>3.2.3</VersionPrefix>
     <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Description>Project containing the Helix models used in TwitchLib.Api</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -18,8 +18,8 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>3.2.2</AssemblyVersion>
-    <FileVersion>3.2.2</FileVersion>
+    <AssemblyVersion>3.2.3</AssemblyVersion>
+    <FileVersion>3.2.3</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
