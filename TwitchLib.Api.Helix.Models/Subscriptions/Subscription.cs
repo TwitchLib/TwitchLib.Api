@@ -8,6 +8,8 @@ namespace TwitchLib.Api.Helix.Models.Subscriptions
         public string BroadcasterId { get; protected set; }
         [JsonProperty(PropertyName = "broadcaster_name")]
         public string BroadcasterName { get; protected set; }
+        [JsonProperty(PropertyName = "broadcaster_login")]
+        public string BroadcasterLogin { get; protected set; }
         [JsonProperty(PropertyName = "is_gift")]
         public bool IsGift { get; protected set; }
         [JsonProperty(PropertyName = "tier")]
