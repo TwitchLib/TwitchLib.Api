@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TwitchLib.Api.Core;
+using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Subscriptions;
-using System.Threading.Tasks;
-using TwitchLib.Api.Core.Enums;
 
 namespace TwitchLib.Api.Helix
 {
