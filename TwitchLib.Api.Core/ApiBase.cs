@@ -506,6 +506,9 @@ namespace TwitchLib.Api.Core
                     case "user:manage:blocked_users":
                         scopes.Add(AuthScopes.Helix_User_Manage_BlockedUsers);
                         break;
+                    case "user:read:subscriptions":
+                        scopes.Add(AuthScopes.Helix_User_Read_Subscriptions);
+                        break;
                 }
             }
 
