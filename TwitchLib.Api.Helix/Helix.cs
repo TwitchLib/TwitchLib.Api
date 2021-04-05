@@ -19,6 +19,7 @@ namespace TwitchLib.Api.Helix
         public Entitlements Entitlements { get; }
         public Extensions Extensions { get; }
         public Games Games { get; }
+        public HypeTrain HypeTrain { get; }
         public Moderation Moderation { get; }
         public Search Search { get; }
         public Subscriptions Subscriptions { get; }
@@ -53,6 +54,7 @@ namespace TwitchLib.Api.Helix
             Entitlements = new Entitlements(Settings, rateLimiter, http);
             Extensions = new Extensions(Settings, rateLimiter, http);
             Games = new Games(Settings, rateLimiter, http);
+            HypeTrain = new HypeTrain(Settings, rateLimiter, http);
             Moderation = new Moderation(Settings, rateLimiter, http);
             Search = new Search(Settings, rateLimiter, http);
             Streams = new Streams(Settings, rateLimiter, http);
