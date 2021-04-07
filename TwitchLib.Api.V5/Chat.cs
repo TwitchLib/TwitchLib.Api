@@ -52,16 +52,6 @@ namespace TwitchLib.Api.V5
         }
 
         #endregion
-
-        #region GetChatRoomsByChannel 
-
-        public Task<ChatRoomsByChannelResponse> GetChatRoomsByChannelAsync(string channelId, string authToken = null)
-        {
-            DynamicScopeValidation(AuthScopes.Any, authToken);
-            return TwitchGetGenericAsync<ChatRoomsByChannelResponse>($"/chat/{channelId}/rooms", ApiVersion.V5, accessToken: authToken);
-        }
-
-        #endregion
     }
 
 }

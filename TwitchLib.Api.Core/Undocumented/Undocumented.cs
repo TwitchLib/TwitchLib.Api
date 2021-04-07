@@ -15,7 +15,6 @@ using TwitchLib.Api.Core.Models.Undocumented.ClipChat;
 using TwitchLib.Api.Core.Models.Undocumented.Comments;
 using TwitchLib.Api.Core.Models.Undocumented.CSMaps;
 using TwitchLib.Api.Core.Models.Undocumented.CSStreams;
-using TwitchLib.Api.Core.Models.Undocumented.Hosting;
 using TwitchLib.Api.Core.Models.Undocumented.RecentEvents;
 using TwitchLib.Api.Core.Models.Undocumented.RecentMessages;
 using TwitchLib.Api.Core.Models.Undocumented.TwitchPrimeOffers;
@@ -73,21 +72,6 @@ namespace TwitchLib.Api.Core.Undocumented
             var getParams = new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("on_site", "1")};
 
             return GetGenericAsync<TwitchPrimeOffers>("https://api.twitch.tv/api/premium/offers", getParams);
-        }
-
-        #endregion
-
-        #region GetChannelHosts
-
-        public Task<ChannelHostsResponse> GetChannelHostsAsync(string channelId)
-        {
-            var getParams = new List<KeyValuePair<string, string>>
-            {
-                new KeyValuePair<string, string>("include_logins", "1"),
-                new KeyValuePair<string, string>("target", channelId)
-            };
-
-            return TwitchGetGenericAsync<ChannelHostsResponse>("hosts", ApiVersion.V5, getParams, customBase: "https://tmi.twitch.tv/");
         }
 
         #endregion

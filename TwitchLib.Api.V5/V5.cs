@@ -17,7 +17,6 @@ namespace TwitchLib.Api.V5
         public Chat Chat { get; }
         public Clips Clips { get; }
         public Collections Collections { get; }
-        public Communities Communities { get; }
         public Games Games { get; }
         public Ingests Ingests { get; }
         public Root Root { get; }
@@ -49,7 +48,6 @@ namespace TwitchLib.Api.V5
             Chat = new Chat(Settings, rateLimiter, http);
             Clips = new Clips(Settings, rateLimiter, http);
             Collections = new Collections(Settings, rateLimiter, http);
-            Communities = new Communities(Settings, rateLimiter, http);
             Games = new Games(Settings, rateLimiter, http);
             Ingests = new Ingests(Settings, rateLimiter, http);
             Root = new Root(Settings, rateLimiter, http);
