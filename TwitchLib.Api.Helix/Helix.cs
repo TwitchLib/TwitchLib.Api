@@ -11,7 +11,7 @@ namespace TwitchLib.Api.Helix
         private readonly ILogger<Helix> _logger;
         public IApiSettings Settings { get; }
         public Analytics Analytics { get; }
-
+        public Ads Ads { get; }
         public Bits Bits { get; }
         public Channels Channels { get; }
         public ChannelPoints ChannelPoints { get; }
@@ -46,6 +46,7 @@ namespace TwitchLib.Api.Helix
             Settings = settings ?? new ApiSettings();
 
             Analytics = new Analytics(Settings, rateLimiter, http);
+            Ads = new Ads(Settings, rateLimiter, http);
             Bits = new Bits(Settings, rateLimiter, http);
             Channels = new Channels(Settings, rateLimiter, http);
             ChannelPoints = new ChannelPoints(Settings, rateLimiter, http);
