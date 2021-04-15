@@ -28,5 +28,9 @@ namespace TwitchLib.Api.Helix.Models.Videos.GetVideos
         public string UserName { get; protected set; }
         [JsonProperty(PropertyName = "view_count")]
         public int ViewCount { get; protected set; }
+        [JsonProperty(PropertyName = "stream_id")]
+        public string StreamId { get; protected set; }
+        [JsonProperty(PropertyName = "muted_segments")]
+        public MutedSegment[] MutedSegments { get; protected set; }
     }
 }
