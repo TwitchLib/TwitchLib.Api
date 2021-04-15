@@ -28,5 +28,7 @@ namespace TwitchLib.Api.Helix.Models.Clips.GetClips
         public string CreatedAt { get; protected set; }
         [JsonProperty(PropertyName = "thumbnail_url")]
         public string ThumbnailUrl { get; protected set; }
+        [JsonProperty(PropertyName = "duration")]
+        public int Duration { get; protected set; }
     }
 }

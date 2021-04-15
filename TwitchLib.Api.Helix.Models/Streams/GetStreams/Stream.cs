@@ -31,5 +31,7 @@ namespace TwitchLib.Api.Helix.Models.Streams.GetStreams
         public string Language { get; protected set; }
         [JsonProperty(PropertyName = "thumbnail_url")]
         public string ThumbnailUrl { get; protected set; }
+        [JsonProperty(PropertyName = "is_mature")]
+        public bool IsMature { get; protected set; }
     }
 }

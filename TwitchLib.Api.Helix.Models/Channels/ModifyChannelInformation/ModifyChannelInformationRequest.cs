@@ -1,7 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TwitchLib.Api.Helix.Models.Channels.ModifyChannelInformation
 {
@@ -14,5 +11,7 @@ namespace TwitchLib.Api.Helix.Models.Channels.ModifyChannelInformation
         public string Title { get; set; }
         [JsonProperty(PropertyName = "broadcaster_language")]
         public string BroadcasterLanguage { get; set; }
+        [JsonProperty(PropertyName = "delay")]
+        public int Delay { get; set; }
     }
 }
