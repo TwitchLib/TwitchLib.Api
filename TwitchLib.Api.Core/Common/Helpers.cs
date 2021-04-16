@@ -102,6 +102,8 @@ namespace TwitchLib.Api.Core.Common
                     return "user:read:blocked_users";
                 case AuthScopes.Helix_User_Manage_BlockedUsers:
                     return "user:manage:blocked_users";
+                case AuthScopes.Helix_User_Read_Subscriptions:
+                    return "user:read:subscriptions";
                 default:
                     return "";
             }

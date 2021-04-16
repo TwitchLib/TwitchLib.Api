@@ -107,6 +107,8 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                     return AuthScopes.Helix_User_Read_BlockedUsers;
                 case "user:manage:blocked_users":
                     return AuthScopes.Helix_User_Manage_BlockedUsers;
+                case "user:read:subscriptions":
+                    return AuthScopes.Helix_User_Read_Subscriptions;
                 case "":
                     return AuthScopes.None;
                 default:

@@ -11,14 +11,16 @@ namespace TwitchLib.Api.Helix
         private readonly ILogger<Helix> _logger;
         public IApiSettings Settings { get; }
         public Analytics Analytics { get; }
-
+        public Ads Ads { get; }
         public Bits Bits { get; }
         public Channels Channels { get; }
         public ChannelPoints ChannelPoints { get; }
         public Clips Clips { get; }
         public Entitlements Entitlements { get; }
+        public EventSub EventSub { get; }
         public Extensions Extensions { get; }
         public Games Games { get; }
+        public HypeTrain HypeTrain { get; }
         public Moderation Moderation { get; }
         public Search Search { get; }
         public Subscriptions Subscriptions { get; }
@@ -45,13 +47,16 @@ namespace TwitchLib.Api.Helix
             Settings = settings ?? new ApiSettings();
 
             Analytics = new Analytics(Settings, rateLimiter, http);
+            Ads = new Ads(Settings, rateLimiter, http);
             Bits = new Bits(Settings, rateLimiter, http);
             Channels = new Channels(Settings, rateLimiter, http);
             ChannelPoints = new ChannelPoints(Settings, rateLimiter, http);
             Clips = new Clips(Settings, rateLimiter, http);
             Entitlements = new Entitlements(Settings, rateLimiter, http);
+            EventSub = new EventSub(Settings, rateLimiter, http);
             Extensions = new Extensions(Settings, rateLimiter, http);
             Games = new Games(Settings, rateLimiter, http);
+            HypeTrain = new HypeTrain(Settings, rateLimiter, http);
             Moderation = new Moderation(Settings, rateLimiter, http);
             Search = new Search(Settings, rateLimiter, http);
             Streams = new Streams(Settings, rateLimiter, http);

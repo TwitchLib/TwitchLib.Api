@@ -44,6 +44,7 @@
         Helix_Channel_Manage_Videos,
         Helix_User_Read_BlockedUsers,
         Helix_User_Manage_BlockedUsers,
+        Helix_User_Read_Subscriptions,
         None
     }
 }
