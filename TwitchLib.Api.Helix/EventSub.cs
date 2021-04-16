@@ -33,7 +33,7 @@ namespace TwitchLib.Api.Helix
             return TwitchPostGenericAsync<CreateEventSubSubscriptionResponse>("/eventsub/subscriptions", ApiVersion.Helix, JsonConvert.SerializeObject(body), null, accessToken, clientId);
         }
 
-        public Task<GetEventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(string status = null, string type = null, string clientId = null, string accessToken = null)
+        public Task<GetEventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(string status = null, string type = null, string after = null, string clientId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
 
@@ -41,6 +41,8 @@ namespace TwitchLib.Api.Helix
                 getParams.Add(new KeyValuePair<string, string>("status", status));
             if (!string.IsNullOrWhiteSpace(type))
                 getParams.Add(new KeyValuePair<string, string>("type", type));
+            if (!string.IsNullOrWhiteSpace(after))
+                getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetEventSubSubscriptionsResponse>("/eventsub/subscriptions", ApiVersion.Helix, getParams, accessToken, clientId);
         }
