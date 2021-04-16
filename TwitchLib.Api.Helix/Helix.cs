@@ -17,6 +17,7 @@ namespace TwitchLib.Api.Helix
         public ChannelPoints ChannelPoints { get; }
         public Clips Clips { get; }
         public Entitlements Entitlements { get; }
+        public EventSub EventSub { get; }
         public Extensions Extensions { get; }
         public Games Games { get; }
         public HypeTrain HypeTrain { get; }
@@ -52,6 +53,7 @@ namespace TwitchLib.Api.Helix
             ChannelPoints = new ChannelPoints(Settings, rateLimiter, http);
             Clips = new Clips(Settings, rateLimiter, http);
             Entitlements = new Entitlements(Settings, rateLimiter, http);
+            EventSub = new EventSub(Settings, rateLimiter, http);
             Extensions = new Extensions(Settings, rateLimiter, http);
             Games = new Games(Settings, rateLimiter, http);
             HypeTrain = new HypeTrain(Settings, rateLimiter, http);
