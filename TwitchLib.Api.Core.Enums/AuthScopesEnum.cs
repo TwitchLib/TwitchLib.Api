@@ -48,7 +48,7 @@
         Helix_Channel_Manage_Polls,
         Helix_Channel_Manage_Predictions,
         Helix_Channel_Read_Polls,
-        Helix_Channel_Read_Predictions
+        Helix_Channel_Read_Predictions,
         None
     }
 }
