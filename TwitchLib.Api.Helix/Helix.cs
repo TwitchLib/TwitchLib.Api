@@ -22,6 +22,8 @@ namespace TwitchLib.Api.Helix
         public Games Games { get; }
         public HypeTrain HypeTrain { get; }
         public Moderation Moderation { get; }
+        public Polls Polls { get; }
+        public Predictions Predictions { get; }
         public Search Search { get; }
         public Subscriptions Subscriptions { get; }
         public Streams Streams { get; }
@@ -58,6 +60,8 @@ namespace TwitchLib.Api.Helix
             Games = new Games(Settings, rateLimiter, http);
             HypeTrain = new HypeTrain(Settings, rateLimiter, http);
             Moderation = new Moderation(Settings, rateLimiter, http);
+            Polls = new Polls(Settings, rateLimiter, http);
+            Predictions = new Predictions(Settings, rateLimiter, http);
             Search = new Search(Settings, rateLimiter, http);
             Streams = new Streams(Settings, rateLimiter, http);
             Subscriptions = new Subscriptions(Settings, rateLimiter, http);
