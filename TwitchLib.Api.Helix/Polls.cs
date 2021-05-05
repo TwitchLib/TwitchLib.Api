@@ -58,7 +58,7 @@ namespace TwitchLib.Api.Helix
             json["id"] = id;
             json["status"] = status.ToString();
 
-            return TwitchPostGenericAsync<EndPollResponse>("/polls", ApiVersion.Helix, json.ToString(), accessToken: accessToken);
+            return TwitchPatchGenericAsync<EndPollResponse>("/polls", ApiVersion.Helix, json.ToString(), accessToken: accessToken);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace TwitchLib.Api.Helix.Models.Predictions.CreatePrediction
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
         [JsonProperty(PropertyName = "outcomes")]
-        public Outcome Outcomes { get; set; }
+        public Outcome[] Outcomes { get; set; }
         [JsonProperty(PropertyName = "prediction_window")]
         public int PredictionWindowSeconds { get; set; }
     }

@@ -7,7 +7,7 @@ namespace TwitchLib.Api.Core.Enums
     public enum PredictionStatusEnum
     {
         RESOLVED,
-        CANCELLED,
+        CANCELED,
         LOCKED
     }
 }
