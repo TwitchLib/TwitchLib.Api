@@ -45,6 +45,10 @@
         Helix_User_Read_BlockedUsers,
         Helix_User_Manage_BlockedUsers,
         Helix_User_Read_Subscriptions,
+        Helix_Channel_Manage_Polls,
+        Helix_Channel_Manage_Predictions,
+        Helix_Channel_Read_Polls,
+        Helix_Channel_Read_Predictions,
         None
     }
 }

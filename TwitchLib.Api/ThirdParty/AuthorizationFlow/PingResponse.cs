@@ -109,6 +109,14 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                     return AuthScopes.Helix_User_Manage_BlockedUsers;
                 case "user:read:subscriptions":
                     return AuthScopes.Helix_User_Read_Subscriptions;
+                case "channel:manage:polls":
+                    return AuthScopes.Helix_Channel_Manage_Polls;
+                case "channel:manage:predictions":
+                    return AuthScopes.Helix_Channel_Manage_Predictions;
+                case "channel:read:polls":
+                    return AuthScopes.Helix_Channel_Read_Polls;
+                case "channel:read:predictions":
+                    return AuthScopes.Helix_Channel_Read_Predictions;
                 case "":
                     return AuthScopes.None;
                 default:

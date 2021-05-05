@@ -509,6 +509,18 @@ namespace TwitchLib.Api.Core
                     case "user:read:subscriptions":
                         scopes.Add(AuthScopes.Helix_User_Read_Subscriptions);
                         break;
+                    case "channel:manage:polls":
+                        scopes.Add(AuthScopes.Helix_Channel_Manage_Polls);
+                        break;
+                    case "channel:manage:predictions":
+                        scopes.Add(AuthScopes.Helix_Channel_Manage_Predictions);
+                        break;
+                    case "channel:read:polls":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Polls);
+                        break;
+                    case "channel:read:predictions":
+                        scopes.Add(AuthScopes.Helix_Channel_Read_Predictions);
+                        break;
                 }
             }
 
