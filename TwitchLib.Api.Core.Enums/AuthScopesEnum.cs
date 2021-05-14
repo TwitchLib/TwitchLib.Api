@@ -49,6 +49,7 @@
         Helix_Channel_Manage_Predictions,
         Helix_Channel_Read_Polls,
         Helix_Channel_Read_Predictions,
+        Helix_Channel_Moderator_Manage_Automod,
         None
     }
 }
