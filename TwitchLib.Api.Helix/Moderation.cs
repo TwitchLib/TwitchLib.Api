@@ -23,7 +23,7 @@ namespace TwitchLib.Api.Helix
         {
         }
 
-        public Task ManageHeldAutoMessages(string userId, string msgId, ManageHeldAutoModMessageActionEnum action, string accessToken = null)
+        public Task ManageHeldAutoModMessages(string userId, string msgId, ManageHeldAutoModMessageActionEnum action, string accessToken = null)
         {
             if(String.IsNullOrEmpty(userId) || String.IsNullOrEmpty(msgId))
                 throw new BadParameterException("userId and msgId cannot be null and must be greater than 0 length");
