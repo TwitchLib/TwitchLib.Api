@@ -521,6 +521,9 @@ namespace TwitchLib.Api.Core
                     case "channel:read:predictions":
                         scopes.Add(AuthScopes.Helix_Channel_Read_Predictions);
                         break;
+                    case "moderator:manage:automod":
+                        scopes.Add(AuthScopes.Helix_Channel_Moderator_Manage_Automod);
+                        break;
                 }
             }
 
