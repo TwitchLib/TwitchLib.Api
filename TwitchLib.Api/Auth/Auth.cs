@@ -118,13 +118,20 @@ namespace TwitchLib.Api.Auth
         }
 
         /// <summary>
-        /// Checks the validation of the Settings.AccessToken or passed in AccessToken
+        /// Checks the validation of the Settings.AccessToken or passed in AccessToken. If invalid, a null response is returned
         /// </summary>
         /// <param name="accessToken">Optional access token to check validation on</param>
         /// <returns>ValidateAccessTokenResponse</returns>
-        public Task<ValidateAccessTokenResponse> ValidateAccessToken(string accessToken = null)
+        public async Task<ValidateAccessTokenResponse> ValidateAccessTokenAsync(string accessToken = null)
         {
-            return TwitchGetGenericAsync<ValidateAccessTokenResponse>("/oauth2/validate", ApiVersion.Void, accessToken: accessToken, customBase: "https://id.twitch.tv");
+            try
+            {
+                return await TwitchGetGenericAsync<ValidateAccessTokenResponse>("/oauth2/validate", ApiVersion.Void, accessToken: accessToken, customBase: "https://id.twitch.tv");
+            } catch(BadScopeException)
+            {
+                // BadScopeException == 401, which is surfaced when token is invalid
+                return null;
+            }
         }
     }
 }
