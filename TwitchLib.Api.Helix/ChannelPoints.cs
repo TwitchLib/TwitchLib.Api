@@ -21,7 +21,6 @@ namespace TwitchLib.Api.Helix
         #region CreateCustomRewards
         public Task<CreateCustomRewardsResponse> CreateCustomRewards(string broadcasterId, CreateCustomRewardsRequest request, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Redemptions, accessToken);
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
@@ -34,8 +33,6 @@ namespace TwitchLib.Api.Helix
         #region DeleteCustomReward
         public Task DeleteCustomReward(string broadcasterId, string rewardId, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Redemptions, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
@@ -49,8 +46,6 @@ namespace TwitchLib.Api.Helix
         #region GetCustomReward
         public Task<GetCustomRewardsResponse> GetCustomReward(string broadcasterId, List<string> rewardIds = null, bool onlyManageableRewards = false, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Redemptions, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>
                     {
                         new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
@@ -72,8 +67,6 @@ namespace TwitchLib.Api.Helix
         #region UpdateCustomReward
         public Task<UpdateCustomRewardResponse> UpdateCustomReward(string broadcasterId, string rewardId, UpdateCustomRewardRequest request, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Redemptions, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>
                     {
                         new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
@@ -87,8 +80,6 @@ namespace TwitchLib.Api.Helix
         #region GetCustomRewardRedemption
         public Task<GetCustomRewardRedemptionResponse> GetCustomRewardRedemption(string broadcasterId, string rewardId, string redemptionId = null, string status = null, string sort = null, string after = null, string first = null, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Redemptions, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>
                     {
                         new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
@@ -122,8 +113,6 @@ namespace TwitchLib.Api.Helix
         #region UpdateCustomRewardRedemption
         public Task<UpdateCustomRewardRedemptionStatusResponse> UpdateCustomRewardRedemptionStatus(string broadcasterId, string rewardId, List<string> redemptionIds, UpdateCustomRewardRedemptionStatusRequest request, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Redemptions, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>
                     {
                         new KeyValuePair<string, string>("broadcaster_id", broadcasterId),

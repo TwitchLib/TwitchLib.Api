@@ -33,8 +33,6 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetBitsLeaderboardResponse> GetBitsLeaderboardAsync(int count = 10, BitsLeaderboardPeriodEnum period = BitsLeaderboardPeriodEnum.All, DateTime? startedAt = null, string userid = null, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Bits_Read, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>
                     {
                         new KeyValuePair<string, string>("count", count.ToString())

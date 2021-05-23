@@ -21,8 +21,6 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetPredictionsResponse> GetPredictions(string broadcasterId, List<string> ids = null, string after = null, int first = 20, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Read_Predictions, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
@@ -44,15 +42,11 @@ namespace TwitchLib.Api.Helix
 
         public Task<CreatePredictionResponse> CreatePrediction(CreatePredictionRequest request, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Predictions, accessToken);
-
             return TwitchPostGenericAsync<CreatePredictionResponse>("/predictions", ApiVersion.Helix, JsonConvert.SerializeObject(request), accessToken: accessToken);
         }
 
         public Task<EndPredictionResponse> EndPrediction(string broadcasterId, string id, PredictionStatusEnum status, string winningOutcomeId = null, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Predictions, accessToken);
-
             JObject json = new JObject();
             json["broadcaster_id"] = broadcasterId;
             json["id"] = id;

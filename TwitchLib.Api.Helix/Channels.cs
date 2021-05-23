@@ -31,7 +31,6 @@ namespace TwitchLib.Api.Helix
         #region ModifyChannelInformation
         public Task ModifyChannelInformationAsync(string broadcasterId, ModifyChannelInformationRequest request, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Broadcast, accessToken);
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
@@ -44,7 +43,6 @@ namespace TwitchLib.Api.Helix
         #region GetChannelEditors
         public Task<GetChannelEditorsResponse> GetChannelEditorsAsync(string broadcasterId, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Read_Editors, accessToken);
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId)

@@ -77,7 +77,6 @@ namespace TwitchLib.Api.V5
 
         public Task<FollowedVideos> GetFollowedVideosAsync(int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Read, authToken);
             var getParams = new List<KeyValuePair<string, string>>();
             if (limit.HasValue)
                 getParams.Add(new KeyValuePair<string, string>("limit", limit.Value.ToString()));
@@ -113,7 +112,6 @@ namespace TwitchLib.Api.V5
 
         public async Task<UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Viewable viewable = Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Channel_Editor, accessToken);
             var listing = await CreateVideoAsync(channelId, title, description, game, language, tagList, viewable, viewableAt);
             UploadVideoParts(videoPath, listing.Upload);
             await CompleteVideoUploadAsync(listing.Upload, accessToken);
@@ -127,7 +125,6 @@ namespace TwitchLib.Api.V5
 
         public Task<Video> UpdateVideoAsync(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
             if (string.IsNullOrWhiteSpace(videoId))
                 throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -152,7 +149,6 @@ namespace TwitchLib.Api.V5
 
         public Task DeleteVideoAsync(string videoId, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
             if (string.IsNullOrWhiteSpace(videoId))
                 throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 

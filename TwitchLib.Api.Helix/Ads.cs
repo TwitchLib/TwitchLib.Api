@@ -19,8 +19,6 @@ namespace TwitchLib.Api.Helix
         #region StartCommercial
         public Task<StartCommercialResponse> StartCommercial(StartCommercialRequest request, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Edit_Commercial, accessToken);
-
             return TwitchPostGenericAsync<StartCommercialResponse>("/channels/commercial", ApiVersion.Helix, JsonConvert.SerializeObject(request), null, accessToken);
         }
         #endregion

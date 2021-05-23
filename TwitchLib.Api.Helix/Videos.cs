@@ -18,8 +18,6 @@ namespace TwitchLib.Api.Helix
 
         public Task<DeleteVideosResponse> DeleteVideosAsync(List<string> videoIds, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Videos, accessToken);
-
             if (videoIds.Count > 5)
                 throw new BadParameterException($"Maximum of 5 video ids allowed per request (you passed {videoIds.Count})");
 
