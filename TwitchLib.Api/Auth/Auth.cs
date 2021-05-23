@@ -116,5 +116,15 @@ namespace TwitchLib.Api.Auth
 
             return TwitchPostGenericAsync<AuthCodeResponse>("/oauth2/token", ApiVersion.V5, null, getParams, customBase: "https://id.twitch.tv");
         }
+
+        /// <summary>
+        /// Checks the validation of the Settings.AccessToken or passed in AccessToken
+        /// </summary>
+        /// <param name="accessToken">Optional access token to check validation on</param>
+        /// <returns>ValidateAccessTokenResponse</returns>
+        public Task<ValidateAccessTokenResponse> ValidateAccessToken(string accessToken = null)
+        {
+            return TwitchGetGenericAsync<ValidateAccessTokenResponse>("/oauth2/validate", ApiVersion.Void, accessToken: accessToken, customBase: "https://id.twitch.tv");
+        }
     }
 }
