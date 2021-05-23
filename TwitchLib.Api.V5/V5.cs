@@ -10,7 +10,6 @@ namespace TwitchLib.Api.V5
     {
         private readonly ILogger<V5> _logger;
         public IApiSettings Settings { get; }
-        public Auth Auth { get; }
         public Badges Badges { get; }
         public Bits Bits { get; }
         public Channels Channels { get; }
@@ -41,7 +40,6 @@ namespace TwitchLib.Api.V5
             http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             Settings = settings ?? new ApiSettings();
 
-            Auth = new Auth(Settings, rateLimiter, http);
             Badges = new Badges(Settings, rateLimiter, http);
             Bits = new Bits(Settings, rateLimiter, http);
             Channels = new Channels(Settings, rateLimiter, http);
