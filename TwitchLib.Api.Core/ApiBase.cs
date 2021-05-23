@@ -364,7 +364,7 @@ namespace TwitchLib.Api.Core
             try
             {
                 var resp = GetRootAsync(accessToken).GetAwaiter().GetResult();
-                if (resp.Token == null) return null;
+                if (resp.Token == null || !resp.Token.Valid) return null;
 
                 return BuildScopesList(resp.Token);
 
