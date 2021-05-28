@@ -21,8 +21,6 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetPollsResponse> GetPolls(string broadcasterId, List<string> ids = null, string after = null, int first = 20, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Read_Polls, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>
             { 
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
@@ -44,15 +42,11 @@ namespace TwitchLib.Api.Helix
 
         public Task<CreatePollResponse> CreatePoll(CreatePollRequest request, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Polls, accessToken);
-
             return TwitchPostGenericAsync<CreatePollResponse>("/polls", ApiVersion.Helix, JsonConvert.SerializeObject(request), accessToken: accessToken);
         }
 
         public Task<EndPollResponse> EndPoll(string broadcasterId, string id, PollStatusEnum status, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Manage_Polls, accessToken);
-
             JObject json = new JObject();
             json["broadcaster_id"] = broadcasterId;
             json["id"] = id;

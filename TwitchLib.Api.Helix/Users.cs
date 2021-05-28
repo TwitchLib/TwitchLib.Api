@@ -25,8 +25,6 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetUserBlockListResponse> GetUserBlockListAsync(string broadcasterId, int first = 20, string after = null, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_User_Read_BlockedUsers, accessToken);
-
             if (first > 100)
                 throw new BadParameterException($"Maximum allowed objects is 100 (you passed {first})");
 
@@ -41,8 +39,6 @@ namespace TwitchLib.Api.Helix
 
         public Task BlockUserAsync(string targetUserId, BlockUserSourceContextEnum? sourceContext = null, BlockUserReasonEnum? reason = null, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_User_Manage_BlockedUsers, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>();
             getParams.Add(new KeyValuePair<string, string>("target_user_id", targetUserId));
             if (sourceContext != null)
@@ -55,8 +51,6 @@ namespace TwitchLib.Api.Helix
 
         public Task UnblockUserAsync(string targetUserId, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_User_Manage_BlockedUsers, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>();
             getParams.Add(new KeyValuePair<string, string>("target_user_id", targetUserId));
 
@@ -125,8 +119,6 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetUserActiveExtensionsResponse> UpdateUserExtensionsAsync(IEnumerable<ExtensionSlot> userExtensionStates, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
-
             var panels = new Dictionary<string, UserExtensionState>();
             var overlays = new Dictionary<string, UserExtensionState>();
             var components = new Dictionary<string, UserExtensionState>();
@@ -177,8 +169,6 @@ namespace TwitchLib.Api.Helix
                 throw new BadParameterException("to_id must be set");
             }
 
-            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Follows, authToken);
-
             var json = new JObject();
 
             json.Add(new JProperty("from_id", from_id));
@@ -205,8 +195,6 @@ namespace TwitchLib.Api.Helix
             {
                 throw new BadParameterException("to_id must be set");
             }
-
-            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Follows, authToken);
 
             var getParams = new List<KeyValuePair<string, string>>();
 
