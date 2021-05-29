@@ -13,6 +13,7 @@ namespace TwitchLib.Api.Helix
         public Analytics Analytics { get; }
         public Ads Ads { get; }
         public Bits Bits { get; }
+        public Chat Chat { get; }
         public Channels Channels { get; }
         public ChannelPoints ChannelPoints { get; }
         public Clips Clips { get; }
@@ -51,6 +52,7 @@ namespace TwitchLib.Api.Helix
             Analytics = new Analytics(Settings, rateLimiter, http);
             Ads = new Ads(Settings, rateLimiter, http);
             Bits = new Bits(Settings, rateLimiter, http);
+            Chat = new Chat(Settings, rateLimiter, http);
             Channels = new Channels(Settings, rateLimiter, http);
             ChannelPoints = new ChannelPoints(Settings, rateLimiter, http);
             Clips = new Clips(Settings, rateLimiter, http);
