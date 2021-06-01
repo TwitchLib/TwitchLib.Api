@@ -9,7 +9,7 @@ namespace TwitchLib.Api.Helix.Models.ChannelPoints
     {
         [JsonProperty(PropertyName = "is_enabled")]
         public bool IsEnabled { get; protected set; }
-        [JsonProperty(PropertyName = "max_per_stream")]
+        [JsonProperty(PropertyName = "value")]
         public int MaxPerStream { get; protected set; }
     }
 }
