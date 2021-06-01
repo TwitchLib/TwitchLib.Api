@@ -6,7 +6,6 @@ using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.V5.Models.Channels;
-using TwitchLib.Api.V5.Models.Communities;
 using TwitchLib.Api.V5.Models.Subscriptions;
 
 namespace TwitchLib.Api.V5
@@ -79,7 +78,6 @@ namespace TwitchLib.Api.V5
         /// <returns>A Channel object with the newly changed properties.</returns>
         public Task<Channel> UpdateChannelAsync(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Broadcast, authToken);
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -125,7 +123,6 @@ namespace TwitchLib.Api.V5
         /// <returns>A ChannelEditors object that contains an array of the Users which are Editor of the channel.</returns>
         public Task<ChannelEditors> GetChannelEditorsAsync(string channelId, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Channel_Read, authToken);
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -200,9 +197,12 @@ namespace TwitchLib.Api.V5
                 await Task.Delay(1000);
             }
 
-            // get leftover subs
-            var leftOverFollowersRequest = await GetChannelFollowersAsync(channelId, leftOverFollowers, cursor: cursor).ConfigureAwait(false);
-            followers.AddRange(leftOverFollowersRequest.Follows.OfType<ChannelFollow>().ToList());
+			// get leftover followers
+            if (leftOverFollowers > 0)
+			{
+				var leftOverFollowersRequest = await GetChannelFollowersAsync(channelId, leftOverFollowers, cursor: cursor).ConfigureAwait(false);
+				followers.AddRange(leftOverFollowersRequest.Follows.OfType<ChannelFollow>().ToList());
+			}
 
             return followers;
         }
@@ -240,7 +240,6 @@ namespace TwitchLib.Api.V5
         /// <returns></returns>
         public Task<ChannelSubscribers> GetChannelSubscribersAsync(string channelId, int? limit = null, int? offset = null, string direction = null, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Channel_Subscriptions, authToken);
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -268,7 +267,6 @@ namespace TwitchLib.Api.V5
         /// <returns></returns>
         public async Task<List<Subscription>> GetAllSubscribersAsync(string channelId, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Channel_Subscriptions, accessToken);
             // initial stuffs
             var allSubs = new List<Subscription>();
             var firstBatch = await GetChannelSubscribersAsync(channelId, 100, 0, "asc", accessToken);
@@ -294,8 +292,11 @@ namespace TwitchLib.Api.V5
             }
 
             // get leftover subs
-            var leftOverSubsRequest = await GetChannelSubscribersAsync(channelId, leftOverSubs, currentOffset, "asc", accessToken).ConfigureAwait(false);
-            allSubs.AddRange(leftOverSubsRequest.Subscriptions);
+            if (leftOverSubs > 0)
+            {
+                var leftOverSubsRequest = await GetChannelSubscribersAsync(channelId, leftOverSubs, currentOffset, "asc", accessToken).ConfigureAwait(false);
+                allSubs.AddRange(leftOverSubsRequest.Subscriptions);
+            }
 
             return allSubs;
         }
@@ -321,7 +322,6 @@ namespace TwitchLib.Api.V5
         /// <returns>Returns a subscription object or null if not subscribed.</returns>
         public Task<Subscription> CheckChannelSubscriptionByUserAsync(string channelId, string userId, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Channel_Check_Subscription, authToken);
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -375,7 +375,6 @@ namespace TwitchLib.Api.V5
 
         public Task<ChannelCommercial> StartChannelCommercialAsync(string channelId, CommercialLength duration, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Channel_Commercial, authToken);
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
@@ -406,101 +405,11 @@ namespace TwitchLib.Api.V5
         /// </returns>
         public Task<ChannelAuthed> ResetChannelStreamKeyAsync(string channelId, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Channel_Stream, authToken);
             if (string.IsNullOrWhiteSpace(channelId))
                 throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
-            return TwitchDeleteGenericAsync<ChannelAuthed>($"/channels/{channelId}/stream_key", ApiVersion.V5, authToken);
+            return TwitchDeleteGenericAsync<ChannelAuthed>($"/channels/{channelId}/stream_key", ApiVersion.V5, new List<KeyValuePair<string, string>> { }, authToken);
         }
-
-        #endregion
-
-        #region Communities
-
-        #region GetChannelCommunity
-
-        /// <summary>
-        ///     <para>[ASYNC] Gets the community for a specified channel.</para>
-        ///     <para>Required Authentication Scope: channel_editor</para>
-        /// </summary>
-        /// <param name="channelId">The specified channel ID to get the community from.</param>
-        /// <param name="authToken"></param>
-        /// <returns>A Community object that represents the community the channel is in.</returns>
-        public Task<Community> GetChannelCommunityAsync(string channelId, string authToken = null)
-        {
-            if (string.IsNullOrWhiteSpace(channelId))
-                throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-
-            return TwitchGetGenericAsync<Community>($"/channels/{channelId}/community", ApiVersion.V5, accessToken: authToken);
-        }
-
-        #endregion
-
-        #region GetChannelCommunities
-
-        public Task<CommunitiesResponse> GetChannelCommunitiesAsync(string channelId, string authToken = null)
-        {
-            if (string.IsNullOrEmpty(channelId))
-                throw new BadParameterException("The channel id is not valid. It is now allowed to be null, empty or filled with whitespaces.");
-
-            return TwitchGetGenericAsync<CommunitiesResponse>($"/channels/{channelId}/communities", ApiVersion.V5, accessToken: authToken);
-        }
-
-        #endregion
-
-        #region SetChannelCommunities
-
-        /// <summary>
-        ///     <para>[ASYNC]Sets a specified channel to be in a specified communities.</para>
-        ///     <para>Required Authentication Scope: channel_editor</para>
-        /// </summary>
-        /// <param name="channelId">The specified channel to set the community for.</param>
-        /// <param name="communityIds">The specified communities to set the channel to be a part of.</param>
-        /// <param name="authToken"></param>
-        public Task SetChannelCommunitiesAsync(string channelId, List<string> communityIds, string authToken = null)
-        {
-            DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
-            if (string.IsNullOrWhiteSpace(channelId))
-                throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-
-            if (communityIds == null || communityIds.Count == 0)
-                throw new BadParameterException("The no community ids where specified");
-
-            if (communityIds != null && communityIds.Count > 3)
-                throw new BadParameterException("You can only set up to 3 communities");
-
-            if (communityIds.Any(string.IsNullOrWhiteSpace))
-                throw new BadParameterException("One or more of the community ids is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-
-            var payload = "";
-            foreach (var communityId in communityIds)
-                if (payload == "")
-                    payload = $"\"{communityId}\"";
-                else
-                    payload += $", \"{communityId}\"";
-
-            payload = $"{{\"community_ids\": [{payload}]}}";
-            return TwitchPutAsync($"/channels/{channelId}/communities", ApiVersion.V5, payload, accessToken: authToken);
-        }
-
-        #endregion
-
-        #region DeleteChannelFromCommunity
-
-        /// <summary>
-        ///     [ASYNC] Deletes a specified channel from its community.
-        /// </summary>
-        /// <param name="channelId">The specified channel to be removed.</param>
-        /// <param name="authToken"></param>
-        public Task DeleteChannelFromCommunityAsync(string channelId, string authToken = null)
-        {
-            if (string.IsNullOrWhiteSpace(channelId))
-                throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-
-            return TwitchDeleteAsync($"/channels/{channelId}/community", ApiVersion.V5, accessToken: authToken);
-        }
-
-        #endregion
 
         #endregion
     }

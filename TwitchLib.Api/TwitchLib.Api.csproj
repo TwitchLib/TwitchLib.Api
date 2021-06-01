@@ -3,26 +3,26 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Api</PackageId>
-    <VersionPrefix>3.1.4</VersionPrefix>
+    <VersionPrefix>3.2.4</VersionPrefix>
     <VersionSuffix>$(VersionSuffix)</VersionSuffix>
-    <Description>Api component of TwitchLib. This component allows you to access the Twitch API using both authenticated and unauthenticated calls, as well as undocumented and third party APIs.</Description>
+    <Description>Api component of TwitchLib. This component allows you to access the Twitch API, as well as undocumented and third party APIs.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>swiftyspiffy, Prom3theu5, Syzuna, LuckyNoS7evin</Authors>
     <Company></Company>
     <PackageIcon>twitchlib.png</PackageIcon>
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright 2018</Copyright>
-    <PackageReleaseNotes>Clips model updated. VIP support for GetChatters call. Channel Editor added for third party auth flow in StringToScope</PackageReleaseNotes>
+    <Copyright>Copyright 2021</Copyright>
+    <PackageReleaseNotes>Incremental Changes</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>3.1.4</AssemblyVersion>
-    <FileVersion>3.1.4</FileVersion>
+    <AssemblyVersion>3.2.4</AssemblyVersion>
+    <FileVersion>3.2.4</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup>

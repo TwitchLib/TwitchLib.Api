@@ -24,6 +24,9 @@ namespace TwitchLib.Api.Core
         internal const string BaseHelix = "https://api.twitch.tv/helix";
         internal const string BaseOauthToken = "https://id.twitch.tv/oauth2/token";
 
+        private DateTime? _serverBasedAccessTokenExpiry;
+        private string _serverBasedAccessToken;
+
         public ApiBase(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
             Settings = settings;
@@ -32,45 +35,6 @@ namespace TwitchLib.Api.Core
             _jsonSerializer = new TwitchLibJsonSerializer();
         }
 
-        /// <summary>
-        /// Checks the ClientId and AccessToken against the Twitch Api Endpoints 
-        /// </summary>
-        /// <returns>CredentialCheckResponseModel with a success boolean and message</returns>
-        public Task<CredentialCheckResponseModel> CheckCredentialsAsync()
-        {
-            var message = "Check successful";
-            var failMessage = "";
-            var result = true;
-            if (!string.IsNullOrWhiteSpace(Settings.ClientId) && !ValidClientId(Settings.ClientId))
-            {
-                result = false;
-                failMessage = "The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new";
-            }
-
-            if (!string.IsNullOrWhiteSpace(Settings.AccessToken) && ValidAccessToken(Settings.AccessToken) == null)
-            {
-                result = false;
-                failMessage += "The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/";
-            }
-
-            return Task.FromResult(new CredentialCheckResponseModel { Result = result, ResultMessage = result ? message : failMessage });
-        }
-
-        public void DynamicScopeValidation(AuthScopes requiredScope, string accessToken = null)
-        {
-            //Skip validation if skip is set or access token is null
-            if (Settings.SkipDynamicScopeValidation || string.IsNullOrWhiteSpace(accessToken)) return;
-
-            //set the scopes based on access token
-            Settings.Scopes = ValidAccessToken(accessToken);
-            //skip if no scopes
-            if (Settings.Scopes == null)
-                throw new InvalidCredentialException($"The current access token does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: IApiSettings.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
-
-            if ((!Settings.Scopes.Contains(requiredScope) && requiredScope != AuthScopes.Any) || (requiredScope == AuthScopes.Any && Settings.Scopes.Any(x=>x == AuthScopes.None)))
-                throw new InvalidCredentialException($"The current access token ({String.Join(",", Settings.Scopes)}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: IApiSettings.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
-        }
-        
         internal virtual Task<Models.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
         {
             return TwitchGetGenericAsync<Models.Root.Root>("", ApiVersion.V5, accessToken: authToken, clientId: clientId);
@@ -83,7 +47,12 @@ namespace TwitchLib.Api.Core
             if (!string.IsNullOrEmpty(Settings.AccessToken))
                 return Settings.AccessToken;
             if (!string.IsNullOrEmpty(Settings.Secret) && !string.IsNullOrEmpty(Settings.ClientId) && !Settings.SkipAutoServerTokenGeneration)
-                return GenerateServerBasedAccessToken();
+            {
+                if (_serverBasedAccessTokenExpiry == null || _serverBasedAccessTokenExpiry - TimeSpan.FromMinutes(1) < DateTime.Now)
+                    return GenerateServerBasedAccessToken();
+                else
+                    return _serverBasedAccessToken;
+            }
 
             return null;
         }
@@ -95,7 +64,9 @@ namespace TwitchLib.Api.Core
             {
                 var user = JsonConvert.DeserializeObject<dynamic>(result.Value);
                 var offset = (int)user.expires_in;
-                return (string)user.access_token;
+                _serverBasedAccessTokenExpiry = DateTime.Now + TimeSpan.FromSeconds(offset);
+                _serverBasedAccessToken = (string)user.access_token;
+                return _serverBasedAccessToken;
             }
             return null;
         }
@@ -120,6 +91,32 @@ namespace TwitchLib.Api.Core
             ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
 
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "GET", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
+        }
+
+        protected Task<T> TwitchPatchGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
+        {
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
+
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+
+            accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
+
+            return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "PATCH", payload, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
+        }
+
+        protected Task<string> TwitchPatchAsync(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
+        {
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
+
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+                clientId = Settings.ClientId;
+
+            accessToken = GetAccessToken(accessToken);
+            ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
+
+            return _rateLimiter.Perform(async () => await Task.Run(() => _http.GeneralRequest(url, "PATCH", payload, api, clientId, accessToken).Value).ConfigureAwait(false));
         }
 
         protected Task<string> TwitchDeleteAsync(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
@@ -161,9 +158,9 @@ namespace TwitchLib.Api.Core
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "POST", model != null ? _jsonSerializer.SerializeObject(model) : "", api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
 
-        protected Task<T> TwitchDeleteGenericAsync<T>(string resource, ApiVersion api, string accessToken = null, string clientId = null, string customBase = null)
+        protected Task<T> TwitchDeleteGenericAsync<T>(string resource, ApiVersion api, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
-            var url = ConstructResourceUrl(resource, null, api, customBase);
+            var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
                 clientId = Settings.ClientId;
@@ -174,7 +171,7 @@ namespace TwitchLib.Api.Core
             return _rateLimiter.Perform(async () => await Task.Run(() => JsonConvert.DeserializeObject<T>(_http.GeneralRequest(url, "DELETE", null, api, clientId, accessToken).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false));
         }
 
-        protected Task<T> TwitchPutGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
+        protected Task<T> TwitchPutGenericAsync<T>(string resource, ApiVersion api, string payload = null, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
@@ -308,138 +305,6 @@ namespace TwitchLib.Api.Core
                     return propertyName.ToLower();
                 }
             }
-        }
-
-        private bool ValidClientId(string clientId)
-        {
-            try
-            {
-                var result = GetRootAsync(null, clientId).GetAwaiter().GetResult();
-                return result.Token != null;
-            }
-            catch (BadRequestException)
-            {
-                return false;
-            }
-        }
-
-        private List<AuthScopes> ValidAccessToken(string accessToken)
-        {
-            try
-            {
-                var resp = GetRootAsync(accessToken).GetAwaiter().GetResult();
-                if (resp.Token == null) return null;
-
-                return BuildScopesList(resp.Token);
-
-
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        private static List<AuthScopes> BuildScopesList(Models.Root.RootToken token)
-        {
-            var scopes = new List<AuthScopes>();
-            foreach (var scope in token.Auth.Scopes)
-            {
-                switch (scope)
-                {
-                    case "channel_check_subscription":
-                        scopes.Add(AuthScopes.Channel_Check_Subscription);
-                        break;
-                    case "channel_commercial":
-                        scopes.Add(AuthScopes.Channel_Commercial);
-                        break;
-                    case "channel_editor":
-                        scopes.Add(AuthScopes.Channel_Editor);
-                        break;
-                    case "channel_feed_edit":
-                        scopes.Add(AuthScopes.Channel_Feed_Edit);
-                        break;
-                    case "channel_feed_read":
-                        scopes.Add(AuthScopes.Channel_Feed_Read);
-                        break;
-                    case "channel_read":
-                        scopes.Add(AuthScopes.Channel_Read);
-                        break;
-                    case "channel_stream":
-                        scopes.Add(AuthScopes.Channel_Stream);
-                        break;
-                    case "channel_subscriptions":
-                        scopes.Add(AuthScopes.Channel_Subscriptions);
-                        break;
-                    case "chat_login":
-                        scopes.Add(AuthScopes.Chat_Login);
-                        break;
-                    case "collections_edit":
-                        scopes.Add(AuthScopes.Collections_Edit);
-                        break;
-                    case "communities_edit":
-                        scopes.Add(AuthScopes.Communities_Edit);
-                        break;
-                    case "communities_moderate":
-                        scopes.Add(AuthScopes.Communities_Moderate);
-                        break;
-                    case "user_blocks_edit":
-                        scopes.Add(AuthScopes.User_Blocks_Edit);
-                        break;
-                    case "user_blocks_read":
-                        scopes.Add(AuthScopes.User_Blocks_Read);
-                        break;
-                    case "user_follows_edit":
-                        scopes.Add(AuthScopes.User_Follows_Edit);
-                        break;
-                    case "user_read":
-                        scopes.Add(AuthScopes.User_Read);
-                        break;
-                    case "user_subscriptions":
-                        scopes.Add(AuthScopes.User_Subscriptions);
-                        break;
-                    case "openid":
-                        scopes.Add(AuthScopes.OpenId);
-                        break;
-                    case "viewing_activity_read":
-                        scopes.Add(AuthScopes.Viewing_Activity_Read);
-                        break;
-                    case "user:edit":
-                        scopes.Add(AuthScopes.Helix_User_Edit);
-                        break;
-                    case "user:edit:broadcast":
-                        scopes.Add(AuthScopes.Helix_User_Edit_Broadcast);
-                        break;
-                    case "user:read:broadcast":
-                        scopes.Add(AuthScopes.Helix_User_Read_Broadcast);
-                        break;
-                    case "user:read:email":
-                        scopes.Add(AuthScopes.Helix_User_Read_Email);
-                        break;
-                    case "clips:edit":
-                        scopes.Add(AuthScopes.Helix_Clips_Edit);
-                        break;
-                    case "bits:read":
-                        scopes.Add(AuthScopes.Helix_Bits_Read);
-                        break;
-                    case "analytics:read:games":
-                        scopes.Add(AuthScopes.Helix_Analytics_Read_Games);
-                        break;
-                    case "analytics:read:extensions":
-                        scopes.Add(AuthScopes.Helix_Analytics_Read_Extensions);
-                        break;
-                    case "channel:read:subscriptions":
-                        scopes.Add(AuthScopes.Helix_Channel_Read_Subscriptions);
-                        break;
-                    case "moderation:read":
-                        scopes.Add(AuthScopes.Helix_Moderation_Read);
-                        break;
-                }
-            }
-
-            if (scopes.Count == 0)
-                scopes.Add(AuthScopes.None);
-            return scopes;
         }
 
         private string ConstructResourceUrl(string resource = null, List<KeyValuePair<string, string>> getParams = null, ApiVersion api = ApiVersion.V5, string overrideUrl = null)

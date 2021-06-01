@@ -58,26 +58,52 @@ namespace TwitchLib.Api.Core.Common
                     return "viewing_activity_read";
                 case AuthScopes.OpenId:
                     return "openid";
-                case AuthScopes.Helix_User_Edit:
-                    return "user:edit";
-                case AuthScopes.Helix_User_Read_Email:
-                    return "user:read:email";
-                case AuthScopes.Helix_Clips_Edit:
-                    return "clips:edit";
-                case AuthScopes.Helix_Analytics_Read_Games:
-                    return "analytics:read:games";
-                case AuthScopes.Helix_Analytics_Read_Extensions:
-                    return "analytics:read:extensions";
-                case AuthScopes.Helix_Bits_Read:
-                    return "bits:read";
                 case AuthScopes.Helix_User_Edit_Broadcast:
                     return "user:edit:broadcast";
-                case AuthScopes.Helix_User_Read_Broadcast:
-                    return "user:read:broadcast";
-                case AuthScopes.Helix_Channel_Read_Subscriptions:
-                    return "channel:read:subscriptions";
+                case AuthScopes.Helix_Analytics_Read_Extensions:
+                    return "analytics:read:extensions";
+                case AuthScopes.Helix_Analytics_Read_Games:
+                    return "analytics:read:games";
+                case AuthScopes.Helix_Bits_Read:
+                    return "bits:read";
+                case AuthScopes.Helix_Channel_Edit_Commercial:
+                    return "channel:edit:commercial";
+                case AuthScopes.Helix_Channel_Manage_Broadcast:
+                    return "channel:manage:broadcast";
+                case AuthScopes.Helix_Channel_Manage_Extensions:
+                    return "channel:manage:extensions";
+                case AuthScopes.Helix_Channel_Manage_Redemptions:
+                    return "channel:manage:redemptions";
                 case AuthScopes.Helix_Channel_Read_Hype_Train:
                     return "channel:read:hype_train";
+                case AuthScopes.Helix_Channel_Read_Redemptions:
+                    return "channel:read:redemptions";
+                case AuthScopes.Helix_Channel_Read_Stream_Key:
+                    return "channel:read:stream_key";
+                case AuthScopes.Helix_Channel_Read_Subscriptions:
+                    return "channel:read:subscriptions";
+                case AuthScopes.Helix_Clips_Edit:
+                    return "clips:edit";
+                case AuthScopes.Helix_Moderation_Read:
+                    return "moderation:read";
+                case AuthScopes.Helix_User_Edit:
+                    return "user:edit";
+                case AuthScopes.Helix_User_Edit_Follows:
+                    return "user:edit:follows";
+                case AuthScopes.Helix_User_Read_Broadcast:
+                    return "user:read:broadcast";
+                case AuthScopes.Helix_User_Read_Email:
+                    return "user:read:email";
+                case AuthScopes.Helix_Channel_Read_Editors:
+                    return "channel:read:editors";
+                case AuthScopes.Helix_Channel_Manage_Videos:
+                    return "channel:manage:videos";
+                case AuthScopes.Helix_User_Read_BlockedUsers:
+                    return "user:read:blocked_users";
+                case AuthScopes.Helix_User_Manage_BlockedUsers:
+                    return "user:manage:blocked_users";
+                case AuthScopes.Helix_User_Read_Subscriptions:
+                    return "user:read:subscriptions";
                 default:
                     return "";
             }

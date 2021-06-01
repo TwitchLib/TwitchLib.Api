@@ -10,14 +10,12 @@ namespace TwitchLib.Api.V5
     {
         private readonly ILogger<V5> _logger;
         public IApiSettings Settings { get; }
-        public Auth Auth { get; }
         public Badges Badges { get; }
         public Bits Bits { get; }
         public Channels Channels { get; }
         public Chat Chat { get; }
         public Clips Clips { get; }
         public Collections Collections { get; }
-        public Communities Communities { get; }
         public Games Games { get; }
         public Ingests Ingests { get; }
         public Root Root { get; }
@@ -42,14 +40,12 @@ namespace TwitchLib.Api.V5
             http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             Settings = settings ?? new ApiSettings();
 
-            Auth = new Auth(Settings, rateLimiter, http);
             Badges = new Badges(Settings, rateLimiter, http);
             Bits = new Bits(Settings, rateLimiter, http);
             Channels = new Channels(Settings, rateLimiter, http);
             Chat = new Chat(Settings, rateLimiter, http);
             Clips = new Clips(Settings, rateLimiter, http);
             Collections = new Collections(Settings, rateLimiter, http);
-            Communities = new Communities(Settings, rateLimiter, http);
             Games = new Games(Settings, rateLimiter, http);
             Ingests = new Ingests(Settings, rateLimiter, http);
             Root = new Root(Settings, rateLimiter, http);

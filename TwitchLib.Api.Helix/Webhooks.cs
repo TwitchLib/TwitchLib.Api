@@ -98,7 +98,6 @@ namespace TwitchLib.Api.Helix
 
         public Task<bool> GameAnalyticsAsync(string callbackUrl, WebhookCallMode mode, string gameId, TimeSpan? duration = null, string signingSecret = null, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Analytics_Read_Games, authToken);
             var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
 
             return PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/analytics/games?game_id={gameId}", callbackUrl, leaseSeconds, signingSecret);

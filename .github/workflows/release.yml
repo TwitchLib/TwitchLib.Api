@@ -1,0 +1,32 @@
+name: Release Nuget Package
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  release:
+   if: "contains(toJSON(github.event.commits.*.message), '[Release]')"
+   runs-on: ubuntu-latest
+
+   steps:
+   - uses: actions/checkout@v2
+   - name: Setup .NET
+     uses: actions/setup-dotnet@v1
+     with:
+       dotnet-version: 5.0.x
+   - name: Restore dependencies
+     run: dotnet restore
+   - name: Build TwitchLib.Api
+     run: dotnet build -c Release --no-restore
+   - name: Pack TwitchLib.Api
+     run: dotnet pack TwitchLib.Api.sln -v normal -c Release -o nugets --no-build
+   - name: Push to Nuget
+     run: dotnet nuget push "./nugets/*.nupkg" -k ${{ secrets.API_NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
+   - name: Send Discord Notification
+     uses: sarisia/actions-status-discord@v1
+     if: always()
+     with:
+       webhook: ${{ secrets.DISCORD_WEBHOOK }}
+       title: "Release Nuget Package"
+       username: "TwitchLib Deploy"

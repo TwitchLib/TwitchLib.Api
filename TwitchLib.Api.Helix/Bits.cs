@@ -15,12 +15,24 @@ namespace TwitchLib.Api.Helix
         {
         }
 
+        #region GetCheermotes
+        public Task<GetCheermotesResponse> GetCheermotes(string broadcasterId = null, string accessToken = null)
+        {
+            var getParams = new List<KeyValuePair<string, string>>();
+            if (broadcasterId != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
+            }
+
+            return TwitchGetGenericAsync<GetCheermotesResponse>("/bits/cheermotes", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
+
         #region GetBitsLeaderboard
 
         public Task<GetBitsLeaderboardResponse> GetBitsLeaderboardAsync(int count = 10, BitsLeaderboardPeriodEnum period = BitsLeaderboardPeriodEnum.All, DateTime? startedAt = null, string userid = null, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Bits_Read, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>
                     {
                         new KeyValuePair<string, string>("count", count.ToString())
