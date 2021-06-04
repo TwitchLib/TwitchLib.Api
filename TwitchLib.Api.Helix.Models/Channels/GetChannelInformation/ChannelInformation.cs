@@ -1,7 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TwitchLib.Api.Helix.Models.Channels.GetChannelInformation
 {
@@ -19,5 +16,7 @@ namespace TwitchLib.Api.Helix.Models.Channels.GetChannelInformation
         public string GameName { get; protected set; }
         [JsonProperty(PropertyName = "title")]
         public string Title { get; protected set; }
+        [JsonProperty(PropertyName = "delay")]
+        public int Delay { get; protected set; }
     }
 }
