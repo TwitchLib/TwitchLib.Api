@@ -2,7 +2,7 @@
 
 namespace TwitchLib.Api.Helix.Models.Chat.Badges
 {
-    public class Version
+    public class BadgeVersion
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; protected set; }
