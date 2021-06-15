@@ -1,11 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace TwitchLib.Api.Helix.Models.Chat
+namespace TwitchLib.Api.Helix.Models.Chat.Badges
 {
-    public class Version
+    public class BadgeVersion
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; protected set; }
