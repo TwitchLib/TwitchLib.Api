@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Interfaces;
-using TwitchLib.Api.Helix.Models.Chat.GetChannelChatBadges;
-using TwitchLib.Api.Helix.Models.Chat.GetGlobalChatBadges;
+using TwitchLib.Api.Helix.Models.Chat.Badges.GetChannelChatBadges;
+using TwitchLib.Api.Helix.Models.Chat.Badges.GetGlobalChatBadges;
 
 namespace TwitchLib.Api.Helix
 {
