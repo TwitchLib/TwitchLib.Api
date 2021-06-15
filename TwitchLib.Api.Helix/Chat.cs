@@ -13,7 +13,7 @@ namespace TwitchLib.Api.Helix
         public Chat(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         { }
 
-        public Task<GetChannelChatBadgesResponse> GetChannelChatBadges(string broadcasterId, string authToken = null)
+        public Task<GetChannelChatBadgesResponse> GetChannelChatBadgesAsync(string broadcasterId, string authToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>()
             {
@@ -22,7 +22,7 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetChannelChatBadgesResponse>("/chat/badges", ApiVersion.Helix, getParams, authToken);
         }
 
-        public Task<GetGlobalChatBadgesResponse> GetGlobalChatBadges(string authToken = null)
+        public Task<GetGlobalChatBadgesResponse> GetGlobalChatBadgesAsync(string authToken = null)
         {
             return TwitchGetGenericAsync<GetGlobalChatBadgesResponse>("/chat/badges/global", ApiVersion.Helix, accessToken: authToken);
         }
