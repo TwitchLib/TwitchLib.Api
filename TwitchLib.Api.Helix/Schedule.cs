@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
@@ -40,7 +42,7 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetChannelStreamScheduleResponse>("/schedule", ApiVersion.Helix, getParams, authToken);
         }
 
-        public Task UpdateChannelStreamScheduleAsync(string broadcasterId, bool? isVacationEnabled = null, string vacationStartTime = null, string vacationEndTime = null,
+        public Task UpdateChannelStreamScheduleAsync(string broadcasterId, bool? isVacationEnabled = null, DateTime? vacationStartTime = null, DateTime? vacationEndTime = null,
             string timezone = null, string authToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
@@ -51,10 +53,10 @@ namespace TwitchLib.Api.Helix
             if (isVacationEnabled.HasValue)
                 getParams.Add(new KeyValuePair<string, string>("is_vacation_enabled", isVacationEnabled.Value.ToString()));
 
-            if (!string.IsNullOrWhiteSpace(vacationStartTime))
-                getParams.Add(new KeyValuePair<string, string>("vacation_start_time", vacationStartTime));
-            if (!string.IsNullOrWhiteSpace(vacationEndTime))
-                getParams.Add(new KeyValuePair<string, string>("vacation_end_time", vacationEndTime));
+            if (vacationStartTime.HasValue)
+                getParams.Add(new KeyValuePair<string, string>("vacation_start_time", vacationStartTime.Value.ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz", DateTimeFormatInfo.InvariantInfo)));
+            if (vacationEndTime.HasValue)
+                getParams.Add(new KeyValuePair<string, string>("vacation_end_time", vacationEndTime.Value.ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz", DateTimeFormatInfo.InvariantInfo)));
             if (!string.IsNullOrWhiteSpace(timezone))
                 getParams.Add(new KeyValuePair<string, string>("timezone", timezone));
 

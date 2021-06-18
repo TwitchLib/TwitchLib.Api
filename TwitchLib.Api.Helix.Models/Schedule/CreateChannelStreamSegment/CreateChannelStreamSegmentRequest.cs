@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace TwitchLib.Api.Helix.Models.Schedule.CreateChannelStreamSegment
 {
@@ -6,7 +7,7 @@ namespace TwitchLib.Api.Helix.Models.Schedule.CreateChannelStreamSegment
     {
         // required
         [JsonProperty("start_time")]
-        public string StartTime { get; set; }
+        public DateTime StartTime { get; set; }
         [JsonProperty("timezone")]
         public string Timezone { get; set; }
         [JsonProperty("is_recurring")]

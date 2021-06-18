@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace TwitchLib.Api.Helix.Models.Schedule.UpdateChannelStreamSegment
 {
     public class UpdateChannelStreamSegmentRequest
     {
         [JsonProperty("start_time")]
-        public string StartTime { get; set; }
+        public DateTime StartTime { get; set; }
         [JsonProperty("duration")]
         public string Duration { get; set; }
         [JsonProperty("category_id")]
