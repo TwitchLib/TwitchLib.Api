@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.V5.Models", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Test", "TwitchLib.Api.Test\TwitchLib.Api.Test.csproj", "{E18EC33C-8E50-4B47-BAA4-C46DE255806C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api.Auth", "TwitchLib.Api.Auth\TwitchLib.Api.Auth.csproj", "{B475DCB7-8C3D-4954-9713-BA2EEB6C6185}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{E18EC33C-8E50-4B47-BAA4-C46DE255806C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E18EC33C-8E50-4B47-BAA4-C46DE255806C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E18EC33C-8E50-4B47-BAA4-C46DE255806C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B475DCB7-8C3D-4954-9713-BA2EEB6C6185}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B475DCB7-8C3D-4954-9713-BA2EEB6C6185}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B475DCB7-8C3D-4954-9713-BA2EEB6C6185}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B475DCB7-8C3D-4954-9713-BA2EEB6C6185}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
