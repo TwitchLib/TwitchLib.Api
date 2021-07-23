@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using TwitchLib.Api.Core.Enums;
 
 namespace TwitchLib.Api.Helix.Models.Entitlements.GetDropsEntitlements
 {
@@ -13,9 +12,13 @@ namespace TwitchLib.Api.Helix.Models.Entitlements.GetDropsEntitlements
         public string BenefitId { get; protected set; }
         [JsonProperty(PropertyName = "timestamp")]
         public DateTime Timestamp { get; protected set; }
-        [JsonProperty(PropertyName = "UserId")]
+        [JsonProperty(PropertyName = "user_id")]
         public string UserId { get; protected set; }
-        [JsonProperty(PropertyName = "GameId")]
+        [JsonProperty(PropertyName = "game_id")]
         public string GameId { get; protected set; }
+        [JsonProperty(PropertyName = "fulfillment_status")]
+        public FulfillmentStatus FulfillmentStatus { get; protected set; }
+        [JsonProperty(PropertyName = "updated_at")]
+        public DateTime UpdatedAt { get; protected set; }
     }
 }
