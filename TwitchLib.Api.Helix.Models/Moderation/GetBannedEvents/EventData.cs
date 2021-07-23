@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TwitchLib.Api.Helix.Models.Moderation.GetBannedEvents
 {
@@ -21,5 +19,13 @@ namespace TwitchLib.Api.Helix.Models.Moderation.GetBannedEvents
         public string UserName { get; protected set; }
         [JsonProperty(PropertyName = "expires_at")]
         public DateTime? ExpiresAt { get; protected set; }
+        [JsonProperty(PropertyName = "reason")]
+        public string Reason { get; protected set; }
+        [JsonProperty(PropertyName = "moderator_id")]
+        public string ModeratorId { get; protected set; }
+        [JsonProperty(PropertyName = "moderator_login")]
+        public string ModeratorLogin { get; protected set; }
+        [JsonProperty(PropertyName = "moderator_name")]
+        public string ModeratorName { get; protected set; }
     }
 }
