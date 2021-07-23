@@ -20,6 +20,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <AssemblyVersion>3.2.4</AssemblyVersion>
     <FileVersion>3.2.4</FileVersion>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwitchLib.Api.Core\TwitchLib.Api.Core.csproj" />
