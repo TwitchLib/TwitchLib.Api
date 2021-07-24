@@ -16,7 +16,6 @@ namespace TwitchLib.Api.Helix
 
         public Task<CheckUserSubscriptionResponse> CheckUserSubscriptionAsync(string broadcasterId, string userId, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_User_Read_Subscriptions, accessToken);
 
             if (string.IsNullOrEmpty(broadcasterId))
                 throw new BadParameterException("BroadcasterId must be set");

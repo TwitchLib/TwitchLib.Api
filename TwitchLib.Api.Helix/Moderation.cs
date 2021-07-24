@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +21,19 @@ namespace TwitchLib.Api.Helix
     {
         public Moderation(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         {
+        }
+
+        public Task ManageHeldAutoModMessages(string userId, string msgId, ManageHeldAutoModMessageActionEnum action, string accessToken = null)
+        {
+            if(String.IsNullOrEmpty(userId) || String.IsNullOrEmpty(msgId))
+                throw new BadParameterException("userId and msgId cannot be null and must be greater than 0 length");
+
+            JObject json = new JObject();
+            json["user_id"] = userId;
+            json["msg_id"] = msgId;
+            json["action"] = action.ToString().ToUpper();
+
+            return TwitchPostAsync("/moderation/automod/message", ApiVersion.Helix, json.ToString(), accessToken: accessToken);
         }
 
         #region CheckAutoModeStatus

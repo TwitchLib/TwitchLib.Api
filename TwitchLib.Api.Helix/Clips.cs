@@ -62,7 +62,6 @@ namespace TwitchLib.Api.Helix
 
         public Task<CreatedClipResponse> CreateClipAsync(string broadcasterId, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Clips_Edit);
             var getParams = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("broadcaster_id", broadcasterId)

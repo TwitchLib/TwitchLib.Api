@@ -11,7 +11,7 @@ namespace TwitchLib.Api.Helix.Models.EventSub
         public string Status { get; protected set; }
         [JsonProperty(PropertyName = "type")]
         public string Type { get; protected set; }
-        [JsonProperty(PropertyName = "id")]
+        [JsonProperty(PropertyName = "version")]
         public string Version { get; protected set; }
         [JsonProperty(PropertyName = "condition")]
         public Dictionary<string, string> Condition { get; protected set; }

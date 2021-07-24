@@ -1,20 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
-using TwitchLib.Api.V5.Models.Auth;
 
-namespace TwitchLib.Api.V5
+namespace TwitchLib.Api.Auth
 {
+    /// <summary>These endpoints fall outside of v5 and Helix, and relate to Authorization</summary>
     public class Auth : ApiBase
     {
         public Auth(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         {
         }
-
-        #region GetFreshToken
 
         /// <summary>
         ///     <para>[ASYNC] Refreshes an expired auth token</para>
@@ -43,12 +43,8 @@ namespace TwitchLib.Api.V5
                     new KeyValuePair<string, string>("client_secret", clientSecret)
                 };
 
-            return TwitchPostGenericAsync<RefreshResponse>("/oauth2/token", ApiVersion.V5, null, getParams, customBase: "https://id.twitch.tv");
+            return TwitchPostGenericAsync<RefreshResponse>("/oauth2/token", ApiVersion.Void, null, getParams, customBase: "https://id.twitch.tv");
         }
-
-        #endregion
-
-        #region GetAccessTokenFromCode
 
         /// <summary>
         /// Generates an authorization code URL. Please see OAuth authorization code flow https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-authorization-code-flow.
@@ -121,7 +117,21 @@ namespace TwitchLib.Api.V5
             return TwitchPostGenericAsync<AuthCodeResponse>("/oauth2/token", ApiVersion.V5, null, getParams, customBase: "https://id.twitch.tv");
         }
 
-        #endregion
+        /// <summary>
+        /// Checks the validation of the Settings.AccessToken or passed in AccessToken. If invalid, a null response is returned
+        /// </summary>
+        /// <param name="accessToken">Optional access token to check validation on</param>
+        /// <returns>ValidateAccessTokenResponse</returns>
+        public async Task<ValidateAccessTokenResponse> ValidateAccessTokenAsync(string accessToken = null)
+        {
+            try
+            {
+                return await TwitchGetGenericAsync<ValidateAccessTokenResponse>("/oauth2/validate", ApiVersion.Void, accessToken: accessToken, customBase: "https://id.twitch.tv");
+            } catch(BadScopeException)
+            {
+                // BadScopeException == 401, which is surfaced when token is invalid
+                return null;
+            }
+        }
     }
-
 }

@@ -87,7 +87,6 @@ namespace TwitchLib.Api.V5
 
         public Task<FollowedStreams> GetFollowedStreamsAsync(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
         {
-            DynamicScopeValidation(AuthScopes.User_Read, authToken);
             var getParams = new List<KeyValuePair<string, string>>();
             if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
                 getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));

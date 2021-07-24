@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
-using TwitchLib.Api.Helix.Models.Entitlements.CreateEntitlementGrantsUploadURL;
 using TwitchLib.Api.Helix.Models.Entitlements.GetCodeStatus;
 using TwitchLib.Api.Helix.Models.Entitlements.GetDropsEntitlements;
 using TwitchLib.Api.Helix.Models.Entitlements.RedeemCode;
+using TwitchLib.Api.Helix.Models.Entitlements.UpdateDropsEntitlements;
 
 namespace TwitchLib.Api.Helix
 {
@@ -16,32 +17,6 @@ namespace TwitchLib.Api.Helix
         public Entitlements(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         {
         }
-
-        #region CreateEntitlementGrantsUploadURL
-
-        public Task<CreateEntitlementGrantsUploadUrlResponse> CreateEntitlementGrantsUploadUrlAsync(string manifestId, EntitleGrantType type, string url = null, string applicationAccessToken = null)
-        {
-            if (manifestId == null)
-                throw new BadParameterException("manifestId cannot be null");
-
-            var getParams = new List<KeyValuePair<string, string>>()
-            {
-                new KeyValuePair<string, string>("manifest_id", manifestId)
-            };
-
-            switch (type)
-            {
-                case EntitleGrantType.BulkDropsGrant:
-                    getParams.Add(new KeyValuePair<string, string>("type", "bulk_drops_grant"));
-                    break;
-                default:
-                    throw new BadParameterException("Unknown entitlement grant type");
-            }
-
-            return TwitchGetGenericAsync<CreateEntitlementGrantsUploadUrlResponse>("/entitlements/upload", ApiVersion.Helix, getParams, applicationAccessToken);
-        }
-
-        #endregion
 
         #region GetCodeStatus
         public Task<GetCodeStatusResponse> GetCodeStatusAsync(List<string> codes, string userId, string accessToken = null)
@@ -65,7 +40,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region GetDropsEntitlements
-        public Task<GetDropsEntitlementsResponse> GetDropsEntitlements(string id = null, string userId = null, string gameId = null, string after = null, int first = 20, string accessToken = null)
+        public Task<GetDropsEntitlementsResponse> GetDropsEntitlementsAsync(string id = null, string userId = null, string gameId = null, string after = null, int first = 20, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -90,6 +65,21 @@ namespace TwitchLib.Api.Helix
 
             return TwitchGetGenericAsync<GetDropsEntitlementsResponse>("/entitlements/drops", ApiVersion.Helix, getParams, accessToken);
         }
+        #endregion
+
+        #region UpdateDropsEntitlements
+
+        public Task<UpdateDropsEntitlementsResponse> UpdateDropsEntitlementsAsync(string[] entitlementIds, FulfillmentStatus fulfillmentStatus, string accessToken)
+        {
+            var body = new
+            {
+                entitlement_ids = entitlementIds,
+                fulfillment_status = fulfillmentStatus.ToString()
+            };
+
+            return TwitchPatchGenericAsync<UpdateDropsEntitlementsResponse>("/entitlements/drops", ApiVersion.Helix, JsonConvert.SerializeObject(body), null, accessToken);
+        }
+
         #endregion
 
         #region RedeemCode

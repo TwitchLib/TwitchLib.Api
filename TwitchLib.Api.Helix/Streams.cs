@@ -120,8 +120,6 @@ namespace TwitchLib.Api.Helix
 
         public Task ReplaceStreamTagsAsync(string broadcasterId, List<string> tagIds = null, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Broadcast, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>();
             getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
 
@@ -138,8 +136,6 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetStreamKeyResponse> GetStreamKeyAsync(string broadcasterId, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_Channel_Read_Stream_Key, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
@@ -150,15 +146,11 @@ namespace TwitchLib.Api.Helix
 
         public Task<CreateStreamMarkerResponse> CreateStreamMarkerAsync(CreateStreamMarkerRequest request, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Broadcast, accessToken);
-
             return TwitchPostGenericAsync<CreateStreamMarkerResponse>("/streams/markers", ApiVersion.Helix, JsonConvert.SerializeObject(request), null, accessToken);
         }
 
         public Task<GetStreamMarkersResponse> GetStreamMarkerAsync(string userId, string videoId, string accessToken = null)
         {
-            DynamicScopeValidation(AuthScopes.Helix_User_Edit_Broadcast, accessToken);
-
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("user_id", userId),

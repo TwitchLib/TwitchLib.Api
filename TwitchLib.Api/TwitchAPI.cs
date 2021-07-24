@@ -12,6 +12,7 @@ namespace TwitchLib.Api
     {
         private readonly ILogger<TwitchAPI> _logger;
         public IApiSettings Settings { get; }
+        public Auth.Auth Auth { get; }
         public V5.V5 V5 { get; }
         public Helix.Helix Helix { get; }
         public ThirdParty.ThirdParty ThirdParty { get; }
@@ -31,6 +32,7 @@ namespace TwitchLib.Api
             http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             Settings = settings ?? new ApiSettings();
 
+            Auth = new Auth.Auth(Settings, rateLimiter, http);
             Helix = new Helix.Helix(loggerFactory, rateLimiter, Settings, http);
             V5 = new V5.V5(loggerFactory, rateLimiter, Settings, http);
             ThirdParty = new ThirdParty.ThirdParty(Settings, rateLimiter, http);
