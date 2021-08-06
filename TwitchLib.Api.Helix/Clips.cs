@@ -37,7 +37,7 @@ namespace TwitchLib.Api.Helix
             if (broadcasterId != null)
                 getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
 
-            if (getParams.Count != 1)
+            if (getParams.Count == 0 || (getParams.Count > 1 && gameId != null && broadcasterId != null))
                 throw new BadParameterException("One of the following parameters must be set: clipId, gameId, broadcasterId. Only one is allowed to be set.");
 
             if (startedAt == null && endedAt != null)
