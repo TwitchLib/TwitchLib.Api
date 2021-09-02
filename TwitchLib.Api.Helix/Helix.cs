@@ -21,6 +21,7 @@ namespace TwitchLib.Api.Helix
         public EventSub EventSub { get; }
         public Extensions Extensions { get; }
         public Games Games { get; }
+        public Goals Goals { get; }
         public HypeTrain HypeTrain { get; }
         public Moderation Moderation { get; }
         public Polls Polls { get; }
@@ -61,6 +62,7 @@ namespace TwitchLib.Api.Helix
             EventSub = new EventSub(Settings, rateLimiter, http);
             Extensions = new Extensions(Settings, rateLimiter, http);
             Games = new Games(Settings, rateLimiter, http);
+            Goals = new Goals(settings, rateLimiter, http);
             HypeTrain = new HypeTrain(Settings, rateLimiter, http);
             Moderation = new Moderation(Settings, rateLimiter, http);
             Polls = new Polls(Settings, rateLimiter, http);
