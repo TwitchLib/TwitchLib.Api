@@ -11,5 +11,7 @@ namespace TwitchLib.Api.Helix.Models.Subscriptions
         public Pagination Pagination { get; protected set; }
         [JsonProperty(PropertyName = "total")]
         public int Total { get; protected set; }
+        [JsonProperty(PropertyName = "points")]
+        public int Points { get; protected set; }
     }
 }
