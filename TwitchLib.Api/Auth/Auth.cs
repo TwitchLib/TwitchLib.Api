@@ -111,7 +111,7 @@ namespace TwitchLib.Api.Auth
                 new KeyValuePair<string, string>("code", code),
                 new KeyValuePair<string, string>("client_id", internalClientId),
                 new KeyValuePair<string, string>("client_secret", clientSecret),
-                new KeyValuePair<string, string>("redirect_uri", System.Web.HttpUtility.UrlEncode(redirectUri))
+                new KeyValuePair<string, string>("redirect_uri", redirectUri)
             };
 
             return TwitchPostGenericAsync<AuthCodeResponse>("/oauth2/token", ApiVersion.V5, null, getParams, customBase: "https://id.twitch.tv");
