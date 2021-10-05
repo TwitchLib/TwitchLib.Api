@@ -34,8 +34,6 @@ namespace TwitchLib.Api.Helix
         public Teams Teams { get; }
         public Videos Videos { get; }
         public Users Users { get; }
-        public Webhooks Webhooks { get; }
-
 
         /// <summary>
         /// Creates an Instance of the Helix Class.
@@ -75,7 +73,6 @@ namespace TwitchLib.Api.Helix
             Teams = new Teams(Settings, rateLimiter, http);
             Users = new Users(Settings, rateLimiter, http);
             Videos = new Videos(Settings, rateLimiter, http);
-            Webhooks = new Webhooks(Settings, rateLimiter, http);
         }
     }
 }
