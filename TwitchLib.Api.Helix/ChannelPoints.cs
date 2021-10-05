@@ -87,7 +87,7 @@ namespace TwitchLib.Api.Helix
                     };
             if(redemptionId != null)
             {
-                getParams.Add(new KeyValuePair<string, string>("reward_id", redemptionId));
+                getParams.Add(new KeyValuePair<string, string>("id", redemptionId));
             }
             if(status != null)
             {
