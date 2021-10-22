@@ -51,7 +51,7 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("id", id) };
 
-            var response = await TwitchDeleteAsync("eventsub/subscriptions", ApiVersion.Helix, getParams, accessToken, clientId);
+            var response = await TwitchDeleteAsync("/eventsub/subscriptions", ApiVersion.Helix, getParams, accessToken, clientId);
 
             return !string.IsNullOrWhiteSpace(response);
         }
