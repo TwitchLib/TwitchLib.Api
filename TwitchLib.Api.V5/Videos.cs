@@ -113,7 +113,7 @@ namespace TwitchLib.Api.V5
         public async Task<UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Viewable viewable = Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
         {
             var listing = await CreateVideoAsync(channelId, title, description, game, language, tagList, viewable, viewableAt);
-            UploadVideoParts(videoPath, listing.Upload);
+            await UploadVideoPartsAsync(videoPath, listing.Upload).ConfigureAwait(false);
             await CompleteVideoUploadAsync(listing.Upload, accessToken);
 
             return listing.Video;
@@ -180,7 +180,7 @@ namespace TwitchLib.Api.V5
             return TwitchPostGenericAsync<UploadVideoListing>("/videos", ApiVersion.V5, null, getParams, accessToken);
         }
 
-        private void UploadVideoParts(string videoPath, Upload upload)
+        private async Task UploadVideoPartsAsync(string videoPath, Upload upload)
         {
             if (!File.Exists(videoPath))
                 throw new BadParameterException($"The provided path for a video upload does not appear to be value: {videoPath}");
@@ -211,7 +211,7 @@ namespace TwitchLib.Api.V5
                             fs.Read(chunk, 0, (int)size24Mb);
                         }
 
-                        PutBytes($"{upload.Url}?part={currentPart}&upload_token={upload.Token}", chunk);
+                        await PutBytesAsync($"{upload.Url}?part={currentPart}&upload_token={upload.Token}", chunk).ConfigureAwait(false);
                         Thread.Sleep(1000);
                     }
                 }
@@ -220,7 +220,7 @@ namespace TwitchLib.Api.V5
             {
                 // Upload entire file at once if small enough
                 var file = File.ReadAllBytes(videoPath);
-                PutBytes($"{upload.Url}?part=1&upload_token={upload.Token}", file);
+                await PutBytesAsync($"{upload.Url}?part=1&upload_token={upload.Token}", file).ConfigureAwait(false);
             }
         }
 

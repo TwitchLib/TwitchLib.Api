@@ -27,7 +27,7 @@ namespace TwitchLib.Api.Core.Internal
                     DateTime.Now, "Request", request.Method.ToString(), request.RequestUri.ToString());
 
             var stopwatch = Stopwatch.StartNew();
-            var response = await base.SendAsync(request, cancellationToken);
+            var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
             stopwatch.Stop();
 
             if (response.IsSuccessStatusCode)

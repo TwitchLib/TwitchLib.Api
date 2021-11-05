@@ -1,3 +1,4 @@
+using TwitchLib.Api.Test.Helpers;
 using Xunit;
 
 namespace TwitchLib.Api.Test.Unit.Helix
@@ -8,7 +9,7 @@ namespace TwitchLib.Api.Test.Unit.Helix
         public async void TestGetBitsLeaderboards()
         {
             var mockHandler = HelixSetup.GetMockHttpCallHandler(GetGetBitsLeaderboardResponse);
-            var api = new TwitchAPI(http: mockHandler.Object);
+            var api = TwitchLibMock.TwitchApi(mockHandler);
             var result = await api.Helix.Bits.GetBitsLeaderboardAsync(accessToken: "RandomTokenThatDoesntMatter");
 
             Assert.True(result.Total == 2);

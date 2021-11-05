@@ -1,3 +1,4 @@
+using TwitchLib.Api.Test.Helpers;
 using Xunit;
 
 namespace TwitchLib.Api.Test.Unit.Helix
@@ -8,7 +9,7 @@ namespace TwitchLib.Api.Test.Unit.Helix
         public async void TestGetGameAnalytics()
         {
             var mockHandler = HelixSetup.GetMockHttpCallHandler(GetGameAnalyticsResponse);
-            var api = new TwitchAPI(http: mockHandler.Object);
+            var api = TwitchLibMock.TwitchApi(mockHandler);
 
             var result = await api.Helix.Analytics.GetGameAnalyticsAsync("493057", "RandomTokenThatDoesntMatter");
 
@@ -20,7 +21,7 @@ namespace TwitchLib.Api.Test.Unit.Helix
         public async void TestGetExtensionAnalytics()
         {
             var mockHandler = HelixSetup.GetMockHttpCallHandler(GetExtensionAnalyticsResponse);
-            var api = new TwitchAPI(http: mockHandler.Object);
+            var api = TwitchLibMock.TwitchApi(mockHandler);
 
             var result = await api.Helix.Analytics.GetExtensionAnalyticsAsync("abcdefgh", "RandomTokenThatDoesntMatter");
 
