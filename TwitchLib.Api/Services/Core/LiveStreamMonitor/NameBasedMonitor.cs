@@ -14,20 +14,20 @@ namespace TwitchLib.Api.Services.Core.LiveStreamMonitor
 
         public NameBasedMonitor(ITwitchAPI api) : base(api) { }
 
-        public override async Task<Func<Stream, bool>> CompareStream(string channel)
+        public override async Task<Func<Stream, bool>> CompareStream(string channel, string accessToken = null)
         {
             if (!_channelToId.TryGetValue(channel, out var channelId))
             {
-                channelId = (await _api.Helix.Users.GetUsersAsync(logins: new List<string> { channel })).Users.FirstOrDefault()?.Id;
+                channelId = (await _api.Helix.Users.GetUsersAsync(logins: new List<string> { channel }, accessToken: accessToken)).Users.FirstOrDefault()?.Id;
                 _channelToId[channel] = channelId ?? throw new InvalidOperationException($"No channel with the name \"{channel}\" could be found.");
             }
 
             return stream => stream.UserId == channelId;
         }
 
-        public override Task<GetStreamsResponse> GetStreamsAsync(List<string> channels)
+        public override Task<GetStreamsResponse> GetStreamsAsync(List<string> channels, string accessToken = null)
         {
-            return _api.Helix.Streams.GetStreamsAsync(first: channels.Count, userLogins: channels);
+            return _api.Helix.Streams.GetStreamsAsync(first: channels.Count, userLogins: channels, accessToken: accessToken);
         }
 
         public void ClearCache()

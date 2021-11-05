@@ -15,7 +15,7 @@ namespace TwitchLib.Api.Helix
         }
 
         // Requires Scope > channel:read:hype_train
-        public Task<GetHypeTrainResponse> GetHypeTrainEventsAsync(string broadcasterId, int first = 1, string id = null, string cursor = null)
+        public Task<GetHypeTrainResponse> GetHypeTrainEventsAsync(string broadcasterId, int first = 1, string id = null, string cursor = null, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
             {
@@ -30,7 +30,7 @@ namespace TwitchLib.Api.Helix
             if (cursor != null)
                 getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
 
-            return TwitchGetGenericAsync<GetHypeTrainResponse>("/hypetrain/events", ApiVersion.Helix, getParams);
+            return TwitchGetGenericAsync<GetHypeTrainResponse>("/hypetrain/events", ApiVersion.Helix, getParams, accessToken);
         }
     }
 }
