@@ -170,16 +170,16 @@ namespace TwitchLib.Api.Core.Undocumented
 
         #region IsUsernameAvailable
 
-        public Task<bool> IsUsernameAvailableAsync(string username)
+        public async Task<bool> IsUsernameAvailableAsync(string username)
         {
             var getParams = new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("users_service", "true")};
-            var resp = RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}", "HEAD", getParams);
+            var resp = await RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}", "HEAD", getParams);
             switch (resp)
             {
                 case 200:
-                    return Task.FromResult(false);
+                    return false;
                 case 204:
-                    return Task.FromResult(true);
+                    return true;
                 default:
                     throw new BadResourceException("Unexpected response from resource. Expecting response code 200 or 204, received: " + resp);
             }

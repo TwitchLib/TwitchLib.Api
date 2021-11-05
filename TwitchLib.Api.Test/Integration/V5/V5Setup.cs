@@ -13,11 +13,11 @@ namespace TwitchLib.Api.Test.Integration.V5
         {
             var mockHandler = new Mock<IHttpCallHandler>();
             mockHandler
-                .Setup(x => x.GeneralRequest(It.Is<string>(y => y == V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new KeyValuePair<int, string>(200, GetRootScopesResponse));
+                .Setup(x => x.GeneralRequestAsync(It.Is<string>(y => y == V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(new KeyValuePair<int, string>(200, GetRootScopesResponse));
             mockHandler
-                .Setup(x => x.GeneralRequest(It.IsNotIn(V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new KeyValuePair<int, string>(200, response));
+                .Setup(x => x.GeneralRequestAsync(It.IsNotIn(V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(new KeyValuePair<int, string>(200, response));
 
             return mockHandler;
         }
