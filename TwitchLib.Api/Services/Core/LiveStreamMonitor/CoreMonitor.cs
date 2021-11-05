@@ -11,8 +11,8 @@ namespace TwitchLib.Api.Services.Core.LiveStreamMonitor
     {
         protected readonly ITwitchAPI _api;
 
-        public abstract Task<GetStreamsResponse> GetStreamsAsync(List<string> channels);
-        public abstract Task<Func<Stream, bool>> CompareStream(string channel);
+        public abstract Task<GetStreamsResponse> GetStreamsAsync(List<string> channels, string accessToken = null);
+        public abstract Task<Func<Stream, bool>> CompareStream(string channel, string accessToken = null);
 
         protected CoreMonitor(ITwitchAPI api)
         {
