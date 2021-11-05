@@ -155,6 +155,5 @@ namespace TwitchLib.Api.Helix
             var payload = json.ToString();
 
             return TwitchPutGenericAsync<GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, payload, accessToken: accessToken);
-        }
     }
 }
