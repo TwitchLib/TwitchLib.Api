@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core.Enums;
@@ -103,7 +102,7 @@ namespace TwitchLib.Api.Core
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
             ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
 
-            return await _rateLimiter.Perform(async () => JsonConvert.DeserializeObject<T>((await _http.GeneralRequestAsync(url, "PATCH", payload, api, clientId, accessToken).ConfigureAwait(false)).Value, _twitchLibJsonDeserializer));
+            return await _rateLimiter.Perform(async () => JsonConvert.DeserializeObject<T>((await _http.GeneralRequestAsync(url, "PATCH", payload, api, clientId, accessToken).ConfigureAwait(false)).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false);
         }
 
         protected async Task<string> TwitchPatchAsync(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, string clientId = null, string customBase = null)
@@ -152,7 +151,7 @@ namespace TwitchLib.Api.Core
             if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
                 clientId = Settings.ClientId;
 
-            accessToken = await GetAccessTokenAsync(accessToken);
+            accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
             ForceAccessTokenAndClientIdForHelix(clientId, accessToken, api);
 
             return await _rateLimiter.Perform(async () => JsonConvert.DeserializeObject<T>((await _http.GeneralRequestAsync(url, "POST", model != null ? _jsonSerializer.SerializeObject(model) : "", api, clientId, accessToken).ConfigureAwait(false)).Value, _twitchLibJsonDeserializer)).ConfigureAwait(false);
@@ -255,7 +254,7 @@ namespace TwitchLib.Api.Core
                         url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
                 }
             }
-            return _rateLimiter.Perform(async () => JsonConvert.DeserializeObject<T>(await SimpleRequestAsync(url), _twitchLibJsonDeserializer));
+            return _rateLimiter.Perform(async () => JsonConvert.DeserializeObject<T>(await SimpleRequestAsync(url).ConfigureAwait(false), _twitchLibJsonDeserializer));
         }
 
         // credit: https://stackoverflow.com/questions/14290988/populate-and-return-entities-from-downloadstringcompleted-handler-in-windows-pho

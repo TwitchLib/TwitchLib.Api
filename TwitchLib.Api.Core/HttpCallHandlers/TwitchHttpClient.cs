@@ -31,7 +31,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
 
         public async Task PutBytesAsync(string url, byte[] payload)
         {
-            var response = await _http.PutAsync(new Uri(url), new ByteArrayContent(payload));
+            var response = await _http.PutAsync(new Uri(url), new ByteArrayContent(payload)).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
                 HandleWebException(response);
@@ -70,10 +70,10 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
 
 
-            var response = await _http.SendAsync(request);
+            var response = await _http.SendAsync(request).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
-                var respStr = await response.Content.ReadAsStringAsync();
+                var respStr = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 return new KeyValuePair<int, string>((int)response.StatusCode, respStr);
             }
 
@@ -99,7 +99,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 RequestUri = new Uri(url),
                 Method = new HttpMethod(method)
             };
-            var response = await _http.SendAsync(request);
+            var response = await _http.SendAsync(request).ConfigureAwait(false);
             return (int)response.StatusCode;
         }
 

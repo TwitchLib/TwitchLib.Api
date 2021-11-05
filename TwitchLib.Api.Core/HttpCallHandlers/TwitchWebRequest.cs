@@ -72,8 +72,8 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             
 
             if (payload != null)
-                using (var writer = new StreamWriter(await request.GetRequestStreamAsync()))
-                    await writer.WriteAsync(payload);
+                using (var writer = new StreamWriter(await request.GetRequestStreamAsync().ConfigureAwait(false)))
+                    await writer.WriteAsync(payload).ConfigureAwait(false);
 
             try
             {
@@ -81,7 +81,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
 
                 using (var reader = new StreamReader(response.GetResponseStream() ?? throw new InvalidOperationException()))
                 {
-                    var data = await reader.ReadToEndAsync();
+                    var data = await reader.ReadToEndAsync().ConfigureAwait(false);
                     return new KeyValuePair<int, string>((int)response.StatusCode, data);
                 }
             }
