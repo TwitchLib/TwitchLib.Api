@@ -16,7 +16,7 @@ namespace TwitchLib.Api.Helix
         }
 
         #region GetCheermotes
-        public Task<GetCheermotesResponse> GetCheermotes(string broadcasterId = null, string accessToken = null)
+        public Task<GetCheermotesResponse> GetCheermotesAsync(string broadcasterId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
             if (broadcasterId != null)

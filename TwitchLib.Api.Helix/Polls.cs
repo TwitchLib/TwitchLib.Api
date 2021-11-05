@@ -19,7 +19,7 @@ namespace TwitchLib.Api.Helix
         {
         }
 
-        public Task<GetPollsResponse> GetPolls(string broadcasterId, List<string> ids = null, string after = null, int first = 20, string accessToken = null)
+        public Task<GetPollsResponse> GetPollsAsync(string broadcasterId, List<string> ids = null, string after = null, int first = 20, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             { 
@@ -40,12 +40,12 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetPollsResponse>("/polls", ApiVersion.Helix, getParams, accessToken);
         }
 
-        public Task<CreatePollResponse> CreatePoll(CreatePollRequest request, string accessToken = null)
+        public Task<CreatePollResponse> CreatePollAsync(CreatePollRequest request, string accessToken = null)
         {
             return TwitchPostGenericAsync<CreatePollResponse>("/polls", ApiVersion.Helix, JsonConvert.SerializeObject(request), accessToken: accessToken);
         }
 
-        public Task<EndPollResponse> EndPoll(string broadcasterId, string id, PollStatusEnum status, string accessToken = null)
+        public Task<EndPollResponse> EndPollAsync(string broadcasterId, string id, PollStatusEnum status, string accessToken = null)
         {
             JObject json = new JObject();
             json["broadcaster_id"] = broadcasterId;
