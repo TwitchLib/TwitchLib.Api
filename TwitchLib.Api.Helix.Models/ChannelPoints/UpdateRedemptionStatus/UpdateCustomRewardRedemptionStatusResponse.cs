@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TwitchLib.Api.Helix.Models.ChannelPoints.UpdateCustomRewardRedemptionStatus
+namespace TwitchLib.Api.Helix.Models.ChannelPoints.UpdateRedemptionStatus
 {
-    public class UpdateCustomRewardRedemptionStatusResponse
+    public class UpdateRedemptionStatusResponse
     {
         [JsonProperty(PropertyName = "data")]
         public RewardRedemption[] Data { get; protected set; }

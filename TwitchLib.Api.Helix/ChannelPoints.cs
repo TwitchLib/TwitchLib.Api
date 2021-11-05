@@ -9,6 +9,7 @@ using TwitchLib.Api.Helix.Models.ChannelPoints.GetCustomReward;
 using TwitchLib.Api.Helix.Models.ChannelPoints.GetCustomRewardRedemption;
 using TwitchLib.Api.Helix.Models.ChannelPoints.UpdateCustomReward;
 using TwitchLib.Api.Helix.Models.ChannelPoints.UpdateCustomRewardRedemptionStatus;
+using TwitchLib.Api.Helix.Models.ChannelPoints.UpdateRedemptionStatus;
 
 namespace TwitchLib.Api.Helix
 {
@@ -111,7 +112,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region UpdateCustomRewardRedemption
-        public Task<UpdateCustomRewardRedemptionStatusResponse> UpdateCustomRewardRedemptionStatusAsync(string broadcasterId, string rewardId, List<string> redemptionIds, UpdateCustomRewardRedemptionStatusRequest request, string accessToken = null)
+        public Task<UpdateRedemptionStatusResponse> UpdateRedemptionStatusAsync(string broadcasterId, string rewardId, List<string> redemptionIds, UpdateCustomRewardRedemptionStatusRequest request, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
                     {
@@ -123,7 +124,7 @@ namespace TwitchLib.Api.Helix
                 getParams.Add(new KeyValuePair<string, string>("id", redemptionId));
             }
 
-            return TwitchPatchGenericAsync<UpdateCustomRewardRedemptionStatusResponse>("/channel_points/custom_rewards/redemptions", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
+            return TwitchPatchGenericAsync<UpdateRedemptionStatusResponse>("/channel_points/custom_rewards/redemptions", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
         }
         #endregion
     }
