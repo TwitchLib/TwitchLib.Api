@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TwitchLib.Api.Helix.Models.Extensions.ReleaseExtensions
+namespace TwitchLib.Api.Helix.Models.Extensions.ReleasedExtensions
 {
     public class Component
     {

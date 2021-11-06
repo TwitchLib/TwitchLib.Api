@@ -18,7 +18,7 @@ namespace TwitchLib.Api.Helix.Models.Streams.GetFollowedStreams
         [JsonProperty(PropertyName = "game_id")]
         public string GameId { get; protected set; }
         [JsonProperty(PropertyName = "game_name")]
-        public string[] CommunityIds { get; protected set; }
+        public string GameName { get; protected set; }
         [JsonProperty(PropertyName = "type")]
         public string Type { get; protected set; }
         [JsonProperty(PropertyName = "title")]

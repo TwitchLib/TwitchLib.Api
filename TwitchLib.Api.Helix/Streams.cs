@@ -163,6 +163,9 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetFollowedStreamsResponse> GetFollowedStreamsAsync(string userId, int first = 100, string after = null, string accessToken = null)
         {
+            if (first < 1 || first > 100)
+                throw new BadParameterException("first cannot be less than 1 or greater than 100");
+
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("user_id", userId),
