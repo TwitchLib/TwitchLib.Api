@@ -150,7 +150,7 @@ namespace TwitchLib.Api.Helix
             return TwitchPostGenericAsync<CreateStreamMarkerResponse>("/streams/markers", ApiVersion.Helix, JsonConvert.SerializeObject(request), null, accessToken);
         }
 
-        public Task<GetStreamMarkersResponse> GetStreamMarkerAsync(string userId, string videoId, string accessToken = null)
+        public Task<GetStreamMarkersResponse> GetStreamMarkersAsync(string userId, string videoId, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
