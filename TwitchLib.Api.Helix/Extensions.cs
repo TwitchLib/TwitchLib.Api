@@ -7,6 +7,7 @@ using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Extensions.LiveChannels;
+using TwitchLib.Api.Helix.Models.Extensions.ReleaseExtensions;
 using TwitchLib.Api.Helix.Models.Extensions.Transactions;
 
 namespace TwitchLib.Api.Helix
@@ -61,6 +62,26 @@ namespace TwitchLib.Api.Helix
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetExtensionLiveChannelsResponse>("/extensions/live", ApiVersion.Helix, getParams, accessTokenOrApplicationAccessToken);
+        }
+
+        #endregion
+
+        #region GetReleasedExtensions
+
+        public Task<GetReleasedExtensionsResponse> GetReleasedExtensionsAsync(string extensionId, string extensionVersion = null, string accessTokenOrApplicationAccessToken = null)
+        {
+            if (string.IsNullOrEmpty(extensionId))
+                throw new BadParameterException("extensionId must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("extension_id", extensionId),
+            };
+
+            if (extensionVersion != null)
+                getParams.Add(new KeyValuePair<string, string>("extension_version", extensionVersion));
+
+            return TwitchGetGenericAsync<GetReleasedExtensionsResponse>("/extensions/released", ApiVersion.Helix, getParams, accessTokenOrApplicationAccessToken);
         }
 
         #endregion
