@@ -6,6 +6,7 @@ using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Extensions.System;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Bits;
+using TwitchLib.Api.Helix.Models.Bits.ExtensionBitsProducts;
 
 namespace TwitchLib.Api.Helix
 {
@@ -63,6 +64,20 @@ namespace TwitchLib.Api.Helix
                 getParams.Add(new KeyValuePair<string, string>("user_id", userid));
 
             return TwitchGetGenericAsync<GetBitsLeaderboardResponse>("/bits/leaderboard", ApiVersion.Helix, getParams);
+        }
+
+        #endregion
+
+        #region GetExtensionBitsProducts
+
+        public Task<GetExtensionBitsProductsResponse> GetExtensionBitsProductsAsync(bool shouldIncludeAll = false, string accessTokenOrApplicationAccessToken = null)
+        {
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("should_include_all", shouldIncludeAll.ToString().ToLower())
+            };
+
+            return TwitchGetGenericAsync<GetExtensionBitsProductsResponse>("/bits/extensions", ApiVersion.Helix, getParams, accessTokenOrApplicationAccessToken);
         }
 
         #endregion
