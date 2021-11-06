@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
+using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.EventSub;
 
@@ -17,6 +18,13 @@ namespace TwitchLib.Api.Helix
         public Task<CreateEventSubSubscriptionResponse> CreateEventSubSubscriptionAsync(string type, string version, Dictionary<string, string> condition, string method, string callback,
             string secret, string clientId = null, string accessToken = null)
         {
+            if (string.IsNullOrEmpty(type))
+                throw new BadParameterException("type must be set");
+            if (string.IsNullOrEmpty(version))
+                throw new BadParameterException("version must be set");
+            if (secret == null || secret.Length < 10 || secret.Length > 100)
+                throw new BadParameterException("secret must be set, and be between 10 (inclusive) and 100 (inclusive)");
+
             var body = new
             {
                 type,

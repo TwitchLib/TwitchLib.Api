@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TwitchLib.Api.Core.Enums;
 
 namespace TwitchLib.Api.Helix.Models.Predictions
 {
@@ -24,7 +25,7 @@ namespace TwitchLib.Api.Helix.Models.Predictions
         [JsonProperty(PropertyName = "prediction_window")]
         public string PredictionWindow { get; protected set; }
         [JsonProperty(PropertyName = "status")]
-        public string Status { get; protected set; }
+        public PredictionStatus Status { get; protected set; }
         [JsonProperty(PropertyName = "created_at")]
         public string CreatedAt { get; protected set; }
         [JsonProperty(PropertyName = "ended_at")]

@@ -4,8 +4,9 @@ using System.Text;
 
 namespace TwitchLib.Api.Core.Enums
 {
-    public enum PredictionStatusEnum
+    public enum PredictionStatus
     {
+        ACTIVE,
         RESOLVED,
         CANCELED,
         LOCKED
