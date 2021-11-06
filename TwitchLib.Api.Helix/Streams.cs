@@ -7,6 +7,7 @@ using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Streams.CreateStreamMarker;
+using TwitchLib.Api.Helix.Models.Streams.GetFollowedStreams;
 using TwitchLib.Api.Helix.Models.Streams.GetStreamKey;
 using TwitchLib.Api.Helix.Models.Streams.GetStreamMarkers;
 using TwitchLib.Api.Helix.Models.Streams.GetStreams;
@@ -158,6 +159,19 @@ namespace TwitchLib.Api.Helix
             };
 
             return TwitchGetGenericAsync<GetStreamMarkersResponse>("/stream/markers", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        public Task<GetFollowedStreamsResponse> GetFollowedStreamsAsync(string userId, int first = 100, string after = null, string accessToken = null)
+        {
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("user_id", userId),
+                new KeyValuePair<string, string>("first", first.ToString())
+            };
+            if (after != null)
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+
+            return TwitchGetGenericAsync<GetFollowedStreamsResponse>("/streams/followed", ApiVersion.Helix, getParams, accessToken);
         }
     }
 
