@@ -7,7 +7,7 @@ using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Extensions.LiveChannels;
-using TwitchLib.Api.Helix.Models.Extensions.ReleaseExtensions;
+using TwitchLib.Api.Helix.Models.Extensions.ReleasedExtensions;
 using TwitchLib.Api.Helix.Models.Extensions.Transactions;
 
 namespace TwitchLib.Api.Helix
