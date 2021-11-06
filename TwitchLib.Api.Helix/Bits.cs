@@ -70,23 +70,23 @@ namespace TwitchLib.Api.Helix
 
         #region GetExtensionBitsProducts
 
-        public Task<GetExtensionBitsProductsResponse> GetExtensionBitsProductsAsync(bool shouldIncludeAll = false, string accessTokenOrApplicationAccessToken = null)
+        public Task<GetExtensionBitsProductsResponse> GetExtensionBitsProductsAsync(bool shouldIncludeAll = false, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("should_include_all", shouldIncludeAll.ToString().ToLower())
             };
 
-            return TwitchGetGenericAsync<GetExtensionBitsProductsResponse>("/bits/extensions", ApiVersion.Helix, getParams, accessTokenOrApplicationAccessToken);
+            return TwitchGetGenericAsync<GetExtensionBitsProductsResponse>("/bits/extensions", ApiVersion.Helix, getParams, accessToken);
         }
 
         #endregion
 
         #region UpdateExtensionBitsProduct
 
-        public Task<UpdateExtensionBitsProductResponse> UpdateExtensionBitsProductAsync(ExtensionBitsProduct extensionBitsProduct, string accessTokenOrApplicationAccessToken = null)
+        public Task<UpdateExtensionBitsProductResponse> UpdateExtensionBitsProductAsync(ExtensionBitsProduct extensionBitsProduct, string accessToken = null)
         {
-            return TwitchPutGenericAsync<UpdateExtensionBitsProductResponse>("/bits/extensions", ApiVersion.Helix, extensionBitsProduct.ToString(), accessToken: accessTokenOrApplicationAccessToken);
+            return TwitchPutGenericAsync<UpdateExtensionBitsProductResponse>("/bits/extensions", ApiVersion.Helix, extensionBitsProduct.ToString(), accessToken: accessToken);
         }
 
         #endregion

@@ -45,7 +45,7 @@ namespace TwitchLib.Api.Helix
 
         #region GetExtensionLiveChannels
 
-        public Task<GetExtensionLiveChannelsResponse> GetExtensionLiveChannelsAsync(string extensionId, int first = 20, string after = null, string accessTokenOrApplicationAccessToken = null)
+        public Task<GetExtensionLiveChannelsResponse> GetExtensionLiveChannelsAsync(string extensionId, int first = 20, string after = null, string accessToken = null)
         {
             if (string.IsNullOrEmpty(extensionId))
                 throw new BadParameterException("extensionId must be set");
@@ -61,14 +61,14 @@ namespace TwitchLib.Api.Helix
             if (after != null)
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
-            return TwitchGetGenericAsync<GetExtensionLiveChannelsResponse>("/extensions/live", ApiVersion.Helix, getParams, accessTokenOrApplicationAccessToken);
+            return TwitchGetGenericAsync<GetExtensionLiveChannelsResponse>("/extensions/live", ApiVersion.Helix, getParams, accessToken);
         }
 
         #endregion
 
         #region GetReleasedExtensions
 
-        public Task<GetReleasedExtensionsResponse> GetReleasedExtensionsAsync(string extensionId, string extensionVersion = null, string accessTokenOrApplicationAccessToken = null)
+        public Task<GetReleasedExtensionsResponse> GetReleasedExtensionsAsync(string extensionId, string extensionVersion = null, string accessToken = null)
         {
             if (string.IsNullOrEmpty(extensionId))
                 throw new BadParameterException("extensionId must be set");
@@ -81,7 +81,7 @@ namespace TwitchLib.Api.Helix
             if (extensionVersion != null)
                 getParams.Add(new KeyValuePair<string, string>("extension_version", extensionVersion));
 
-            return TwitchGetGenericAsync<GetReleasedExtensionsResponse>("/extensions/released", ApiVersion.Helix, getParams, accessTokenOrApplicationAccessToken);
+            return TwitchGetGenericAsync<GetReleasedExtensionsResponse>("/extensions/released", ApiVersion.Helix, getParams, accessToken);
         }
 
         #endregion

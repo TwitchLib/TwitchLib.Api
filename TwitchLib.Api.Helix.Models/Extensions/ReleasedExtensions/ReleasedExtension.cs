@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TwitchLib.Api.Core.Enums;
 
 namespace TwitchLib.Api.Helix.Models.Extensions.ReleasedExtensions
 {
@@ -36,7 +37,7 @@ namespace TwitchLib.Api.Helix.Models.Extensions.ReleasedExtensions
         [JsonProperty(PropertyName = "screenshot_urls")]
         public string[] ScreenshotUrls { get; protected set; }
         [JsonProperty(PropertyName = "state")]
-        public string State { get; protected set; }
+        public ExtensionState State { get; protected set; }
         [JsonProperty(PropertyName = "subscriptions_support_level")]
         public string SubscriptionsSupportLevel { get; protected set; }
         [JsonProperty(PropertyName = "summary")]
