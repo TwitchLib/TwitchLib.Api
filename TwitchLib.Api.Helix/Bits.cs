@@ -81,5 +81,14 @@ namespace TwitchLib.Api.Helix
         }
 
         #endregion
+
+        #region UpdateExtensionBitsProduct
+
+        public Task<UpdateExtensionBitsProductResponse> UpdateExtensionBitsProductAsync(ExtensionBitsProduct extensionBitsProduct, string accessTokenOrApplicationAccessToken = null)
+        {
+            return TwitchPutGenericAsync<UpdateExtensionBitsProductResponse>("/bits/extensions", ApiVersion.Helix, extensionBitsProduct.ToString(), accessToken: accessTokenOrApplicationAccessToken);
+        }
+
+        #endregion
     }
 }
