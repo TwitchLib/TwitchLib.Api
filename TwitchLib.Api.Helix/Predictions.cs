@@ -45,7 +45,7 @@ namespace TwitchLib.Api.Helix
             return TwitchPostGenericAsync<CreatePredictionResponse>("/predictions", ApiVersion.Helix, JsonConvert.SerializeObject(request), accessToken: accessToken);
         }
 
-        public Task<EndPredictionResponse> EndPredictionAsync(string broadcasterId, string id, PredictionStatusEnum status, string winningOutcomeId = null, string accessToken = null)
+        public Task<EndPredictionResponse> EndPredictionAsync(string broadcasterId, string id, PredictionEndStatus status, string winningOutcomeId = null, string accessToken = null)
         {
             JObject json = new JObject();
             json["broadcaster_id"] = broadcasterId;
