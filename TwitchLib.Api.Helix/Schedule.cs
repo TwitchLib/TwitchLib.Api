@@ -95,5 +95,15 @@ namespace TwitchLib.Api.Helix
 
             return TwitchDeleteAsync("/schedule/segment", ApiVersion.Helix, getParams, accessToken);
         }
+
+        public Task GetChanneliCalendarAsync(string broadcasterId)
+        {
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+            };
+
+            return TwitchGetAsync("/schedule/icalendar", ApiVersion.Helix, getParams);
+        }
     }
 }

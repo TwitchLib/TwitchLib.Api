@@ -7,6 +7,7 @@ using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Streams.CreateStreamMarker;
+using TwitchLib.Api.Helix.Models.Streams.GetFollowedStreams;
 using TwitchLib.Api.Helix.Models.Streams.GetStreamKey;
 using TwitchLib.Api.Helix.Models.Streams.GetStreamMarkers;
 using TwitchLib.Api.Helix.Models.Streams.GetStreams;
@@ -149,7 +150,7 @@ namespace TwitchLib.Api.Helix
             return TwitchPostGenericAsync<CreateStreamMarkerResponse>("/streams/markers", ApiVersion.Helix, JsonConvert.SerializeObject(request), null, accessToken);
         }
 
-        public Task<GetStreamMarkersResponse> GetStreamMarkerAsync(string userId, string videoId, string accessToken = null)
+        public Task<GetStreamMarkersResponse> GetStreamMarkersAsync(string userId, string videoId, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -158,6 +159,22 @@ namespace TwitchLib.Api.Helix
             };
 
             return TwitchGetGenericAsync<GetStreamMarkersResponse>("/stream/markers", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        public Task<GetFollowedStreamsResponse> GetFollowedStreamsAsync(string userId, int first = 100, string after = null, string accessToken = null)
+        {
+            if (first < 1 || first > 100)
+                throw new BadParameterException("first cannot be less than 1 or greater than 100");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("user_id", userId),
+                new KeyValuePair<string, string>("first", first.ToString())
+            };
+            if (after != null)
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+
+            return TwitchGetGenericAsync<GetFollowedStreamsResponse>("/streams/followed", ApiVersion.Helix, getParams, accessToken);
         }
     }
 

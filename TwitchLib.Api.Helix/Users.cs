@@ -93,7 +93,7 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetUsersFollowsResponse>("/users/follows", ApiVersion.Helix, getParams, accessToken);
         }
 
-        public Task PutUsersAsync(string description, string accessToken = null)
+        public Task UpdateUserAsync(string description, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
                 {
