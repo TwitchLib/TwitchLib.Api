@@ -156,37 +156,6 @@ namespace TwitchLib.Api.V5
 
         #endregion
 
-        #region FollowChannel
-        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
-        public Task<UserFollow> FollowChannelAsync(string userId, string channelId, bool? notifications = null, string authToken = null)
-        {
-            if (string.IsNullOrWhiteSpace(userId))
-                throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-
-            if (string.IsNullOrWhiteSpace(channelId))
-                throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-
-            var optionalRequestBody = notifications.HasValue ? "{\"notifications\": " + notifications.Value.ToString().ToLower() + "}" : null;
-            return TwitchPutGenericAsync<UserFollow>($"/users/{userId}/follows/channels/{channelId}", ApiVersion.V5, optionalRequestBody, accessToken: authToken);
-        }
-
-        #endregion
-
-        #region UnfollowChannel
-        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
-        public Task UnfollowChannelAsync(string userId, string channelId, string authToken = null)
-        {
-            if (string.IsNullOrWhiteSpace(userId))
-                throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-
-            if (string.IsNullOrWhiteSpace(channelId))
-                throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-
-            return TwitchDeleteAsync($"/users/{userId}/follows/channels/{channelId}", ApiVersion.V5, accessToken: authToken);
-        }
-
-        #endregion
-
         #region GetUserBlockList
         [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<UserBlocks> GetUserBlockListAsync(string userId, int? limit = null, int? offset = null, string authToken = null)
