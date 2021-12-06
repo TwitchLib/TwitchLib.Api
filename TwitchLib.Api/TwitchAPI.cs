@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.Logging;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.HttpCallHandlers;
@@ -13,6 +14,7 @@ namespace TwitchLib.Api
         private readonly ILogger<TwitchAPI> _logger;
         public IApiSettings Settings { get; }
         public Auth.Auth Auth { get; }
+        [Obsolete("The v5 Twitch API is being turned off on February 28, 2022. Please use Helix. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public V5.V5 V5 { get; }
         public Helix.Helix Helix { get; }
         public ThirdParty.ThirdParty ThirdParty { get; }
