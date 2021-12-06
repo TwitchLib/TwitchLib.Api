@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
@@ -11,14 +12,15 @@ using User = TwitchLib.Api.V5.Models.Users.User;
 
 namespace TwitchLib.Api.V5
 {
+    [Obsolete("This is a v5 class, please use a Helix class. All v5 calls will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
     public class Users : ApiBase
     {
         public Users(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         {
         }
-        
-        #region GetUsersByName
 
+        #region GetUsersByName
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<Models.Users.Users> GetUsersByNameAsync(List<string> usernames)
         {
             if (usernames == null || usernames.Count == 0)
@@ -34,7 +36,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetUser
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<UserAuthed> GetUserAsync(string authToken = null)
         {
             return TwitchGetGenericAsync<UserAuthed>("/user", ApiVersion.V5, accessToken: authToken);
@@ -55,7 +57,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetUserByName
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<Models.Users.Users> GetUserByNameAsync(string username)
         {
             if (string.IsNullOrEmpty(username))
@@ -68,7 +70,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetUserEmotes
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<UserEmotes> GetUserEmotesAsync(string userId, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(userId))
@@ -80,7 +82,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region CheckUserSubscriptionByChannel
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<Subscription> CheckUserSubscriptionByChannelAsync(string userId, string channelId, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(userId))
@@ -95,7 +97,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetUserFollows
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<UserFollows> GetUserFollowsAsync(string userId, int? limit = null, int? offset = null, string direction = null, string sortby = null)
         {
             if (string.IsNullOrWhiteSpace(userId))
@@ -117,7 +119,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region CheckUserFollowsByChannel
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<UserFollow> CheckUserFollowsByChannelAsync(string userId, string channelId)
         {
             if (string.IsNullOrWhiteSpace(userId))
@@ -132,7 +134,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region UserFollowsChannel
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public async Task<bool> UserFollowsChannelAsync(string userId, string channelId)
         {
             if (string.IsNullOrWhiteSpace(userId))
@@ -155,7 +157,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region FollowChannel
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<UserFollow> FollowChannelAsync(string userId, string channelId, bool? notifications = null, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(userId))
@@ -171,7 +173,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region UnfollowChannel
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task UnfollowChannelAsync(string userId, string channelId, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(userId))
@@ -186,7 +188,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetUserBlockList
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<UserBlocks> GetUserBlockListAsync(string userId, int? limit = null, int? offset = null, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(userId))
@@ -204,7 +206,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region BlockUser
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<UserBlock> BlockUserAsync(string sourceUserId, string targetUserId, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(sourceUserId))
@@ -219,7 +221,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region UnblockUser
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task UnblockUserAsync(string sourceUserId, string targetUserId, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(sourceUserId))
@@ -236,7 +238,7 @@ namespace TwitchLib.Api.V5
         #region ViewerHeartbeatService
 
         #region CreateUserConnectionToViewerHeartbeatService
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task CreateUserConnectionToViewerHeartbeatServiceAsync(string identifier, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(identifier))
@@ -249,7 +251,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region CheckUserConnectionToViewerHeartbeatService
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<VHSConnectionCheck> CheckUserConnectionToViewerHeartbeatServiceAsync(string authToken = null)
         {
 
@@ -259,7 +261,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region DeleteUserConnectionToViewerHeartbeatService
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task DeleteUserConnectionToViewerHeartbeatServicechStreamsAsync(string authToken = null)
         {
 

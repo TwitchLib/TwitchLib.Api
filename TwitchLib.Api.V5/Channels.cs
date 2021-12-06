@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
@@ -10,6 +11,7 @@ using TwitchLib.Api.V5.Models.Subscriptions;
 
 namespace TwitchLib.Api.V5
 {
+    [Obsolete("This is a v5 class, please use a Helix class. All v5 calls will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
     public class Channels : ApiBase
     {
         public Channels(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
@@ -26,6 +28,7 @@ namespace TwitchLib.Api.V5
         ///     <para>Required Authentication Scope: channel_read</para>
         /// </summary>
         /// <returns>A ChannelPrivileged object including all Channel object info plus email and streamkey.</returns>
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<ChannelAuthed> GetChannelAsync(string authToken = null)
         {
             return TwitchGetGenericAsync<ChannelAuthed>("/channel", ApiVersion.V5, accessToken: authToken);
@@ -41,6 +44,7 @@ namespace TwitchLib.Api.V5
         /// </summary>
         /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
         /// <returns>A Channel object from the response of the Twitch API.</returns>
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<Channel> GetChannelByIDAsync(string channelId)
         {
             if (string.IsNullOrWhiteSpace(channelId))
@@ -76,6 +80,7 @@ namespace TwitchLib.Api.V5
         /// </param>
         /// <param name="authToken"></param>
         /// <returns>A Channel object with the newly changed properties.</returns>
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<Channel> UpdateChannelAsync(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(channelId))
@@ -121,6 +126,7 @@ namespace TwitchLib.Api.V5
         /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
         /// <param name="authToken"></param>
         /// <returns>A ChannelEditors object that contains an array of the Users which are Editor of the channel.</returns>
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<ChannelEditors> GetChannelEditorsAsync(string channelId, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(channelId))
@@ -145,6 +151,7 @@ namespace TwitchLib.Api.V5
         /// <param name="cursor">Tells the server where to start fetching the next set of results, in a multi-page response.</param>
         /// <param name="direction">Sorting direction. Valid values: "asc", "desc" (newest first). Default: "desc".</param>
         /// <returns>A ChannelFollowers object that represents the response from the Twitch API.</returns>
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<ChannelFollowers> GetChannelFollowersAsync(string channelId, int? limit = null, int? offset = null, string cursor = null, string direction = null)
         {
             if (string.IsNullOrWhiteSpace(channelId))
@@ -173,6 +180,7 @@ namespace TwitchLib.Api.V5
         /// </summary>
         /// <param name="channelId">THe specified channelId of the channel to get the information from.</param>
         /// <returns></returns>
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public async Task<List<ChannelFollow>> GetAllFollowersAsync(string channelId)
         {
             var followers = new List<ChannelFollow>();
@@ -216,6 +224,7 @@ namespace TwitchLib.Api.V5
         /// </summary>
         /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
         /// <returns>An Array of the Teams the Channel belongs to.</returns>
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<ChannelTeams> GetChannelTeamsAsync(string channelId)
         {
             if (string.IsNullOrWhiteSpace(channelId))
@@ -238,6 +247,7 @@ namespace TwitchLib.Api.V5
         /// <param name="direction">Sorting direction. Valid values: "asc", "desc" (newest first). Default: "desc".</param>
         /// <param name="authToken">The associated auth token for this request.</param>
         /// <returns></returns>
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<ChannelSubscribers> GetChannelSubscribersAsync(string channelId, int? limit = null, int? offset = null, string direction = null, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(channelId))
@@ -265,6 +275,7 @@ namespace TwitchLib.Api.V5
         /// <param name="channelId">ChannelId indicating channel to get subs from.</param>
         /// <param name="accessToken">The associated auth token for this request.</param>
         /// <returns></returns>
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public async Task<List<Subscription>> GetAllSubscribersAsync(string channelId, string accessToken = null)
         {
             // initial stuffs
@@ -320,6 +331,7 @@ namespace TwitchLib.Api.V5
         /// <param name="userId">The specified user to check for.</param>
         /// <param name="authToken"></param>
         /// <returns>Returns a subscription object or null if not subscribed.</returns>
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<Subscription> CheckChannelSubscriptionByUserAsync(string channelId, string userId, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(channelId))
@@ -334,7 +346,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetChannelVideos
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<ChannelVideos> GetChannelVideosAsync(string channelId, int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
         {
             if (string.IsNullOrWhiteSpace(channelId))
@@ -372,7 +384,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region StartChannelCommercial
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<ChannelCommercial> StartChannelCommercialAsync(string channelId, CommercialLength duration, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(channelId))
@@ -403,6 +415,7 @@ namespace TwitchLib.Api.V5
         ///     A ChannelPrivileged object that also contains the email and stream key of the channel aside from the normal
         ///     channel values.
         /// </returns>
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<ChannelAuthed> ResetChannelStreamKeyAsync(string channelId, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(channelId))

@@ -14,6 +14,7 @@ using Video = TwitchLib.Api.V5.Models.Videos.Video;
 
 namespace TwitchLib.Api.V5
 {
+    [Obsolete("This is a v5 class, please use a Helix class. All v5 calls will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
     public class Videos : ApiBase
     {
         private const long MAX_VIDEO_SIZE = 10737418240;
@@ -23,7 +24,7 @@ namespace TwitchLib.Api.V5
         }
 
         #region GetVideo
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<Video> GetVideoAsync(string videoId)
         {
             if (string.IsNullOrWhiteSpace(videoId))
@@ -35,7 +36,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetTopVideos
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<TopVideos> GetTopVideosAsync(int? limit = null, int? offset = null, string game = null, string period = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
@@ -74,7 +75,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetFollowedVideos
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<FollowedVideos> GetFollowedVideosAsync(int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null, string authToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
@@ -109,7 +110,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region UploadVideo
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public async Task<UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Viewable viewable = Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
         {
             var listing = await CreateVideoAsync(channelId, title, description, game, language, tagList, viewable, viewableAt);
@@ -122,7 +123,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region UpdateVideo
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<Video> UpdateVideoAsync(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(videoId))
@@ -146,7 +147,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region DeleteVideo
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task DeleteVideoAsync(string videoId, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(videoId))

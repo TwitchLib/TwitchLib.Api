@@ -10,6 +10,7 @@ using LiveStreams = TwitchLib.Api.V5.Models.Streams.LiveStreams;
 
 namespace TwitchLib.Api.V5
 {
+    [Obsolete("This is a v5 class, please use a Helix class. All v5 calls will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
     public class Streams : ApiBase
     {
         public Streams(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
@@ -17,7 +18,7 @@ namespace TwitchLib.Api.V5
         }
 
         #region GetStreamByUser
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<StreamByUser> GetStreamByUserAsync(string channelId, string streamType = null)
         {
             if (string.IsNullOrWhiteSpace(channelId))
@@ -33,7 +34,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetLiveStreams
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<LiveStreams> GetLiveStreamsAsync(List<string> channelList = null, string game = null, string language = null, string streamType = null, int? limit = null, int? offset = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
@@ -56,7 +57,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetStreamsSummary
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<StreamsSummary> GetStreamsSummaryAsync(string game = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
@@ -69,7 +70,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetFeaturedStreams
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<FeaturedStreams> GetFeaturedStreamAsync(int? limit = null, int? offset = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
@@ -84,7 +85,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetFollowedStreams
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<FollowedStreams> GetFollowedStreamsAsync(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
@@ -101,7 +102,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetUptime
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public async Task<TimeSpan?> GetUptimeAsync(string channelId)
         {
             try
@@ -118,7 +119,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region BroadcasterOnline
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public async Task<bool> BroadcasterOnlineAsync(string channelId)
         {
             var res = await GetStreamByUserAsync(channelId).ConfigureAwait(false);
