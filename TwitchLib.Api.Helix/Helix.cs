@@ -28,8 +28,9 @@ namespace TwitchLib.Api.Helix
         public Predictions Predictions { get; }
         public Schedule Schedule { get; }
         public Search Search { get; }
-        public Subscriptions Subscriptions { get; }
+        public Soundtrack Soundtrack { get; }
         public Streams Streams { get; }
+        public Subscriptions Subscriptions { get; }
         public Tags Tags { get; }
         public Teams Teams { get; }
         public Videos Videos { get; }
@@ -67,6 +68,7 @@ namespace TwitchLib.Api.Helix
             Predictions = new Predictions(Settings, rateLimiter, http);
             Schedule = new Schedule(Settings, rateLimiter, http);
             Search = new Search(Settings, rateLimiter, http);
+            Soundtrack = new Soundtrack(Settings, rateLimiter, http);
             Streams = new Streams(Settings, rateLimiter, http);
             Subscriptions = new Subscriptions(Settings, rateLimiter, http);
             Tags = new Tags(Settings, rateLimiter, http);

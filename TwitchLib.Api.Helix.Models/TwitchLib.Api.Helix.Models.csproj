@@ -32,7 +32,19 @@
     <ProjectReference Include="..\TwitchLib.Api.Core.Interfaces\TwitchLib.Api.Core.Interfaces.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Soundtrack\" />
+    <None Remove="Soundtrack\GetCurrentTrack\" />
+    <None Remove="Soundtrack\GetPlaylist\" />
+    <None Remove="Soundtrack\GetPlaylists\" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="twitchlib.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Soundtrack\" />
+    <Folder Include="Soundtrack\GetCurrentTrack\" />
+    <Folder Include="Soundtrack\GetPlaylist\" />
+    <Folder Include="Soundtrack\GetPlaylists\" />
+  </ItemGroup>
 </Project>
