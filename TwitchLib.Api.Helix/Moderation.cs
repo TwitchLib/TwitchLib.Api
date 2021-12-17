@@ -2,15 +2,13 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Moderation.AutomodSettings;
-using TwitchLib.Api.Helix.Models.Moderation.BanAndTimeoutUsers;
-using TwitchLib.Api.Helix.Models.Moderation.BanUsers;
+using TwitchLib.Api.Helix.Models.Moderation.BanUser;
 using TwitchLib.Api.Helix.Models.Moderation.BlockedTerms;
 using TwitchLib.Api.Helix.Models.Moderation.CheckAutoModStatus;
 using TwitchLib.Api.Helix.Models.Moderation.CheckAutoModStatus.Request;
@@ -166,47 +164,34 @@ namespace TwitchLib.Api.Helix
 
         #region BanUsers
 
-        public Task<BanAndTimeoutUsersResponse> BanAndTimeoutUsersAsync(string broadcasterId, string moderatorId, List<TimeoutUser> usersToTimeout = null, List<BanUser> usersToBan = null, string accessToken = null)
+        /// <summary>
+        /// Ban or Timeout an user from chat. If a duration is specified it is treated as a timeout, if you omit a duration is a permanent ban.
+        /// </summary>
+        /// <param name="broadcasterId">Id of the broadcaster channel from which you want to ban/timeout somebody</param>
+        /// <param name="moderatorId">Id of the moderator that wants to ban/timeout somebody (if you use the broadcaster account this has to be the broadcasterId)</param>
+        /// <param name="banUserRequest">request object containing the information about the ban like the userId of the user to ban, the reason and optional duration</param>
+        /// <param name="accessToken">optional access token to override the one used while creating the TwitchAPI object</param>
+        /// <returns cref="BanUserResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<BanUserResponse> BanUserAsync(string broadcasterId, string moderatorId, BanUserRequest banUserRequest, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
             if (string.IsNullOrEmpty(moderatorId))
                 throw new BadParameterException("moderatorId must be set");
-            if ((usersToTimeout == null || usersToTimeout.Count == 0) && (usersToBan == null || usersToBan.Count == 0))
-                throw new BadParameterException("at least usersToTimeout or usersToBan must be set");
 
-            var bans = new JArray();
-            if(usersToTimeout != null && usersToTimeout.Count > 0)
-            {
-                foreach(var user in usersToTimeout)
-                {
-                    if (string.IsNullOrEmpty(user.UserId))
-                        throw new BadParameterException($"timeout target's userid must be set");
-                    if (user.Reason == null)
-                        throw new BadParameterException($"timeout target's reason must not be null");
-                    JObject timeout = new JObject();
-                    timeout["user_id"] = user.UserId;
-                    timeout["reason"] = user.Reason;
-                    timeout["duration"] = user.Duration.TotalSeconds;
-                    bans.Add(timeout);
-                }
-            }
-            if(usersToBan != null && usersToBan.Count > 0)
-            {
-                foreach(var user in usersToBan)
-                {
-                    if (string.IsNullOrEmpty(user.UserId))
-                        throw new BadParameterException($"ban target's userid must be set");
-                    if (user.Reason == null)
-                        throw new BadParameterException($"ban target's reason must not be null");
-                    JObject ban = new JObject();
-                    ban["user_id"] = user.UserId;
-                    ban["reason"] = user.Reason;
-                    bans.Add(ban);
-                }
-            }
-            JObject req = new JObject();
-            req["data"] = bans;
+            if (banUserRequest == null)
+                throw new BadParameterException("banUserRequest cannot be null");
+
+            if (string.IsNullOrWhiteSpace(banUserRequest.UserId))
+                throw new BadParameterException("banUserRequest.UserId must be set");
+
+            if (banUserRequest.Reason == null)
+                throw new BadParameterException("banUserRequest.Reason cannot be null and must be set to at least an empty string");
+
+            if (banUserRequest.Duration.HasValue)
+                if(banUserRequest.Duration.Value <= 0 || banUserRequest.Duration.Value > 1209600)
+                    throw new BadParameterException("banUserRequest.Duration has to be between including 1 and including 1209600");
 
             var getParams = new List<KeyValuePair<string, string>>()
             {
@@ -214,7 +199,12 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("moderator_id", moderatorId)
             };
 
-            return TwitchPostGenericAsync<BanAndTimeoutUsersResponse>("/moderation/bans", ApiVersion.Helix, req.ToString(), getParams, accessToken);
+            var body = new
+            {
+                data = banUserRequest
+            };
+
+            return TwitchPostGenericAsync<BanUserResponse>("/moderation/bans", ApiVersion.Helix, JsonConvert.SerializeObject(body), getParams, accessToken);
         }
 
         #endregion
