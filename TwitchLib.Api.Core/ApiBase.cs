@@ -335,7 +335,7 @@ namespace TwitchLib.Api.Core
                         url = $"{BaseHelix}{resource}";
                         break;
                     case ApiVersion.Auth:
-                        url = $"{BaseHelix}{resource}";
+                        url = $"{BaseAuth}{resource}";
                         break;
                 }
             }
