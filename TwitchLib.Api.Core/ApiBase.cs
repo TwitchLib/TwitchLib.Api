@@ -21,7 +21,7 @@ namespace TwitchLib.Api.Core
 
         internal const string BaseV5 = "https://api.twitch.tv/kraken";
         internal const string BaseHelix = "https://api.twitch.tv/helix";
-        internal const string BaseOauthToken = "https://id.twitch.tv/oauth2/token";
+        internal const string BaseAuth = "https://id.twitch.tv/oauth2";
 
         private DateTime? _serverBasedAccessTokenExpiry;
         private string _serverBasedAccessToken;
@@ -58,7 +58,7 @@ namespace TwitchLib.Api.Core
 
         internal async Task<string> GenerateServerBasedAccessToken()
         {
-            var result = await _http.GeneralRequestAsync($"{BaseOauthToken}?client_id={Settings.ClientId}&client_secret={Settings.Secret}&grant_type=client_credentials", "POST", null, ApiVersion.Helix, Settings.ClientId, null).ConfigureAwait(false);
+            var result = await _http.GeneralRequestAsync($"{BaseAuth}/token?client_id={Settings.ClientId}&client_secret={Settings.Secret}&grant_type=client_credentials", "POST", null, ApiVersion.Helix, Settings.ClientId, null).ConfigureAwait(false);
             if (result.Key == 200)
             {
                 var user = JsonConvert.DeserializeObject<dynamic>(result.Value);
@@ -333,6 +333,9 @@ namespace TwitchLib.Api.Core
                         break;
                     case ApiVersion.Helix:
                         url = $"{BaseHelix}{resource}";
+                        break;
+                    case ApiVersion.Auth:
+                        url = $"{BaseAuth}{resource}";
                         break;
                 }
             }

@@ -37,7 +37,8 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 HandleWebException(response);
         }
 
-        public async Task<KeyValuePair<int, string>> GeneralRequestAsync(string url, string method, string payload = null, ApiVersion api = ApiVersion.V5, string clientId = null, string accessToken = null)
+        public async Task<KeyValuePair<int, string>> GeneralRequestAsync(string url, string method,
+            string payload = null, ApiVersion api = ApiVersion.V5, string clientId = null, string accessToken = null)
         {
             var request = new HttpRequestMessage
             {
@@ -45,16 +46,17 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 Method = new HttpMethod(method)
             };
 
-            if (string.IsNullOrEmpty(clientId) && string.IsNullOrEmpty(accessToken))
-                throw new InvalidCredentialException("A Client-Id or OAuth token is required to use the Twitch API. If you previously set them in InitializeAsync, please be sure to await the method.");
-
-            if (!string.IsNullOrEmpty(clientId))
+            if (api == ApiVersion.V5 || api == ApiVersion.Helix)
             {
-                request.Headers.Add("Client-ID", clientId);
+                if (string.IsNullOrWhiteSpace(clientId) && string.IsNullOrWhiteSpace(accessToken))
+                    throw new InvalidCredentialException("A Client-Id or OAuth token is required to use the Twitch API. If you previously set them in InitializeAsync, please be sure to await the method.");
+
+                if (!string.IsNullOrWhiteSpace(clientId))
+                    request.Headers.Add("Client-ID", clientId);
             }
 
             var authPrefix = "OAuth";
-            if (api == ApiVersion.Helix)
+            if (api == ApiVersion.Helix || api == ApiVersion.Auth)
             {
                 request.Headers.Add(HttpRequestHeader.Accept.ToString(), "application/json");
                 authPrefix = "Bearer";
@@ -63,12 +65,11 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             {
                 request.Headers.Add(HttpRequestHeader.Accept.ToString(), $"application/vnd.twitchtv.v{(int)api}+json");
             }
-            if (!string.IsNullOrEmpty(accessToken))
+            if (!string.IsNullOrWhiteSpace(accessToken))
                 request.Headers.Add(HttpRequestHeader.Authorization.ToString(), $"{authPrefix} {Common.Helpers.FormatOAuth(accessToken)}");
 
             if (payload != null)
                 request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
-
 
             var response = await _http.SendAsync(request).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)

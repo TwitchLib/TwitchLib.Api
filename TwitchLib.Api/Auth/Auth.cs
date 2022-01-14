@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
@@ -43,7 +41,7 @@ namespace TwitchLib.Api.Auth
                     new KeyValuePair<string, string>("client_secret", clientSecret)
                 };
 
-            return TwitchPostGenericAsync<RefreshResponse>("/oauth2/token", ApiVersion.Void, null, getParams, customBase: "https://id.twitch.tv");
+            return TwitchPostGenericAsync<RefreshResponse>("/token", ApiVersion.Auth, null, getParams, null, internalClientId);
         }
 
         /// <summary>
@@ -114,7 +112,7 @@ namespace TwitchLib.Api.Auth
                 new KeyValuePair<string, string>("redirect_uri", redirectUri)
             };
 
-            return TwitchPostGenericAsync<AuthCodeResponse>("/oauth2/token", ApiVersion.V5, null, getParams, customBase: "https://id.twitch.tv");
+            return TwitchPostGenericAsync<AuthCodeResponse>("/token", ApiVersion.Auth, null, getParams, null, internalClientId);
         }
 
         /// <summary>
@@ -126,7 +124,7 @@ namespace TwitchLib.Api.Auth
         {
             try
             {
-                return await TwitchGetGenericAsync<ValidateAccessTokenResponse>("/oauth2/validate", ApiVersion.Void, accessToken: accessToken, customBase: "https://id.twitch.tv");
+                return await TwitchGetGenericAsync<ValidateAccessTokenResponse>("/validate", ApiVersion.Auth, accessToken: accessToken);
             } catch(BadScopeException)
             {
                 // BadScopeException == 401, which is surfaced when token is invalid
