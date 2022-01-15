@@ -104,6 +104,38 @@ namespace TwitchLib.Api.Core.Common
                     return "user:manage:blocked_users";
                 case AuthScopes.Helix_User_Read_Subscriptions:
                     return "user:read:subscriptions";
+                case AuthScopes.Helix_Channel_Manage_Polls:
+                    return "channel:manage:polls";
+                case AuthScopes.Helix_Channel_Manage_Predictions:
+                    return "channel:manage:predictions";
+                case AuthScopes.Helix_Channel_Manage_Schedule:
+                    return "channel:manage:schedule";
+                case AuthScopes.Helix_Channel_Read_Goals:
+                    return "channel:read:goals";
+                case AuthScopes.Helix_Channel_Read_Polls:
+                    return "channel:read:polls";
+                case AuthScopes.Helix_Channel_Read_Predictions:
+                    return "channel:read:predictions";
+                case AuthScopes.Helix_Moderator_Manage_Banned_Users:
+                    return "moderator:manage:banned_users";
+                case AuthScopes.Helix_Moderator_Manage_Blocked_Terms:
+                    return "moderator:manage:blocked_terms";
+                case AuthScopes.Helix_Moderator_Manage_Automod:
+                    return "moderator:manage:automod";
+                case AuthScopes.Helix_Moderator_Manage_Automod_Settings:
+                    return "moderator:manage:automod_settings";
+                case AuthScopes.Helix_Moderator_Manage_Chat_Settings:
+                    return "moderator:manage:chat_settings";
+                case AuthScopes.Helix_Moderator_Read_Blocked_Terms:
+                    return "moderator:read:blocked_terms";
+                case AuthScopes.Helix_Moderator_Read_Automod_Settings:
+                    return "moderator:read:automod_settings";
+                case AuthScopes.Helix_Moderator_Read_Chat_Settings:
+                    return "moderator:read:chat_settings";
+                case AuthScopes.Helix_User_Read_Follows:
+                    return "user:read:follows";
+                case AuthScopes.Any:
+                case AuthScopes.None:
                 default:
                     return "";
             }

@@ -118,7 +118,7 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                 case "channel:read:predictions":
                     return AuthScopes.Helix_Channel_Read_Predictions;
                 case "moderator:manage:automod":
-                    return AuthScopes.Helix_Channel_Moderator_Manage_Automod;
+                    return AuthScopes.Helix_Moderator_Manage_Automod;
                 case "":
                     return AuthScopes.None;
                 default:
