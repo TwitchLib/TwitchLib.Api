@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2021</Copyright>
-    <PackageReleaseNotes>Fixed url typo for EventSub</PackageReleaseNotes>
+    <PackageReleaseNotes>See https://github.com/TwitchLib/TwitchLib.Api/pull/250</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
