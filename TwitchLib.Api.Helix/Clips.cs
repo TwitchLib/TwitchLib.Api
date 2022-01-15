@@ -19,7 +19,7 @@ namespace TwitchLib.Api.Helix
 
         #region GetClips
 
-        public Task<GetClipsResponse> GetClipsAsync(List<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, int first = 20)
+        public Task<GetClipsResponse> GetClipsAsync(List<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, int first = 20, string accessToken = null)
         {
             if (first < 0 || first > 100)
                 throw new BadParameterException("'first' must between 0 (inclusive) and 100 (inclusive).");
@@ -53,20 +53,20 @@ namespace TwitchLib.Api.Helix
                 getParams.Add(new KeyValuePair<string, string>("after", after));
             getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
 
-            return TwitchGetGenericAsync<GetClipsResponse>("/clips", ApiVersion.Helix, getParams);
+            return TwitchGetGenericAsync<GetClipsResponse>("/clips", ApiVersion.Helix, getParams, accessToken);
         }
 
         #endregion
 
         #region CreateClip
 
-        public Task<CreatedClipResponse> CreateClipAsync(string broadcasterId, string authToken = null)
+        public Task<CreatedClipResponse> CreateClipAsync(string broadcasterId, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
                 };
-            return TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, authToken);
+            return TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, accessToken);
         }
 
         #endregion

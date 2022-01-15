@@ -16,7 +16,7 @@ namespace TwitchLib.Api.Helix
 
         #region SearchCategories
 
-        public Task<SearchCategoriesResponse> SearchCategoriesAsync(string encodedSearchQuery, string after = null, int first = 20)
+        public Task<SearchCategoriesResponse> SearchCategoriesAsync(string encodedSearchQuery, string after = null, int first = 20, string accessToken = null)
         {
             if (first < 0 || first > 100)
                 throw new BadParameterException("'first' parameter must be between 1 (inclusive) and 100 (inclusive).");
@@ -31,14 +31,14 @@ namespace TwitchLib.Api.Helix
 
             getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
 
-            return TwitchGetGenericAsync<SearchCategoriesResponse>("/search/categories", ApiVersion.Helix, getParams);
+            return TwitchGetGenericAsync<SearchCategoriesResponse>("/search/categories", ApiVersion.Helix, getParams, accessToken);
         }
 
         #endregion
 
         #region SearchChannels
 
-        public Task<SearchChannelsResponse> SearchChannelsAsync(string encodedSearchQuery, bool liveOnly = false, string after = null, int first = 20)
+        public Task<SearchChannelsResponse> SearchChannelsAsync(string encodedSearchQuery, bool liveOnly = false, string after = null, int first = 20, string accessToken = null)
         {
             if (first < 0 || first > 100)
                 throw new BadParameterException("'first' parameter must be between 1 (inclusive) and 100 (inclusive).");
@@ -55,7 +55,7 @@ namespace TwitchLib.Api.Helix
 
             getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
 
-            return TwitchGetGenericAsync<SearchChannelsResponse>("/search/channels", ApiVersion.Helix, getParams);
+            return TwitchGetGenericAsync<SearchChannelsResponse>("/search/channels", ApiVersion.Helix, getParams, accessToken);
         }
 
         #endregion

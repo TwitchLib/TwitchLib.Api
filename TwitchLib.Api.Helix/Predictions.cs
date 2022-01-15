@@ -19,7 +19,7 @@ namespace TwitchLib.Api.Helix
         {
         }
 
-        public Task<GetPredictionsResponse> GetPredictions(string broadcasterId, List<string> ids = null, string after = null, int first = 20, string accessToken = null)
+        public Task<GetPredictionsResponse> GetPredictionsAsync(string broadcasterId, List<string> ids = null, string after = null, int first = 20, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -40,12 +40,12 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetPredictionsResponse>("/predictions", ApiVersion.Helix, getParams, accessToken);
         }
 
-        public Task<CreatePredictionResponse> CreatePrediction(CreatePredictionRequest request, string accessToken = null)
+        public Task<CreatePredictionResponse> CreatePredictionAsync(CreatePredictionRequest request, string accessToken = null)
         {
             return TwitchPostGenericAsync<CreatePredictionResponse>("/predictions", ApiVersion.Helix, JsonConvert.SerializeObject(request), accessToken: accessToken);
         }
 
-        public Task<EndPredictionResponse> EndPrediction(string broadcasterId, string id, PredictionStatusEnum status, string winningOutcomeId = null, string accessToken = null)
+        public Task<EndPredictionResponse> EndPredictionAsync(string broadcasterId, string id, PredictionEndStatus status, string winningOutcomeId = null, string accessToken = null)
         {
             JObject json = new JObject();
             json["broadcaster_id"] = broadcasterId;

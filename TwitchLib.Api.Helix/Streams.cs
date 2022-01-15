@@ -7,11 +7,11 @@ using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Streams.CreateStreamMarker;
+using TwitchLib.Api.Helix.Models.Streams.GetFollowedStreams;
 using TwitchLib.Api.Helix.Models.Streams.GetStreamKey;
 using TwitchLib.Api.Helix.Models.Streams.GetStreamMarkers;
 using TwitchLib.Api.Helix.Models.Streams.GetStreams;
 using TwitchLib.Api.Helix.Models.Streams.GetStreamTags;
-using TwitchLib.Api.Helix.Models.StreamsMetadata;
 
 namespace TwitchLib.Api.Helix
 {
@@ -21,7 +21,7 @@ namespace TwitchLib.Api.Helix
         {
         }
 
-        public Task<GetStreamsResponse> GetStreamsAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
+        public Task<GetStreamsResponse> GetStreamsAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
                 {
@@ -60,49 +60,7 @@ namespace TwitchLib.Api.Helix
                     getParams.Add(new KeyValuePair<string, string>("user_login", userLogin));
             }
 
-            return TwitchGetGenericAsync<GetStreamsResponse>($"/streams", ApiVersion.Helix, getParams);
-        }
-
-        public Task<GetStreamsMetadataResponse> GetStreamsMetadataAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
-        {
-            var getParams = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("first", first.ToString()),
-                    new KeyValuePair<string, string>("type", type)
-                };
-            if (after != null)
-                getParams.Add(new KeyValuePair<string, string>("after", after));
-            if (communityIds != null && communityIds.Count > 0)
-            {
-                foreach (var communityId in communityIds)
-                    getParams.Add(new KeyValuePair<string, string>("community_id", communityId));
-            }
-
-            if (gameIds != null && gameIds.Count > 0)
-            {
-                foreach (var gameId in gameIds)
-                    getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
-            }
-
-            if (languages != null && languages.Count > 0)
-            {
-                foreach (var language in languages)
-                    getParams.Add(new KeyValuePair<string, string>("language", language));
-            }
-
-            if (userIds != null && userIds.Count > 0)
-            {
-                foreach (var userId in userIds)
-                    getParams.Add(new KeyValuePair<string, string>("user_id", userId));
-            }
-
-            if (userLogins != null && userLogins.Count > 0)
-            {
-                foreach (var userLogin in userLogins)
-                    getParams.Add(new KeyValuePair<string, string>("user_login", userLogin));
-            }
-
-            return TwitchGetGenericAsync<GetStreamsMetadataResponse>("/streams/metadata", ApiVersion.Helix, getParams);
+            return TwitchGetGenericAsync<GetStreamsResponse>($"/streams", ApiVersion.Helix, getParams, accessToken);
         }
 
         public Task<GetStreamTagsResponse> GetStreamTagsAsync(string broadcasterId, string accessToken = null)
@@ -149,7 +107,7 @@ namespace TwitchLib.Api.Helix
             return TwitchPostGenericAsync<CreateStreamMarkerResponse>("/streams/markers", ApiVersion.Helix, JsonConvert.SerializeObject(request), null, accessToken);
         }
 
-        public Task<GetStreamMarkersResponse> GetStreamMarkerAsync(string userId, string videoId, string accessToken = null)
+        public Task<GetStreamMarkersResponse> GetStreamMarkersAsync(string userId, string videoId, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -158,6 +116,22 @@ namespace TwitchLib.Api.Helix
             };
 
             return TwitchGetGenericAsync<GetStreamMarkersResponse>("/stream/markers", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        public Task<GetFollowedStreamsResponse> GetFollowedStreamsAsync(string userId, int first = 100, string after = null, string accessToken = null)
+        {
+            if (first < 1 || first > 100)
+                throw new BadParameterException("first cannot be less than 1 or greater than 100");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("user_id", userId),
+                new KeyValuePair<string, string>("first", first.ToString())
+            };
+            if (after != null)
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+
+            return TwitchGetGenericAsync<GetFollowedStreamsResponse>("/streams/followed", ApiVersion.Helix, getParams, accessToken);
         }
     }
 

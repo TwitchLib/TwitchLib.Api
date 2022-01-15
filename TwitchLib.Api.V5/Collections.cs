@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
@@ -8,6 +9,7 @@ using TwitchLib.Api.V5.Models.Collections;
 
 namespace TwitchLib.Api.V5
 {
+    [Obsolete("This is a v5 class, please use a Helix class. All v5 calls will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
     public class Collections : ApiBase
     {
         public Collections(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
@@ -15,7 +17,7 @@ namespace TwitchLib.Api.V5
         }
 
         #region GetCollectionMetadata
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<CollectionMetadata> GetCollectionMetadataAsync(string collectionId)
         {
             if (string.IsNullOrWhiteSpace(collectionId))
@@ -27,7 +29,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetCollection
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<Collection> GetCollectionAsync(string collectionId, bool? includeAllItems = null)
         {
             if (string.IsNullOrWhiteSpace(collectionId))
@@ -43,7 +45,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region GetCollectionsByChannel
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<CollectionsByChannel> GetCollectionsByChannelAsync(string channelId, long? limit = null, string cursor = null, string containingItem = null)
         {
             if (string.IsNullOrWhiteSpace(channelId))
@@ -63,7 +65,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region CreateCollection
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<CollectionMetadata> CreateCollectionAsync(string channelId, string collectionTitle, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(channelId))
@@ -79,7 +81,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region UpdateCollection
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task UpdateCollectionAsync(string collectionId, string newCollectionTitle, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(collectionId))
@@ -95,7 +97,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region CreateCollectionThumbnail
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task CreateCollectionThumbnailAsync(string collectionId, string itemId, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(collectionId))
@@ -111,7 +113,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region DeleteCollection
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task DeleteCollectionAsync(string collectionId, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(collectionId))
@@ -123,7 +125,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region AddItemToCollection
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<CollectionItem> AddItemToCollectionAsync(string collectionId, string itemId, string itemType, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(collectionId))
@@ -142,7 +144,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region DeleteItemFromCollection
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task DeleteItemFromCollectionAsync(string collectionId, string itemId, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(collectionId))
@@ -157,7 +159,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region MoveItemWithinCollection
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task MoveItemWithinCollectionAsync(string collectionId, string itemId, int position, string authToken = null)
         {
             if (string.IsNullOrWhiteSpace(collectionId))

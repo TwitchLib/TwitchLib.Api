@@ -12,6 +12,8 @@ namespace TwitchLib.Api.Helix.Models.ChannelPoints
         public string BroadcasterId { get; protected set; }
         [JsonProperty(PropertyName = "broadcaster_login")]
         public string BroadcasterLogin { get; protected set; }
+        [JsonProperty(PropertyName = "broadcaster_name")]
+        public string BroadcasterName { get; protected set; }
         [JsonProperty(PropertyName = "id")]
         public string Id { get; protected set; }
         [JsonProperty(PropertyName = "user_id")]

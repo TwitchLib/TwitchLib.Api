@@ -14,8 +14,14 @@ namespace TwitchLib.Api.Test.Helpers
 
         public static TwitchAPI TwitchApi(Mock<IHttpCallHandler> mockHandler)
         {
-            var api = new TwitchAPI(http: mockHandler.Object);
-            api.Settings.ClientId = new Guid().ToString();
+            var api = new TwitchAPI(http: mockHandler.Object)
+            {
+                Settings =
+                {
+                    ClientId = Guid.NewGuid().ToString(),
+                    AccessToken = Guid.NewGuid().ToString()
+                }
+            };
             return api;
         }
 
@@ -26,8 +32,8 @@ namespace TwitchLib.Api.Test.Helpers
             foreach (var (url, response) in urlResponses)
             {
                 mockHandler
-                    .Setup(x => x.GeneralRequest(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(new KeyValuePair<int, string>(200, response));
+                    .Setup(x => x.GeneralRequestAsync(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .ReturnsAsync(new KeyValuePair<int, string>(200, response));
             }
         }
 
@@ -38,8 +44,8 @@ namespace TwitchLib.Api.Test.Helpers
             foreach (var (url, response) in urlResponses)
             {
                 mockHandler
-                    .Setup(x => x.GeneralRequest(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(new KeyValuePair<int, string>(200, response));
+                    .Setup(x => x.GeneralRequestAsync(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .ReturnsAsync(new KeyValuePair<int, string>(200, response));
             }
             
             return mockHandler;

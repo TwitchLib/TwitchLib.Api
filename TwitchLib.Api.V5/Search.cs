@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
@@ -7,6 +8,7 @@ using TwitchLib.Api.V5.Models.Search;
 
 namespace TwitchLib.Api.V5
 {
+    [Obsolete("This is a v5 class, please use a Helix class. All v5 calls will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
     public class Search : ApiBase
     {
         public Search(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
@@ -14,7 +16,7 @@ namespace TwitchLib.Api.V5
         }
 
         #region SearchChannels
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<SearchChannels> SearchChannelsAsync(string encodedSearchQuery, int? limit = null, int? offset = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
@@ -33,7 +35,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region SearchGames
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<SearchGames> SearchGamesAsync(string encodedSearchQuery, bool? live = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
@@ -49,7 +51,7 @@ namespace TwitchLib.Api.V5
         #endregion
 
         #region SearchStreams
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<SearchStreams> SearchStreamsAsync(string encodedSearchQuery, int? limit = null, int? offset = null, bool? hls = null)
         {
             var getParams = new List<KeyValuePair<string, string>>

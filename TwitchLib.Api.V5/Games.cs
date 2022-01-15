@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
@@ -7,6 +8,7 @@ using TwitchLib.Api.V5.Models.Games;
 
 namespace TwitchLib.Api.V5
 {
+    [Obsolete("This is a v5 class, please use a Helix class. All v5 calls will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
     public class Games : ApiBase
     {
         public Games(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
@@ -14,7 +16,7 @@ namespace TwitchLib.Api.V5
         }
 
         #region GetTopGames
-
+        [Obsolete("This is a v5 method, please use a Helix method. All v5 methods will be turned off on February 28, 2022. Details: https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/ ")]
         public Task<TopGames> GetTopGamesAsync(int? limit = null, int? offset = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();

@@ -34,7 +34,7 @@ namespace TwitchLib.Api.Helix.Models.ChannelPoints
         [JsonProperty(PropertyName = "max_per_stream_setting")]
         public MaxPerStreamSetting MaxPerStreamSetting { get; protected set; }
         [JsonProperty(PropertyName = "max_per_user_per_stream_setting")]
-        public MaxPerStreamSetting MaxPerUserPerStreamSetting { get; protected set; }
+        public MaxPerUserPerStreamSetting MaxPerUserPerStreamSetting { get; protected set; }
         [JsonProperty(PropertyName = "global_cooldown_setting")]
         public GlobalCooldownSetting GlobalCooldownSetting { get; protected set; }
         [JsonProperty(PropertyName = "is_paused")]

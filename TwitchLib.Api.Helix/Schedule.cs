@@ -19,7 +19,7 @@ namespace TwitchLib.Api.Helix
         { }
 
         public Task<GetChannelStreamScheduleResponse> GetChannelStreamScheduleAsync(string broadcasterId, List<string> segmentIds = null, string startTime = null, string utcOffset = null,
-            int first = 20, string after = null, string authToken = null)
+            int first = 20, string after = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -39,11 +39,11 @@ namespace TwitchLib.Api.Helix
             if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
-            return TwitchGetGenericAsync<GetChannelStreamScheduleResponse>("/schedule", ApiVersion.Helix, getParams, authToken);
+            return TwitchGetGenericAsync<GetChannelStreamScheduleResponse>("/schedule", ApiVersion.Helix, getParams, accessToken);
         }
 
         public Task UpdateChannelStreamScheduleAsync(string broadcasterId, bool? isVacationEnabled = null, DateTime? vacationStartTime = null, DateTime? vacationEndTime = null,
-            string timezone = null, string authToken = null)
+            string timezone = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -60,21 +60,21 @@ namespace TwitchLib.Api.Helix
             if (!string.IsNullOrWhiteSpace(timezone))
                 getParams.Add(new KeyValuePair<string, string>("timezone", timezone));
 
-            return TwitchPatchAsync("/schedule/settings", ApiVersion.Helix, null, getParams, authToken);
+            return TwitchPatchAsync("/schedule/settings", ApiVersion.Helix, null, getParams, accessToken);
         }
 
-        public Task<CreateChannelStreamSegmentResponse> CreateChannelStreamScheduleSegmentAsync(string broadcasterId, CreateChannelStreamSegmentRequest payload, string authToken = null)
+        public Task<CreateChannelStreamSegmentResponse> CreateChannelStreamScheduleSegmentAsync(string broadcasterId, CreateChannelStreamSegmentRequest payload, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
             };
 
-            return TwitchPostGenericAsync<CreateChannelStreamSegmentResponse>("/schedule/segment", ApiVersion.Helix, JsonConvert.SerializeObject(payload), getParams, authToken);
+            return TwitchPostGenericAsync<CreateChannelStreamSegmentResponse>("/schedule/segment", ApiVersion.Helix, JsonConvert.SerializeObject(payload), getParams, accessToken);
         }
 
         public Task<UpdateChannelStreamSegmentResponse> UpdateChannelStreamScheduleSegmentAsync(string broadcasterId, string segmentId, UpdateChannelStreamSegmentRequest payload,
-            string authToken = null)
+            string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -82,10 +82,10 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("id", segmentId)
             };
 
-            return TwitchPatchGenericAsync<UpdateChannelStreamSegmentResponse>("/schedule/segment", ApiVersion.Helix, JsonConvert.SerializeObject(payload), getParams, authToken);
+            return TwitchPatchGenericAsync<UpdateChannelStreamSegmentResponse>("/schedule/segment", ApiVersion.Helix, JsonConvert.SerializeObject(payload), getParams, accessToken);
         }
 
-        public Task DeleteChannelStreamScheduleSegmentAsync(string broadcasterId, string segmentId, string authToken = null)
+        public Task DeleteChannelStreamScheduleSegmentAsync(string broadcasterId, string segmentId, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -93,7 +93,17 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("id", segmentId)
             };
 
-            return TwitchDeleteAsync("/schedule/segment", ApiVersion.Helix, getParams, authToken);
+            return TwitchDeleteAsync("/schedule/segment", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        public Task GetChanneliCalendarAsync(string broadcasterId)
+        {
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+            };
+
+            return TwitchGetAsync("/schedule/icalendar", ApiVersion.Helix, getParams);
         }
     }
 }

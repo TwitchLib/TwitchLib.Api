@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TwitchLib.Api.Core.Enums;
 
 namespace TwitchLib.Api.Helix.Models.Predictions
 {
@@ -21,5 +22,15 @@ namespace TwitchLib.Api.Helix.Models.Predictions
         public string WinningOutcomeId { get; protected set; }
         [JsonProperty(PropertyName = "outcomes")]
         public Outcome[] Outcomes { get; protected set; }
+        [JsonProperty(PropertyName = "prediction_window")]
+        public string PredictionWindow { get; protected set; }
+        [JsonProperty(PropertyName = "status")]
+        public PredictionStatus Status { get; protected set; }
+        [JsonProperty(PropertyName = "created_at")]
+        public string CreatedAt { get; protected set; }
+        [JsonProperty(PropertyName = "ended_at")]
+        public string EndedAt { get; protected set; }
+        [JsonProperty(PropertyName = "locked_at")]
+        public string LockedAt { get; protected set; }        
     }
 }
