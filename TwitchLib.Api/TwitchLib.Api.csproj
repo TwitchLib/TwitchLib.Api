@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Api</PackageId>
-    <VersionPrefix>3.4.1</VersionPrefix>
+    <VersionPrefix>3.4.2</VersionPrefix>
     <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Description>Api component of TwitchLib. This component allows you to access the Twitch API, as well as undocumented and third party APIs.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -13,13 +13,13 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2021</Copyright>
-    <PackageReleaseNotes>See https://github.com/TwitchLib/TwitchLib.Api/pull/250</PackageReleaseNotes>
+    <PackageReleaseNotes>Added missing IsPaused to UpdateCustomRewardRequest</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>3.4.1</AssemblyVersion>
-    <FileVersion>3.4.1</FileVersion>
+    <AssemblyVersion>3.4.2</AssemblyVersion>
+    <FileVersion>3.4.2</FileVersion>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
