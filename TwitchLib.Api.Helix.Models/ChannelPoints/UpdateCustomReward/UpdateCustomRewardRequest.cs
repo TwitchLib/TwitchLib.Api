@@ -34,6 +34,8 @@ namespace TwitchLib.Api.Helix.Models.ChannelPoints.UpdateCustomReward
         public bool? IsGlobalCooldownEnabled { get; set; }
         [JsonProperty(PropertyName = "global_cooldown_seconds")]
         public int? GlobalCooldownSeconds { get; set; }
+        [JsonProperty(PropertyName = "is_paused")]
+        public bool? IsPaused { get; set; }
         [JsonProperty(PropertyName = "should_redemptions_skip_request_queue")]
         public bool? ShouldRedemptionsSkipRequestQueue { get; set; }
     }
