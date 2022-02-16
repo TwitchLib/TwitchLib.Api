@@ -7,6 +7,8 @@ namespace TwitchLib.Api.Helix.Models.Users.GetUserFollows
     {
         [JsonProperty(PropertyName = "from_id")]
         public string FromUserId { get; protected set; }
+        [JsonProperty(PropertyName = "from_login")]
+        public string FromLogin { get; protected set; }
         [JsonProperty(PropertyName = "from_name")]
         public string FromUserName { get; protected set; }
         [JsonProperty(PropertyName = "to_id")]
