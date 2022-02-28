@@ -10,7 +10,7 @@ using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Core.HttpCallHandlers
 {
-    [Obsolete("The WebRequest handler is depreacted and is not updated to be working with Helix correctly")]
+    [Obsolete("The WebRequest handler is deprecated and is not updated to be working with Helix correctly")]
     public class TwitchWebRequest : IHttpCallHandler
     {
         private readonly ILogger<TwitchWebRequest> _logger;
