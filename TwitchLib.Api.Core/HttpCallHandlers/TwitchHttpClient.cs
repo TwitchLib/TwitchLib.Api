@@ -38,7 +38,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
         }
 
         public async Task<KeyValuePair<int, string>> GeneralRequestAsync(string url, string method,
-            string payload = null, ApiVersion api = ApiVersion.V5, string clientId = null, string accessToken = null)
+            string payload = null, ApiVersion api = ApiVersion.Helix, string clientId = null, string accessToken = null)
         {
             var request = new HttpRequestMessage
             {
@@ -46,13 +46,12 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 Method = new HttpMethod(method)
             };
 
-            if (api == ApiVersion.V5 || api == ApiVersion.Helix)
+            if (api == ApiVersion.Helix)
             {
-                if (string.IsNullOrWhiteSpace(clientId) && string.IsNullOrWhiteSpace(accessToken))
-                    throw new InvalidCredentialException("A Client-Id or OAuth token is required to use the Twitch API. If you previously set them in InitializeAsync, please be sure to await the method.");
+                if (string.IsNullOrWhiteSpace(clientId) || string.IsNullOrWhiteSpace(accessToken))
+                    throw new InvalidCredentialException("A Client-Id and OAuth token is required to use the Twitch API.");
 
-                if (!string.IsNullOrWhiteSpace(clientId))
-                    request.Headers.Add("Client-ID", clientId);
+                request.Headers.Add("Client-ID", clientId);
             }
 
             var authPrefix = "OAuth";
@@ -118,8 +117,6 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                         throw new TokenExpiredException("Your request was blocked due to an expired Token. Please refresh your token and update your API instance settings.");
                 case HttpStatusCode.NotFound:
                     throw new BadResourceException("The resource you tried to access was not valid.");
-                case (HttpStatusCode)422:
-                    throw new NotPartneredException("The resource you requested is only available to channels that have been partnered by Twitch.");
                 case (HttpStatusCode)429:
                     errorResp.Headers.TryGetValues("Ratelimit-Reset", out var resetTime);
                     throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made", resetTime.FirstOrDefault());
