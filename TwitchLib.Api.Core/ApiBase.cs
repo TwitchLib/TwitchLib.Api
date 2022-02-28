@@ -19,7 +19,6 @@ namespace TwitchLib.Api.Core
         private readonly IRateLimiter _rateLimiter;
         private readonly IHttpCallHandler _http;
 
-        internal const string BaseV5 = "https://api.twitch.tv/kraken";
         internal const string BaseHelix = "https://api.twitch.tv/helix";
         internal const string BaseAuth = "https://id.twitch.tv/oauth2";
 
@@ -32,11 +31,6 @@ namespace TwitchLib.Api.Core
             _rateLimiter = rateLimiter;
             _http = http;
             _jsonSerializer = new TwitchLibJsonSerializer();
-        }
-
-        internal virtual Task<Models.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
-        {
-            return TwitchGetGenericAsync<Models.Root.Root>("", ApiVersion.V5, accessToken: authToken, clientId: clientId);
         }
 
         public async ValueTask<string> GetAccessTokenAsync(string accessToken = null)
@@ -233,7 +227,7 @@ namespace TwitchLib.Api.Core
             return _http.RequestReturnResponseCodeAsync(url, method, getParams);
         }
 
-        protected async Task<T> GetGenericAsync<T>(string url, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, ApiVersion api = ApiVersion.V5, string clientId = null)
+        protected async Task<T> GetGenericAsync<T>(string url, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, ApiVersion api = ApiVersion.Helix, string clientId = null)
         {
             if (getParams != null)
             {
@@ -319,7 +313,7 @@ namespace TwitchLib.Api.Core
             }
         }
 
-        private string ConstructResourceUrl(string resource = null, List<KeyValuePair<string, string>> getParams = null, ApiVersion api = ApiVersion.V5, string overrideUrl = null)
+        private string ConstructResourceUrl(string resource = null, List<KeyValuePair<string, string>> getParams = null, ApiVersion api = ApiVersion.Helix, string overrideUrl = null)
         {
             var url = "";
             if (overrideUrl == null)
@@ -328,9 +322,6 @@ namespace TwitchLib.Api.Core
                     throw new Exception("Cannot pass null resource with null override url");
                 switch (api)
                 {
-                    case ApiVersion.V5:
-                        url = $"{BaseV5}{resource}";
-                        break;
                     case ApiVersion.Helix:
                         url = $"{BaseHelix}{resource}";
                         break;
