@@ -10,6 +10,7 @@ using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Core.HttpCallHandlers
 {
+    [Obsolete("The WebRequest handler is deprecated and is not updated to be working with Helix correctly")]
     public class TwitchWebRequest : IHttpCallHandler
     {
         private readonly ILogger<TwitchWebRequest> _logger;
@@ -41,7 +42,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
 
         }
 
-        public async Task<KeyValuePair<int, string>> GeneralRequestAsync(string url, string method, string payload = null, ApiVersion api = ApiVersion.V5, string clientId = null, string accessToken = null)
+        public async Task<KeyValuePair<int, string>> GeneralRequestAsync(string url, string method, string payload = null, ApiVersion api = ApiVersion.Helix, string clientId = null, string accessToken = null)
         {
             var request = WebRequest.CreateHttp(url);
             if (string.IsNullOrEmpty(clientId) && string.IsNullOrEmpty(accessToken))
@@ -134,8 +135,6 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 case (HttpStatusCode)429:
                     var resetTime = errorResp.Headers.Get("Ratelimit-Reset");
                     throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made", resetTime);
-                case (HttpStatusCode)422:
-                    throw new NotPartneredException("The resource you requested is only available to channels that have been partnered by Twitch.");
                 default:
                     throw e;
             }

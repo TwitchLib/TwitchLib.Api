@@ -29,7 +29,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TwitchLib.Api.Core\TwitchLib.Api.Core.csproj" />
     <ProjectReference Include="..\TwitchLib.Api.Helix\TwitchLib.Api.Helix.csproj" />
-    <ProjectReference Include="..\TwitchLib.Api.V5\TwitchLib.Api.V5.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="twitchlib.png" Pack="true" PackagePath="\" />

@@ -6,13 +6,10 @@ using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Core.Interfaces.Clips;
-using TwitchLib.Api.Core.Models.Undocumented.ChannelExtensionData;
 using TwitchLib.Api.Core.Models.Undocumented.ChannelPanels;
 using TwitchLib.Api.Core.Models.Undocumented.ChatProperties;
 using TwitchLib.Api.Core.Models.Undocumented.Chatters;
-using TwitchLib.Api.Core.Models.Undocumented.ChatUser;
 using TwitchLib.Api.Core.Models.Undocumented.ClipChat;
-using TwitchLib.Api.Core.Models.Undocumented.Comments;
 using TwitchLib.Api.Core.Models.Undocumented.CSMaps;
 using TwitchLib.Api.Core.Models.Undocumented.CSStreams;
 using TwitchLib.Api.Core.Models.Undocumented.RecentEvents;
@@ -157,17 +154,6 @@ namespace TwitchLib.Api.Core.Undocumented
 
         #endregion
 
-        #region GetChatUser
-
-        public Task<ChatUserResponse> GetChatUserAsync(string userId, string channelId = null)
-        {
-            return GetGenericAsync<ChatUserResponse>(channelId != null 
-                ? $"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}" 
-                : $"https://api.twitch.tv/kraken/users/{userId}/chat/");
-        }
-
-        #endregion
-
         #region IsUsernameAvailable
 
         public async Task<bool> IsUsernameAvailableAsync(string username)
@@ -183,40 +169,6 @@ namespace TwitchLib.Api.Core.Undocumented
                 default:
                     throw new BadResourceException("Unexpected response from resource. Expecting response code 200 or 204, received: " + resp);
             }
-        }
-
-        #endregion
-
-        #region GetChannelExtensionData
-
-        public Task<GetChannelExtensionDataResponse> GetChannelExtensionDataAsync(string channelId)
-        {
-            return TwitchGetGenericAsync<GetChannelExtensionDataResponse>($"/channels/{channelId}/extensions", ApiVersion.V5, customBase: "https://api.twitch.tv/v5");
-        }
-
-        #endregion
-
-        #region GetComments
-
-        public Task<CommentsPage> GetCommentsPageAsync(string videoId, int? contentOffsetSeconds = null, string cursor = null)
-        {
-            var getParams = new List<KeyValuePair<string, string>>();
-            if (string.IsNullOrWhiteSpace(videoId))
-                throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-
-            if (contentOffsetSeconds.HasValue) getParams.Add(new KeyValuePair<string, string>("content_offset_seconds", contentOffsetSeconds.Value.ToString()));
-
-            if (cursor != null) getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
-
-            return GetGenericAsync<CommentsPage>($"https://api.twitch.tv/kraken/videos/{videoId}/comments", getParams);
-        }
-
-        public async Task<List<CommentsPage>> GetAllCommentsAsync(string videoId)
-        {
-            var pages = new List<CommentsPage> {await GetCommentsPageAsync(videoId)};
-            while (pages.Last().Next != null) pages.Add(await GetCommentsPageAsync(videoId, null, pages.Last().Next));
-
-            return pages;
         }
 
         #endregion
