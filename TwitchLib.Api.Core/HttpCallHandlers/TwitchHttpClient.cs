@@ -60,10 +60,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 request.Headers.Add(HttpRequestHeader.Accept.ToString(), "application/json");
                 authPrefix = "Bearer";
             }
-            else if (api != ApiVersion.Void)
-            {
-                request.Headers.Add(HttpRequestHeader.Accept.ToString(), $"application/vnd.twitchtv.v{(int)api}+json");
-            }
+
             if (!string.IsNullOrWhiteSpace(accessToken))
                 request.Headers.Add(HttpRequestHeader.Authorization.ToString(), $"{authPrefix} {Common.Helpers.FormatOAuth(accessToken)}");
 

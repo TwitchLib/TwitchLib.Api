@@ -52,7 +52,7 @@ namespace TwitchLib.Api.Core
 
         internal async Task<string> GenerateServerBasedAccessToken()
         {
-            var result = await _http.GeneralRequestAsync($"{BaseAuth}/token?client_id={Settings.ClientId}&client_secret={Settings.Secret}&grant_type=client_credentials", "POST", null, ApiVersion.Helix, Settings.ClientId, null).ConfigureAwait(false);
+            var result = await _http.GeneralRequestAsync($"{BaseAuth}/token?client_id={Settings.ClientId}&client_secret={Settings.Secret}&grant_type=client_credentials", "POST", null, ApiVersion.Auth, Settings.ClientId, null).ConfigureAwait(false);
             if (result.Key == 200)
             {
                 var user = JsonConvert.DeserializeObject<dynamic>(result.Value);
