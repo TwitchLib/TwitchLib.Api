@@ -6,8 +6,8 @@ namespace TwitchLib.Api.Helix.Models.Bits
     public class Images
     {
         [JsonProperty(PropertyName = "dark")]
-        public Image Dark { get; protected set; }
+        public ImageList Dark { get; protected set; }
         [JsonProperty(PropertyName = "light")]
-        public Image Light { get; protected set; }
+        public ImageList Light { get; protected set; }
     }
 }
