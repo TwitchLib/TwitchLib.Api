@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
@@ -55,10 +56,10 @@ namespace TwitchLib.Api.Core
             var result = await _http.GeneralRequestAsync($"{BaseAuth}/token?client_id={Settings.ClientId}&client_secret={Settings.Secret}&grant_type=client_credentials", "POST", null, ApiVersion.Auth, Settings.ClientId, null).ConfigureAwait(false);
             if (result.Key == 200)
             {
-                var user = JsonConvert.DeserializeObject<dynamic>(result.Value);
-                var offset = (int)user.expires_in;
+                var data = JObject.Parse(result.Value);
+                var offset = int.Parse(data.SelectToken("expires_in")?.ToString() ?? string.Empty);
                 _serverBasedAccessTokenExpiry = DateTime.Now + TimeSpan.FromSeconds(offset);
-                _serverBasedAccessToken = (string)user.access_token;
+                _serverBasedAccessToken = data.SelectToken("access_token")?.ToString();
                 return _serverBasedAccessToken;
             }
             return null;
