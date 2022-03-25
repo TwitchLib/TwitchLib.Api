@@ -31,7 +31,7 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<CheckUserSubscriptionResponse>("/subscriptions/user", ApiVersion.Helix, getParams, accessToken);
         } 
 
-        public Task<GetUserSubscriptionsResponse> GetUserSubscriptionsAsync(string broadcasterId, List<string> userIds, string accessToken = null)
+        public Task<GetUserSubscriptionsResponse> GetUserSubscriptionsAsync(string broadcasterId, ICollection<string> userIds, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
             {

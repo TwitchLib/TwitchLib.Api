@@ -57,7 +57,7 @@ namespace TwitchLib.Api.Helix
             return TwitchDeleteAsync("/user/blocks", ApiVersion.Helix, getParams, accessToken);
         }
 
-        public Task<GetUsersResponse> GetUsersAsync(List<string> ids = null, List<string> logins = null, string accessToken = null)
+        public Task<GetUsersResponse> GetUsersAsync(ICollection<string> ids = null, ICollection<string> logins = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
             if (ids != null && ids.Count > 0)

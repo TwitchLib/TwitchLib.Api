@@ -16,7 +16,7 @@ namespace TwitchLib.Api.Services.Core.LiveStreamMonitor
             return Task.FromResult(new Func<Stream, bool>(stream => stream.UserId == channel));
         }
 
-        public override Task<GetStreamsResponse> GetStreamsAsync(List<string> channels, string accessToken = null)
+        public override Task<GetStreamsResponse> GetStreamsAsync(ICollection<string> channels, string accessToken = null)
         {
             return _api.Helix.Streams.GetStreamsAsync(first: channels.Count, userIds: channels, accessToken: accessToken);
         }

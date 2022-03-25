@@ -16,7 +16,7 @@ namespace TwitchLib.Api.Services
         /// <summary>
         /// The list with channels to monitor.
         /// </summary>
-        public List<string> ChannelsToMonitor { get; private set; }
+        public IList<string> ChannelsToMonitor { get; private set; }
         /// <summary>
         /// How often the service is being updated in seconds.
         /// </summary>
@@ -100,7 +100,7 @@ namespace TwitchLib.Api.Services
         /// <exception cref="ArgumentNullException">When <paramref name="channelsToMonitor"/> is null.</exception>
         /// <exception cref="ArgumentException">When <paramref name="channelsToMonitor"/> is empty.</exception>
         /// <param name="channelsToMonitor">The channels to monitor.</param>
-        protected virtual void SetChannels(List<string> channelsToMonitor)
+        protected virtual void SetChannels(ICollection<string> channelsToMonitor)
         {
             if (channelsToMonitor == null)
                 throw new ArgumentNullException(nameof(channelsToMonitor));
@@ -108,9 +108,9 @@ namespace TwitchLib.Api.Services
             if (channelsToMonitor.Count == 0)
                 throw new ArgumentException("The provided list is empty.", nameof(channelsToMonitor));
 
-            ChannelsToMonitor = channelsToMonitor;
+            ChannelsToMonitor = new List<string>(channelsToMonitor);
 
-            OnChannelsSet?.Invoke(this, new OnChannelsSetArgs {Channels = channelsToMonitor});
+            OnChannelsSet?.Invoke(this, new OnChannelsSetArgs {Channels = ChannelsToMonitor});
         }
         
         /// <summary>

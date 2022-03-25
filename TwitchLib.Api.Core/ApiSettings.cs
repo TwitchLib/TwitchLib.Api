@@ -13,7 +13,7 @@ namespace TwitchLib.Api.Core
         private string _accessToken;
         private bool _skipDynamicScopeValidation;
         private bool _skipAutoServerTokenGeneration;
-        private List<AuthScopes> _scopes;
+        private IList<AuthScopes> _scopes;
         public string ClientId
         {
             get => _clientId;
@@ -74,7 +74,7 @@ namespace TwitchLib.Api.Core
                 }
             }
         }
-        public List<AuthScopes> Scopes
+        public IList<AuthScopes> Scopes
         {
             get => _scopes;
             set

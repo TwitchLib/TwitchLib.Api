@@ -19,7 +19,7 @@ namespace TwitchLib.Api.Helix
         {
         }
 
-        public Task<GetPredictionsResponse> GetPredictionsAsync(string broadcasterId, List<string> ids = null, string after = null, int first = 20, string accessToken = null)
+        public Task<GetPredictionsResponse> GetPredictionsAsync(string broadcasterId, ICollection<string> ids = null, string after = null, int first = 20, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {

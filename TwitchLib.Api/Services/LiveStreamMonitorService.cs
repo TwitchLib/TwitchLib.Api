@@ -18,7 +18,7 @@ namespace TwitchLib.Api.Services
         /// <summary>
         /// A cache with streams that are currently live.
         /// </summary>
-        public Dictionary<string, Stream> LiveStreams { get; } = new Dictionary<string, Stream>(StringComparer.OrdinalIgnoreCase);
+        public IDictionary<string, Stream> LiveStreams { get; } = new Dictionary<string, Stream>(StringComparer.OrdinalIgnoreCase);
         /// <summary>
         /// The maximum amount of streams to collect per request.
         /// </summary>
@@ -143,7 +143,7 @@ namespace TwitchLib.Api.Services
             OnStreamOffline?.Invoke(this, new OnStreamOfflineArgs { Channel = channel, Stream = cachedLiveStream });
         }
 
-        private async Task<List<Stream>> GetLiveStreamersAsync()
+        private async Task<IList<Stream>> GetLiveStreamersAsync()
         {
             var livestreamers = new List<Stream>();
             var pages = Math.Ceiling((double)ChannelsToMonitor.Count / MaxStreamRequestCountPerRequest);

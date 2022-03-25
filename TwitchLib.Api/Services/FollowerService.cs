@@ -21,7 +21,7 @@ namespace TwitchLib.Api.Services
         /// <summary>
         /// The current known followers for each channel.
         /// </summary>
-        public Dictionary<string, List<Follow>> KnownFollowers { get; } = new Dictionary<string, List<Follow>>(StringComparer.OrdinalIgnoreCase);
+        public IDictionary<string, List<Follow>> KnownFollowers { get; } = new Dictionary<string, List<Follow>>(StringComparer.OrdinalIgnoreCase);
         /// <summary>
         /// The amount of followers queried per request.
         /// </summary>
@@ -84,7 +84,7 @@ namespace TwitchLib.Api.Services
         /// <exception cref="ArgumentNullException">When <paramref name="channelsToMonitor"/> is null.</exception>
         /// <exception cref="ArgumentException">When <paramref name="channelsToMonitor"/> is empty.</exception>
         /// <param name="channelsToMonitor">A list with channels to monitor.</param>
-        public void SetChannelsById(List<string> channelsToMonitor)
+        public void SetChannelsById(ICollection<string> channelsToMonitor)
         {
             SetChannels(channelsToMonitor);
 
@@ -97,7 +97,7 @@ namespace TwitchLib.Api.Services
         /// <exception cref="ArgumentNullException">When <paramref name="channelsToMonitor"/> is null.</exception>
         /// <exception cref="ArgumentException">When <paramref name="channelsToMonitor"/> is empty.</exception>
         /// <param name="channelsToMonitor">A list with channels to monitor.</param>
-        public void SetChannelsByName(List<string> channelsToMonitor)
+        public void SetChannelsByName(ICollection<string> channelsToMonitor)
         {
             SetChannels(channelsToMonitor);
 
@@ -115,7 +115,7 @@ namespace TwitchLib.Api.Services
 
             foreach (var channel in ChannelsToMonitor)
             {
-                List<Follow> newFollowers;
+                ICollection<Follow> newFollowers;
                 var latestFollowers = await GetLatestFollowersAsync(channel);
 
                 if (latestFollowers.Count == 0)
@@ -160,7 +160,7 @@ namespace TwitchLib.Api.Services
                 if (!callEvents)
                     return;
 
-                OnNewFollowersDetected?.Invoke(this, new OnNewFollowersDetectedArgs { Channel = channel, NewFollowers = newFollowers });
+                OnNewFollowersDetected?.Invoke(this, new OnNewFollowersDetectedArgs { Channel = channel, NewFollowers = newFollowers.ToList() });
             }
         }
 
@@ -170,7 +170,7 @@ namespace TwitchLib.Api.Services
             await UpdateLatestFollowersAsync();
         }
 
-        private async Task<List<Follow>> GetLatestFollowersAsync(string channel)
+        private async Task<IList<Follow>> GetLatestFollowersAsync(string channel)
         {
             var resultset = await _monitor.GetUsersFollowsAsync(channel, QueryCountPerRequest);
             

@@ -28,7 +28,7 @@ namespace TwitchLib.Api.Helix
             return TwitchDeleteGenericAsync<DeleteVideosResponse>("/videos", ApiVersion.Helix, getParams, accessToken);
         }
 
-        public Task<GetVideosResponse> GetVideosAsync(List<string> videoIds = null, string userId = null, string gameId = null, string after = null, string before = null, int first = 20, string language = null, Period period = Period.All, VideoSort sort = VideoSort.Time, VideoType type = VideoType.All, string accessToken = null)
+        public Task<GetVideosResponse> GetVideosAsync(ICollection<string> videoIds = null, string userId = null, string gameId = null, string after = null, string before = null, int first = 20, string language = null, Period period = Period.All, VideoSort sort = VideoSort.Time, VideoType type = VideoType.All, string accessToken = null)
         {
             if ((videoIds == null || videoIds.Count == 0) && userId == null && gameId == null)
                 throw new BadParameterException("VideoIds, userId, and gameId cannot all be null/empty.");
