@@ -20,6 +20,8 @@ namespace TwitchLib.Api.Helix.Models.Subscriptions
         public string UserId { get; protected set; }
         [JsonProperty(PropertyName = "user_name")]
         public string UserName { get; protected set; }
+        [JsonProperty(PropertyName = "user_login")]
+        public string UserLogin { get; protected set; }
         [JsonProperty(PropertyName = "gifter_id")]
         public string GiftertId { get; protected set; }
         [JsonProperty(PropertyName = "gifter_name")]
