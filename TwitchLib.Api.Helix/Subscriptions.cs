@@ -52,18 +52,23 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetUserSubscriptionsResponse>("/subscriptions", ApiVersion.Helix, getParams, accessToken);
         }
 
-        public Task<GetBroadcasterSubscriptionsResponse> GetBroadcasterSubscriptionsAsync(string broadcasterId, string cursor = null,
-            int first = 20, string accessToken = null)
+        public Task<GetBroadcasterSubscriptionsResponse> GetBroadcasterSubscriptionsAsync(string broadcasterId,
+            int first = 20, string after = null, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
             {
                 throw new BadParameterException("BroadcasterId must be set");
             }
-
+            
+            if (first > 100)
+            {                    
+                throw new BadParameterException("First must be 100 or less");
+            }
+           
             var getParams = new List<KeyValuePair<string, string>>();
             getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
             getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
-            if (cursor != null) getParams.Add(new KeyValuePair<string, string>("after", cursor));
+            if (after != null) getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetBroadcasterSubscriptionsResponse>("/subscriptions", ApiVersion.Helix, getParams, accessToken);
         }
