@@ -84,8 +84,8 @@ namespace TwitchLib.Api.Helix
             string payload = null;
             if (tagIds != null && tagIds.Count > 0)
             {
-                dynamic dynamicPayload = new JObject();
-                dynamicPayload.tag_ids = new JArray(tagIds);
+                var dynamicPayload = new JObject();
+                dynamicPayload.Add("tag_ids", new JArray(tagIds));
                 payload = dynamicPayload.ToString();
             }
 
