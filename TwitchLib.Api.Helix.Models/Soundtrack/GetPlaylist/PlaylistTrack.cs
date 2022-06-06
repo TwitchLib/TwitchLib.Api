@@ -13,7 +13,7 @@ namespace TwitchLib.Api.Helix.Models.Soundtrack.GetPlaylist
         public string ImageUrl { get; protected set; }
         [JsonProperty(PropertyName = "description")]
         public string Description { get; protected set; }
-        [JsonProperty(PropertyName = "catalog_tracks")]
+        [JsonProperty(PropertyName = "tracks")]
         public Track[] CatalogTracks { get; protected set; }
     }
 }
