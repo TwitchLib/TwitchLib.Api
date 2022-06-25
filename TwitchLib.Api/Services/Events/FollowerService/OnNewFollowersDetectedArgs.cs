@@ -13,6 +13,6 @@ namespace TwitchLib.Api.Services.Events.FollowerService
         /// <summary>Event property representing channel the service is currently monitoring.</summary>
         public string Channel;
         /// <summary>Event property representing all new followers detected.</summary>
-        public List<Follow> NewFollowers;
+        public IList<Follow> NewFollowers;
     }
 }

@@ -15,7 +15,7 @@ namespace TwitchLib.Api.Helix
         {
         }
 
-        public Task<CreateEventSubSubscriptionResponse> CreateEventSubSubscriptionAsync(string type, string version, Dictionary<string, string> condition, string method, string callback,
+        public Task<CreateEventSubSubscriptionResponse> CreateEventSubSubscriptionAsync(string type, string version, IDictionary<string, string> condition, string method, string callback,
             string secret, string clientId = null, string accessToken = null)
         {
             if (string.IsNullOrEmpty(type))

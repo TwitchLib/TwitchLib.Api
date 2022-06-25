@@ -19,7 +19,7 @@ namespace TwitchLib.Api.Helix
         }
 
         #region GetCodeStatus
-        public Task<GetCodeStatusResponse> GetCodeStatusAsync(List<string> codes, string userId, string accessToken = null)
+        public Task<GetCodeStatusResponse> GetCodeStatusAsync(ICollection<string> codes, string userId, string accessToken = null)
         {
             if (codes == null || codes.Count == 0 || codes.Count > 20)
                 throw new BadParameterException("codes cannot be null and must ahve between 1 and 20 items");
@@ -83,7 +83,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region RedeemCode
-        public Task<RedeemCodeResponse> RedeemCodeAsync(List<string> codes, string accessToken = null)
+        public Task<RedeemCodeResponse> RedeemCodeAsync(ICollection<string> codes, string accessToken = null)
         {
             if (codes == null || codes.Count == 0 || codes.Count > 20)
                 throw new BadParameterException("codes cannot be null and must ahve between 1 and 20 items");

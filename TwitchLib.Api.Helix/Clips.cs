@@ -19,7 +19,7 @@ namespace TwitchLib.Api.Helix
 
         #region GetClips
 
-        public Task<GetClipsResponse> GetClipsAsync(List<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, int first = 20, string accessToken = null)
+        public Task<GetClipsResponse> GetClipsAsync(IEnumerable<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, int first = 20, string accessToken = null)
         {
             if (first < 0 || first > 100)
                 throw new BadParameterException("'first' must between 0 (inclusive) and 100 (inclusive).");

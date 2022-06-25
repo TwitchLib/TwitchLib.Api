@@ -19,7 +19,7 @@ namespace TwitchLib.Api.Helix
 
         #region GetExtensionTransactions
 
-        public Task<GetExtensionTransactionsResponse> GetExtensionTransactionsAsync(string extensionId, List<string> ids = null, string after = null, int first = 20, string applicationAccessToken = null)
+        public Task<GetExtensionTransactionsResponse> GetExtensionTransactionsAsync(string extensionId, ICollection<string> ids = null, string after = null, int first = 20, string applicationAccessToken = null)
         {
             if(extensionId == null)
                 throw new BadParameterException("extensionId cannot be null");

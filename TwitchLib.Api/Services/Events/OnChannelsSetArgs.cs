@@ -12,6 +12,6 @@ namespace TwitchLib.Api.Services.Events
         /// <summary>
         /// The channels the service is currently monitoring.
         /// </summary>
-        public List<string> Channels;
+        public IList<string> Channels;
     }
 }

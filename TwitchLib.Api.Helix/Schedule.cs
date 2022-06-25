@@ -18,7 +18,7 @@ namespace TwitchLib.Api.Helix
         public Schedule(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         { }
 
-        public Task<GetChannelStreamScheduleResponse> GetChannelStreamScheduleAsync(string broadcasterId, List<string> segmentIds = null, string startTime = null, string utcOffset = null,
+        public Task<GetChannelStreamScheduleResponse> GetChannelStreamScheduleAsync(string broadcasterId, ICollection<string> segmentIds = null, string startTime = null, string utcOffset = null,
             int first = 20, string after = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>

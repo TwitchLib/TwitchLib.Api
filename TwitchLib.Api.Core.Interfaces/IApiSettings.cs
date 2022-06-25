@@ -11,7 +11,7 @@ namespace TwitchLib.Api.Core.Interfaces
         string ClientId { get; set; }
         bool SkipDynamicScopeValidation { get; set; }
         bool SkipAutoServerTokenGeneration { get; set; }
-        List<AuthScopes> Scopes { get; set; }
+        IList<AuthScopes> Scopes { get; set; }
 
         event PropertyChangedEventHandler PropertyChanged;
     }

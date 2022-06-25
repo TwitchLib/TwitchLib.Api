@@ -45,7 +45,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region GetCustomReward
-        public Task<GetCustomRewardsResponse> GetCustomRewardAsync(string broadcasterId, List<string> rewardIds = null, bool onlyManageableRewards = false, string accessToken = null)
+        public Task<GetCustomRewardsResponse> GetCustomRewardAsync(string broadcasterId, ICollection<string> rewardIds = null, bool onlyManageableRewards = false, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
                     {

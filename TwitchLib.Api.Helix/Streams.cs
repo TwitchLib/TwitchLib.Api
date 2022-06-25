@@ -21,7 +21,7 @@ namespace TwitchLib.Api.Helix
         {
         }
 
-        public Task<GetStreamsResponse> GetStreamsAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null, string accessToken = null)
+        public Task<GetStreamsResponse> GetStreamsAsync(string after = null, ICollection<string> communityIds = null, int first = 20, ICollection<string> gameIds = null, ICollection<string> languages = null, string type = "all", ICollection<string> userIds = null, ICollection<string> userLogins = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
                 {
@@ -76,7 +76,7 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetStreamTagsResponse>("/streams/tags", ApiVersion.Helix, getParams, accessToken);
         }
 
-        public Task ReplaceStreamTagsAsync(string broadcasterId, List<string> tagIds = null, string accessToken = null)
+        public Task ReplaceStreamTagsAsync(string broadcasterId, ICollection<string> tagIds = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
             getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));

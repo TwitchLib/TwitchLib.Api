@@ -40,7 +40,7 @@ namespace TwitchLib.Api.Helix
 
         #region CheckAutoModeStatus
 
-        public Task<CheckAutoModStatusResponse> CheckAutoModStatusAsync(List<Message> messages, string broadcasterId, string accessToken = null)
+        public Task<CheckAutoModStatusResponse> CheckAutoModStatusAsync(ICollection<Message> messages, string broadcasterId, string accessToken = null)
         {
             if (messages == null || messages.Count == 0)
                 throw new BadParameterException("messages cannot be null and must be greater than 0 length");
@@ -55,7 +55,7 @@ namespace TwitchLib.Api.Helix
 
             MessageRequest request = new MessageRequest()
             {
-                Messages = messages.ToArray()
+                Messages = (Message[])messages
             };
 
             return TwitchPostGenericAsync<CheckAutoModStatusResponse>("/moderation/enforcements/status", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
@@ -65,7 +65,7 @@ namespace TwitchLib.Api.Helix
 
         #region GetBannedEvents
 
-        public Task<GetBannedEventsResponse> GetBannedEventsAsync(string broadcasterId, List<string> userIds = null, string after = null, string first = null, string accessToken = null)
+        public Task<GetBannedEventsResponse> GetBannedEventsAsync(string broadcasterId, ICollection<string> userIds = null, string after = null, string first = null, string accessToken = null)
         {
             if (broadcasterId == null || broadcasterId.Length == 0)
                 throw new BadParameterException("broadcasterId cannot be null and must be greater than 0 length");
@@ -92,7 +92,7 @@ namespace TwitchLib.Api.Helix
 
         #region GetBannedUsers
 
-        public Task<GetBannedUsersResponse> GetBannedUsersAsync(string broadcasterId, List<string> userIds = null, string after = null, string before = null, string accessToken = null)
+        public Task<GetBannedUsersResponse> GetBannedUsersAsync(string broadcasterId, ICollection<string> userIds = null, string after = null, string before = null, string accessToken = null)
         {
             if (broadcasterId == null || broadcasterId.Length == 0)
                 throw new BadParameterException("broadcasterId cannot be null and must be greater than 0 length");
@@ -119,7 +119,7 @@ namespace TwitchLib.Api.Helix
 
         #region GetModerators
 
-        public Task<GetModeratorsResponse> GetModeratorsAsync(string broadcasterId, List<string> userIds = null, string after = null, string accessToken = null)
+        public Task<GetModeratorsResponse> GetModeratorsAsync(string broadcasterId, ICollection<string> userIds = null, string after = null, string accessToken = null)
         {
             if (broadcasterId == null || broadcasterId.Length == 0)
                 throw new BadParameterException("broadcasterId cannot be null and must be greater than 0 length");
@@ -143,7 +143,7 @@ namespace TwitchLib.Api.Helix
 
         #region GetModeratorEvents
 
-        public Task<GetModeratorEventsResponse> GetModeratorEventsAsync(string broadcasterId, List<string> userIds = null, string accessToken = null)
+        public Task<GetModeratorEventsResponse> GetModeratorEventsAsync(string broadcasterId, ICollection<string> userIds = null, string accessToken = null)
         {
             if (broadcasterId == null || broadcasterId.Length == 0)
                 throw new BadParameterException("broadcasterId cannot be null and must be greater than 0 length");
