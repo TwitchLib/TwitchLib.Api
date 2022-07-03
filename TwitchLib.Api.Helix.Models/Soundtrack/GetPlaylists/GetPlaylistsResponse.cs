@@ -16,7 +16,7 @@ namespace TwitchLib.Api.Helix.Models.Soundtrack.GetPlaylists
         public PlaylistMetadata[] Data { get; protected set; }
 
         /// <summary>
-        /// Contains the information used to page through a list of tracks. The object is empty if there are no more tracks to page through.
+        /// Contains the information used to page through a list of playlists. The object is empty if there are no more playlists to page through.
         /// </summary>
         [JsonProperty(PropertyName = "pagination")]
         public Pagination Pagination { get; protected set; }
