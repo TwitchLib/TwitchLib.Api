@@ -37,7 +37,7 @@ namespace TwitchLib.Api.Helix
         /// Gets the tracks of a Soundtrack playlist.
         /// </summary>
         /// <param name="id">[Required] The ID of the Soundtrack playlist to get.</param>
-        /// <param name="first">The maximum number of tracks to return for this playlist in the response. Must be 1 - 100. Defualt 20</param>
+        /// <param name="first">The maximum number of tracks to return for this playlist in the response. Must be 1 - 50. Defualt 20</param>
         /// <param name="after">The cursor used to get the next page of tracks for this playlist.</param>
         /// <param name="accessToken">AccessToken</param>
         /// <returns>the tracks of a Soundtrack playlist</returns>
@@ -46,8 +46,8 @@ namespace TwitchLib.Api.Helix
             if (string.IsNullOrEmpty(id))
                 throw new BadParameterException("'id' must be set");
 
-            if (first < 1 || first > 100)
-                throw new BadParameterException("'first' must be value of 1 - 100");
+            if (first < 1 || first > 50)
+                throw new BadParameterException("'first' must be value of 1 - 50");
 
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -64,15 +64,26 @@ namespace TwitchLib.Api.Helix
         /// Gets a list of Soundtrack playlists.
         /// </summary>
         /// <param name="id">The ID of the Soundtrack playlist to get. Specify an ID only if you want to get a single playlist instead of all playlists.</param>
+        /// <param name="first">The maximum number of playlists to return in the response. Must be 1 - 50. Defualt 20</param>
+        /// <param name="after">The cursor used to get the next page of playlists.</param>
         /// <param name="accessToken">AccessToken</param>
         /// <returns>the tracks of a Soundtrack playlist</returns>
-        public Task<GetPlaylistsResponse> GetPlaylistsAsync(string id = null, string accessToken = null)
+        public Task<GetPlaylistsResponse> GetPlaylistsAsync(string id = null, int first = 20, string after = null, string accessToken = null)
         {
-            var getParams = new List<KeyValuePair<string, string>>();
-            if (id != null)
+            if (first < 1 || first > 50)
+                throw new BadParameterException("'first' must be value of 1 - 50");
+
+            var getParams = new List<KeyValuePair<string, string>>
             {
+                    new KeyValuePair<string, string>("id", id),
+                    new KeyValuePair<string, string>("first", first.ToString())
+            };
+
+            if (after != null)
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+
+            if (id != null)
                 getParams.Add(new KeyValuePair<string, string>("id", id));
-            }
             
             return TwitchGetGenericAsync<GetPlaylistsResponse>("/soundtrack/playlists", ApiVersion.Helix, getParams, accessToken);
         }
