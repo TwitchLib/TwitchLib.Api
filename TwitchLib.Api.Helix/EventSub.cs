@@ -15,6 +15,18 @@ namespace TwitchLib.Api.Helix
         {
         }
 
+        /// <summary>
+        /// Creates an EventSub subscription.
+        /// </summary>
+        /// <param name="type">The type of subscription to create.</param>
+        /// <param name="version">The version of the subscription type used in this request.</param>
+        /// <param name="condition">The parameter values that are specific to the specified subscription type.</param>
+        /// <param name="method">The transport method. Supported values: webhook.</param>
+        /// <param name="callback">The callback URL where the notification should be sent.</param>
+        /// <param name="secret">The secret used for verifying a signature.</param>
+        /// <param name="clientId">Client ID</param>
+        /// <param name="accessToken">Access Token</param>
+        /// <returns></returns>
         public Task<CreateEventSubSubscriptionResponse> CreateEventSubSubscriptionAsync(string type, string version, Dictionary<string, string> condition, string method, string callback,
             string secret, string clientId = null, string accessToken = null)
         {
@@ -41,7 +53,17 @@ namespace TwitchLib.Api.Helix
             return TwitchPostGenericAsync<CreateEventSubSubscriptionResponse>("/eventsub/subscriptions", ApiVersion.Helix, JsonConvert.SerializeObject(body), null, accessToken, clientId);
         }
 
-        public Task<GetEventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(string status = null, string type = null, string after = null, string clientId = null, string accessToken = null)
+        /// <summary>
+        /// Gets a list of your EventSub subscriptions. The list is paginated and ordered by the oldest subscription first.
+        /// </summary>
+        /// <param name="status">Filter subscriptions by its status.</param>
+        /// <param name="type">Filter subscriptions by subscription type (e.g., channel.update).</param>
+        /// <param name="user_id">Filter subscriptions by user ID.</param>
+        /// <param name="after">The cursor used to get the next page of results.</param>
+        /// <param name="clientId">Client ID</param>
+        /// <param name="accessToken">Access Token</param>
+        /// <returns>Returns a list of your EventSub subscriptions.</returns>
+        public Task<GetEventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(string status = null, string type = null, string user_id = null, string after = null, string clientId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
 
@@ -49,12 +71,21 @@ namespace TwitchLib.Api.Helix
                 getParams.Add(new KeyValuePair<string, string>("status", status));
             if (!string.IsNullOrWhiteSpace(type))
                 getParams.Add(new KeyValuePair<string, string>("type", type));
+            if (!string.IsNullOrWhiteSpace(user_id))
+                getParams.Add(new KeyValuePair<string, string>("user_id", user_id));
             if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetEventSubSubscriptionsResponse>("/eventsub/subscriptions", ApiVersion.Helix, getParams, accessToken, clientId);
         }
 
+        /// <summary>
+        /// Deletes an EventSub subscription.
+        /// </summary>
+        /// <param name="id">The ID of the subscription to delete.</param>
+        /// <param name="clientId">Client ID</param>
+        /// <param name="accessToken">Access Token</param>
+        /// <returns></returns>
         public async Task<bool> DeleteEventSubSubscriptionAsync(string id, string clientId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("id", id) };
