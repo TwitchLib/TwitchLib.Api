@@ -92,14 +92,27 @@ namespace TwitchLib.Api.Helix
 
         #region GetBannedUsers
 
-        public Task<GetBannedUsersResponse> GetBannedUsersAsync(string broadcasterId, List<string> userIds = null, string after = null, string before = null, string accessToken = null)
+        /// <summary>
+        /// Returns all banned and timed-out users for a channel.
+        /// </summary>
+        /// <param name="broadcasterId">Provided broadcaster_id must match the user_id in the OAuth token.</param>
+        /// <param name="userIds">Filters the results and only returns a status object for users who are banned in the channel and have a matching user_id.</param>
+        /// <param name="first">Maximum number of objects to return. 1 - 100. Default 1</param>
+        /// <param name="after">Cursor for forward pagination.</param>
+        /// <param name="before">Cursor for backward pagination.</param>
+        /// <param name="accessToken">Access Token</param>
+        /// <returns></returns>
+        public Task<GetBannedUsersResponse> GetBannedUsersAsync(string broadcasterId, List<string> userIds = null, int first = 1, string after = null, string before = null, string accessToken = null)
         {
             if (broadcasterId == null || broadcasterId.Length == 0)
                 throw new BadParameterException("broadcasterId cannot be null and must be greater than 0 length");
+            if (first < 1 || first > 100)
+                throw new BadParameterException("first must be greater than 0 and less than 101");
 
             var getParams = new List<KeyValuePair<string, string>>()
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("first", first.ToString())
             };
 
             if (userIds != null && userIds.Count > 0)
