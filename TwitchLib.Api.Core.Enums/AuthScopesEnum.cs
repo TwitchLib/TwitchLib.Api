@@ -45,6 +45,7 @@
         Helix_Moderation_Read,
         Helix_Moderator_Manage_Banned_Users,
         Helix_Moderator_Manage_Blocked_Terms,
+        Helix_Moderator_Manage_Announcements,
         Helix_Moderator_Manage_Automod,
         Helix_Moderator_Manage_Automod_Settings,
         Helix_Moderator_Manage_Chat_Settings,

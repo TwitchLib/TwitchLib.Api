@@ -120,6 +120,8 @@ namespace TwitchLib.Api.Core.Common
                     return "moderator:manage:banned_users";
                 case AuthScopes.Helix_Moderator_Manage_Blocked_Terms:
                     return "moderator:manage:blocked_terms";
+                case AuthScopes.Helix_Moderator_Manage_Announcements:
+                    return "moderator:manage:announcements";
                 case AuthScopes.Helix_Moderator_Manage_Automod:
                     return "moderator:manage:automod";
                 case AuthScopes.Helix_Moderator_Manage_Automod_Settings:
