@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
+using TwitchLib.Api.Helix.Models.Chat.Announcements;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetChannelChatBadges;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetGlobalChatBadges;
 using TwitchLib.Api.Helix.Models.Chat.ChatSettings;
@@ -102,5 +104,44 @@ namespace TwitchLib.Api.Helix
         }
 
         #endregion
+
+        #region Announcements
+
+        /// <summary>
+        /// BETA : Sends an announcement to the broadcaster’s chat room.
+        /// Requires a user access token that includes the moderator:manage:announcements scope.
+        /// The ID in the moderator_id query parameter must match the user ID in the access token.
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster that owns the chat room to send the announcement to.</param>
+        /// <param name="moderatorId">The ID of a user who has permission to moderate the broadcaster’s chat room. This ID must match the user ID in the OAuth token, which can be a moderator or the broadcaster.</param>
+        /// <param name="message">The announcement to make in the broadcaster’s chat room.</param>
+        /// <param name="color">The color used to highlight the announcement. Possible case-sensitive values are: blue/green/orange/purple/primary(default)</param>
+        /// <param name="accessToken"></param>
+        public Task SendChatAnnouncementAsync(string broadcasterId, string moderatorId, string message, string color = "primary", string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+            if (string.IsNullOrEmpty(moderatorId))
+                throw new BadParameterException("moderatorId must be set");
+            if (message == null)
+                throw new BadParameterException("message must be set");
+            if (message.Length > 500)
+                throw new BadParameterException("message length must be less than or equal to 500 characters");
+
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("moderator_id", moderatorId),
+            };
+
+            JObject json = new JObject();
+            json["message"] = message;
+            json["color"] = color;
+
+            return TwitchPostAsync("/chat/announcements", ApiVersion.Helix, json.ToString(), getParams, accessToken);
+        }
+
+        #endregion
+
     }
 }
