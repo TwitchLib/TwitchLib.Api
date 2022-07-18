@@ -8,13 +8,13 @@ using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Chat;
-using TwitchLib.Api.Helix.Models.Chat.Announcements;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetChannelChatBadges;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetGlobalChatBadges;
 using TwitchLib.Api.Helix.Models.Chat.ChatSettings;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetChannelEmotes;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetEmoteSets;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetGlobalEmotes;
+using TwitchLib.Api.Helix.Models.Chat.UserChatColor;
 
 namespace TwitchLib.Api.Helix
 {
@@ -199,5 +199,30 @@ namespace TwitchLib.Api.Helix
 
         #endregion
 
+        #region Get User Chat Color
+
+        /// <summary>
+        /// BETA - Gets the color used for the user(s)’s name in chat.
+        /// </summary>
+        /// <param name="userIds">The ID of the users whose color you want to get.</param>
+        /// <returns></returns>
+        public Task<GetUserChatColorResponse> GetUserChatColorAsync(List<string> userIds, string accessToken = null)
+        {
+            var getParams = new List<KeyValuePair<string, string>>();
+
+            foreach (var userId in userIds)
+            {
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new BadParameterException("userId must be set");
+                }
+
+                getParams.Add(new KeyValuePair<string, string>("user_id", userId));
+            }
+
+            return TwitchGetGenericAsync<GetUserChatColorResponse>("/chat/color", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
     }
 }
