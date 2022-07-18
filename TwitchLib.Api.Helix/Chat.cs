@@ -134,6 +134,7 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("moderator_id", moderatorId),
             };
 
+            // This should be updated to have a Request Class in the future.
             JObject json = new JObject();
             json["message"] = message;
             json["color"] = color;
