@@ -14,7 +14,7 @@ using TwitchLib.Api.Helix.Models.Chat.ChatSettings;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetChannelEmotes;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetEmoteSets;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetGlobalEmotes;
-using TwitchLib.Api.Helix.Models.Chat.UserChatColor;
+using TwitchLib.Api.Helix.Models.Chat.GetUserChatColor;
 
 namespace TwitchLib.Api.Helix
 {

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Chat.UserChatColor
+namespace TwitchLib.Api.Helix.Models.Chat.GetUserChatColor
 {
     public class UserChatColorResponseModel
     {
