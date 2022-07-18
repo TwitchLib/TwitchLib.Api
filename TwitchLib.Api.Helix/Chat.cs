@@ -119,7 +119,7 @@ namespace TwitchLib.Api.Helix
         /// <param name="message">The announcement to make in the broadcaster’s chat room.</param>
         /// <param name="color">The color used to highlight the announcement. Possible case-sensitive values are: blue/green/orange/purple/primary(default)</param>
         /// <param name="accessToken"></param>
-        public Task SendChatAnnouncementAsync(string broadcasterId, string moderatorId, string message, string color = "primary", string accessToken = null)
+        public Task SendChatAnnouncementAsync(string broadcasterId, string moderatorId, string message, AnnouncementColors color = null, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
@@ -129,6 +129,8 @@ namespace TwitchLib.Api.Helix
                 throw new BadParameterException("message must be set");
             if (message.Length > 500)
                 throw new BadParameterException("message length must be less than or equal to 500 characters");
+            if (color == null)
+                color = AnnouncementColors.Primary;
 
             var getParams = new List<KeyValuePair<string, string>>()
             {
@@ -139,7 +141,7 @@ namespace TwitchLib.Api.Helix
             // This should be updated to have a Request Class in the future.
             JObject json = new JObject();
             json["message"] = message;
-            json["color"] = color;
+            json["color"] = color.Value;
 
             return TwitchPostAsync("/chat/announcements", ApiVersion.Helix, json.ToString(), getParams, accessToken);
         }
