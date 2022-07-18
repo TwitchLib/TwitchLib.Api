@@ -360,5 +360,38 @@ namespace TwitchLib.Api.Helix
         }
 
         #endregion
+
+        #region Delete Chat Messages
+
+        /// <summary>
+        /// BETA - Removes a single chat message or all chat messages from the broadcaster’s chat room.
+        /// The message must have been created within the last 6 hours.
+        /// The message must not belong to the broadcaster.
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster that owns the chat room to remove messages from.</param>
+        /// <param name="moderatorId">The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID in the OAuth token.</param>
+        /// <param name="messageId">The ID of the message to remove. If not specified, the request removes all messages in the broadcaster’s chat room.</param>
+        public Task DeleteChatMessagesAsync(string broadcasterId, string moderatorId, string messageId = null, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+            if (string.IsNullOrEmpty(moderatorId))
+                throw new BadParameterException("moderatorId must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("moderator_id", moderatorId),
+            };
+
+            if (messageId != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("message_id", messageId));
+            }
+
+            return TwitchDeleteAsync("/moderation/chat", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
     }
 }
