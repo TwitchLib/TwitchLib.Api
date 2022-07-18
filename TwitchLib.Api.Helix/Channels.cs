@@ -103,5 +103,59 @@ namespace TwitchLib.Api.Helix
         }
 
         #endregion
+
+        #region AddChannelVIP
+
+        /// <summary>
+        /// BETA - Adds a VIP to the broadcaster’s chat room.
+        /// Rate Limits: The channel may add a maximum of 10 VIPs within a 10 seconds period.
+        /// Requires a user access token that includes the channel:manage:vips scope.
+        /// </summary>
+        /// <param name="broadcasterId"></param>
+        /// <param name="userId"></param>
+        public Task AddChannelVIPAsync(string broadcasterId, string userId, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+            if (string.IsNullOrEmpty(userId))
+                throw new BadParameterException("userId must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("user_id", userId),
+            };
+
+            return TwitchPostAsync("/channels/vips", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        #endregion
+
+        #region DeleteChannelVIP
+
+        /// <summary>
+        /// BETA - Removes a VIP from the broadcaster’s chat room.
+        /// Rate Limits: The channel may remove a maximum of 10 VIPs within a 10 seconds period.
+        /// Requires a user access token that includes the channel:manage:vips scope.
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the user to remove as a VIP from the broadcaster’s chat room.</param>
+        /// <param name="userId">The ID of the broadcaster that’s removing VIP status from the user.</param>
+        public Task RemoveChannelVIPAsync(string broadcasterId, string userId, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+            if (string.IsNullOrEmpty(userId))
+                throw new BadParameterException("userId must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("user_id", userId),
+            };
+
+            return TwitchDeleteAsync("/channels/vips", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
     }
 }
