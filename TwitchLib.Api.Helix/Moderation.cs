@@ -393,5 +393,31 @@ namespace TwitchLib.Api.Helix
         }
 
         #endregion
+
+        #region AddChannelModerator
+
+        /// <summary>
+        /// BETA - Adds a moderator to the broadcaster’s chat room.
+        /// Rate Limits: The channel may add a maximum of 10 moderators within a 10 seconds period.
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster that owns the chat room.</param>
+        /// <param name="userId">The ID of the user to add as a moderator in the broadcaster’s chat room.</param>
+        public Task AddChanelModeratorAsync(string broadcasterId, string userId, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+            if (string.IsNullOrEmpty(userId))
+                throw new BadParameterException("userId must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("user_id", userId),
+            };
+
+            return TwitchPostAsync("/moderation/moderators", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        #endregion
     }
 }
