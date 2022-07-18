@@ -2,10 +2,12 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
+using TwitchLib.Api.Helix.Models.Chat;
 using TwitchLib.Api.Helix.Models.Chat.Announcements;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetChannelChatBadges;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetGlobalChatBadges;
@@ -140,6 +142,57 @@ namespace TwitchLib.Api.Helix
             json["color"] = color;
 
             return TwitchPostAsync("/chat/announcements", ApiVersion.Helix, json.ToString(), getParams, accessToken);
+        }
+
+        #endregion
+
+        #region Update User Chat Color
+
+        /// <summary>
+        /// BETA - Updates the color used for the user’s name in chat from a selection of available colors.
+        /// </summary>
+        /// <param name="userId">The ID of the user whose chat color you want to update.</param>
+        /// <param name="color">The color to use for the user’s name in chat from UserColors selection.</param>
+        public Task UpdateUserChatColorAsync(string userId, UserColors color, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(userId))
+                throw new BadParameterException("userId must be set");
+            if (string.IsNullOrEmpty(color.Value))
+                throw new BadParameterException("color must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("user_id", userId),
+                new KeyValuePair<string, string>("color", color.Value),
+            };
+
+            return TwitchPostAsync("/chat/color", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        /// <summary>
+        /// BETA - Updates the color used for the user’s name in chat from a HEX Code.
+        /// Turbo or Prime Required
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="colorHex"></param>
+        public Task UpdateUserChatColorAsync(string userId, string colorHex, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(userId))
+                throw new BadParameterException("userId must be set");
+            if (string.IsNullOrEmpty(colorHex))
+                throw new BadParameterException("colorHex must be set");
+            if (colorHex.Length != 6)
+                throw new BadParameterException("colorHex length must be equal to 6 characters \"######\"");
+
+            var colorEncoded = HttpUtility.UrlEncode("#" + colorHex);
+
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("user_id", userId),
+                new KeyValuePair<string, string>("color", colorEncoded),
+            };
+
+            return TwitchPostAsync("/chat/color", ApiVersion.Helix, null, getParams, accessToken);
         }
 
         #endregion
