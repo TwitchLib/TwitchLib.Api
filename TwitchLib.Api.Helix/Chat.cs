@@ -208,6 +208,9 @@ namespace TwitchLib.Api.Helix
         /// <returns></returns>
         public Task<GetUserChatColorResponse> GetUserChatColorAsync(List<string> userIds, string accessToken = null)
         {
+            if (userIds.Count == 0)
+                throw new BadParameterException("userIds must contain at least 1 userId");
+
             var getParams = new List<KeyValuePair<string, string>>();
 
             foreach (var userId in userIds)
