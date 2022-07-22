@@ -28,6 +28,8 @@ namespace TwitchLib.Api.Helix.Models.Clips.GetClips
         public string Title { get; protected set; }
         [JsonProperty(PropertyName = "view_count")]
         public int ViewCount { get; protected set; }
+        [JsonProperty(PropertyName = "vod_offset")]
+        public int VodOffset { get; protected set; }
         [JsonProperty(PropertyName = "created_at")]
         public string CreatedAt { get; protected set; }
         [JsonProperty(PropertyName = "thumbnail_url")]
