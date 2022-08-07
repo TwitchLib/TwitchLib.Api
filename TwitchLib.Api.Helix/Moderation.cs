@@ -360,5 +360,92 @@ namespace TwitchLib.Api.Helix
         }
 
         #endregion
+
+        #region Delete Chat Messages
+
+        /// <summary>
+        /// BETA - Removes a single chat message or all chat messages from the broadcaster’s chat room.
+        /// The message must have been created within the last 6 hours.
+        /// The message must not belong to the broadcaster.
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster that owns the chat room to remove messages from.</param>
+        /// <param name="moderatorId">The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID in the OAuth token.</param>
+        /// <param name="messageId">The ID of the message to remove. If not specified, the request removes all messages in the broadcaster’s chat room.</param>
+        public Task DeleteChatMessagesAsync(string broadcasterId, string moderatorId, string messageId = null, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+            if (string.IsNullOrEmpty(moderatorId))
+                throw new BadParameterException("moderatorId must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("moderator_id", moderatorId),
+            };
+
+            if (messageId != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("message_id", messageId));
+            }
+
+            return TwitchDeleteAsync("/moderation/chat", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
+
+        #region AddChannelModerator
+
+        /// <summary>
+        /// BETA - Adds a moderator to the broadcaster’s chat room.
+        /// Rate Limits: The channel may add a maximum of 10 moderators within a 10 seconds period.
+        /// Requires a user access token that includes the channel:manage:moderators scope.
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster that owns the chat room.</param>
+        /// <param name="userId">The ID of the user to add as a moderator in the broadcaster’s chat room.</param>
+        public Task AddChannelModeratorAsync(string broadcasterId, string userId, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+            if (string.IsNullOrEmpty(userId))
+                throw new BadParameterException("userId must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("user_id", userId),
+            };
+
+            return TwitchPostAsync("/moderation/moderators", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        #endregion
+
+        #region DeleteChannelModerator
+
+        /// <summary>
+        /// BETA - Removes a moderator from the broadcaster’s chat room.
+        /// Rate Limits: The channel may remove a maximum of 10 moderators within a 10 seconds period.
+        /// Requires a user access token that includes the channel:manage:moderators scope.
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster that owns the chat room.</param>
+        /// <param name="userId">The ID of the user to remove as a moderator from the broadcaster’s chat room.</param>
+        public Task DeleteChannelModeratorAsync(string broadcasterId, string userId, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+            if (string.IsNullOrEmpty(userId))
+                throw new BadParameterException("userId must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("user_id", userId),
+            };
+
+            return TwitchDeleteAsync("/moderation/moderators", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
     }
 }
