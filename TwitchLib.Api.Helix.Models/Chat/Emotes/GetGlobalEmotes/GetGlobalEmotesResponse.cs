@@ -6,5 +6,7 @@ namespace TwitchLib.Api.Helix.Models.Chat.Emotes.GetGlobalEmotes
     {
         [JsonProperty("data")]
         public GlobalEmote[] GlobalEmotes { get; protected set; }
+        [JsonProperty("template")]
+        public string Template { get; protected set; }
     }
 }

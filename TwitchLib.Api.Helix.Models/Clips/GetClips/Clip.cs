@@ -34,5 +34,7 @@ namespace TwitchLib.Api.Helix.Models.Clips.GetClips
         public string ThumbnailUrl { get; protected set; }
         [JsonProperty(PropertyName = "duration")]
         public float Duration { get; protected set; }
+        [JsonProperty(PropertyName = "vod_offset")]
+        public int VodOffset { get; protected set; }
     }
 }

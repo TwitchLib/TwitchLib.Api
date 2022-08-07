@@ -26,6 +26,7 @@ namespace TwitchLib.Api.Helix
         public Moderation Moderation { get; }
         public Polls Polls { get; }
         public Predictions Predictions { get; }
+        public Raids Raids { get; }
         public Schedule Schedule { get; }
         public Search Search { get; }
         public Soundtrack Soundtrack { get; }
@@ -66,6 +67,7 @@ namespace TwitchLib.Api.Helix
             Moderation = new Moderation(Settings, rateLimiter, http);
             Polls = new Polls(Settings, rateLimiter, http);
             Predictions = new Predictions(Settings, rateLimiter, http);
+            Raids = new Raids(settings, rateLimiter, http);
             Schedule = new Schedule(Settings, rateLimiter, http);
             Search = new Search(Settings, rateLimiter, http);
             Soundtrack = new Soundtrack(Settings, rateLimiter, http);
