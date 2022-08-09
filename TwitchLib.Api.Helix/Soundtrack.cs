@@ -75,7 +75,6 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                    new KeyValuePair<string, string>("id", id),
                     new KeyValuePair<string, string>("first", first.ToString())
             };
 
