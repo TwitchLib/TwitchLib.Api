@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Api</PackageId>
-    <VersionPrefix>3.6.0</VersionPrefix>
+    <VersionPrefix>3.6.1</VersionPrefix>
     <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Description>Api component of TwitchLib. This component allows you to access the Twitch API, as well as undocumented and third party APIs.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -13,13 +13,13 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2022</Copyright>
-    <PackageReleaseNotes>Added Chat Management API support, Added Start/Cancel Raid Support, Added missing user_login field to Subscription model, Added vod_offset to Clips Model, Added missing fields to Videos and Emotes Model,  Updated SoundTrack, EventSub, Automod APIs to conform with new changes and newly added fields/params</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixes an ArgumentNullException when not providing a playlist id for the GetPlaylists API call</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>3.6.0</AssemblyVersion>
-    <FileVersion>3.6.0</FileVersion>
+    <AssemblyVersion>3.6.1</AssemblyVersion>
+    <FileVersion>3.6.1</FileVersion>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
