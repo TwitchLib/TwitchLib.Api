@@ -13,7 +13,7 @@ namespace TwitchLib.Api.Helix.Models.Chat.GetUserChatColor
         /// The user’s login name.
         /// </summary>
         [JsonProperty(PropertyName = "user_login")]
-        public bool UserLogin { get; protected set; }
+        public string UserLogin { get; protected set; }
         /// <summary>
         /// The user’s display name.
         /// </summary>
@@ -23,6 +23,6 @@ namespace TwitchLib.Api.Helix.Models.Chat.GetUserChatColor
         /// The Hex color code that the user uses in chat for their name. If the user hasn’t specified a color in their settings, the string is empty.
         /// </summary>
         [JsonProperty(PropertyName = "color")]
-        public bool Color { get; protected set; }
+        public string Color { get; protected set; }
     }
 }
