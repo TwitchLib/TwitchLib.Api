@@ -18,7 +18,7 @@ namespace TwitchLib.Api.Helix.Models.Chat.GetUserChatColor
         /// The user’s display name.
         /// </summary>
         [JsonProperty(PropertyName = "user_name")]
-        public int? UserName { get; protected set; }
+        public string UserName { get; protected set; }
         /// <summary>
         /// The Hex color code that the user uses in chat for their name. If the user hasn’t specified a color in their settings, the string is empty.
         /// </summary>
