@@ -18,6 +18,6 @@ namespace TwitchLib.Api.Helix.Models.Channels.GetChannelVIPs
         /// The user’s login name.
         /// </summary>
         [JsonProperty(PropertyName = "user_login")]
-        public int? UserLogin { get; protected set; }
+        public string UserLogin { get; protected set; }
     }
 }
