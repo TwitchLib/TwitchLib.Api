@@ -13,11 +13,11 @@ namespace TwitchLib.Api.Helix.Models.Channels.GetChannelVIPs
         /// The user’s display name.
         /// </summary>
         [JsonProperty(PropertyName = "user_name")]
-        public bool UserName { get; protected set; }
+        public string UserName { get; protected set; }
         /// <summary>
         /// The user’s login name.
         /// </summary>
         [JsonProperty(PropertyName = "user_login")]
-        public int? UserLogin { get; protected set; }
+        public string UserLogin { get; protected set; }
     }
 }
