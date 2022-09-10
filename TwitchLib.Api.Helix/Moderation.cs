@@ -132,14 +132,17 @@ namespace TwitchLib.Api.Helix
 
         #region GetModerators
 
-        public Task<GetModeratorsResponse> GetModeratorsAsync(string broadcasterId, List<string> userIds = null, string after = null, string accessToken = null)
+        public Task<GetModeratorsResponse> GetModeratorsAsync(string broadcasterId, List<string> userIds = null, int first = 20, string after = null, string accessToken = null)
         {
             if (broadcasterId == null || broadcasterId.Length == 0)
                 throw new BadParameterException("broadcasterId cannot be null and must be greater than 0 length");
+            if (first > 100 || first < 1)
+                throw new BadParameterException("first must be greater than 0 and less than 101");
 
             var getParams = new List<KeyValuePair<string, string>>()
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("first", first.ToString())
             };
 
             if (userIds != null && userIds.Count > 0)
