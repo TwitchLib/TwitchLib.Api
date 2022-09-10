@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TwitchLib.Api.Test.Helpers;
 using Xunit;
 
@@ -19,7 +20,7 @@ namespace TwitchLib.Api.Test.Unit.Helix
         {
             var mockHandler = HelixSetup.GetMockHttpCallHandler(GetClipsResponse);
             var api = TwitchLibMock.TwitchApi(mockHandler);
-            var result = await api.Helix.Clips.GetClipsAsync(new System.Collections.Generic.List<string> { "AwkwardHelplessSalamanderSwiftRage" });
+            var result = await api.Helix.Clips.GetClipsAsync(new List<string> { "AwkwardHelplessSalamanderSwiftRage" });
             Assert.True(result.Clips[0].VideoId == "205586603");
         }
 

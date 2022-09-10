@@ -18,7 +18,8 @@ namespace TwitchLib.Api.Helix
         public Task<GetGameAnalyticsResponse> GetGameAnalyticsAsync(string gameId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
-            if (gameId != null)
+
+            if (!string.IsNullOrWhiteSpace(gameId))
                 getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
 
             return TwitchGetGenericAsync<GetGameAnalyticsResponse>("/analytics/games", ApiVersion.Helix, getParams, accessToken);
@@ -31,7 +32,8 @@ namespace TwitchLib.Api.Helix
         public Task<GetExtensionAnalyticsResponse> GetExtensionAnalyticsAsync(string extensionId, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
-            if (extensionId != null)
+
+            if (!string.IsNullOrWhiteSpace(extensionId))
                 getParams.Add(new KeyValuePair<string, string>("extension_id", extensionId));
 
             return TwitchGetGenericAsync<GetExtensionAnalyticsResponse>("/analytics/extensions", ApiVersion.Helix, getParams, accessToken);

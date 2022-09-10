@@ -1,10 +1,10 @@
-﻿using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Moq;
+using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Interfaces;
-using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Api.Helix.Models.Users.GetUserFollows;
 using TwitchLib.Api.Helix.Models.Users.GetUsers;
 using TwitchLib.Api.Services;
@@ -224,7 +224,7 @@ namespace TwitchLib.Api.Test.Services
                 var mockHandler = new Mock<IHttpCallHandler>();
 
                 mockHandler
-                    .Setup(x => x.GeneralRequestAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .Setup(x => x.GeneralRequestAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
                     .ReturnsAsync(new KeyValuePair<int, string>(200, usersFollowsResponseFirstUserJson));
 
                 _api = TwitchLibMock.TwitchApi(mockHandler);
@@ -247,7 +247,7 @@ namespace TwitchLib.Api.Test.Services
                 mockHandler.Reset();
 
                 mockHandler
-                    .Setup(x => x.GeneralRequestAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .Setup(x => x.GeneralRequestAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
                     .ReturnsAsync(new KeyValuePair<int, string>(200, usersFollowsResponseSecondUserJson));
 
                 await _followerService.UpdateLatestFollowersAsync();

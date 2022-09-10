@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.Soundtrack.GetCurrentTrack
 {

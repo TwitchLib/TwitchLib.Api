@@ -1,7 +1,7 @@
-﻿using Moq;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Linq.Expressions;
+using Moq;
+using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Test.Helpers
 {

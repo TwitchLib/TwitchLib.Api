@@ -1,9 +1,10 @@
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using TwitchLib.Api.Core.Common;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
@@ -69,7 +70,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             }
 
             if (!string.IsNullOrEmpty(accessToken))
-                request.Headers["Authorization"] = $"{authPrefix} {Common.Helpers.FormatOAuth(accessToken)}";
+                request.Headers["Authorization"] = $"{authPrefix} {Helpers.FormatOAuth(accessToken)}";
             
 
             if (payload != null)

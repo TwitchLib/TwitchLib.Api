@@ -29,6 +29,7 @@ namespace TwitchLib.Api.Helix
 
             if (!string.IsNullOrWhiteSpace(teamId))
                 getParams.Add(new KeyValuePair<string, string>("id", teamId));
+
             if (!string.IsNullOrWhiteSpace(teamName))
                 getParams.Add(new KeyValuePair<string, string>("name", teamName));
 

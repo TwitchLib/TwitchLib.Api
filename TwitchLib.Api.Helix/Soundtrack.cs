@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
@@ -22,12 +21,12 @@ namespace TwitchLib.Api.Helix
         /// </summary>
         public Task<GetCurrentTrackResponse> GetCurrentTrackAsync(string broadcasterId, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(broadcasterId))
+            if (string.IsNullOrWhiteSpace(broadcasterId))
                 throw new BadParameterException("'broadcasterId' must be set");
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                    new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
             };
 
             return TwitchGetGenericAsync<GetCurrentTrackResponse>("/soundtrack/current_track", ApiVersion.Helix, getParams, accessToken);
@@ -43,7 +42,7 @@ namespace TwitchLib.Api.Helix
         /// <returns>the tracks of a Soundtrack playlist</returns>
         public Task<GetPlaylistResponse> GetPlaylistAsync(string id, int first = 20, string after = null, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrWhiteSpace(id))
                 throw new BadParameterException("'id' must be set");
 
             if (first < 1 || first > 50)
@@ -54,7 +53,8 @@ namespace TwitchLib.Api.Helix
                     new KeyValuePair<string, string>("id", id),
                     new KeyValuePair<string, string>("first", first.ToString())
             };
-            if (after != null)
+
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetPlaylistResponse>("/soundtrack/playlist", ApiVersion.Helix, getParams, accessToken);
@@ -75,13 +75,13 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                    new KeyValuePair<string, string>("first", first.ToString())
+                new KeyValuePair<string, string>("first", first.ToString())
             };
 
-            if (after != null)
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
-            if (id != null)
+            if (!string.IsNullOrWhiteSpace(id))
                 getParams.Add(new KeyValuePair<string, string>("id", id));
 
             return TwitchGetGenericAsync<GetPlaylistsResponse>("/soundtrack/playlists", ApiVersion.Helix, getParams, accessToken);

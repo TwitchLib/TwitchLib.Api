@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
@@ -34,12 +35,12 @@ namespace TwitchLib.Api.Auth
                 throw new BadParameterException("The clientId is not valid. It is not allowed to be null, empty or filled with whitespaces.");
 
             var getParams = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("grant_type", "refresh_token"),
-                    new KeyValuePair<string, string>("refresh_token", refreshToken),
-                    new KeyValuePair<string, string>("client_id", internalClientId),
-                    new KeyValuePair<string, string>("client_secret", clientSecret)
-                };
+            {
+                new KeyValuePair<string, string>("grant_type", "refresh_token"),
+                new KeyValuePair<string, string>("refresh_token", refreshToken),
+                new KeyValuePair<string, string>("client_id", internalClientId),
+                new KeyValuePair<string, string>("client_secret", clientSecret)
+            };
 
             return TwitchPostGenericAsync<RefreshResponse>("/token", ApiVersion.Auth, null, getParams, null, internalClientId);
         }
@@ -70,7 +71,7 @@ namespace TwitchLib.Api.Auth
 
             return "https://id.twitch.tv/oauth2/authorize?" +
                    $"client_id={internalClientId}&" +
-                   $"redirect_uri={System.Web.HttpUtility.UrlEncode(redirectUri)}&" +
+                   $"redirect_uri={HttpUtility.UrlEncode(redirectUri)}&" +
                    "response_type=code&" +
                    $"scope={scopesStr}&" +
                    $"state={state}&" +

@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
@@ -24,68 +25,71 @@ namespace TwitchLib.Api.Helix
         public Task<GetStreamsResponse> GetStreamsAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("first", first.ToString()),
-                    new KeyValuePair<string, string>("type", type)
-                };
-            if (after != null)
+            {
+                new KeyValuePair<string, string>("first", first.ToString()), 
+                new KeyValuePair<string, string>("type", type)
+            };
+
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
+
             if (communityIds != null && communityIds.Count > 0)
             {
-                foreach (var communityId in communityIds)
-                    getParams.Add(new KeyValuePair<string, string>("community_id", communityId));
+                getParams.AddRange(communityIds.Select(communityId => new KeyValuePair<string, string>("community_id", communityId)));
             }
 
             if (gameIds != null && gameIds.Count > 0)
             {
-                foreach (var gameId in gameIds)
-                    getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
+                getParams.AddRange(gameIds.Select(gameId => new KeyValuePair<string, string>("game_id", gameId)));
             }
 
             if (languages != null && languages.Count > 0)
             {
-                foreach (var language in languages)
-                    getParams.Add(new KeyValuePair<string, string>("language", language));
+                getParams.AddRange(languages.Select(language => new KeyValuePair<string, string>("language", language)));
             }
 
             if (userIds != null && userIds.Count > 0)
             {
-                foreach (var userId in userIds)
-                    getParams.Add(new KeyValuePair<string, string>("user_id", userId));
+                getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("user_id", userId)));
             }
 
             if (userLogins != null && userLogins.Count > 0)
             {
-                foreach (var userLogin in userLogins)
-                    getParams.Add(new KeyValuePair<string, string>("user_login", userLogin));
+                getParams.AddRange(userLogins.Select(userLogin => new KeyValuePair<string, string>("user_login", userLogin)));
             }
 
-            return TwitchGetGenericAsync<GetStreamsResponse>($"/streams", ApiVersion.Helix, getParams, accessToken);
+            return TwitchGetGenericAsync<GetStreamsResponse>("/streams", ApiVersion.Helix, getParams, accessToken);
         }
 
         public Task<GetStreamTagsResponse> GetStreamTagsAsync(string broadcasterId, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(broadcasterId))
+            if (string.IsNullOrWhiteSpace(broadcasterId))
             {
                 throw new BadParameterException("BroadcasterId must be set");
             }
 
-            var getParams = new List<KeyValuePair<string, string>>();
-            getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+            };
 
             return TwitchGetGenericAsync<GetStreamTagsResponse>("/streams/tags", ApiVersion.Helix, getParams, accessToken);
         }
 
         public Task ReplaceStreamTagsAsync(string broadcasterId, List<string> tagIds = null, string accessToken = null)
         {
-            var getParams = new List<KeyValuePair<string, string>>();
-            getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+            };
 
             string payload = null;
             if (tagIds != null && tagIds.Count > 0)
             {
-                var dynamicPayload = new JObject();
-                dynamicPayload.Add("tag_ids", new JArray(tagIds));
+                var dynamicPayload = new JObject
+                {
+                    { "tag_ids", new JArray(tagIds) }
+                };
                 payload = dynamicPayload.ToString();
             }
 
@@ -128,7 +132,8 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("user_id", userId),
                 new KeyValuePair<string, string>("first", first.ToString())
             };
-            if (after != null)
+
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetFollowedStreamsResponse>("/streams/followed", ApiVersion.Helix, getParams, accessToken);

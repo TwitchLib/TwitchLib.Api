@@ -1,5 +1,6 @@
-﻿using Moq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Moq;
+using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Test.Unit.Helix
@@ -13,10 +14,10 @@ namespace TwitchLib.Api.Test.Unit.Helix
         {
             var mockHandler = new Mock<IHttpCallHandler>();
             mockHandler
-                .Setup(x => x.GeneralRequestAsync(It.Is<string>(y => y == V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(x => x.GeneralRequestAsync(It.Is<string>(y => y == V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(new KeyValuePair<int, string>(200, GetRootScopesResponse));
             mockHandler
-                .Setup(x => x.GeneralRequestAsync(It.IsNotIn(V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(x => x.GeneralRequestAsync(It.IsNotIn(V5Root), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(new KeyValuePair<int, string>(200, response));
 
             return mockHandler;

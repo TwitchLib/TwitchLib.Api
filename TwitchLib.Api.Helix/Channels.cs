@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
@@ -78,6 +79,7 @@ namespace TwitchLib.Api.Helix
         {
             if (string.IsNullOrEmpty(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
+
             if (first > 100 & first <= 0)
                 throw new BadParameterException("first must be greater than 0 and less then 101");
 
@@ -92,11 +94,10 @@ namespace TwitchLib.Api.Helix
                 if (userIds.Count == 0)
                     throw new BadParameterException("userIds must contain at least 1 userId if a list is included in the call");
 
-                foreach (var userId in userIds)
-                    getParams.Add(new KeyValuePair<string, string>("userId", userId));
+                getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("userId", userId)));
             }
 
-            if (after != null)
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetChannelVIPsResponse>("/channels/vips", ApiVersion.Helix, getParams, accessToken);
@@ -117,10 +118,11 @@ namespace TwitchLib.Api.Helix
         {
             if (string.IsNullOrEmpty(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
+
             if (string.IsNullOrEmpty(userId))
                 throw new BadParameterException("userId must be set");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("user_id", userId),
@@ -144,10 +146,11 @@ namespace TwitchLib.Api.Helix
         {
             if (string.IsNullOrEmpty(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
+
             if (string.IsNullOrEmpty(userId))
                 throw new BadParameterException("userId must be set");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("user_id", userId),

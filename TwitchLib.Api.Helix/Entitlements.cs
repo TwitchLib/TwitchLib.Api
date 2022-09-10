@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TwitchLib.Api.Core;
@@ -22,7 +23,7 @@ namespace TwitchLib.Api.Helix
         public Task<GetCodeStatusResponse> GetCodeStatusAsync(List<string> codes, string userId, string accessToken = null)
         {
             if (codes == null || codes.Count == 0 || codes.Count > 20)
-                throw new BadParameterException("codes cannot be null and must ahve between 1 and 20 items");
+                throw new BadParameterException("codes cannot be null and must have between 1 and 20 items");
 
             if (userId == null)
                 throw new BadParameterException("userId cannot be null");
@@ -32,8 +33,7 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("user_id", userId)
             };
 
-            foreach (var code in codes)
-                getParams.Add(new KeyValuePair<string, string>("code", code));
+            getParams.AddRange(codes.Select(code => new KeyValuePair<string, string>("code", code)));
 
             return TwitchPostGenericAsync<GetCodeStatusResponse>("/entitlements/codes", ApiVersion.Helix, null, getParams, accessToken);
         }
@@ -46,19 +46,23 @@ namespace TwitchLib.Api.Helix
             {
                 new KeyValuePair<string, string>("first", first.ToString())
             };
-            if(id != null)
+
+            if(!string.IsNullOrWhiteSpace(id))
             {
                 getParams.Add(new KeyValuePair<string, string>("id", id));
             }
-            if(userId != null)
+
+            if(!string.IsNullOrWhiteSpace(userId))
             {
                 getParams.Add(new KeyValuePair<string, string>("user_id", userId));
             }
-            if(gameId != null)
+
+            if(!string.IsNullOrWhiteSpace(gameId))
             {
                 getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
             }
-            if(after != null)
+
+            if(!string.IsNullOrWhiteSpace(after))
             {
                 getParams.Add(new KeyValuePair<string, string>("after", after));
             }
@@ -86,12 +90,9 @@ namespace TwitchLib.Api.Helix
         public Task<RedeemCodeResponse> RedeemCodeAsync(List<string> codes, string accessToken = null)
         {
             if (codes == null || codes.Count == 0 || codes.Count > 20)
-                throw new BadParameterException("codes cannot be null and must ahve between 1 and 20 items");
+                throw new BadParameterException("codes cannot be null and must have between 1 and 20 items");
 
-            var getParams = new List<KeyValuePair<string, string>>();
-
-            foreach (var code in codes)
-                getParams.Add(new KeyValuePair<string, string>("code", code));
+            var getParams = codes.Select(code => new KeyValuePair<string, string>("code", code)).ToList();
 
             return TwitchPostGenericAsync<RedeemCodeResponse>("/entitlements/codes", ApiVersion.Helix, null, getParams, accessToken);
         }

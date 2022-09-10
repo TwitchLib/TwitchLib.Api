@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
@@ -27,13 +27,15 @@ namespace TwitchLib.Api.Helix
 
         public Task ManageHeldAutoModMessagesAsync(string userId, string msgId, ManageHeldAutoModMessageActionEnum action, string accessToken = null)
         {
-            if(String.IsNullOrEmpty(userId) || String.IsNullOrEmpty(msgId))
+            if(string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(msgId))
                 throw new BadParameterException("userId and msgId cannot be null and must be greater than 0 length");
 
-            JObject json = new JObject();
-            json["user_id"] = userId;
-            json["msg_id"] = msgId;
-            json["action"] = action.ToString().ToUpper();
+            var json = new JObject
+            {
+                ["user_id"] = userId,
+                ["msg_id"] = msgId,
+                ["action"] = action.ToString().ToUpper()
+            };
 
             return TwitchPostAsync("/moderation/automod/message", ApiVersion.Helix, json.ToString(), accessToken: accessToken);
         }
@@ -45,15 +47,15 @@ namespace TwitchLib.Api.Helix
             if (messages == null || messages.Count == 0)
                 throw new BadParameterException("messages cannot be null and must be greater than 0 length");
 
-            if (broadcasterId == null || broadcasterId.Length == 0)
-                throw new BadParameterException("broadcasterId cannot be null and must be greater than 0 length");
+            if (string.IsNullOrWhiteSpace(broadcasterId))
+                throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broacaster_id", broadcasterId)
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
             };
 
-            MessageRequest request = new MessageRequest()
+            var request = new MessageRequest
             {
                 Messages = messages.ToArray()
             };
@@ -65,25 +67,26 @@ namespace TwitchLib.Api.Helix
 
         #region GetBannedEvents
 
-        public Task<GetBannedEventsResponse> GetBannedEventsAsync(string broadcasterId, List<string> userIds = null, string after = null, string first = null, string accessToken = null)
+        public Task<GetBannedEventsResponse> GetBannedEventsAsync(string broadcasterId, List<string> userIds = null, string after = null, int first = 20, string accessToken = null)
         {
-            if (broadcasterId == null || broadcasterId.Length == 0)
-                throw new BadParameterException("broadcasterId cannot be null and must be greater than 0 length");
+            if (string.IsNullOrWhiteSpace(broadcasterId))
+                throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            if (first < 1 || first > 100)
+                throw new BadParameterException("first cannot be less than 1 or greater than 100");
+
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
             };
 
-            if (userIds != null && userIds.Count > 0)
-                foreach (var userId in userIds)
-                    getParams.Add(new KeyValuePair<string, string>("user_id", userId));
+            if (userIds != null && userIds.Count > 0) 
+                getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("user_id", userId)));
 
-            if (after != null)
+            if (string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
-            if (first != null)
-                getParams.Add(new KeyValuePair<string, string>("first", first));
+            getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
 
             return TwitchGetGenericAsync<GetBannedEventsResponse>("/moderation/banned/events", ApiVersion.Helix, getParams, accessToken);
         }
@@ -102,27 +105,27 @@ namespace TwitchLib.Api.Helix
         /// <param name="before">Cursor for backward pagination.</param>
         /// <param name="accessToken">Access Token</param>
         /// <returns></returns>
-        public Task<GetBannedUsersResponse> GetBannedUsersAsync(string broadcasterId, List<string> userIds = null, int first = 1, string after = null, string before = null, string accessToken = null)
+        public Task<GetBannedUsersResponse> GetBannedUsersAsync(string broadcasterId, List<string> userIds = null, int first = 20, string after = null, string before = null, string accessToken = null)
         {
-            if (broadcasterId == null || broadcasterId.Length == 0)
-                throw new BadParameterException("broadcasterId cannot be null and must be greater than 0 length");
-            if (first < 1 || first > 100)
-                throw new BadParameterException("first must be greater than 0 and less than 101");
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            if (first < 1 || first > 100)
+                throw new BadParameterException("first cannot be less than 1 or greater than 100");
+
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("first", first.ToString())
             };
 
-            if (userIds != null && userIds.Count > 0)
-                foreach (var userId in userIds)
-                    getParams.Add(new KeyValuePair<string, string>("user_id", userId));
+            if (userIds != null && userIds.Count > 0) 
+                getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("user_id", userId)));
 
-            if (after != null)
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
-            if (before != null)
+            if (!string.IsNullOrWhiteSpace(before))
                 getParams.Add(new KeyValuePair<string, string>("before", before));
 
             return TwitchGetGenericAsync<GetBannedUsersResponse>("/moderation/banned", ApiVersion.Helix, getParams, accessToken);
@@ -134,22 +137,21 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetModeratorsResponse> GetModeratorsAsync(string broadcasterId, List<string> userIds = null, int first = 20, string after = null, string accessToken = null)
         {
-            if (broadcasterId == null || broadcasterId.Length == 0)
-                throw new BadParameterException("broadcasterId cannot be null and must be greater than 0 length");
+            if (string.IsNullOrWhiteSpace(broadcasterId))
+                throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
             if (first > 100 || first < 1)
                 throw new BadParameterException("first must be greater than 0 and less than 101");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("first", first.ToString())
             };
 
-            if (userIds != null && userIds.Count > 0)
-                foreach (var userId in userIds)
-                    getParams.Add(new KeyValuePair<string, string>("user_id", userId));
+            if (userIds != null && userIds.Count > 0) 
+                getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("user_id", userId)));
 
-            if (after != null)
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetModeratorsResponse>("/moderation/moderators", ApiVersion.Helix, getParams, accessToken);
@@ -161,17 +163,16 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetModeratorEventsResponse> GetModeratorEventsAsync(string broadcasterId, List<string> userIds = null, string accessToken = null)
         {
-            if (broadcasterId == null || broadcasterId.Length == 0)
-                throw new BadParameterException("broadcasterId cannot be null and must be greater than 0 length");
+            if (string.IsNullOrWhiteSpace(broadcasterId))
+                throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
             };
 
-            if (userIds != null && userIds.Count > 0)
-                foreach (var userId in userIds)
-                    getParams.Add(new KeyValuePair<string, string>("user_id", userId));
+            if (userIds != null && userIds.Count > 0) 
+                getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("user_id", userId)));
 
             return TwitchGetGenericAsync<GetModeratorEventsResponse>("/moderation/moderators/events", ApiVersion.Helix, getParams, accessToken);
         }
@@ -193,6 +194,7 @@ namespace TwitchLib.Api.Helix
         {
             if (string.IsNullOrEmpty(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
+
             if (string.IsNullOrEmpty(moderatorId))
                 throw new BadParameterException("moderatorId must be set");
 
@@ -209,7 +211,7 @@ namespace TwitchLib.Api.Helix
                 if(banUserRequest.Duration.Value <= 0 || banUserRequest.Duration.Value > 1209600)
                     throw new BadParameterException("banUserRequest.Duration has to be between including 1 and including 1209600");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("moderator_id", moderatorId)
@@ -229,14 +231,16 @@ namespace TwitchLib.Api.Helix
 
         public Task UnbanUserAsync(string broadcasterId, string moderatorId, string userId, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(broadcasterId))
+            if (string.IsNullOrWhiteSpace(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
-            if (string.IsNullOrEmpty(moderatorId))
+
+            if (string.IsNullOrWhiteSpace(moderatorId))
                 throw new BadParameterException("moderatorId must be set");
-            if (string.IsNullOrEmpty(userId))
+
+            if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("userId must be set");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("moderator_id", moderatorId),
@@ -252,12 +256,13 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetAutomodSettingsResponse> GetAutomodSettingsAsync(string broadcasterId, string moderatorId, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(broadcasterId))
+            if (string.IsNullOrWhiteSpace(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
-            if (string.IsNullOrEmpty(moderatorId))
+
+            if (string.IsNullOrWhiteSpace(moderatorId))
                 throw new BadParameterException("moderatorId must be set");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("moderator_id", moderatorId),
@@ -272,14 +277,15 @@ namespace TwitchLib.Api.Helix
 
         public Task<UpdateAutomodSettingsResponse> UpdateAutomodSettingsAsync(string broadcasterId, string moderatorId, AutomodSettings settings, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(broadcasterId))
+            if (string.IsNullOrWhiteSpace(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
-            if (string.IsNullOrEmpty(moderatorId))
+
+            if (string.IsNullOrWhiteSpace(moderatorId))
                 throw new BadParameterException("moderatorId must be set");
 
             // you can set the overall level, OR you can set individual levels, but not both
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("moderator_id", moderatorId),
@@ -294,21 +300,23 @@ namespace TwitchLib.Api.Helix
 
         public Task<GetBlockedTermsResponse> GetBlockedTermsAsync(string broadcasterId, string moderatorId, string after = null, int first = 20, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(broadcasterId))
+            if (string.IsNullOrWhiteSpace(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
-            if (string.IsNullOrEmpty(moderatorId))
+
+            if (string.IsNullOrWhiteSpace(moderatorId))
                 throw new BadParameterException("moderatorId must be set");
+
             if (first < 1 || first > 100)
                 throw new BadParameterException("first must be greater than 0 and less than 101");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("moderator_id", moderatorId),
                 new KeyValuePair<string, string>("first", first.ToString())
             };
 
-            if (!string.IsNullOrEmpty(after))
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetBlockedTermsResponse>("/moderation/blocked_terms", ApiVersion.Helix, getParams, accessToken);
@@ -320,21 +328,25 @@ namespace TwitchLib.Api.Helix
 
         public Task<AddBlockedTermResponse> AddBlockedTermAsync(string broadcasterId, string moderatorId, string term, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(broadcasterId))
+            if (string.IsNullOrWhiteSpace(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
-            if (string.IsNullOrEmpty(moderatorId))
+
+            if (string.IsNullOrWhiteSpace(moderatorId))
                 throw new BadParameterException("moderatorId must be set");
-            if (string.IsNullOrEmpty(term))
+
+            if (string.IsNullOrWhiteSpace(term))
                 throw new BadParameterException("term must be set");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("moderator_id", moderatorId),
             };
 
-            JObject body = new JObject();
-            body["text"] = term;
+            var body = new JObject
+            {
+                ["text"] = term
+            };
 
             return TwitchPostGenericAsync<AddBlockedTermResponse>("/moderation/blocked_terms", ApiVersion.Helix, body.ToString(), getParams, accessToken);
         }
@@ -345,14 +357,16 @@ namespace TwitchLib.Api.Helix
 
         public Task DeleteBlockedTermAsync(string broadcasterId, string moderatorId, string termId, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(broadcasterId))
+            if (string.IsNullOrWhiteSpace(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
-            if (string.IsNullOrEmpty(moderatorId))
+
+            if (string.IsNullOrWhiteSpace(moderatorId))
                 throw new BadParameterException("moderatorId must be set");
-            if (string.IsNullOrEmpty(termId))
+
+            if (string.IsNullOrWhiteSpace(termId))
                 throw new BadParameterException("termId must be set");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("moderator_id", moderatorId),
@@ -374,20 +388,22 @@ namespace TwitchLib.Api.Helix
         /// <param name="broadcasterId">The ID of the broadcaster that owns the chat room to remove messages from.</param>
         /// <param name="moderatorId">The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID in the OAuth token.</param>
         /// <param name="messageId">The ID of the message to remove. If not specified, the request removes all messages in the broadcaster’s chat room.</param>
+        /// <param name="accessToken"></param>
         public Task DeleteChatMessagesAsync(string broadcasterId, string moderatorId, string messageId = null, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(broadcasterId))
+            if (string.IsNullOrWhiteSpace(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
-            if (string.IsNullOrEmpty(moderatorId))
+
+            if (string.IsNullOrWhiteSpace(moderatorId))
                 throw new BadParameterException("moderatorId must be set");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("moderator_id", moderatorId),
             };
 
-            if (messageId != null)
+            if (!string.IsNullOrWhiteSpace(messageId))
             {
                 getParams.Add(new KeyValuePair<string, string>("message_id", messageId));
             }
@@ -406,11 +422,13 @@ namespace TwitchLib.Api.Helix
         /// </summary>
         /// <param name="broadcasterId">The ID of the broadcaster that owns the chat room.</param>
         /// <param name="userId">The ID of the user to add as a moderator in the broadcaster’s chat room.</param>
+        /// <param name="accessToken"></param>
         public Task AddChannelModeratorAsync(string broadcasterId, string userId, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(broadcasterId))
+            if (string.IsNullOrWhiteSpace(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
-            if (string.IsNullOrEmpty(userId))
+
+            if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("userId must be set");
 
             var getParams = new List<KeyValuePair<string, string>>()
@@ -433,11 +451,13 @@ namespace TwitchLib.Api.Helix
         /// </summary>
         /// <param name="broadcasterId">The ID of the broadcaster that owns the chat room.</param>
         /// <param name="userId">The ID of the user to remove as a moderator from the broadcaster’s chat room.</param>
+        /// <param name="accessToken"></param>
         public Task DeleteChannelModeratorAsync(string broadcasterId, string userId, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(broadcasterId))
+            if (string.IsNullOrWhiteSpace(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
-            if (string.IsNullOrEmpty(userId))
+
+            if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("userId must be set");
 
             var getParams = new List<KeyValuePair<string, string>>()

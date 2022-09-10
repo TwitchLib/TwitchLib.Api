@@ -1,6 +1,7 @@
-﻿using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Moq;
+using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Test.Helpers
@@ -32,7 +33,7 @@ namespace TwitchLib.Api.Test.Helpers
             foreach (var (url, response) in urlResponses)
             {
                 mockHandler
-                    .Setup(x => x.GeneralRequestAsync(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .Setup(x => x.GeneralRequestAsync(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
                     .ReturnsAsync(new KeyValuePair<int, string>(200, response));
             }
         }
@@ -44,7 +45,7 @@ namespace TwitchLib.Api.Test.Helpers
             foreach (var (url, response) in urlResponses)
             {
                 mockHandler
-                    .Setup(x => x.GeneralRequestAsync(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Core.Enums.ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .Setup(x => x.GeneralRequestAsync(It.Is<string>(y => new Uri(y).GetLeftPart(UriPartial.Path) == url), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ApiVersion>(), It.IsAny<string>(), It.IsAny<string>()))
                     .ReturnsAsync(new KeyValuePair<int, string>(200, response));
             }
             
