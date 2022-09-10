@@ -107,13 +107,21 @@ namespace TwitchLib.Api.Helix
             return TwitchPostGenericAsync<CreateStreamMarkerResponse>("/streams/markers", ApiVersion.Helix, JsonConvert.SerializeObject(request), null, accessToken);
         }
 
-        public Task<GetStreamMarkersResponse> GetStreamMarkersAsync(string userId, string videoId, string accessToken = null)
+        public Task<GetStreamMarkersResponse> GetStreamMarkersAsync(string userId = null, string videoId = null, string accessToken = null)
         {
-            var getParams = new List<KeyValuePair<string, string>>
-            {
-                new KeyValuePair<string, string>("user_id", userId),
-                new KeyValuePair<string, string>("video_id", videoId)
-            };
+            if (string.IsNullOrWhiteSpace(userId) && string.IsNullOrWhiteSpace(videoId))
+                throw new BadParameterException("One of userId and videoId has to be specified");
+
+            if (!string.IsNullOrWhiteSpace(userId) && !string.IsNullOrWhiteSpace(videoId))
+                throw new BadParameterException("userId and videoId are mutually exclusive");
+
+            var getParams = new List<KeyValuePair<string, string>>();
+
+            if (!string.IsNullOrWhiteSpace(userId))
+                getParams.Add(new KeyValuePair<string, string>("user_id", userId));
+
+            if (!string.IsNullOrWhiteSpace(videoId))
+                getParams.Add(new KeyValuePair<string, string>("video_id", videoId));
 
             return TwitchGetGenericAsync<GetStreamMarkersResponse>("/stream/markers", ApiVersion.Helix, getParams, accessToken);
         }

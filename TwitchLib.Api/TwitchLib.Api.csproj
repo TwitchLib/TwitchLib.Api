@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2022</Copyright>
-    <PackageReleaseNotes>Fixes an ArgumentNullException when not providing a playlist id for the GetPlaylists API call</PackageReleaseNotes>
+    <PackageReleaseNotes>Added GetCharityCampaigns support, fixed GetChannelVip and UserChatColor models, fixed issues with the GetStreamMarkers API call</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
