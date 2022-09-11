@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using System;
 
 namespace TwitchLib.Api.Helix.Models.Bits
 {

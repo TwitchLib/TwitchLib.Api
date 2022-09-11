@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
@@ -22,10 +20,11 @@ namespace TwitchLib.Api.Helix
             if (string.IsNullOrEmpty(broadcasterId))
                 throw new BadParameterException("broadcasterId cannot be null or empty");
 
-            var getParams = new List<KeyValuePair<string, string>>()
+            var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
             };
+
             return TwitchGetGenericAsync<GetCreatorGoalsResponse>("/goals", ApiVersion.Helix, getParams, accessToken);
         }
         #endregion

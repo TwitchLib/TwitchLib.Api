@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
@@ -28,16 +29,15 @@ namespace TwitchLib.Api.Helix
                     throw new BadParameterException("gameNames list cannot exceed 100 items");
 
                 var getParams = new List<KeyValuePair<string, string>>();
+
                 if (gameIds != null && gameIds.Count > 0)
                 {
-                    foreach (var gameId in gameIds)
-                        getParams.Add(new KeyValuePair<string, string>("id", gameId));
+                    getParams.AddRange(gameIds.Select(gameId => new KeyValuePair<string, string>("id", gameId)));
                 }
 
                 if (gameNames != null && gameNames.Count > 0)
                 {
-                    foreach (var gameName in gameNames)
-                        getParams.Add(new KeyValuePair<string, string>("name", gameName));
+                    getParams.AddRange(gameNames.Select(gameName => new KeyValuePair<string, string>("name", gameName)));
                 }
 
                 return TwitchGetGenericAsync<GetGamesResponse>("/games", ApiVersion.Helix, getParams, accessToken);
@@ -57,9 +57,10 @@ namespace TwitchLib.Api.Helix
                         new KeyValuePair<string, string>("first", first.ToString())
                 };
 
-                if (before != null)
+                if (!string.IsNullOrWhiteSpace(before))
                     getParams.Add(new KeyValuePair<string, string>("before", before));
-                if (after != null)
+
+                if (!string.IsNullOrWhiteSpace(after))
                     getParams.Add(new KeyValuePair<string, string>("after", after));
 
                 return TwitchGetGenericAsync<GetTopGamesResponse>("/games/top", ApiVersion.Helix, getParams, accessToken);

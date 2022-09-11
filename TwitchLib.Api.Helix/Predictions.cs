@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Interfaces;
@@ -28,13 +27,9 @@ namespace TwitchLib.Api.Helix
             };
 
             if (ids != null && ids.Count > 0)
-            {
-                foreach (var id in ids)
-                {
-                    getParams.Add(new KeyValuePair<string, string>("id", id));
-                }
-            }
-            if (after != null)
+                getParams.AddRange(ids.Select(id => new KeyValuePair<string, string>("id", id)));
+            
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetPredictionsResponse>("/predictions", ApiVersion.Helix, getParams, accessToken);
@@ -47,11 +42,14 @@ namespace TwitchLib.Api.Helix
 
         public Task<EndPredictionResponse> EndPredictionAsync(string broadcasterId, string id, PredictionEndStatus status, string winningOutcomeId = null, string accessToken = null)
         {
-            JObject json = new JObject();
-            json["broadcaster_id"] = broadcasterId;
-            json["id"] = id;
-            json["status"] = status.ToString();
-            if (winningOutcomeId != null)
+            var json = new JObject
+            {
+                ["broadcaster_id"] = broadcasterId,
+                ["id"] = id,
+                ["status"] = status.ToString()
+            };
+
+            if (!string.IsNullOrWhiteSpace(winningOutcomeId))
                 json["winning_outcome_id"] = winningOutcomeId;
 
             return TwitchPatchGenericAsync<EndPredictionResponse>("/predictions", ApiVersion.Helix, json.ToString(), accessToken: accessToken);

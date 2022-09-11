@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 using TwitchLib.Api.Core.Enums;
 
 namespace TwitchLib.Api.Helix.Models.Entitlements.GetDropsEntitlements

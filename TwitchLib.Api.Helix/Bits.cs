@@ -20,7 +20,7 @@ namespace TwitchLib.Api.Helix
         public Task<GetCheermotesResponse> GetCheermotesAsync(string broadcasterId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
-            if (broadcasterId != null)
+            if (!string.IsNullOrWhiteSpace(broadcasterId))
             {
                 getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
             }
@@ -35,9 +35,9 @@ namespace TwitchLib.Api.Helix
         public Task<GetBitsLeaderboardResponse> GetBitsLeaderboardAsync(int count = 10, BitsLeaderboardPeriodEnum period = BitsLeaderboardPeriodEnum.All, DateTime? startedAt = null, string userid = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
-                    {
-                        new KeyValuePair<string, string>("count", count.ToString())
-                    };
+            {
+                new KeyValuePair<string, string>("count", count.ToString())
+            };
 
             switch (period)
             {
@@ -56,11 +56,14 @@ namespace TwitchLib.Api.Helix
                 case BitsLeaderboardPeriodEnum.All:
                     getParams.Add(new KeyValuePair<string, string>("period", "all"));
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(period), period, null);
             }
 
             if (startedAt != null)
                 getParams.Add(new KeyValuePair<string, string>("started_at", startedAt.Value.ToRfc3339String()));
-            if (userid != null)
+
+            if (!string.IsNullOrWhiteSpace(userid))
                 getParams.Add(new KeyValuePair<string, string>("user_id", userid));
 
             return TwitchGetGenericAsync<GetBitsLeaderboardResponse>("/bits/leaderboard", ApiVersion.Helix, getParams);

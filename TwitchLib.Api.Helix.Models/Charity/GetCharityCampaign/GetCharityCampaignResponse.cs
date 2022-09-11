@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using TwitchLib.Api.Helix.Models.Channels.GetChannelVIPs;
-using TwitchLib.Api.Helix.Models.Common;
 
 namespace TwitchLib.Api.Helix.Models.Charity.GetCharityCampaign
 {

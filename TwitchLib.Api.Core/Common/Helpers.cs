@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using TwitchLib.Api.Core.Enums;
 
 namespace TwitchLib.Api.Core.Common
@@ -170,7 +171,7 @@ namespace TwitchLib.Api.Core.Common
 
         public static string Base64Encode(string plainText)
         {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
             return Convert.ToBase64String(plainTextBytes);
         }
     }

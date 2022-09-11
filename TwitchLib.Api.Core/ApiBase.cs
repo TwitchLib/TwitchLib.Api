@@ -1,15 +1,14 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Core.Models;
-
 
 namespace TwitchLib.Api.Core
 {
@@ -36,11 +35,11 @@ namespace TwitchLib.Api.Core
 
         public async ValueTask<string> GetAccessTokenAsync(string accessToken = null)
         {
-            if (!string.IsNullOrEmpty(accessToken))
+            if (!string.IsNullOrWhiteSpace(accessToken))
                 return accessToken;
-            if (!string.IsNullOrEmpty(Settings.AccessToken))
+            if (!string.IsNullOrWhiteSpace(Settings.AccessToken))
                 return Settings.AccessToken;
-            if (!string.IsNullOrEmpty(Settings.Secret) && !string.IsNullOrEmpty(Settings.ClientId) && !Settings.SkipAutoServerTokenGeneration)
+            if (!string.IsNullOrWhiteSpace(Settings.Secret) && !string.IsNullOrWhiteSpace(Settings.ClientId) && !Settings.SkipAutoServerTokenGeneration)
             {
                 if (_serverBasedAccessTokenExpiry == null || _serverBasedAccessTokenExpiry - TimeSpan.FromMinutes(1) < DateTime.Now)
                     return await GenerateServerBasedAccessToken().ConfigureAwait(false);
@@ -78,7 +77,7 @@ namespace TwitchLib.Api.Core
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+            if (string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(Settings.ClientId))
                 clientId = Settings.ClientId;
 
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
@@ -91,7 +90,7 @@ namespace TwitchLib.Api.Core
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+            if (string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(Settings.ClientId))
                 clientId = Settings.ClientId;
 
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
@@ -104,7 +103,7 @@ namespace TwitchLib.Api.Core
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+            if (string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(Settings.ClientId))
                 clientId = Settings.ClientId;
 
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
@@ -117,7 +116,7 @@ namespace TwitchLib.Api.Core
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+            if (string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(Settings.ClientId))
                 clientId = Settings.ClientId;
 
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
@@ -130,7 +129,7 @@ namespace TwitchLib.Api.Core
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+            if (string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(Settings.ClientId))
                 clientId = Settings.ClientId;
 
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
@@ -143,7 +142,7 @@ namespace TwitchLib.Api.Core
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+            if (string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(Settings.ClientId))
                 clientId = Settings.ClientId;
 
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
@@ -156,7 +155,7 @@ namespace TwitchLib.Api.Core
         {
             var url = ConstructResourceUrl(resource, api: api, overrideUrl: customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+            if (string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(Settings.ClientId))
                 clientId = Settings.ClientId;
 
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
@@ -169,7 +168,7 @@ namespace TwitchLib.Api.Core
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+            if (string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(Settings.ClientId))
                 clientId = Settings.ClientId;
 
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
@@ -182,7 +181,7 @@ namespace TwitchLib.Api.Core
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+            if (string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(Settings.ClientId))
                 clientId = Settings.ClientId;
 
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
@@ -195,7 +194,7 @@ namespace TwitchLib.Api.Core
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+            if (string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(Settings.ClientId))
                 clientId = Settings.ClientId;
 
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
@@ -208,7 +207,7 @@ namespace TwitchLib.Api.Core
         {
             var url = ConstructResourceUrl(resource, getParams, api, customBase);
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+            if (string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(Settings.ClientId))
                 clientId = Settings.ClientId;
 
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
@@ -241,7 +240,7 @@ namespace TwitchLib.Api.Core
                 }
             }
 
-            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(Settings.ClientId))
+            if (string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(Settings.ClientId))
                 clientId = Settings.ClientId;
 
             accessToken = await GetAccessTokenAsync(accessToken).ConfigureAwait(false);
@@ -347,7 +346,5 @@ namespace TwitchLib.Api.Core
             }
             return url;
         }
-
-
     }
 }

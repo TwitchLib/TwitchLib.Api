@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.Extensions.Logging;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.HttpCallHandlers;
@@ -39,7 +40,7 @@ namespace TwitchLib.Api
             Settings.PropertyChanged += SettingsPropertyChanged;
         }
 
-        private void SettingsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void SettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {

@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using TwitchLib.Api.Core.Common;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
@@ -62,7 +63,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             }
 
             if (!string.IsNullOrWhiteSpace(accessToken))
-                request.Headers.Add(HttpRequestHeader.Authorization.ToString(), $"{authPrefix} {Common.Helpers.FormatOAuth(accessToken)}");
+                request.Headers.Add(HttpRequestHeader.Authorization.ToString(), $"{authPrefix} {Helpers.FormatOAuth(accessToken)}");
 
             if (payload != null)
                 request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
@@ -110,8 +111,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                     var authenticateHeader = errorResp.Headers.WwwAuthenticate;
                     if (authenticateHeader == null || authenticateHeader.Count <= 0)
                         throw new BadScopeException("Your request was blocked due to bad credentials (Do you have the right scope for your access token?).");
-                    else
-                        throw new TokenExpiredException("Your request was blocked due to an expired Token. Please refresh your token and update your API instance settings.");
+                    throw new TokenExpiredException("Your request was blocked due to an expired Token. Please refresh your token and update your API instance settings.");
                 case HttpStatusCode.NotFound:
                     throw new BadResourceException("The resource you tried to access was not valid.");
                 case (HttpStatusCode)429:
