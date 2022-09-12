@@ -135,7 +135,7 @@ namespace TwitchLib.Api.Helix
             if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
-            return TwitchGetGenericAsync<GetStreamMarkersResponse>("/stream/markers", ApiVersion.Helix, getParams, accessToken);
+            return TwitchGetGenericAsync<GetStreamMarkersResponse>("/streams/markers", ApiVersion.Helix, getParams, accessToken);
         }
 
         public Task<GetFollowedStreamsResponse> GetFollowedStreamsAsync(string userId, int first = 100, string after = null, string accessToken = null)
