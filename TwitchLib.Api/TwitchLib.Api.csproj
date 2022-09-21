@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Api</PackageId>
-    <VersionPrefix>3.6.1</VersionPrefix>
+    <VersionPrefix>3.7.0</VersionPrefix>
     <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Description>Api component of TwitchLib. This component allows you to access the Twitch API, as well as undocumented and third party APIs.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -13,13 +13,13 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2022</Copyright>
-    <PackageReleaseNotes>Fixes an ArgumentNullException when not providing a playlist id for the GetPlaylists API call</PackageReleaseNotes>
+    <PackageReleaseNotes>Added GetCharityCampaigns support, fixed GetChannelVip and UserChatColor models, fixed issues with the GetStreamMarkers API call, Fixed Prediction model issues, TwitchLib now builds on .NET 6 SDK instead of deprecated .NET 5, Code Cleanup</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>3.6.1</AssemblyVersion>
-    <FileVersion>3.6.1</FileVersion>
+    <AssemblyVersion>3.7.0</AssemblyVersion>
+    <FileVersion>3.7.0</FileVersion>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>

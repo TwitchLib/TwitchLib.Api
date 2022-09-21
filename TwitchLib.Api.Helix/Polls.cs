@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Interfaces;
@@ -29,12 +28,10 @@ namespace TwitchLib.Api.Helix
 
             if (ids != null && ids.Count > 0)
             {
-                foreach (var id in ids)
-                {
-                    getParams.Add(new KeyValuePair<string, string>("id", id));
-                }
+                getParams.AddRange(ids.Select(id => new KeyValuePair<string, string>("id", id)));
             }
-            if (after != null)
+
+            if (!string.IsNullOrWhiteSpace(accessToken))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetPollsResponse>("/polls", ApiVersion.Helix, getParams, accessToken);
@@ -47,10 +44,12 @@ namespace TwitchLib.Api.Helix
 
         public Task<EndPollResponse> EndPollAsync(string broadcasterId, string id, PollStatusEnum status, string accessToken = null)
         {
-            JObject json = new JObject();
-            json["broadcaster_id"] = broadcasterId;
-            json["id"] = id;
-            json["status"] = status.ToString();
+            var json = new JObject
+            {
+                ["broadcaster_id"] = broadcasterId,
+                ["id"] = id,
+                ["status"] = status.ToString()
+            };
 
             return TwitchPatchGenericAsync<EndPollResponse>("/polls", ApiVersion.Helix, json.ToString(), accessToken: accessToken);
         }

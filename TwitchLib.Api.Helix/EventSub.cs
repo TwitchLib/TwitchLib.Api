@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
@@ -32,8 +32,10 @@ namespace TwitchLib.Api.Helix
         {
             if (string.IsNullOrEmpty(type))
                 throw new BadParameterException("type must be set");
+
             if (string.IsNullOrEmpty(version))
                 throw new BadParameterException("version must be set");
+
             if (secret == null || secret.Length < 10 || secret.Length > 100)
                 throw new BadParameterException("secret must be set, and be between 10 (inclusive) and 100 (inclusive)");
 
@@ -58,21 +60,24 @@ namespace TwitchLib.Api.Helix
         /// </summary>
         /// <param name="status">Filter subscriptions by its status.</param>
         /// <param name="type">Filter subscriptions by subscription type (e.g., channel.update).</param>
-        /// <param name="user_id">Filter subscriptions by user ID.</param>
+        /// <param name="userId">Filter subscriptions by user ID.</param>
         /// <param name="after">The cursor used to get the next page of results.</param>
         /// <param name="clientId">Client ID</param>
         /// <param name="accessToken">Access Token</param>
         /// <returns>Returns a list of your EventSub subscriptions.</returns>
-        public Task<GetEventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(string status = null, string type = null, string user_id = null, string after = null, string clientId = null, string accessToken = null)
+        public Task<GetEventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(string status = null, string type = null, string userId = null, string after = null, string clientId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
 
             if (!string.IsNullOrWhiteSpace(status))
                 getParams.Add(new KeyValuePair<string, string>("status", status));
+
             if (!string.IsNullOrWhiteSpace(type))
                 getParams.Add(new KeyValuePair<string, string>("type", type));
-            if (!string.IsNullOrWhiteSpace(user_id))
-                getParams.Add(new KeyValuePair<string, string>("user_id", user_id));
+
+            if (!string.IsNullOrWhiteSpace(userId))
+                getParams.Add(new KeyValuePair<string, string>("user_id", userId));
+
             if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
@@ -88,7 +93,10 @@ namespace TwitchLib.Api.Helix
         /// <returns></returns>
         public async Task<bool> DeleteEventSubSubscriptionAsync(string id, string clientId = null, string accessToken = null)
         {
-            var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("id", id) };
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("id", id)
+            };
 
             var response = await TwitchDeleteAsync("/eventsub/subscriptions", ApiVersion.Helix, getParams, accessToken, clientId);
 

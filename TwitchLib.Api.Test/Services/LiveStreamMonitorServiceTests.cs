@@ -1,8 +1,7 @@
-﻿using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using TwitchLib.Api.Helix.Models.Streams;
+using Moq;
 using TwitchLib.Api.Helix.Models.Streams.GetStreams;
 using TwitchLib.Api.Services;
 using TwitchLib.Api.Test.Helpers;

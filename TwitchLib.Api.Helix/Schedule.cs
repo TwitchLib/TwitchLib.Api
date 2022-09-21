@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Interfaces;
@@ -34,8 +34,10 @@ namespace TwitchLib.Api.Helix
 
             if (!string.IsNullOrWhiteSpace(startTime))
                 getParams.Add(new KeyValuePair<string, string>("start_time", startTime));
+
             if (!string.IsNullOrWhiteSpace(utcOffset))
                 getParams.Add(new KeyValuePair<string, string>("utc_offset", utcOffset));
+
             if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
@@ -55,8 +57,10 @@ namespace TwitchLib.Api.Helix
 
             if (vacationStartTime.HasValue)
                 getParams.Add(new KeyValuePair<string, string>("vacation_start_time", vacationStartTime.Value.ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz", DateTimeFormatInfo.InvariantInfo)));
+
             if (vacationEndTime.HasValue)
                 getParams.Add(new KeyValuePair<string, string>("vacation_end_time", vacationEndTime.Value.ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz", DateTimeFormatInfo.InvariantInfo)));
+
             if (!string.IsNullOrWhiteSpace(timezone))
                 getParams.Add(new KeyValuePair<string, string>("timezone", timezone));
 

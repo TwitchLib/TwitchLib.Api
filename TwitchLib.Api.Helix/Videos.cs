@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
@@ -21,9 +22,7 @@ namespace TwitchLib.Api.Helix
             if (videoIds.Count > 5)
                 throw new BadParameterException($"Maximum of 5 video ids allowed per request (you passed {videoIds.Count})");
 
-            var getParams = new List<KeyValuePair<string, string>>();
-            foreach(var videoId in videoIds)
-                getParams.Add(new KeyValuePair<string, string>("id", videoId));
+            var getParams = videoIds.Select(videoId => new KeyValuePair<string, string>("id", videoId)).ToList();
 
             return TwitchDeleteGenericAsync<DeleteVideosResponse>("/videos", ApiVersion.Helix, getParams, accessToken);
         }
@@ -32,30 +31,36 @@ namespace TwitchLib.Api.Helix
         {
             if ((videoIds == null || videoIds.Count == 0) && userId == null && gameId == null)
                 throw new BadParameterException("VideoIds, userId, and gameId cannot all be null/empty.");
+
             if (videoIds != null && videoIds.Count > 0 && userId != null || videoIds != null && videoIds.Count > 0 && gameId != null || userId != null && gameId != null)
                 throw new BadParameterException("If videoIds are present, you may not use userid or gameid. If gameid is present, you may not use videoIds or userid. If userid is present, you may not use videoids or gameids.");
 
             var getParams = new List<KeyValuePair<string, string>>();
+
             if (videoIds != null && videoIds.Count > 0)
             {
-                foreach (var videoId in videoIds)
-                    getParams.Add(new KeyValuePair<string, string>("id", videoId));
+                getParams.AddRange(videoIds.Select(videoId => new KeyValuePair<string, string>("id", videoId)));
             }
 
-            if (userId != null)
+            if (!string.IsNullOrWhiteSpace(userId))
                 getParams.Add(new KeyValuePair<string, string>("user_id", userId));
-            if (gameId != null)
+
+            if (!string.IsNullOrWhiteSpace(gameId))
                 getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
 
             if (userId != null || gameId != null)
             {
-                if (after != null)
+                if (!string.IsNullOrWhiteSpace(after))
                     getParams.Add(new KeyValuePair<string, string>("after", after));
-                if (before != null)
+
+                if (!string.IsNullOrWhiteSpace(before))
                     getParams.Add(new KeyValuePair<string, string>("before", before));
+
                 getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
-                if (language != null)
+
+                if (!string.IsNullOrWhiteSpace(language))
                     getParams.Add(new KeyValuePair<string, string>("language", language));
+
                 switch (period)
                 {
                     case Period.All:

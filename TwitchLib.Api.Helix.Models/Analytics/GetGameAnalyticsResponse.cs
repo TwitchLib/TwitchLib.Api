@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using TwitchLib.Api.Helix.Models.Common;
 
 namespace TwitchLib.Api.Helix.Models.Analytics
 {
@@ -7,6 +8,6 @@ namespace TwitchLib.Api.Helix.Models.Analytics
         [JsonProperty(PropertyName = "data")]
         public GameAnalytics[] Data { get; protected set; }
         [JsonProperty(PropertyName = "pagination")]
-        public Common.Pagination Pagination { get; protected set; }
+        public Pagination Pagination { get; protected set; }
     }
 }

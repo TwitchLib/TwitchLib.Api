@@ -16,6 +16,7 @@ namespace TwitchLib.Api.Helix
         public Chat Chat { get; }
         public Channels Channels { get; }
         public ChannelPoints ChannelPoints { get; }
+        public Charity Charity { get; }
         public Clips Clips { get; }
         public Entitlements Entitlements { get; }
         public EventSub EventSub { get; }
@@ -57,6 +58,7 @@ namespace TwitchLib.Api.Helix
             Chat = new Chat(Settings, rateLimiter, http);
             Channels = new Channels(Settings, rateLimiter, http);
             ChannelPoints = new ChannelPoints(Settings, rateLimiter, http);
+            Charity = new Charity(Settings, rateLimiter, http);
             Clips = new Clips(Settings, rateLimiter, http);
             Entitlements = new Entitlements(Settings, rateLimiter, http);
             EventSub = new EventSub(Settings, rateLimiter, http);

@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using TwitchLib.Api.Helix.Models.Common;
-using TwitchLib.Api.Helix.Models.Users.Internal;
 
 namespace TwitchLib.Api.Helix.Models.Users.GetUserFollows
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
@@ -25,16 +25,16 @@ namespace TwitchLib.Api.Helix
                 throw new BadParameterException("'first' must between 0 (inclusive) and 100 (inclusive).");
 
             var getParams = new List<KeyValuePair<string, string>>();
+
             if (clipIds != null)
             {
-                foreach(var clipId in clipIds)
-                {
-                    getParams.Add(new KeyValuePair<string, string>("id", clipId));
-                }
+                getParams.AddRange(clipIds.Select(clipId => new KeyValuePair<string, string>("id", clipId)));
             }
-            if (gameId != null)
+
+            if (!string.IsNullOrWhiteSpace(gameId))
                 getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
-            if (broadcasterId != null)
+
+            if (!string.IsNullOrWhiteSpace(broadcasterId))
                 getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
 
             if (getParams.Count == 0 || (getParams.Count > 1 && gameId != null && broadcasterId != null))
@@ -45,12 +45,16 @@ namespace TwitchLib.Api.Helix
 
             if (startedAt != null)
                 getParams.Add(new KeyValuePair<string, string>("started_at", startedAt.Value.ToRfc3339String()));
+
             if (endedAt != null)
                 getParams.Add(new KeyValuePair<string, string>("ended_at", endedAt.Value.ToRfc3339String()));
-            if (before != null)
+
+            if (!string.IsNullOrWhiteSpace(before))
                 getParams.Add(new KeyValuePair<string, string>("before", before));
-            if (after != null)
+
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
+
             getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
 
             return TwitchGetGenericAsync<GetClipsResponse>("/clips", ApiVersion.Helix, getParams, accessToken);
@@ -63,9 +67,10 @@ namespace TwitchLib.Api.Helix
         public Task<CreatedClipResponse> CreateClipAsync(string broadcasterId, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
-                };
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+            };
+
             return TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, accessToken);
         }
 

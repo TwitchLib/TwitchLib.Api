@@ -22,11 +22,11 @@ namespace TwitchLib.Api.Helix
                 throw new BadParameterException("'first' parameter must be between 1 (inclusive) and 100 (inclusive).");
 
             var getParams = new List<KeyValuePair<string, string>>
-                {
-                        new KeyValuePair<string, string>("query", encodedSearchQuery)
-                };
+            {
+                new KeyValuePair<string, string>("query", encodedSearchQuery)
+            };
 
-            if (after != null)
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
@@ -44,13 +44,12 @@ namespace TwitchLib.Api.Helix
                 throw new BadParameterException("'first' parameter must be between 1 (inclusive) and 100 (inclusive).");
 
             var getParams = new List<KeyValuePair<string, string>>
-                {
-                        new KeyValuePair<string, string>("query", encodedSearchQuery)
-                };
+            {
+                new KeyValuePair<string, string>("query", encodedSearchQuery),
+                new KeyValuePair<string, string>("live_only", liveOnly.ToString())
+            };
 
-            getParams.Add(new KeyValuePair<string, string>("live_only", liveOnly.ToString()));
-
-            if (after != null)
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));

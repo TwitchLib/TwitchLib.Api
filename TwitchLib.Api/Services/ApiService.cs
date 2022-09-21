@@ -52,13 +52,10 @@ namespace TwitchLib.Api.Services
         /// <param name="checkIntervalInSeconds"></param>
         protected ApiService(ITwitchAPI api, int checkIntervalInSeconds)
         {
-            if (api == null)
-                throw new ArgumentNullException(nameof(api));
-
             if (checkIntervalInSeconds < 1)
                 throw new ArgumentException("The interval must be 1 second or more.", nameof(checkIntervalInSeconds));
 
-            _api = api;
+            _api = api ?? throw new ArgumentNullException(nameof(api));
             _serviceTimer = new ServiceTimer(OnServiceTimerTick, checkIntervalInSeconds);
         }
 

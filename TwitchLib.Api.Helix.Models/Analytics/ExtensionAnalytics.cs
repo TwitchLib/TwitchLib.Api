@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using TwitchLib.Api.Helix.Models.Common;
 
 namespace TwitchLib.Api.Helix.Models.Analytics
 {
@@ -11,6 +12,6 @@ namespace TwitchLib.Api.Helix.Models.Analytics
         [JsonProperty(PropertyName = "type")]
         public string Type { get; protected set; }
         [JsonProperty(PropertyName = "date_range")]
-        public Common.DateRange DateRange { get; protected set; }
+        public DateRange DateRange { get; protected set; }
     }
 }

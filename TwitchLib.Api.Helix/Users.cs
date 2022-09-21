@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
-using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Api.Helix.Models.Users.GetUserActiveExtensions;
 using TwitchLib.Api.Helix.Models.Users.GetUserBlockList;
 using TwitchLib.Api.Helix.Models.Users.GetUserExtensions;
@@ -28,10 +28,13 @@ namespace TwitchLib.Api.Helix
             if (first > 100)
                 throw new BadParameterException($"Maximum allowed objects is 100 (you passed {first})");
 
-            var getParams = new List<KeyValuePair<string, string>>();
-            getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
-            getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
-            if (after != null)
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("first", first.ToString())
+            };
+
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetUserBlockListResponse>("/users/blocks", ApiVersion.Helix, getParams, accessToken);
@@ -39,10 +42,14 @@ namespace TwitchLib.Api.Helix
 
         public Task BlockUserAsync(string targetUserId, BlockUserSourceContextEnum? sourceContext = null, BlockUserReasonEnum? reason = null, string accessToken = null)
         {
-            var getParams = new List<KeyValuePair<string, string>>();
-            getParams.Add(new KeyValuePair<string, string>("target_user_id", targetUserId));
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("target_user_id", targetUserId)
+            };
+
             if (sourceContext != null)
                 getParams.Add(new KeyValuePair<string, string>("source_context", sourceContext.Value.ToString().ToLower()));
+
             if (reason != null)
                 getParams.Add(new KeyValuePair<string, string>("reason", reason.Value.ToString().ToLower()));
 
@@ -51,8 +58,10 @@ namespace TwitchLib.Api.Helix
 
         public Task UnblockUserAsync(string targetUserId, string accessToken = null)
         {
-            var getParams = new List<KeyValuePair<string, string>>();
-            getParams.Add(new KeyValuePair<string, string>("target_user_id", targetUserId));
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("target_user_id", targetUserId)
+            };
 
             return TwitchDeleteAsync("/user/blocks", ApiVersion.Helix, getParams, accessToken);
         }
@@ -60,16 +69,15 @@ namespace TwitchLib.Api.Helix
         public Task<GetUsersResponse> GetUsersAsync(List<string> ids = null, List<string> logins = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
+
             if (ids != null && ids.Count > 0)
             {
-                foreach (var id in ids)
-                    getParams.Add(new KeyValuePair<string, string>("id", id));
+                getParams.AddRange(ids.Select(id => new KeyValuePair<string, string>("id", id)));
             }
 
             if (logins != null && logins.Count > 0)
             {
-                foreach (var login in logins)
-                    getParams.Add(new KeyValuePair<string, string>("login", login));
+                getParams.AddRange(logins.Select(login => new KeyValuePair<string, string>("login", login)));
             }
 
             return TwitchGetGenericAsync<GetUsersResponse>("/users", ApiVersion.Helix, getParams, accessToken);
@@ -78,16 +86,20 @@ namespace TwitchLib.Api.Helix
         public Task<GetUsersFollowsResponse> GetUsersFollowsAsync(string after = null, string before = null, int first = 20, string fromId = null, string toId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("first", first.ToString())
-                };
-            if (after != null)
+            {
+                new KeyValuePair<string, string>("first", first.ToString())
+            };
+
+            if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
-            if (before != null)
+
+            if (!string.IsNullOrWhiteSpace(before))
                 getParams.Add(new KeyValuePair<string, string>("before", before));
-            if (fromId != null)
+
+            if (!string.IsNullOrWhiteSpace(fromId))
                 getParams.Add(new KeyValuePair<string, string>("from_id", fromId));
-            if (toId != null)
+
+            if (!string.IsNullOrWhiteSpace(toId))
                 getParams.Add(new KeyValuePair<string, string>("to_id", toId));
 
             return TwitchGetGenericAsync<GetUsersFollowsResponse>("/users/follows", ApiVersion.Helix, getParams, accessToken);
@@ -96,9 +108,9 @@ namespace TwitchLib.Api.Helix
         public Task UpdateUserAsync(string description, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("description", description)
-                };
+            {
+                new KeyValuePair<string, string>("description", description)
+            };
 
             return TwitchPutAsync("/users", ApiVersion.Helix, null, getParams, accessToken);
         }
@@ -111,7 +123,8 @@ namespace TwitchLib.Api.Helix
         public Task<GetUserActiveExtensionsResponse> GetUserActiveExtensionsAsync(string userid = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
-            if (userid != null)
+
+            if (!string.IsNullOrWhiteSpace(userid))
                 getParams.Add(new KeyValuePair<string, string>("user_id", userid));
 
             return TwitchGetGenericAsync<GetUserActiveExtensionsResponse>("/users/extensions", ApiVersion.Helix, getParams, accessToken: accessToken);

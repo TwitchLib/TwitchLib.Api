@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Interfaces;
@@ -48,17 +49,14 @@ namespace TwitchLib.Api.Helix
         public Task<GetCustomRewardsResponse> GetCustomRewardAsync(string broadcasterId, List<string> rewardIds = null, bool onlyManageableRewards = false, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
-                    {
-                        new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                        new KeyValuePair<string, string>("only_manageable_rewards", onlyManageableRewards.ToString().ToLower())
-                    };
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("only_manageable_rewards", onlyManageableRewards.ToString().ToLower())
+            };
 
             if (rewardIds != null && rewardIds.Count > 0)
             {
-                foreach(var rewardId in rewardIds)
-                {
-                    getParams.Add(new KeyValuePair<string, string>("id", rewardId));
-                }
+                getParams.AddRange(rewardIds.Select(rewardId => new KeyValuePair<string, string>("id", rewardId)));
             }
 
             return TwitchGetGenericAsync<GetCustomRewardsResponse>("/channel_points/custom_rewards", ApiVersion.Helix, getParams, accessToken);
@@ -69,10 +67,10 @@ namespace TwitchLib.Api.Helix
         public Task<UpdateCustomRewardResponse> UpdateCustomRewardAsync(string broadcasterId, string rewardId, UpdateCustomRewardRequest request, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
-                    {
-                        new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                        new KeyValuePair<string, string>("id", rewardId)
-                    };
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("id", rewardId)
+            };
 
             return TwitchPatchGenericAsync<UpdateCustomRewardResponse>("/channel_points/custom_rewards", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
         }
@@ -82,27 +80,32 @@ namespace TwitchLib.Api.Helix
         public Task<GetCustomRewardRedemptionResponse> GetCustomRewardRedemptionAsync(string broadcasterId, string rewardId, string redemptionId = null, string status = null, string sort = null, string after = null, string first = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
-                    {
-                        new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                        new KeyValuePair<string, string>("reward_id", rewardId),
-                    };
-            if(redemptionId != null)
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("reward_id", rewardId),
+            };
+
+            if(!string.IsNullOrWhiteSpace(redemptionId))
             {
                 getParams.Add(new KeyValuePair<string, string>("id", redemptionId));
             }
-            if(status != null)
+
+            if(!string.IsNullOrWhiteSpace(status))
             {
                 getParams.Add(new KeyValuePair<string, string>("status", status));
             }
-            if(sort != null)
+
+            if(!string.IsNullOrWhiteSpace(sort))
             {
                 getParams.Add(new KeyValuePair<string, string>("sort", sort));
             }
-            if(after != null)
+
+            if(!string.IsNullOrWhiteSpace(after))
             {
                 getParams.Add(new KeyValuePair<string, string>("after", after));
             }
-            if(first != null)
+
+            if(!string.IsNullOrWhiteSpace(first))
             {
                 getParams.Add(new KeyValuePair<string, string>("first", first));
             }
@@ -115,14 +118,12 @@ namespace TwitchLib.Api.Helix
         public Task<UpdateRedemptionStatusResponse> UpdateRedemptionStatusAsync(string broadcasterId, string rewardId, List<string> redemptionIds, UpdateCustomRewardRedemptionStatusRequest request, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
-                    {
-                        new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                        new KeyValuePair<string, string>("reward_id", rewardId)
-                    };
-            foreach(var redemptionId in redemptionIds)
             {
-                getParams.Add(new KeyValuePair<string, string>("id", redemptionId));
-            }
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("reward_id", rewardId)
+            };
+
+            getParams.AddRange(redemptionIds.Select(redemptionId => new KeyValuePair<string, string>("id", redemptionId)));
 
             return TwitchPatchGenericAsync<UpdateRedemptionStatusResponse>("/channel_points/custom_rewards/redemptions", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
         }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Api.Core.Interfaces</PackageId>
-    <VersionPrefix>3.6.1</VersionPrefix>
+    <VersionPrefix>3.7.0</VersionPrefix>
     <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Description>Project containing all of the interfaces used in TwitchLib.Api</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -18,8 +18,8 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>3.6.1</AssemblyVersion>
-    <FileVersion>3.6.1</FileVersion>
+    <AssemblyVersion>3.7.0</AssemblyVersion>
+    <FileVersion>3.7.0</FileVersion>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>

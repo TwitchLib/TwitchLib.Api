@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
@@ -18,9 +18,11 @@ namespace TwitchLib.Api.Helix
         public Task<GetAllStreamTagsResponse> GetAllStreamTagsAsync(string after = null, int first = 20, List<string> tagIds = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
-            if (after != null) {
+
+            if (!string.IsNullOrWhiteSpace(after)) {
                 getParams.Add(new KeyValuePair<string, string>("after", after));
             }
+
             if (first >= 0 && first <= 100)
             {
                 getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
@@ -28,10 +30,10 @@ namespace TwitchLib.Api.Helix
             {
                 throw new ArgumentOutOfRangeException(nameof(first), $"{nameof(first)} value cannot exceed 100 and cannot be less than 1");
             }
+
             if (tagIds != null && tagIds.Count > 0)
             {
-                foreach (var tagId in tagIds)
-                    getParams.Add(new KeyValuePair<string, string>("tag_id", tagId));
+                getParams.AddRange(tagIds.Select(tagId => new KeyValuePair<string, string>("tag_id", tagId)));
             }
 
             return TwitchGetGenericAsync<GetAllStreamTagsResponse>("/tags/streams", ApiVersion.Helix, getParams, accessToken);

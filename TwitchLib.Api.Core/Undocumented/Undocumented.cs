@@ -136,9 +136,8 @@ namespace TwitchLib.Api.Core.Undocumented
             chatters.AddRange(resp.Chatters.Viewers.Select(chatter => new ChatterFormatted(chatter, UserType.Viewer)));
             chatters.AddRange(resp.Chatters.VIP.Select(chatter => new ChatterFormatted(chatter, UserType.VIP)));
 
-            foreach (var chatter in chatters)
-                if (string.Equals(chatter.Username, channelName, StringComparison.CurrentCultureIgnoreCase))
-                    chatter.UserType = UserType.Broadcaster;
+            foreach (var chatter in chatters.Where(chatter => string.Equals(chatter.Username, channelName, StringComparison.InvariantCultureIgnoreCase)))
+                chatter.UserType = UserType.Broadcaster;
 
             return chatters;
         }
