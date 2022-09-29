@@ -125,6 +125,7 @@ namespace TwitchLib.Api.Core.Undocumented
 
         #region GetChatters
 
+        [Obsolete("Please use the new official Helix GetChatters Endpoint (api.Helix.Chat.GetChattersAsync) instead of this undocumented and unsupported endpoint.")]
         public async Task<List<ChatterFormatted>> GetChattersAsync(string channelName)
         {
             var resp = await GetGenericAsync<ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName.ToLower()}/chatters");
