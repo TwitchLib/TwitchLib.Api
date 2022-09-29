@@ -14,6 +14,7 @@ using TwitchLib.Api.Helix.Models.Chat.ChatSettings;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetChannelEmotes;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetEmoteSets;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetGlobalEmotes;
+using TwitchLib.Api.Helix.Models.Chat.GetChatters;
 using TwitchLib.Api.Helix.Models.Chat.GetUserChatColor;
 
 namespace TwitchLib.Api.Helix
@@ -38,6 +39,34 @@ namespace TwitchLib.Api.Helix
         {
             return TwitchGetGenericAsync<GetGlobalChatBadgesResponse>("/chat/badges/global", ApiVersion.Helix, accessToken: accessToken);
         }
+        #endregion
+
+        #region Chatters
+
+        public Task<GetChattersResponse> GetChattersAsync(string broadcasterId, string moderatorId, int first = 100, string after = null, string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(broadcasterId))
+                throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
+
+            if (string.IsNullOrWhiteSpace(moderatorId))
+                throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
+
+            if (first < 1 || first > 1000)
+                throw new BadParameterException("first cannot be less than 1 or greater than 1000");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("moderator_id", moderatorId),
+                new KeyValuePair<string, string>("first", first.ToString()),
+            };
+
+            if (!string.IsNullOrWhiteSpace(after))
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+
+            return TwitchGetGenericAsync<GetChattersResponse>("/chat/chatters", ApiVersion.Helix, getParams, accessToken: accessToken);
+        }
+
         #endregion
 
         #region Emotes
