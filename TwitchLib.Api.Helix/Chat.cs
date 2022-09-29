@@ -49,7 +49,7 @@ namespace TwitchLib.Api.Helix
                 throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
 
             if (string.IsNullOrWhiteSpace(moderatorId))
-                throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
+                throw new BadParameterException("moderatorId cannot be null/empty/whitespace");
 
             if (first < 1 || first > 1000)
                 throw new BadParameterException("first cannot be less than 1 or greater than 1000");
