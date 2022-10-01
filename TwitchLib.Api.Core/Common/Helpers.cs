@@ -90,6 +90,8 @@ namespace TwitchLib.Api.Core.Common
                 case AuthScopes.Helix_Channel_Manage_VIPs:
                     return "channel:manage:vips";
 
+                case AuthScopes.Helix_Channel_Read_Charity:
+                    return "channel:read:charity";
                 case AuthScopes.Helix_Channel_Read_Editors:
                     return "channel:read:editors";
                 case AuthScopes.Helix_Channel_Read_Goals:
@@ -161,6 +163,8 @@ namespace TwitchLib.Api.Core.Common
                     return "moderator:read:blocked_terms";
                 case AuthScopes.Helix_Moderator_Read_Chat_Settings:
                     return "moderator:read:chat_settings";
+                case AuthScopes.Helix_Moderator_Read_Chatters:
+                    return "moderator:read:chatters";
 
                 case AuthScopes.Any:
                 case AuthScopes.None:
