@@ -63,8 +63,12 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                     return AuthScopes.User_Subscriptions;
                 case "channel_check_subscription":
                     return AuthScopes.Channel_Check_Subscription;
-                case "chat_login":
-                    return AuthScopes.Chat_Login;
+                case "chat:read":
+                    return AuthScopes.Chat_Read;
+                case "chat:edit":
+                    return AuthScopes.Chat_Edit;
+                case "chat:moderate":
+                    return AuthScopes.Chat_Moderate;
                 case "channel_editor":
                     return AuthScopes.Channel_Editor;
                 case "channel_feed_read":
@@ -119,6 +123,8 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                     return AuthScopes.Helix_Channel_Read_Predictions;
                 case "moderator:manage:automod":
                     return AuthScopes.Helix_Moderator_Manage_Automod;
+                case "moderator:read:chatters":
+                    return AuthScopes.Helix_Moderator_Read_Chatters;
                 case "":
                     return AuthScopes.None;
                 default:
