@@ -9,7 +9,10 @@ using TwitchLib.Api.Core.Models.Undocumented.Chatters;
 
 namespace TwitchLib.Api.Core.Undocumented
 {
-    /// <summary>These endpoints are pretty cool, but they may stop working at anytime due to changes Twitch makes.</summary>
+    /// <summary>
+    /// Undocumented Endpoints of the Twitch API, that generally are not for Third Party use and may break at any time without prior warning.
+    /// <para>So its best to not rely on them and use official and documented Third Party APIs if possible!</para>
+    /// </summary>
     public class Undocumented : ApiBase
     {
         public Undocumented(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
@@ -18,6 +21,11 @@ namespace TwitchLib.Api.Core.Undocumented
 
         #region GetChatters
 
+        /// <summary>
+        /// Gets a list of chatters of a channel
+        /// </summary>
+        /// <param name="channelName">channel login/channel name to get the chatters list for</param>
+        /// <returns>List of Chatters, grouped by UserType</returns>
         [Obsolete("Please use the new official Helix GetChatters Endpoint (api.Helix.Chat.GetChattersAsync) instead of this undocumented and unsupported endpoint.")]
         public async Task<List<ChatterFormatted>> GetChattersAsync(string channelName)
         {
@@ -40,6 +48,12 @@ namespace TwitchLib.Api.Core.Undocumented
 
         #region IsUsernameAvailable
 
+        /// <summary>
+        /// Checks if a given username is available or already in use
+        /// </summary>
+        /// <param name="username">username to check</param>
+        /// <returns>true: if username is available; false: if username is already taken</returns>
+        /// <exception cref="BadResourceException"></exception>
         public async Task<bool> IsUsernameAvailableAsync(string username)
         {
             var getParams = new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("users_service", "true")};

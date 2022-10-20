@@ -8,15 +8,28 @@ using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Core.Internal
 {
+    /// <summary>
+    /// Custom HttpClientHandler that can be used to log requests made and their duration
+    /// </summary>
     public class TwitchHttpClientHandler : DelegatingHandler
     {
         private readonly ILogger<IHttpCallHandler> _logger;
 
+        /// <summary>
+        /// Creates a new TwitchHttpClientHandler
+        /// </summary>
+        /// <param name="logger">Logger to use for logging</param>
         public TwitchHttpClientHandler(ILogger<IHttpCallHandler> logger) : base(new HttpClientHandler())
         {
             _logger = logger;
         }
 
+        /// <summary>
+        /// Overrides the HttpClient SendAsync method to hook into the request pipeline and log the http call
+        /// </summary>
+        /// <param name="request">The HttpRequest that is to be sent</param>
+        /// <param name="cancellationToken">CancellationToken to cancel the HTTP Request</param>
+        /// <returns></returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (request.Content != null)

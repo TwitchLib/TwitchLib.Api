@@ -27,7 +27,7 @@ namespace TwitchLib.Api.Core
 
         public ApiBase(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
         {
-            Settings = settings;
+            Settings = settings; 
             _rateLimiter = rateLimiter;
             _http = http;
             _jsonSerializer = new TwitchLibJsonSerializer();
