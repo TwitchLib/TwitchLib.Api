@@ -26,6 +26,7 @@ namespace TwitchLib.Api.Helix
         #region CreateCustomRewards
         /// <summary>
         /// Creates a Custom Reward on a channel.
+        /// <para>Required scope: channel:manage:redemptions</para>
         /// <para>The maximum number of custom rewards per channel is 50, which includes both enabled and disabled rewards.</para>
         /// </summary>
         /// <param name="broadcasterId">
@@ -49,6 +50,7 @@ namespace TwitchLib.Api.Helix
         #region DeleteCustomReward
         /// <summary>
         /// Deletes a Custom Reward on a channel.
+        /// <para>Required scope: channel:manage:redemptions</para>
         /// <para>The Custom Reward specified by id must have been created by the ClientId attached to the OAuth token in order to be deleted.</para>
         /// <para>Any UNFULFILLED Custom Reward Redemptions of the deleted Custom Reward will be updated to the FULFILLED status.</para>
         /// </summary>
@@ -77,6 +79,7 @@ namespace TwitchLib.Api.Helix
         #region GetCustomReward
         /// <summary>
         /// Returns a list of Custom Reward objects for the Custom Rewards on a channel.
+        /// <para>Required scope: channel:read:redemptions</para>
         /// </summary>
         /// <param name="broadcasterId">
         /// Broadcaster Id to get the rewards for.
@@ -107,6 +110,7 @@ namespace TwitchLib.Api.Helix
         /// <summary>
         /// Updates a Custom Reward created on a channel.
         /// <para>The Custom Reward specified by id must have been created by the ClientId attached to the user OAuth token.</para>
+        /// <para>Required scope: channel:manage:redemptions</para>
         /// </summary>
         /// <param name="broadcasterId">
         /// Broadcaster Id to update the reward for.
@@ -132,6 +136,7 @@ namespace TwitchLib.Api.Helix
         /// <summary>
         /// Returns Custom Reward Redemption objects for a Custom Reward on a channel that was created by the same ClientId.
         /// <para>Developers only have access to get and update redemptions for the rewards created programmatically by the same ClientId.</para>
+        /// <para>Required scope: channel:read:redemptions</para>
         /// </summary>
         /// <param name="broadcasterId">
         /// Broadcaster Id to get the reward redemptions for.
@@ -196,6 +201,7 @@ namespace TwitchLib.Api.Helix
         /// <summary>
         /// Updates a Custom Reward created on a channel.
         /// <para>The Custom Reward specified by id must have been created by the ClientId attached to the user OAuth token.</para>
+        /// <para>Required scope: channel:manage:redemptions</para>
         /// </summary>
         /// <param name="broadcasterId">
         /// Broadcaster Id to update the reward redemptions status for.

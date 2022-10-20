@@ -21,6 +21,7 @@ namespace TwitchLib.Api.Helix
         /// <summary>
         /// Gets a URL that game developers can use to download analytics reports (CSV files) for their games. The URL is valid for 5 minutes. 
         /// <para>!! the Token used to call this API has to be from a member of the Org the Game is registered to !!</para>
+        /// <para>Required scope: analytics:read:games</para>
         /// </summary>
         /// <param name="gameId">
         /// Game ID. If this is specified, the returned URL points to an analytics report for just the specified game.
@@ -44,8 +45,9 @@ namespace TwitchLib.Api.Helix
 
         /// <summary>
         /// Gets a URL that Extension developers can use to download analytics reports (CSV files) for their Extensions. The URL is valid for 5 minutes.
-        /// </summary>
-        /// <para>!! the Token used to call this API has to be from a member of the Org the Extension is registered to, or if not part of an Org, the Extension Developer !!</para>      
+        /// <para>!! the Token used to call this API has to be from a member of the Org the Extension is registered to, or if not part of an Org, the Extension Developer !!</para>
+        /// <para>Required scope: analytics:read:extensions</para>
+        /// </summary> 
         /// <param name="extensionId">
         /// Client ID value assigned to the extension when it is created. If this is specified, the returned URL points to an analytics report for just the specified extension.
         /// <para>If this is not specified, the response includes multiple URLs (paginated), pointing to separate analytics reports for each of the authenticated user’s Extensions.</para>

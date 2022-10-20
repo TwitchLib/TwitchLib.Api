@@ -18,9 +18,10 @@ namespace TwitchLib.Api.Helix
 
         #region StartCommercial
         /// <summary>
-        /// Start a commercial
+        /// Starts a commercial on a specified channel.
+        /// <para>Required scope: channel:edit:commercial</para>
         /// </summary>
-        /// <param name="request" cref="StartCommercialRequest">StartCommercialRequest that holds the information about commercial you wish to run (e.g. duration)</param>
+        /// <param name="request" cref="StartCommercialRequest"></param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="StartCommercialResponse"></returns>
         public Task<StartCommercialResponse> StartCommercialAsync(StartCommercialRequest request, string accessToken = null)

@@ -43,6 +43,7 @@ namespace TwitchLib.Api.Helix
 
         /// <summary>
         /// Gets a ranked list of Bits leaderboard information for an authorized broadcaster.
+        /// <para>Required scope: bits:read</para>
         /// </summary>
         /// <param name="count">Number of results to be returned. Maximum: 100. Default: 10.</param>
         /// <param name="period">
@@ -105,6 +106,7 @@ namespace TwitchLib.Api.Helix
 
         /// <summary>
         /// Gets a list of Bits products that belongs to an Extension
+        /// <para>Requires App Access Token associated with the Extension client ID</para>
         /// </summary>
         /// <param name="shouldIncludeAll">Whether Bits products that are disabled/expired should be included in the response.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
@@ -125,7 +127,7 @@ namespace TwitchLib.Api.Helix
 
         /// <summary>
         /// Add or update a Bits products that belongs to an Extension.
-        /// </summary>
+        /// <para>Requires App Access Token associated with the Extension client ID</para>        /// </summary>
         /// <param name="extensionBitsProduct" cref="ExtensionBitsProduct">Bits product to add/update</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="UpdateExtensionBitsProductResponse"></returns>

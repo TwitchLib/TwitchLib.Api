@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
@@ -25,9 +25,9 @@ namespace TwitchLib.Api.Helix
         /// <param name="method">The transport method. Supported values: webhook.</param>
         /// <param name="callback">The callback URL where the notification should be sent.</param>
         /// <param name="secret">The secret used for verifying a signature.</param>
-        /// <param name="clientId">Client ID</param>
-        /// <param name="accessToken">Access Token</param>
-        /// <returns></returns>
+        /// <param name="clientId">optional Client ID to override the use of the stored one in the TwitchAPI instance</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="CreateEventSubSubscriptionResponse"></returns>
         public Task<CreateEventSubSubscriptionResponse> CreateEventSubSubscriptionAsync(string type, string version, Dictionary<string, string> condition, string method, string callback,
             string secret, string clientId = null, string accessToken = null)
         {
@@ -63,9 +63,9 @@ namespace TwitchLib.Api.Helix
         /// <param name="type">Filter subscriptions by subscription type (e.g., channel.update).</param>
         /// <param name="userId">Filter subscriptions by user ID.</param>
         /// <param name="after">The cursor used to get the next page of results.</param>
-        /// <param name="clientId">Client ID</param>
-        /// <param name="accessToken">Access Token</param>
-        /// <returns>Returns a list of your EventSub subscriptions.</returns>
+        /// <param name="clientId">optional Client ID to override the use of the stored one in the TwitchAPI instance</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetEventSubSubscriptionsResponse">Returns a list of your EventSub subscriptions.</returns>
         public Task<GetEventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(string status = null, string type = null, string userId = null, string after = null, string clientId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
@@ -89,9 +89,9 @@ namespace TwitchLib.Api.Helix
         /// Deletes an EventSub subscription.
         /// </summary>
         /// <param name="id">The ID of the subscription to delete.</param>
-        /// <param name="clientId">Client ID</param>
-        /// <param name="accessToken">Access Token</param>
-        /// <returns></returns>
+        /// <param name="clientId">optional Client ID to override the use of the stored one in the TwitchAPI instance</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns>True: If successfully deleted; False: If delete failed</returns>
         public async Task<bool> DeleteEventSubSubscriptionAsync(string id, string clientId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
