@@ -8,6 +8,9 @@ using TwitchLib.Api.Helix.Models.Charity.GetCharityCampaign;
 
 namespace TwitchLib.Api.Helix
 {
+    /// <summary>
+    /// Charity related APIs
+    /// </summary>
     public class Charity : ApiBase
     {
 
@@ -18,12 +21,12 @@ namespace TwitchLib.Api.Helix
         #region GetCharityCampaign
         /// <summary>
         /// [BETA] - Gets information about the charity campaign that a broadcaster is running, such as their fundraising goal and the amount that’s been donated so far.
-        /// Requires a user access token that includes the channel:read:charity scope. 
+        /// Requires an user access token that includes the channel:read:charity scope. 
         /// The ID in the broadcaster_id query parameter must match the user ID in the access token.
         /// </summary>
         /// <param name="broadcasterId">The ID of the broadcaster that’s actively running a charity campaign.</param>
-        /// <param name="accessToken"></param>
-        /// <returns>A list that contains the charity campaign that the broadcaster is currently running.</returns>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetCharityCampaignResponse">A list that contains the charity campaign that the broadcaster is currently running.</returns>
         public Task<GetCharityCampaignResponse> GetCharityCampaignAsync(string broadcasterId, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))

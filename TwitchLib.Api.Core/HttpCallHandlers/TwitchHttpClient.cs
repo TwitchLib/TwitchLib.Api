@@ -14,6 +14,9 @@ using TwitchLib.Api.Core.Internal;
 
 namespace TwitchLib.Api.Core.HttpCallHandlers
 {
+    /// <summary>
+    /// Main HttpClient used to call the Twitch API
+    /// </summary>
     public class TwitchHttpClient : IHttpCallHandler
     {
         private readonly ILogger<TwitchHttpClient> _logger;
@@ -29,7 +32,12 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             _http = new HttpClient(new TwitchHttpClientHandler(_logger));
         }
 
-
+        /// <summary>
+        /// PUT Request with a byte array body
+        /// </summary>
+        /// <param name="url">URL to direct the PUT request at</param>
+        /// <param name="payload">Payload to send with the request</param>
+        /// <returns>Task for the request</returns>
         public async Task PutBytesAsync(string url, byte[] payload)
         {
             var response = await _http.PutAsync(new Uri(url), new ByteArrayContent(payload)).ConfigureAwait(false);
@@ -38,6 +46,17 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 HandleWebException(response);
         }
 
+        /// <summary>
+        /// Used to make API calls to the Twitch API varying by Method, URL and payload
+        /// </summary>
+        /// <param name="url">URL to call</param>
+        /// <param name="method">HTTP Method to use for the API call</param>
+        /// <param name="payload">Payload to send with the API call</param>
+        /// <param name="api">Which API version is called</param>
+        /// <param name="clientId">Twitch ClientId</param>
+        /// <param name="accessToken">Twitch AccessToken linked to the ClientId</param>
+        /// <returns>KeyValuePair with the key being the returned StatusCode and the Value being the ResponseBody as string</returns>
+        /// <exception cref="InvalidCredentialException"></exception>
         public async Task<KeyValuePair<int, string>> GeneralRequestAsync(string url, string method,
             string payload = null, ApiVersion api = ApiVersion.Helix, string clientId = null, string accessToken = null)
         {

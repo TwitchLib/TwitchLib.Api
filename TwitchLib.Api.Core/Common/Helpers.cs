@@ -17,6 +17,11 @@ namespace TwitchLib.Api.Core.Common
             return token.Contains(" ") ? token.Split(' ')[1] : token;
         }
 
+        /// <summary>
+        /// Converts AuthScope enum to Twitch scope string
+        /// </summary>
+        /// <param name="scope">Scope as AuthScope Enum</param>
+        /// <returns>Twitch scope string</returns>
         public static string AuthScopesToString(AuthScopes scope)
         {
             switch (scope)
@@ -177,6 +182,11 @@ namespace TwitchLib.Api.Core.Common
             }
         }
 
+        /// <summary>
+        /// Helper for Base64 encoding a given input
+        /// </summary>
+        /// <param name="plainText">plain UTF8 string</param>
+        /// <returns>input as Base64 string</returns>
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
