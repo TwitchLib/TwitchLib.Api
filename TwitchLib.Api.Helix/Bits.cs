@@ -97,7 +97,7 @@ namespace TwitchLib.Api.Helix
             if (!string.IsNullOrWhiteSpace(userid))
                 getParams.Add(new KeyValuePair<string, string>("user_id", userid));
 
-            return TwitchGetGenericAsync<GetBitsLeaderboardResponse>("/bits/leaderboard", ApiVersion.Helix, getParams);
+            return TwitchGetGenericAsync<GetBitsLeaderboardResponse>("/bits/leaderboard", ApiVersion.Helix, getParams, accessToken);
         }
 
         #endregion
