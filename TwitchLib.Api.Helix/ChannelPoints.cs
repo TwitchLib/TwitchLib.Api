@@ -143,7 +143,7 @@ namespace TwitchLib.Api.Helix
         /// <para>Provided broadcaster_id must match the user_id in the user OAuth token.</para>
         /// </param>
         /// <param name="rewardId">When ID is not provided, this parameter returns paginated Custom Reward Redemption objects for redemptions of the Custom Reward with ID RewardId.</param>
-        /// <param name="redemptionId">When used, this param filters the results and only returns Custom Reward Redemption objects for the redemptions with matching ID.</param>
+        /// <param name="redemptionIds">When used, this param filters the results and only returns Custom Reward Redemption objects for the redemptions with matching IDs. Maximum: 50</param>
         /// <param name="status">
         /// When id is not provided, this param is required and filters the paginated Custom Reward Redemption objects for redemptions with the matching status.
         /// <para>Can be one of UNFULFILLED, FULFILLED or CANCELED</para>
@@ -160,7 +160,7 @@ namespace TwitchLib.Api.Helix
         /// <param name="first">Number of results to be returned when getting the paginated Custom Reward Redemption objects for a reward. Limit: 50. Default: 20.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetCustomRewardRedemptionResponse"></returns>
-        public Task<GetCustomRewardRedemptionResponse> GetCustomRewardRedemptionAsync(string broadcasterId, string rewardId, string redemptionId = null, string status = null, string sort = null, string after = null, string first = null, string accessToken = null)
+        public Task<GetCustomRewardRedemptionResponse> GetCustomRewardRedemptionAsync(string broadcasterId, string rewardId, List<string> redemptionIds = null, string status = null, string sort = null, string after = null, string first = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -168,12 +168,12 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("reward_id", rewardId),
             };
 
-            if(!string.IsNullOrWhiteSpace(redemptionId))
+            if (redemptionIds != null && redemptionIds.Count > 0)
             {
-                getParams.Add(new KeyValuePair<string, string>("id", redemptionId));
+                getParams.AddRange(redemptionIds.Select(redemptionId => new KeyValuePair<string, string>("id", redemptionId)));
             }
 
-            if(!string.IsNullOrWhiteSpace(status))
+            if (!string.IsNullOrWhiteSpace(status))
             {
                 getParams.Add(new KeyValuePair<string, string>("status", status));
             }
