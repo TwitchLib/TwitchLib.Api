@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
+using TwitchLib.Api.Core.Extensions.System;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Analytics;
 
@@ -53,7 +55,7 @@ namespace TwitchLib.Api.Helix
         /// </param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetGameAnalyticsResponse"></returns>
-        public Task<GetGameAnalyticsResponse> GetGameAnalyticsAsync(string gameId = null, string startedAt = null, string endedAt = null, int first = 20, string after = null, string type = null, string accessToken = null)
+        public Task<GetGameAnalyticsResponse> GetGameAnalyticsAsync(string gameId = null, DateTime? startedAt = null, DateTime? endedAt = null, int first = 20, string after = null, string type = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -63,10 +65,10 @@ namespace TwitchLib.Api.Helix
             if (!string.IsNullOrWhiteSpace(gameId))
                 getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
 
-            if (!string.IsNullOrWhiteSpace(startedAt) && !string.IsNullOrWhiteSpace(endedAt))
+            if (startedAt != null && endedAt != null)
             {
-                getParams.Add(new KeyValuePair<string, string>("started_at", startedAt));
-                getParams.Add(new KeyValuePair<string, string>("started_at", endedAt));
+                getParams.Add(new KeyValuePair<string, string>("started_at", startedAt.Value.ToRfc3339String()));
+                getParams.Add(new KeyValuePair<string, string>("started_at", endedAt.Value.ToRfc3339String()));
             }
 
             if (!string.IsNullOrWhiteSpace(type))
@@ -117,7 +119,7 @@ namespace TwitchLib.Api.Helix
         /// </param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetExtensionAnalyticsResponse"></returns>
-        public Task<GetExtensionAnalyticsResponse> GetExtensionAnalyticsAsync(string extensionId, string startedAt = null, string endedAt = null, int first = 20, string after = null, string type = null, string accessToken = null)
+        public Task<GetExtensionAnalyticsResponse> GetExtensionAnalyticsAsync(string extensionId, DateTime? startedAt = null, DateTime? endedAt = null, int first = 20, string after = null, string type = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -127,10 +129,10 @@ namespace TwitchLib.Api.Helix
             if (!string.IsNullOrWhiteSpace(extensionId))
                 getParams.Add(new KeyValuePair<string, string>("extension_id", extensionId));
 
-            if (!string.IsNullOrWhiteSpace(startedAt) && !string.IsNullOrWhiteSpace(endedAt))
+            if (startedAt != null && endedAt != null)
             {
-                getParams.Add(new KeyValuePair<string, string>("started_at", startedAt));
-                getParams.Add(new KeyValuePair<string, string>("started_at", endedAt));
+                getParams.Add(new KeyValuePair<string, string>("started_at", startedAt.Value.ToRfc3339String()));
+                getParams.Add(new KeyValuePair<string, string>("started_at", endedAt.Value.ToRfc3339String()));
             }
 
             if (!string.IsNullOrWhiteSpace(type))
