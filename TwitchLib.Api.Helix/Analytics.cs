@@ -68,7 +68,7 @@ namespace TwitchLib.Api.Helix
             if (startedAt != null && endedAt != null)
             {
                 getParams.Add(new KeyValuePair<string, string>("started_at", startedAt.Value.ToRfc3339String()));
-                getParams.Add(new KeyValuePair<string, string>("started_at", endedAt.Value.ToRfc3339String()));
+                getParams.Add(new KeyValuePair<string, string>("ended_at", endedAt.Value.ToRfc3339String()));
             }
 
             if (!string.IsNullOrWhiteSpace(type))
@@ -132,7 +132,7 @@ namespace TwitchLib.Api.Helix
             if (startedAt != null && endedAt != null)
             {
                 getParams.Add(new KeyValuePair<string, string>("started_at", startedAt.Value.ToRfc3339String()));
-                getParams.Add(new KeyValuePair<string, string>("started_at", endedAt.Value.ToRfc3339String()));
+                getParams.Add(new KeyValuePair<string, string>("ended_at", endedAt.Value.ToRfc3339String()));
             }
 
             if (!string.IsNullOrWhiteSpace(type))
