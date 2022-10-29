@@ -31,7 +31,6 @@ namespace TwitchLib.Api.Helix
         /// <para>Across multiple pages of results, there may be duplicate or missing streams, as viewers join and leave streams.</para>
         /// </summary>
         /// <param name="after">Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response.</param>
-        /// <param name="communityIds"></param>
         /// <param name="first">Maximum number of objects to return. Maximum: 100. Default: 20.</param>
         /// <param name="gameIds">Returns streams broadcasting a specified game ID. You can specify up to 100 IDs.</param>
         /// <param name="languages">
@@ -39,26 +38,19 @@ namespace TwitchLib.Api.Helix
         /// <para>You can specify up to 100 languages.</para>
         /// <para>A language value must be either the ISO 639-1 two-letter code for a supported stream language or “other”.</para>
         /// </param>
-        /// <param name="type"></param>
         /// <param name="userIds">Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.</param>
         /// <param name="userLogins">Returns streams broadcast by one or more specified user login names. You can specify up to 100 names.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetStreamsResponse"></returns>
-        public Task<GetStreamsResponse> GetStreamsAsync(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null, string accessToken = null)
+        public Task<GetStreamsResponse> GetStreamsAsync(string after = null, int first = 20, List<string> gameIds = null, List<string> languages = null, List<string> userIds = null, List<string> userLogins = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("first", first.ToString()), 
-                new KeyValuePair<string, string>("type", type)
+                new KeyValuePair<string, string>("first", first.ToString()),
             };
 
             if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
-
-            if (communityIds != null && communityIds.Count > 0)
-            {
-                getParams.AddRange(communityIds.Select(communityId => new KeyValuePair<string, string>("community_id", communityId)));
-            }
 
             if (gameIds != null && gameIds.Count > 0)
             {

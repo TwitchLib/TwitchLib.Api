@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using TwitchLib.Api.Core;
@@ -122,18 +123,17 @@ namespace TwitchLib.Api.Helix
         /// <para>An emote set groups emotes that have a similar context.</para>
         /// <para>For example, Twitch places all the subscriber emotes that a broadcaster uploads for their channel in the same emote set.</para>
         /// </summary>
-        /// <param name="emoteSetId">
+        /// <param name="emoteSetIds">
         /// An ID that identifies the emote set
         /// <para>You may specify a maximum of 25 IDs.</para>
         /// </param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetEmoteSetsResponse"></returns>
-        public Task<GetEmoteSetsResponse> GetEmoteSetsAsync(string emoteSetId, string accessToken = null)
+        public Task<GetEmoteSetsResponse> GetEmoteSetsAsync(List<string> emoteSetIds, string accessToken = null)
         {
-            var getParams = new List<KeyValuePair<string, string>>
-            {
-                new KeyValuePair<string, string>("emote_set_id", emoteSetId)
-            };
+            var getParams = new List<KeyValuePair<string, string>>();
+
+            getParams.AddRange(emoteSetIds.Select(emoteSetId => new KeyValuePair<string, string>("emote_set_id", emoteSetId)));
 
             return TwitchGetGenericAsync<GetEmoteSetsResponse>("/chat/emotes/set", ApiVersion.Helix, getParams, accessToken);
         }

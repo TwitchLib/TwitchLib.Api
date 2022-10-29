@@ -97,7 +97,7 @@ namespace TwitchLib.Api.Helix
             if (!string.IsNullOrWhiteSpace(userid))
                 getParams.Add(new KeyValuePair<string, string>("user_id", userid));
 
-            return TwitchGetGenericAsync<GetBitsLeaderboardResponse>("/bits/leaderboard", ApiVersion.Helix, getParams);
+            return TwitchGetGenericAsync<GetBitsLeaderboardResponse>("/bits/leaderboard", ApiVersion.Helix, getParams, accessToken);
         }
 
         #endregion
@@ -127,7 +127,8 @@ namespace TwitchLib.Api.Helix
 
         /// <summary>
         /// Add or update a Bits products that belongs to an Extension.
-        /// <para>Requires App Access Token associated with the Extension client ID</para>        /// </summary>
+        /// <para>Requires App Access Token associated with the Extension client ID</para>
+        /// </summary>
         /// <param name="extensionBitsProduct" cref="ExtensionBitsProduct">Bits product to add/update</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="UpdateExtensionBitsProductResponse"></returns>

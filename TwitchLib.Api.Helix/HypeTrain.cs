@@ -26,12 +26,11 @@ namespace TwitchLib.Api.Helix
         /// </summary>
         /// <param name="broadcasterId">User ID of the broadcaster. Must match the User ID in the Access Token.</param>
         /// <param name="first">Maximum number of objects to return. Maximum: 100. Default: 1.</param>
-        /// <param name="id">The ID of the event to fetch</param>
         /// <param name="cursor">Cursor for forward pagination: tells the server where to start fetching the next set of results in a multi-page response.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetHypeTrainResponse"></returns>
         /// <exception cref="BadParameterException"></exception>
-        public Task<GetHypeTrainResponse> GetHypeTrainEventsAsync(string broadcasterId, int first = 1, string id = null, string cursor = null, string accessToken = null)
+        public Task<GetHypeTrainResponse> GetHypeTrainEventsAsync(string broadcasterId, int first = 1, string cursor = null, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
             {
@@ -43,9 +42,6 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
                 new KeyValuePair<string, string>("first", first.ToString())
             };
-
-            if (!string.IsNullOrWhiteSpace(id))
-                getParams.Add(new KeyValuePair<string, string>("id", id));
 
             if (!string.IsNullOrWhiteSpace(cursor))
                 getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
