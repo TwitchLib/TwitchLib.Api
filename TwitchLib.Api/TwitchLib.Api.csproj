@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Api</PackageId>
-    <VersionPrefix>3.8.0</VersionPrefix>
+    <VersionPrefix>3.8.1</VersionPrefix>
     <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Description>Api component of TwitchLib. This component allows you to access the Twitch API, as well as undocumented and third party APIs.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -13,20 +13,13 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2022</Copyright>
-    <PackageReleaseNotes>
-		Added GetChatters Helix API support, Marked Undocumented GetChatters API as obsolete, Added various new and missing scopes to AuthScope Enum,
-		Added optional bool to determine whether to invoke FollowerService Events on startup (default: false), Removed broken undocumented Endpoints,
-		Fixed an issue with DeleteEventSubSubscriptionAsync to return false on success, Added XML docs to every API function call,
-        Added EventSub Websocket Support to CreateEventSubscription, Removed Id param from GethypeTrainEvents (removed by Twitch),
-        Allow to query for multiple EmoteSets by Id, Allow to query for multiple redemptions by Id, Added missing query params to both Analytics API calls,
-        Removed communityIds and type param from GetStreams (removed by Twitch)
-	</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>3.8.0</AssemblyVersion>
-    <FileVersion>3.8.0</FileVersion>
+    <AssemblyVersion>3.8.1</AssemblyVersion>
+    <FileVersion>3.8.1</FileVersion>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
