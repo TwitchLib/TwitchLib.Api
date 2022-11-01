@@ -16,7 +16,10 @@
     <PackageReleaseNotes>
 		Added GetChatters Helix API support, Marked Undocumented GetChatters API as obsolete, Added various new and missing scopes to AuthScope Enum,
 		Added optional bool to determine whether to invoke FollowerService Events on startup (default: false), Removed broken undocumented Endpoints,
-		Fixed an issue with DeleteEventSubSubscriptionAsync to return false on success, Added XML docs to every API function call
+		Fixed an issue with DeleteEventSubSubscriptionAsync to return false on success, Added XML docs to every API function call,
+        Added EventSub Websocket Support to CreateEventSubscription, Removed Id param from GethypeTrainEvents (removed by Twitch),
+        Allow to query for multiple EmoteSets by Id, Allow to query for multiple redemptions by Id, Added missing query params to both Analytics API calls,
+        Removed communityIds and type param from GetStreams (removed by Twitch)
 	</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
