@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
@@ -13,6 +13,9 @@ using TwitchLib.Api.Helix.Models.Channels.ModifyChannelInformation;
 
 namespace TwitchLib.Api.Helix
 {
+    /// <summary>
+    /// Channel related APIs
+    /// </summary>
     public class Channels : ApiBase
     {
         public Channels(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
@@ -20,6 +23,13 @@ namespace TwitchLib.Api.Helix
         }
 
         #region GetChannelInformation
+        /// <summary>
+        /// Gets channel information for given user.
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster whose channel you want to get.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetChannelInformationResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
         public Task<GetChannelInformationResponse> GetChannelInformationAsync(string broadcasterId, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
@@ -35,6 +45,15 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region ModifyChannelInformation
+        /// <summary>
+        /// Modifies channel information for given user.
+        /// <para>Required scope: channel:manage:broadcast</para>
+        /// </summary>
+        /// <param name="broadcasterId">ID of the channel to be updated</param>
+        /// <param name="request" cref="ModifyChannelInformationRequest"></param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns></returns>
+        /// <exception cref="BadParameterException"></exception>
         public Task ModifyChannelInformationAsync(string broadcasterId, ModifyChannelInformationRequest request, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
@@ -50,6 +69,14 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region GetChannelEditors
+        /// <summary>
+        /// Gets a list of users who have editor permissions for a specific channel.
+        /// <para>Required scope: channel:read:editors</para>
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster whose editors you want to get.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetChannelEditorsResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
         public Task<GetChannelEditorsResponse> GetChannelEditorsAsync(string broadcasterId, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
@@ -67,14 +94,15 @@ namespace TwitchLib.Api.Helix
         #region GetChannelVIPs
 
         /// <summary>
-        /// BETA - Gets a list of the channel’s VIPs.
+        /// Gets a list of the channel’s VIPs.
         /// Requires a user access token that includes the channel:read:vips scope.
         /// </summary>
         /// <param name="broadcasterId">The ID of the broadcaster whose list of VIPs you want to get.</param>
         /// <param name="userIds">Filters the list for specific VIPs. </param>
         /// <param name="first">The maximum number of items to return per page in the response. Max 100</param>
         /// <param name="after">The cursor used to get the next page of results.</param>
-        /// <returns></returns>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetChannelVIPsResponse"></returns>
         public Task<GetChannelVIPsResponse> GetVIPsAsync(string broadcasterId, List<string> userIds = null, int first = 20, string after = null, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
@@ -108,12 +136,13 @@ namespace TwitchLib.Api.Helix
         #region AddChannelVIP
 
         /// <summary>
-        /// BETA - Adds a VIP to the broadcaster’s chat room.
+        /// Adds a VIP to the broadcaster’s chat room.
         /// Rate Limits: The channel may add a maximum of 10 VIPs within a 10 seconds period.
         /// Requires a user access token that includes the channel:manage:vips scope.
         /// </summary>
-        /// <param name="broadcasterId"></param>
-        /// <param name="userId"></param>
+        /// <param name="broadcasterId">The ID of the broadcaster that’s granting VIP status to the user.</param>
+        /// <param name="userId">The ID of the user to add as a VIP in the broadcaster’s chat room.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         public Task AddChannelVIPAsync(string broadcasterId, string userId, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
@@ -136,12 +165,13 @@ namespace TwitchLib.Api.Helix
         #region DeleteChannelVIP
 
         /// <summary>
-        /// BETA - Removes a VIP from the broadcaster’s chat room.
+        /// Removes a VIP from the broadcaster’s chat room.
         /// Rate Limits: The channel may remove a maximum of 10 VIPs within a 10 seconds period.
         /// Requires a user access token that includes the channel:manage:vips scope.
         /// </summary>
         /// <param name="broadcasterId">The ID of the user to remove as a VIP from the broadcaster’s chat room.</param>
         /// <param name="userId">The ID of the broadcaster that’s removing VIP status from the user.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         public Task RemoveChannelVIPAsync(string broadcasterId, string userId, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))

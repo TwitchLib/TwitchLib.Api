@@ -17,6 +17,11 @@ namespace TwitchLib.Api.Core.Common
             return token.Contains(" ") ? token.Split(' ')[1] : token;
         }
 
+        /// <summary>
+        /// Converts AuthScope enum to Twitch scope string
+        /// </summary>
+        /// <param name="scope">Scope as AuthScope Enum</param>
+        /// <returns>Twitch scope string</returns>
         public static string AuthScopesToString(AuthScopes scope)
         {
             switch (scope)
@@ -31,8 +36,12 @@ namespace TwitchLib.Api.Core.Common
                     return "channel_feed_edit";
                 case AuthScopes.Channel_Feed_Read:
                     return "channel_feed_read";
-                case AuthScopes.Chat_Login:
-                    return "chat_login";
+                case AuthScopes.Chat_Read:
+                    return "chat:read";
+                case AuthScopes.Chat_Moderate:
+                    return "chat:moderate";
+                case AuthScopes.Chat_Edit:
+                    return "chat:edit";
                 case AuthScopes.Channel_Read:
                     return "channel_read";
                 case AuthScopes.Channel_Stream:
@@ -90,6 +99,8 @@ namespace TwitchLib.Api.Core.Common
                 case AuthScopes.Helix_Channel_Manage_VIPs:
                     return "channel:manage:vips";
 
+                case AuthScopes.Helix_Channel_Read_Charity:
+                    return "channel:read:charity";
                 case AuthScopes.Helix_Channel_Read_Editors:
                     return "channel:read:editors";
                 case AuthScopes.Helix_Channel_Read_Goals:
@@ -161,6 +172,8 @@ namespace TwitchLib.Api.Core.Common
                     return "moderator:read:blocked_terms";
                 case AuthScopes.Helix_Moderator_Read_Chat_Settings:
                     return "moderator:read:chat_settings";
+                case AuthScopes.Helix_Moderator_Read_Chatters:
+                    return "moderator:read:chatters";
 
                 case AuthScopes.Any:
                 case AuthScopes.None:
@@ -169,6 +182,11 @@ namespace TwitchLib.Api.Core.Common
             }
         }
 
+        /// <summary>
+        /// Helper for Base64 encoding a given input
+        /// </summary>
+        /// <param name="plainText">plain UTF8 string</param>
+        /// <returns>input as Base64 string</returns>
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);

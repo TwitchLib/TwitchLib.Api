@@ -9,12 +9,25 @@ using TwitchLib.Api.Helix.Models.Subscriptions;
 
 namespace TwitchLib.Api.Helix
 {
+    /// <summary>
+    /// Subscriptions related APIs
+    /// </summary>
     public class Subscriptions : ApiBase
     {
         public Subscriptions(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         {
         }
 
+        /// <summary>
+        /// Checks if a specific user (userId) is subscribed to a specific channel (broadcasterId).
+        /// <para>Requires User access token with scope user:read:subscriptions</para>
+        /// <para>Or requires App access token if the user has authorized your application with scope user:read:subscriptions</para>
+        /// </summary>
+        /// <param name="broadcasterId">User ID of an Affiliate or Partner broadcaster.</param>
+        /// <param name="userId">User ID of a Twitch viewer.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="CheckUserSubscriptionResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
         public Task<CheckUserSubscriptionResponse> CheckUserSubscriptionAsync(string broadcasterId, string userId, string accessToken = null)
         {
 
@@ -31,8 +44,17 @@ namespace TwitchLib.Api.Helix
             };
 
             return TwitchGetGenericAsync<CheckUserSubscriptionResponse>("/subscriptions/user", ApiVersion.Helix, getParams, accessToken);
-        } 
+        }
 
+        /// <summary>
+        /// Gets a list of users that subscribe to the specified broadcaster filtered by a list of UserIds.
+        /// <para>Required scope: channel:read:subscriptions</para>
+        /// </summary>
+        /// <param name="broadcasterId">User ID of the broadcaster. Must match the User ID in the Bearer token.</param>
+        /// <param name="userIds">Filters the list to include only the specified subscribers. You may specify a maximum of 100 subscribers.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetUserSubscriptionsResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
         public Task<GetUserSubscriptionsResponse> GetUserSubscriptionsAsync(string broadcasterId, List<string> userIds, string accessToken = null)
         {
             if (string.IsNullOrWhiteSpace(broadcasterId))
@@ -51,6 +73,16 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetUserSubscriptionsResponse>("/subscriptions", ApiVersion.Helix, getParams, accessToken);
         }
 
+        /// <summary>
+        /// Gets a list of users that subscribe to the specified broadcaster.
+        /// <para>Required scope: channel:read:subscriptions</para>
+        /// </summary>
+        /// <param name="broadcasterId">User ID of the broadcaster. Must match the User ID in the Bearer token.</param>
+        /// <param name="first">Maximum number of objects to return. Maximum: 100. Default: 20.</param>
+        /// <param name="after">Cursor for forward pagination: tells the server where to start fetching the next set of results in a multi-page response.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetBroadcasterSubscriptionsResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
         public Task<GetBroadcasterSubscriptionsResponse> GetBroadcasterSubscriptionsAsync(string broadcasterId, int first = 20, string after = null, string accessToken = null)
         {
             if (string.IsNullOrWhiteSpace(broadcasterId))

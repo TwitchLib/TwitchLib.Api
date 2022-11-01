@@ -11,6 +11,8 @@ jobs:
 
    steps:
    - uses: actions/checkout@v3
+   - uses: benjlevesque/short-sha@v2.1
+     id: short-sha
    - name: Setup .NET
      uses: actions/setup-dotnet@v2
      with:
@@ -20,7 +22,7 @@ jobs:
    - name: Build TwitchLib.Api
      run: dotnet build -c Release --no-restore
    - name: Pack TwitchLib.Api
-     run: dotnet pack TwitchLib.Api.sln -v normal -c Release -o nugets --no-build --version-suffix "preview-${{ github.sha }}"
+     run: dotnet pack TwitchLib.Api.sln -v normal -c Release -o nugets --no-build --version-suffix "preview-${{ steps.short-sha.outputs.sha }}"
    - name: Push to Nuget
      run: dotnet nuget push "./nugets/*.nupkg" -k ${{ secrets.API_NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
    - name: Send Discord Notification

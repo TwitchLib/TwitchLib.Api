@@ -6,36 +6,123 @@ using TwitchLib.Api.Core.RateLimiter;
 
 namespace TwitchLib.Api.Helix
 {
+    /// <summary>
+    /// Contains APIs under the /helix API namespace
+    /// </summary>
     public class Helix
     {
         private readonly ILogger<Helix> _logger;
+        /// <summary>
+        /// API Settings like the ClientId, Client Secret and so on
+        /// </summary>
         public IApiSettings Settings { get; }
+        /// <summary>
+        /// Analytics related Helix APIs
+        /// </summary>
         public Analytics Analytics { get; }
+        /// <summary>
+        /// Ads related Helix APIs
+        /// </summary>
         public Ads Ads { get; }
+        /// <summary>
+        /// Bits related Helix APIs
+        /// </summary>
         public Bits Bits { get; }
+        /// <summary>
+        /// Chat related Helix APIs
+        /// </summary>
         public Chat Chat { get; }
+        /// <summary>
+        /// Channel related Helix APIs
+        /// </summary>
         public Channels Channels { get; }
+        /// <summary>
+        /// Channel Points related Helix APIs
+        /// </summary>
         public ChannelPoints ChannelPoints { get; }
+        /// <summary>
+        /// Charity related Helix APIs
+        /// </summary>
         public Charity Charity { get; }
+        /// <summary>
+        /// Clips related Helix APIs
+        /// </summary>
         public Clips Clips { get; }
+        /// <summary>
+        /// Entitlements related Helix APIs
+        /// </summary>
         public Entitlements Entitlements { get; }
+        /// <summary>
+        /// EventSub related Helix APIs
+        /// </summary>
         public EventSub EventSub { get; }
+        /// <summary>
+        /// Extensions related Helix APIs
+        /// </summary>
         public Extensions Extensions { get; }
+        /// <summary>
+        /// Games related Helix APIs
+        /// </summary>
         public Games Games { get; }
+        /// <summary>
+        /// Creator Goals related Helix APIs
+        /// </summary>
         public Goals Goals { get; }
+        /// <summary>
+        /// HypeTrain related Helix APIs
+        /// </summary>
         public HypeTrain HypeTrain { get; }
+        /// <summary>
+        /// Moderation related Helix APIs
+        /// </summary>
         public Moderation Moderation { get; }
+        /// <summary>
+        /// Polls related Helix APIs
+        /// </summary>
         public Polls Polls { get; }
+        /// <summary>
+        /// Prediction related Helix APIs
+        /// </summary>
         public Predictions Predictions { get; }
+        /// <summary>
+        /// Raids related Helix APIs
+        /// </summary>
         public Raids Raids { get; }
+        /// <summary>
+        /// Schedule related Helix APIs
+        /// </summary>
         public Schedule Schedule { get; }
+        /// <summary>
+        /// Search related Helix APIs
+        /// </summary>
         public Search Search { get; }
+        /// <summary>
+        /// Soundtrack related Helix APIs
+        /// </summary>
         public Soundtrack Soundtrack { get; }
+        /// <summary>
+        /// Stream related Helix APIs
+        /// </summary>
         public Streams Streams { get; }
+        /// <summary>
+        /// Subscription related Helix APIs
+        /// </summary>
         public Subscriptions Subscriptions { get; }
+        /// <summary>
+        /// Tag related Helix APIs
+        /// </summary>
         public Tags Tags { get; }
+        /// <summary>
+        /// Stream Team related Helix APIs
+        /// </summary>
         public Teams Teams { get; }
+        /// <summary>
+        /// Video/VOD related Helix APIs
+        /// </summary>
         public Videos Videos { get; }
+        /// <summary>
+        /// User related Helix APIs
+        /// </summary>
         public Users Users { get; }
 
         /// <summary>
