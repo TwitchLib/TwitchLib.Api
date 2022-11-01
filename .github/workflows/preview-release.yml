@@ -1,5 +1,8 @@
 name: Release Preview Nuget Package
 
+env:
+  SHORT_SHA: $(git rev-parse --short "$GITHUB_SHA")
+
 on:
   push:
     branches: [ dev ]
@@ -20,7 +23,7 @@ jobs:
    - name: Build TwitchLib.Api
      run: dotnet build -c Release --no-restore
    - name: Pack TwitchLib.Api
-     run: dotnet pack TwitchLib.Api.sln -v normal -c Release -o nugets --no-build --version-suffix "preview-${{ github.sha }}"
+     run: dotnet pack TwitchLib.Api.sln -v normal -c Release -o nugets --no-build --version-suffix "preview-$SHORT_SHA"
    - name: Push to Nuget
      run: dotnet nuget push "./nugets/*.nupkg" -k ${{ secrets.API_NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
    - name: Send Discord Notification
