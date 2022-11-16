@@ -56,7 +56,7 @@ namespace TwitchLib.Api.Helix
                 ["message"] = message
             };
 
-            return TwitchPostAsync("/chat/announcements", ApiVersion.Helix, json.ToString(), getParams, accessToken);
+            return TwitchPostAsync("/whispers", ApiVersion.Helix, json.ToString(), getParams, accessToken);
         }
 
         #endregion
