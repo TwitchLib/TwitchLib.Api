@@ -117,17 +117,13 @@ namespace TwitchLib.Api.Helix
         /// </summary>
         public Teams Teams { get; }
         /// <summary>
-        /// User related Helix APIs
-        /// </summary>
-        public Users Users { get; }
-        /// <summary>
         /// Video/VOD related Helix APIs
         /// </summary>
         public Videos Videos { get; }
         /// <summary>
-        /// Whispers related Helix APIs
+        /// User related Helix APIs
         /// </summary>
-        public Whispers Whispers { get; }
+        public Users Users { get; }
 
         /// <summary>
         /// Creates an Instance of the Helix Class.
@@ -170,7 +166,6 @@ namespace TwitchLib.Api.Helix
             Teams = new Teams(Settings, rateLimiter, http);
             Users = new Users(Settings, rateLimiter, http);
             Videos = new Videos(Settings, rateLimiter, http);
-            Whispers = new Whispers(Settings, rateLimiter, http);
         }
     }
 }
