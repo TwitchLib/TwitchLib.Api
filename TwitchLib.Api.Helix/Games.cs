@@ -29,19 +29,29 @@ namespace TwitchLib.Api.Helix
         /// <para>The name must be an exact match. For example, “Pokemon” will not return a list of Pokemon games; instead, query any specific Pokemon games in which you are interested.</para>
         /// <para>At most 100 name values can be specified.</para>
         /// </param>
+        /// <param name="igdbIds">List of IGDB Game Ids. At most 100 id values can be specified.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetGamesResponse"></returns>
         /// <exception cref="BadParameterException"></exception>
-        public Task<GetGamesResponse> GetGamesAsync(List<string> gameIds = null, List<string> gameNames = null, string accessToken = null)
+        public Task<GetGamesResponse> GetGamesAsync(List<string> gameIds = null, List<string> gameNames = null, List<string> igdbIds = null, string accessToken = null)
         {
-            if (gameIds == null && gameNames == null || gameIds != null && gameIds.Count == 0 && gameNames == null || gameNames != null && gameNames.Count == 0 && gameIds == null)
-                throw new BadParameterException("Either gameIds or gameNames must have at least one value");
+            if (gameIds == null && gameNames == null && igdbIds == null 
+                || gameIds != null && gameIds.Count == 0 && gameNames == null && igdbIds == null 
+                || gameNames != null && gameNames.Count == 0 && gameIds == null && igdbIds == null
+                || igdbIds != null && igdbIds.Count == 0 && gameIds == null && gameNames == null)
+                throw new BadParameterException("Either gameIds, gameNames or igdbIds must have at least one value");
 
             if (gameIds != null && gameIds.Count > 100)
                 throw new BadParameterException("gameIds list cannot exceed 100 items");
 
             if (gameNames != null && gameNames.Count > 100)
                 throw new BadParameterException("gameNames list cannot exceed 100 items");
+
+            if (igdbIds != null && igdbIds.Count > 100)
+                throw new BadParameterException("igdbIds list cannot exceed 100 items");
+
+            if (gameIds?.Count + gameNames?.Count + igdbIds?.Count > 100)
+                throw new BadParameterException("The combined amount of items of gameIds, gameNames and igdbIds cannot exceed 100 items");
 
             var getParams = new List<KeyValuePair<string, string>>();
 
@@ -53,6 +63,11 @@ namespace TwitchLib.Api.Helix
             if (gameNames != null && gameNames.Count > 0)
             {
                 getParams.AddRange(gameNames.Select(gameName => new KeyValuePair<string, string>("name", gameName)));
+            }
+
+            if (igdbIds != null && igdbIds.Count > 0)
+            {
+                getParams.AddRange(igdbIds.Select(igdbId => new KeyValuePair<string, string>("igdb_id", igdbId)));
             }
 
             return TwitchGetGenericAsync<GetGamesResponse>("/games", ApiVersion.Helix, getParams, accessToken);
