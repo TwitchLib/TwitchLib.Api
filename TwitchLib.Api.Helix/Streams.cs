@@ -42,7 +42,7 @@ namespace TwitchLib.Api.Helix
         /// <param name="userLogins">Returns streams broadcast by one or more specified user login names. You can specify up to 100 names.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetStreamsResponse"></returns>
-        public Task<GetStreamsResponse> GetStreamsAsync(string after = null, int first = 20, List<string> gameIds = null, List<string> languages = null, List<string> userIds = null, List<string> userLogins = null, string accessToken = null)
+        public Task<GetStreamsResponse> GetStreamsAsync(string after = null, int first = 20, List<string> gameIds = null, List<string> languages = null, List<string> userIds = null, List<string> userLogins = null, string accessToken = null, string type = null)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
@@ -70,6 +70,11 @@ namespace TwitchLib.Api.Helix
             if (userLogins != null && userLogins.Count > 0)
             {
                 getParams.AddRange(userLogins.Select(userLogin => new KeyValuePair<string, string>("user_login", userLogin)));
+            }
+
+            if (type != null && (type == GetStreamsType.All || type == GetStreamsType.Live))
+            {
+                getParams.Add(new KeyValuePair<string, string>("type", type));
             }
 
             return TwitchGetGenericAsync<GetStreamsResponse>("/streams", ApiVersion.Helix, getParams, accessToken);
