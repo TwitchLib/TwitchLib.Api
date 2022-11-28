@@ -121,21 +121,21 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             switch (errorResp.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
-                    throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set. \n 2. Your refresh token was invalid. \n 3. You requested a username when the server was expecting a user ID.");
+                    throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set. \n 2. Your refresh token was invalid. \n 3. You requested a username when the server was expecting a user ID.", null);
                 case HttpStatusCode.Unauthorized:
                     var authenticateHeader = errorResp.Headers.GetValues("WWW-Authenticate");
                     if (authenticateHeader?.Length ==0 || string.IsNullOrEmpty(authenticateHeader?[0]))
-                        throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
+                        throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).", null);
 
                     var invalidTokenFound = authenticateHeader[0].Contains("error='invalid_token'");
                     if (invalidTokenFound)
-                        throw new TokenExpiredException("Your request was blocked du to an expired Token. Please refresh your token and update your API instance settings.");
+                        throw new TokenExpiredException("Your request was blocked du to an expired Token. Please refresh your token and update your API instance settings.", null);
                     break;
                 case HttpStatusCode.NotFound:
-                    throw new BadResourceException("The resource you tried to access was not valid.");
+                    throw new BadResourceException("The resource you tried to access was not valid.", null);
                 case (HttpStatusCode)429:
                     var resetTime = errorResp.Headers.Get("Ratelimit-Reset");
-                    throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made", resetTime);
+                    throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made", resetTime, null);
                 default:
                     throw e;
             }
