@@ -65,7 +65,7 @@ namespace TwitchLib.Api.Core.Undocumented
                 case 204:
                     return true;
                 default:
-                    throw new BadResourceException("Unexpected response from resource. Expecting response code 200 or 204, received: " + resp);
+                    throw new BadResourceException("Unexpected response from resource. Expecting response code 200 or 204, received: " + resp, null);
             }
         }
 

@@ -1,10 +1,11 @@
 using System;
+using System.Net.Http;
 
 namespace TwitchLib.Api.Core.Exceptions
 {
     /// <inheritdoc />
     /// <summary>Exception representing a 429 Http Statuscode</summary>
-    public sealed class TooManyRequestsException : Exception
+    public sealed class TooManyRequestsException : HttpResponseException
     {
         /// <inheritdoc />
         /// <summary>
@@ -12,8 +13,8 @@ namespace TwitchLib.Api.Core.Exceptions
         /// </summary>
         /// <param name="data">This is the exception message as a string</param>
         /// <param name="resetTime">This is the reset time from twitch as a linux timestamp</param>
-        public TooManyRequestsException(string data, string resetTime)
-            : base(data)
+        public TooManyRequestsException(string data, string resetTime, HttpResponseMessage httpResponse)
+            : base(data, httpResponse)
         {
             if (double.TryParse(resetTime, out var time))
             {
