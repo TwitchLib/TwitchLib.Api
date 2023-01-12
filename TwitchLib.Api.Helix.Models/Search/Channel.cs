@@ -28,5 +28,7 @@ namespace TwitchLib.Api.Helix.Models.Search
         public DateTime? StartedAt { get; protected set; }
         [JsonProperty(PropertyName = "tag_ids")]
         public List<string> TagIds { get; protected set; }
+        [JsonProperty(PropertyName = "tags")]
+        public List<string> Tags { get; protected set; }
     }
 }
