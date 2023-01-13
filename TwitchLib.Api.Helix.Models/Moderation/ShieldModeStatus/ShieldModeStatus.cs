@@ -21,7 +21,7 @@ namespace TwitchLib.Api.Helix.Models.Moderation.ShieldModeStatus
         /// The moderator’s login name. Is an empty string if Shield Mode hasn’t been previously activated.
         /// </summary>
         [JsonProperty(PropertyName = "moderator_login")]
-        public DateTime ModeratorLogin { get; protected set; }
+        public string ModeratorLogin { get; protected set; }
         /// <summary>
         /// The moderator’s display name. Is an empty string if Shield Mode hasn’t been previously activated.
         /// </summary>
