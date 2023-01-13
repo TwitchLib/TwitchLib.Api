@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Moderation.GetShieldModeStatus
+namespace TwitchLib.Api.Helix.Models.Moderation.ShieldModeStatus.GetShieldModeStatus
 {
     public class GetShieldModeStatusResponse
     {
