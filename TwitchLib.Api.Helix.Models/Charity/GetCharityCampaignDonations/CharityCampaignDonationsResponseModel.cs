@@ -8,6 +8,12 @@ namespace TwitchLib.Api.Helix.Models.Charity.GetCharityCampaignDonations
     public class CharityCampaignDonationsResponseModel
     {
         /// <summary>
+        /// An ID that identifies the donation. The ID is unique across campaigns.
+        /// </summary>
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; protected set; }
+
+        /// <summary>
         /// An ID that identifies the charity campaign that the donation applies to.
         /// </summary>
         [JsonProperty(PropertyName = "campaign_id")]
