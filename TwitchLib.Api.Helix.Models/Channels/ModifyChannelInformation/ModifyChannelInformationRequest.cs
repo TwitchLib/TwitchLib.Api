@@ -13,5 +13,7 @@ namespace TwitchLib.Api.Helix.Models.Channels.ModifyChannelInformation
         public string BroadcasterLanguage { get; set; }
         [JsonProperty(PropertyName = "delay", NullValueHandling = NullValueHandling.Ignore)]
         public int? Delay { get; set; }
+        [JsonProperty(PropertyName = "tags", NullValueHandling = NullValueHandling.Ignore)]
+        public string[] Tags { get; set; }
     }
 }

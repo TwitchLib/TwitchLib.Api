@@ -23,6 +23,8 @@ namespace TwitchLib.Api.Helix.Models.Streams.GetStreams
         public string Type { get; protected set; }
         [JsonProperty(PropertyName = "title")]
         public string Title { get; protected set; }
+        [JsonProperty(PropertyName = "tags")]
+        public string[] Tags { get; protected set; }
         [JsonProperty(PropertyName = "viewer_count")]
         public int ViewerCount { get; protected set; }
         [JsonProperty(PropertyName = "started_at")]
