@@ -21,7 +21,7 @@ namespace TwitchLib.Api.Helix
 
         #region GetCharityCampaign
         /// <summary>
-        /// [BETA] - Gets information about the charity campaign that a broadcaster is running, such as their fundraising goal and the amount that’s been donated so far.
+        /// Gets information about the charity campaign that a broadcaster is running, such as their fundraising goal and the amount that’s been donated so far.
         /// Requires an user access token that includes the channel:read:charity scope. 
         /// The ID in the broadcaster_id query parameter must match the user ID in the access token.
         /// </summary>
@@ -44,7 +44,7 @@ namespace TwitchLib.Api.Helix
 
         #region GetCharityCampaignDonations
         /// <summary>
-        /// [BETA] - Gets the list of donations that users have made to the broadcaster’s active charity campaign.
+        /// Gets the list of donations that users have made to the broadcaster’s active charity campaign.
         /// Requires a user access token that includes the channel:read:charity scope.
         /// The ID in the broadcaster_id query parameter must match the user ID in the access token.
         /// </summary>
