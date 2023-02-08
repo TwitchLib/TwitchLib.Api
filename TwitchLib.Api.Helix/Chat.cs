@@ -320,7 +320,7 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("color", color.Value),
             };
 
-            return TwitchPostAsync("/chat/color", ApiVersion.Helix, null, getParams, accessToken);
+            return TwitchPutAsync("/chat/color", ApiVersion.Helix, null, getParams, accessToken);
         }
 
         /// <summary>
