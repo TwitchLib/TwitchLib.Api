@@ -75,7 +75,7 @@ namespace TwitchLib.Api.Auth
                    "response_type=code&" +
                    $"scope={scopesStr}&" +
                    $"state={state}&" +
-                   $"force_verify={forceVerify}";
+                   $"force_verify={forceVerify.ToString().ToLower()}";
         }
 
         /// <summary>
