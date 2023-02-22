@@ -250,9 +250,6 @@ namespace TwitchLib.Api.Helix
             if (string.IsNullOrWhiteSpace(banUserRequest.UserId))
                 throw new BadParameterException("banUserRequest.UserId must be set");
 
-            if (banUserRequest.Reason == null)
-                throw new BadParameterException("banUserRequest.Reason cannot be null and must be set to at least an empty string");
-
             if (banUserRequest.Duration.HasValue)
                 if(banUserRequest.Duration.Value <= 0 || banUserRequest.Duration.Value > 1209600)
                     throw new BadParameterException("banUserRequest.Duration has to be between including 1 and including 1209600");
