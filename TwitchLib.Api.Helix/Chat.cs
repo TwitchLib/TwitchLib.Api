@@ -58,7 +58,7 @@ namespace TwitchLib.Api.Helix
 
         #region Chatters
         /// <summary>
-        /// [BETA] - Gets the list of users that are connected to the specified broadcaster’s chat session.
+        /// Gets the list of users that are connected to the specified broadcaster’s chat session.
         /// <para>Note that there is a delay between when users join and leave a chat and when the list is updated accordingly.</para>
         /// <para>Requires a user access token that includes the moderator:read:chatters scope.</para>
         /// </summary>
@@ -269,7 +269,7 @@ namespace TwitchLib.Api.Helix
         #region Shoutouts
 
         /// <summary>
-        /// [BETA] - Sends a Shoutout to the specified broadcaster.
+        /// Sends a Shoutout to the specified broadcaster.
         /// </summary>
         /// <param name="fromBroadcasterId">The ID of the broadcaster that’s sending the Shoutout.</param>
         /// <param name="toBroadcasterId"> 	The ID of the broadcaster that’s receiving the Shoutout.</param>
