@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwitchLib.Api.Helix.Models.Channels.GetChannelFollowers;
 using TwitchLib.Api.Helix.Models.Users.GetUserFollows;
 
 namespace TwitchLib.Api.Services.Events.FollowerService
@@ -13,6 +14,6 @@ namespace TwitchLib.Api.Services.Events.FollowerService
         /// <summary>Event property representing channel the service is currently monitoring.</summary>
         public string Channel;
         /// <summary>Event property representing all new followers detected.</summary>
-        public List<Follow> NewFollowers;
+        public List<ChannelFollower> NewFollowers;
     }
 }

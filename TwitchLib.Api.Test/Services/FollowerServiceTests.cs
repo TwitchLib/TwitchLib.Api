@@ -39,7 +39,7 @@ namespace TwitchLib.Api.Test.Services
 
                 await _followerService.UpdateLatestFollowersAsync();
 
-                Assert.NotNull(_followerService.KnownFollowers[string.Empty].FirstOrDefault(f => f.FromUserId == "UserId"));
+                Assert.NotNull(_followerService.KnownFollowers[string.Empty].FirstOrDefault(f => f.UserId == "UserId"));
 
                 //Same check for SetChannelsByName
                 var usersResponseJson = JMock.Of<GetUsersResponse>(o =>
@@ -58,7 +58,7 @@ namespace TwitchLib.Api.Test.Services
 
                 await _followerService.UpdateLatestFollowersAsync();
 
-                Assert.NotNull(_followerService.KnownFollowers[string.Empty].FirstOrDefault(f => f.FromUserId == "UserId"));
+                Assert.NotNull(_followerService.KnownFollowers[string.Empty].FirstOrDefault(f => f.UserId == "UserId"));
             }
 
             [Fact]
