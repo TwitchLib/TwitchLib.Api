@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2022</Copyright>
-    <PackageReleaseNotes>Added IgdbId to Games and added support for IgdbId lookup for Games, Added UserId and UserName to GetChatters, Fixed wrong Whisper Endpoint</PackageReleaseNotes>
+    <PackageReleaseNotes>Updated dependencies, Added missing Auth subclass to ITwitchInterface, Added HttpResponse to Http related exceptions for better debugging, Added IgdbId to Games and added support for IgdbId lookup for Games, Added type parameter to GetStreams, Added tags to all related Stream models, Added UserId and UserName to GetChatters, Added GetCharityDonation support, Added Shield Mode support, Added Send Shoutout support, Added new Follower Endpoints support, Switched Follower Service to new Follwer rndpoint, Reason for BanUser now defaults to string.Empty, Fixed wrong Whisper Endpoint, Fixed wrong property name in CreateCustomRewards Request, Fixed issue with force_verify in generated Auth strings by GetAuthorizationCodeUrl, Fixed UpdateUserCall using the wrong HTTP method</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
