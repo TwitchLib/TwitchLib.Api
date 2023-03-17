@@ -68,18 +68,14 @@ namespace TwitchLib.Api.Core.Common
                     return "user_subscriptions";
                 case AuthScopes.Viewing_Activity_Read:
                     return "viewing_activity_read";
-
                 case AuthScopes.Helix_Analytics_Read_Extensions:
                     return "analytics:read:extensions";
                 case AuthScopes.Helix_Analytics_Read_Games:
                     return "analytics:read:games";
-
                 case AuthScopes.Helix_Bits_Read:
                     return "bits:read";
-
                 case AuthScopes.Helix_Channel_Edit_Commercial:
                     return "channel:edit:commercial";
-
                 case AuthScopes.Helix_Channel_Manage_Broadcast:
                     return "channel:manage:broadcast";
                 case AuthScopes.Helix_Channel_Manage_Extensions:
@@ -98,7 +94,6 @@ namespace TwitchLib.Api.Core.Common
                     return "channel:manage:videos";
                 case AuthScopes.Helix_Channel_Manage_VIPs:
                     return "channel:manage:vips";
-
                 case AuthScopes.Helix_Channel_Read_Charity:
                     return "channel:read:charity";
                 case AuthScopes.Helix_Channel_Read_Editors:
@@ -119,20 +114,16 @@ namespace TwitchLib.Api.Core.Common
                     return "channel:read:subscriptions";
                 case AuthScopes.Helix_Channel_Read_VIPs:
                     return "channel:read:vips";
-
                 case AuthScopes.Helix_Clips_Edit:
                     return "clips:edit";
-
                 case AuthScopes.Helix_Moderation_Read:
                     return "moderation:read";
-
                 case AuthScopes.Helix_User_Edit:
                     return "user:edit";
                 case AuthScopes.Helix_User_Edit_Broadcast:
                     return "user:edit:broadcast";
                 case AuthScopes.Helix_User_Edit_Follows:
                     return "user:edit:follows";
-
                 case AuthScopes.Helix_User_Read_BlockedUsers:
                     return "user:read:blocked_users";
                 case AuthScopes.Helix_User_Read_Broadcast:
@@ -143,14 +134,12 @@ namespace TwitchLib.Api.Core.Common
                     return "user:read:follows";
                 case AuthScopes.Helix_User_Read_Subscriptions:
                     return "user:read:subscriptions";
-
                 case AuthScopes.Helix_User_Manage_BlockedUsers:
                     return "user:manage:blocked_users";
                 case AuthScopes.Helix_User_Manage_Chat_Color:
                     return "user:manage:chat_color";
                 case AuthScopes.Helix_User_Manage_Whispers:
                     return "user:manage:whispers";
-
                 case AuthScopes.Helix_Moderator_Manage_Announcements:
                     return "moderator:manage:announcements";
                 case AuthScopes.Helix_Moderator_Manage_Automod:
@@ -165,7 +154,6 @@ namespace TwitchLib.Api.Core.Common
                     return "moderator:manage:chat_messages";
                 case AuthScopes.Helix_Moderator_Manage_Chat_Settings:
                     return "moderator:manage:chat_settings";
-
                 case AuthScopes.Helix_Moderator_Read_Automod_Settings:
                     return "moderator:read:automod_settings";
                 case AuthScopes.Helix_Moderator_Read_Blocked_Terms:
@@ -174,7 +162,8 @@ namespace TwitchLib.Api.Core.Common
                     return "moderator:read:chat_settings";
                 case AuthScopes.Helix_Moderator_Read_Chatters:
                     return "moderator:read:chatters";
-
+                case AuthScopes.Helix_Moderator_Read_Followers:
+                    return "moderator:read:followers";
                 case AuthScopes.Any:
                 case AuthScopes.None:
                 default:
