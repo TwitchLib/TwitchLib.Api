@@ -10,5 +10,7 @@ namespace TwitchLib.Api.Helix.Models.Games
         public string Name { get; protected set; }
         [JsonProperty(PropertyName = "box_art_url")]
         public string BoxArtUrl { get; protected set; }
+        [JsonProperty(PropertyName = "igdb_id")]
+        public string IgdbId { get; protected set; }
     }
 }

@@ -71,6 +71,7 @@
         Helix_User_Read_Email,
         Helix_User_Read_Follows,
         Helix_User_Read_Subscriptions,
+        Helix_Moderator_Read_Followers,
         None
     }
 }

@@ -58,7 +58,7 @@ namespace TwitchLib.Api.Helix
 
         #region Chatters
         /// <summary>
-        /// [BETA] - Gets the list of users that are connected to the specified broadcaster’s chat session.
+        /// Gets the list of users that are connected to the specified broadcaster’s chat session.
         /// <para>Note that there is a delay between when users join and leave a chat and when the list is updated accordingly.</para>
         /// <para>Requires a user access token that includes the moderator:read:chatters scope.</para>
         /// </summary>
@@ -266,6 +266,39 @@ namespace TwitchLib.Api.Helix
 
         #endregion
 
+        #region Shoutouts
+
+        /// <summary>
+        /// Sends a Shoutout to the specified broadcaster.
+        /// </summary>
+        /// <param name="fromBroadcasterId">The ID of the broadcaster that’s sending the Shoutout.</param>
+        /// <param name="toBroadcasterId"> 	The ID of the broadcaster that’s receiving the Shoutout.</param>
+        /// <param name="moderatorId">The ID of the broadcaster or a user that is one of the broadcaster’s moderators. This ID must match the user ID in the access token.</param>
+        /// <param name="accessToken"></param>
+        /// <exception cref="BadParameterException"></exception>
+        public Task SendShoutoutAsync(string fromBroadcasterId, string toBroadcasterId, string moderatorId, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(fromBroadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+
+            if (string.IsNullOrEmpty(toBroadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+
+            if (string.IsNullOrEmpty(moderatorId))
+                throw new BadParameterException("moderatorId must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("from_broadcaster_id", fromBroadcasterId),
+                new KeyValuePair<string, string>("to_broadcaster_id", toBroadcasterId),
+                new KeyValuePair<string, string>("moderator_id", moderatorId),
+            };
+
+            return TwitchPostAsync("/chat/shoutouts", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        #endregion
+
         #region Update User Chat Color
         /// <summary>
         /// Updates the color used for the user’s name in chat from a selection of available colors.
@@ -287,7 +320,7 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("color", color.Value),
             };
 
-            return TwitchPostAsync("/chat/color", ApiVersion.Helix, null, getParams, accessToken);
+            return TwitchPutAsync("/chat/color", ApiVersion.Helix, null, getParams, accessToken);
         }
 
         /// <summary>
@@ -316,7 +349,7 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("color", colorEncoded),
             };
 
-            return TwitchPostAsync("/chat/color", ApiVersion.Helix, null, getParams, accessToken);
+            return TwitchPutAsync("/chat/color", ApiVersion.Helix, null, getParams, accessToken);
         }
 
         #endregion

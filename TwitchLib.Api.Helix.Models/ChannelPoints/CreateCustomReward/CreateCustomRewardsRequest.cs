@@ -16,7 +16,7 @@ namespace TwitchLib.Api.Helix.Models.ChannelPoints.CreateCustomReward
         public string BackgroundColor { get; set; }
         [JsonProperty(PropertyName = "is_user_input_required")]
         public bool IsUserInputRequired { get; set; }
-        [JsonProperty(PropertyName = "is_max_per_stream-Enabled")]
+        [JsonProperty(PropertyName = "is_max_per_stream_enabled")]
         public bool IsMaxPerStreamEnabled { get; set; }
         [JsonProperty(PropertyName = "max_per_stream")]
         public int? MaxPerStream { get; set; }

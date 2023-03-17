@@ -20,7 +20,7 @@ namespace TwitchLib.Api.Helix
         }
 
         /// <summary>
-        /// [BETA] - Gets the Soundtrack track that the broadcaster is playing.
+        /// Gets the Soundtrack track that the broadcaster is playing.
         /// </summary>
         /// <param name="broadcasterId">The ID of the broadcaster that’s playing a Soundtrack track.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
@@ -40,7 +40,7 @@ namespace TwitchLib.Api.Helix
         }
 
         /// <summary>
-        /// [BETA] - Gets the tracks of a Soundtrack playlist.
+        /// Gets the tracks of a Soundtrack playlist.
         /// </summary>
         /// <param name="id">[Required] The ID of the Soundtrack playlist to get.</param>
         /// <param name="first">The maximum number of tracks to return for this playlist in the response. Maximum: 50. Default: 20.</param>
@@ -68,7 +68,7 @@ namespace TwitchLib.Api.Helix
         }
 
         /// <summary>
-        /// [BETA] - Gets a list of Soundtrack playlists.
+        /// Gets a list of Soundtrack playlists.
         /// </summary>
         /// <param name="id">The ID of the Soundtrack playlist to get. Specify an ID only if you want to get a single playlist instead of all playlists.</param>
         /// <param name="first">The maximum number of playlists to return in the response. Maximum: 50. Default: 20.</param>

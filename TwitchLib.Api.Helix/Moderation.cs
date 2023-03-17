@@ -16,6 +16,9 @@ using TwitchLib.Api.Helix.Models.Moderation.GetBannedEvents;
 using TwitchLib.Api.Helix.Models.Moderation.GetBannedUsers;
 using TwitchLib.Api.Helix.Models.Moderation.GetModeratorEvents;
 using TwitchLib.Api.Helix.Models.Moderation.GetModerators;
+using TwitchLib.Api.Helix.Models.Moderation.ShieldModeStatus;
+using TwitchLib.Api.Helix.Models.Moderation.ShieldModeStatus.GetShieldModeStatus;
+using TwitchLib.Api.Helix.Models.Moderation.ShieldModeStatus.UpdateShieldModeStatus;
 
 namespace TwitchLib.Api.Helix
 {
@@ -246,9 +249,6 @@ namespace TwitchLib.Api.Helix
 
             if (string.IsNullOrWhiteSpace(banUserRequest.UserId))
                 throw new BadParameterException("banUserRequest.UserId must be set");
-
-            if (banUserRequest.Reason == null)
-                throw new BadParameterException("banUserRequest.Reason cannot be null and must be set to at least an empty string");
 
             if (banUserRequest.Duration.HasValue)
                 if(banUserRequest.Duration.Value <= 0 || banUserRequest.Duration.Value > 1209600)
@@ -605,6 +605,70 @@ namespace TwitchLib.Api.Helix
 
             return TwitchDeleteAsync("/moderation/moderators", ApiVersion.Helix, getParams, accessToken);
         }
+
+        #endregion
+
+        #region ShieldModeStatus
+
+        #region GetShieldModeStatus
+
+        /// <summary>
+        /// Gets the broadcaster’s Shield Mode activation status.
+        /// Requires a user access token that includes the moderator:read:shield_mode or moderator:manage:shield_mode scope.
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster whose Shield Mode activation status you want to get.</param>
+        /// <param name="moderatorId">The ID of the broadcaster or a user that is one of the broadcaster’s moderators. This ID must match the user ID in the access token.</param>
+        /// <param name="accessToken">optional access token to override the one used while creating the TwitchAPI object</param>
+        /// <returns cref="GetShieldModeStatusResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<GetShieldModeStatusResponse> GetShieldModeStatusAsync(string broadcasterId, string moderatorId, string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+
+            if (string.IsNullOrWhiteSpace(moderatorId))
+                throw new BadParameterException("moderatorId must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("moderator_id", moderatorId)
+            };
+
+            return TwitchGetGenericAsync<GetShieldModeStatusResponse>("/moderation/shield_mode", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
+
+        #region UpdateShieldModeStatus
+
+        /// <summary>
+        /// Activates or deactivates the broadcaster’s Shield Mode.
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster whose Shield Mode activation status you want to get.</param>
+        /// <param name="moderatorId">The ID of the broadcaster or a user that is one of the broadcaster’s moderators. This ID must match the user ID in the access token.</param>
+        /// <param name="request">ShieldModeStatusRequest Model to request</param>
+        /// <param name="accessToken">optional access token to override the one used while creating the TwitchAPI object</param>
+        /// <returns cref="ShieldModeStatus"></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<ShieldModeStatus> UpdateShieldModeStatusAsync(string broadcasterId, string moderatorId, ShieldModeStatusRequest request, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+
+            if (string.IsNullOrWhiteSpace(moderatorId))
+                throw new BadParameterException("moderatorId must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("moderator_id", moderatorId)
+            };
+
+            return TwitchPutGenericAsync<ShieldModeStatus>("/moderation/shield_mode", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
+        }
+
+        #endregion
 
         #endregion
     }

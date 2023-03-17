@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TwitchLib.Api.Helix.Models.Channels.GetChannelFollowers;
 using TwitchLib.Api.Helix.Models.Users.GetUserFollows;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Services.Core.FollowerService;
@@ -21,7 +22,7 @@ namespace TwitchLib.Api.Services
         /// <summary>
         /// The current known followers for each channel.
         /// </summary>
-        public Dictionary<string, List<Follow>> KnownFollowers { get; } = new Dictionary<string, List<Follow>>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, List<ChannelFollower>> KnownFollowers { get; } = new Dictionary<string, List<ChannelFollower>>(StringComparer.OrdinalIgnoreCase);
         /// <summary>
         /// The amount of followers queried per request.
         /// </summary>
@@ -117,7 +118,7 @@ namespace TwitchLib.Api.Services
 
             foreach (var channel in ChannelsToMonitor)
             {
-                List<Follow> newFollowers;
+                List<ChannelFollower> newFollowers;
                 var latestFollowers = await GetLatestFollowersAsync(channel);
 
                 if (latestFollowers.Count == 0)
@@ -127,25 +128,27 @@ namespace TwitchLib.Api.Services
                 {
                     newFollowers = latestFollowers;
                     KnownFollowers[channel] = latestFollowers.Take(CacheSize).ToList();
-                    _lastFollowerDates[channel] = latestFollowers.Last().FollowedAt;
+                    _lastFollowerDates[channel] = DateTime.Parse(latestFollowers.First().FollowedAt);
 
                     if (!_invokeEventsOnStartup)
                         return;
                 }
                 else
                 {
-                    var existingFollowerIds = new HashSet<string>(knownFollowers.Select(f => f.FromUserId));
+                    var existingFollowerIds = new HashSet<string>(knownFollowers.Select(f => f.UserId));
                     var latestKnownFollowerDate = _lastFollowerDates[channel];
-                    newFollowers = new List<Follow>();
+                    newFollowers = new List<ChannelFollower>();
 
                     foreach (var follower in latestFollowers)
                     {
-                        if (!existingFollowerIds.Add(follower.FromUserId)) continue;
+                        if (!existingFollowerIds.Add(follower.UserId)) continue;
 
-                        if (follower.FollowedAt < latestKnownFollowerDate) continue;
+                        var followedAt = DateTime.Parse(follower.FollowedAt);
+
+                        if (followedAt < latestKnownFollowerDate) continue;
 
                         newFollowers.Add(follower);
-                        latestKnownFollowerDate = follower.FollowedAt;
+                        latestKnownFollowerDate = followedAt;
                         knownFollowers.Add(follower);
                     }
 
@@ -175,11 +178,11 @@ namespace TwitchLib.Api.Services
             await UpdateLatestFollowersAsync();
         }
 
-        private async Task<List<Follow>> GetLatestFollowersAsync(string channel)
+        private async Task<List<ChannelFollower>> GetLatestFollowersAsync(string channel)
         {
             var resultset = await _monitor.GetUsersFollowsAsync(channel, QueryCountPerRequest);
             
-            return resultset.Follows.Reverse().ToList();
+            return resultset.Data.ToList();
         }
     }
 }

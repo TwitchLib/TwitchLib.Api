@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Charity.GetCharityCampaign
+namespace TwitchLib.Api.Helix.Models.Charity
 {
     public class Amount
     {
