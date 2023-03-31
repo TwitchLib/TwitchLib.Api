@@ -12,5 +12,13 @@ namespace TwitchLib.Api.Helix.Models.Chat.Badges
         public string ImageUrl2x { get; protected set; }
         [JsonProperty(PropertyName = "image_url_4x")]
         public string ImageUrl4x { get; protected set; }
+        [JsonProperty(PropertyName = "title")]
+        public string Title { get; protected set; }
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; protected set; }
+        [JsonProperty(PropertyName = "click_action")]
+        public string ClickAction { get; protected set; }
+        [JsonProperty(PropertyName = "click_url")]
+        public string ClickUrl { get; protected set; }
     }
 }
