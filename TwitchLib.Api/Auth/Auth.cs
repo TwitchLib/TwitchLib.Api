@@ -8,7 +8,7 @@ using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Auth
 {
-    /// <summary>These endpoints fall outside of v5 and Helix, and relate to Authorization</summary>
+    /// <summary>These endpoints fall outside of Helix, and relate to Authorization</summary>
     public class Auth : ApiBase
     {
         public Auth(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
