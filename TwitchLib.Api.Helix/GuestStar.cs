@@ -147,5 +147,38 @@ namespace TwitchLib.Api.Helix
             return TwitchPostGenericAsync<EndGuestStarSessionResponse>("/guest_star/session", ApiVersion.Helix, getParams, accessToken);
         }
         #endregion
+
+        #region GetGuestStarInvites
+        /// <summary>
+        /// [BETA] Provides the caller with a list of pending invites to a Guest Star session,
+        /// including the invitee’s ready status while joining the waiting room.
+        /// <para>Requires OAuth Scope: channel:read:guest_star, channel:manage:guest_star, moderator:read:guest_star or moderator:manage:guest_star </para>
+        /// <para>The ID in the broadcasterId query parameter must match the user ID associated with the user OAuth token.</para>
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster running the Guest Star session.</param>
+        /// <param name="moderatorId">The ID of the broadcaster or a user that has permission to moderate the broadcaster’s chat room. This ID must match the user_id in the user access token.</param>
+        /// <param name="sessionId">The session ID to query for invite status.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetChannelGuestStarSettingsResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<GetGuestStarInvitesResponse> GetGuestStarInvitesAsync(string broadcasterId, string moderatorId, string sessionId, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId cannot be null or empty");
+            if (string.IsNullOrEmpty(moderatorId))
+                throw new BadParameterException("moderatorId cannot be null or empty");
+            if (string.IsNullOrEmpty(sessionId))
+                throw new BadParameterException("moderatorId cannot be null or empty");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("moderator_id", moderatorId),
+                new KeyValuePair<string, string>("session_id", sessionId)
+            };
+
+            return TwitchGetGenericAsync<GetGuestStarInvitesResponse>("/guest_star/invites", ApiVersion.Helix, getParams, accessToken);
+        }
+        #endregion
     }
 }
