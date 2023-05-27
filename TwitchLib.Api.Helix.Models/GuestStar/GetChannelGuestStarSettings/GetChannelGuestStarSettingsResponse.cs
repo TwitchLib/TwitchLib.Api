@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.GuestStar
+namespace TwitchLib.Api.Helix.Models.GuestStar.GetChannelGuestStarSettings
 {
     public class GetChannelGuestStarSettingsResponse
     {

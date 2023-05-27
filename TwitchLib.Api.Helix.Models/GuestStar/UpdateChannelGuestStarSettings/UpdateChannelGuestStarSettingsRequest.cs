@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
-namespace TwitchLib.Api.Helix.Models.GuestStar
+namespace TwitchLib.Api.Helix.Models.GuestStar.UpdateChannelGuestStarSettings
 {
-    public class GuestStarSettings
+    public class UpdateChannelGuestStarSettingsRequest
     {
         /// <summary>
         /// Flag determining if Guest Star moderators have access to control whether a guest is live once assigned to a slot.
@@ -22,12 +23,13 @@ namespace TwitchLib.Api.Helix.Models.GuestStar
         /// <summary>
         /// This setting determines how the guests within a session should be laid out within the browser source.
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty(PropertyName = "group_layout")]
         public GroupLayout GroupLayout { get; set; }
         /// <summary>
-        /// View only token to generate browser source URLs
+        /// Flag determining if Guest Star should regenerate the auth token associated with the channel’s browser sources.
         /// </summary>
-        [JsonProperty(PropertyName = "browser_source_token")]
-        public string BrowserSourceToken { get; protected set; }
+        [JsonProperty(PropertyName = "regenerate_browser_sources")]
+        public bool RegenerateBrowserSources { get; protected set; }
     }
 }
