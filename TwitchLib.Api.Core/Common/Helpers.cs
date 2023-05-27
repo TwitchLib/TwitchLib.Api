@@ -126,6 +126,8 @@ namespace TwitchLib.Api.Core.Common
                     return "moderator:manage:chat_messages";
                 case AuthScopes.Helix_Moderator_Manage_Chat_Settings:
                     return "moderator:manage:chat_settings";
+                case AuthScopes.Helix_Moderator_Manage_Guest_Star:
+                    return "moderator:manage:guest_star";
                 case AuthScopes.Helix_Moderator_Read_Automod_Settings:
                     return "moderator:read:automod_settings";
                 case AuthScopes.Helix_Moderator_Read_Blocked_Terms:
@@ -136,6 +138,8 @@ namespace TwitchLib.Api.Core.Common
                     return "moderator:read:chatters";
                 case AuthScopes.Helix_Moderator_Read_Followers:
                     return "moderator:read:followers";
+                case AuthScopes.Helix_Moderator_Read_Guest_Star:
+                    return "moderator:read:guest_star";
                 case AuthScopes.Helix_User_Edit:
                     return "user:edit";
                 case AuthScopes.Helix_User_Edit_Broadcast:
