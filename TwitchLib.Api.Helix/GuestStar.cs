@@ -94,5 +94,29 @@ namespace TwitchLib.Api.Helix
             return TwitchGetGenericAsync<GetGuestStarSessionResponse>("/guest_star/session", ApiVersion.Helix, getParams, accessToken);
         }
         #endregion
+
+        #region CreateGuestStarSession
+        /// <summary>
+        /// [BETA] Programmatically creates a Guest Star session on behalf of the broadcaster. 
+        /// <para>Requires the broadcaster to be present in the call interface, or the call will be ended automatically.</para>
+        /// <para>The ID in the broadcasterId query parameter must match the user ID associated with the user OAuth token.</para>
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster you want to create a Guest Star session for.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="CreateGuestStarSessionResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<CreateGuestStarSessionResponse> CreateGuestSessionAsync(string broadcasterId, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId cannot be null or empty");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+            };
+
+            return TwitchPostGenericAsync<CreateGuestStarSessionResponse>("/guest_star/session", ApiVersion.Helix, getParams, accessToken);
+        }
+        #endregion
     }
 }
