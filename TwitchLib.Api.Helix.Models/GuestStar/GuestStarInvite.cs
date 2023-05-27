@@ -42,4 +42,5 @@ namespace TwitchLib.Api.Helix.Models.GuestStar
         /// </summary>
         [JsonProperty(PropertyName = "is_audio_available")]
         public bool IsAudioAvailable { get; protected set; }
+    }
 }

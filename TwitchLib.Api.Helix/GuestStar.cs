@@ -115,7 +115,7 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
             };
 
-            return TwitchPostGenericAsync<CreateGuestStarSessionResponse>("/guest_star/session", ApiVersion.Helix, getParams, accessToken);
+            return TwitchPostGenericAsync<CreateGuestStarSessionResponse>("/guest_star/session", ApiVersion.Helix, null, getParams, accessToken);
         }
         #endregion
 
@@ -144,7 +144,7 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("session_id", sessionId)
             };
 
-            return TwitchPostGenericAsync<EndGuestStarSessionResponse>("/guest_star/session", ApiVersion.Helix, getParams, accessToken);
+            return TwitchPutGenericAsync<EndGuestStarSessionResponse>("/guest_star/session", ApiVersion.Helix, null, getParams, accessToken);
         }
         #endregion
 
