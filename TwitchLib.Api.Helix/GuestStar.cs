@@ -78,7 +78,7 @@ namespace TwitchLib.Api.Helix
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetChannelGuestStarSettingsResponse"></returns>
         /// <exception cref="BadParameterException"></exception>
-        public Task<GetGuestStarSessionResponse> GetGuestSessionAsync(string broadcasterId, string moderatorId, string accessToken = null)
+        public Task<GetGuestStarSessionResponse> GetGuestStarSessionAsync(string broadcasterId, string moderatorId, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
                 throw new BadParameterException("broadcasterId cannot be null or empty");
@@ -105,7 +105,7 @@ namespace TwitchLib.Api.Helix
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="CreateGuestStarSessionResponse"></returns>
         /// <exception cref="BadParameterException"></exception>
-        public Task<CreateGuestStarSessionResponse> CreateGuestSessionAsync(string broadcasterId, string accessToken = null)
+        public Task<CreateGuestStarSessionResponse> CreateGuestStarSessionAsync(string broadcasterId, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
                 throw new BadParameterException("broadcasterId cannot be null or empty");
@@ -116,6 +116,35 @@ namespace TwitchLib.Api.Helix
             };
 
             return TwitchPostGenericAsync<CreateGuestStarSessionResponse>("/guest_star/session", ApiVersion.Helix, getParams, accessToken);
+        }
+        #endregion
+
+        #region EndGuestStarSession
+        /// <summary>
+        /// [BETA] Programmatically ends a Guest Star session on behalf of the broadcaster.
+        /// Performs the same action as if the host clicked the “End Call” button in the Guest Star UI.
+        /// <para>Requires OAuth Scope: channel:manage:guest_star</para>
+        /// <para>The ID in the broadcasterId query parameter must match the user ID associated with the user OAuth token.</para>
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster you want to create a Guest Star session for.</param>
+        /// <param name="sessionId">ID for the session to end on behalf of the broadcaster.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="EndGuestStarSessionResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<EndGuestStarSessionResponse> EndGuestStarSessionAsync(string broadcasterId, string sessionId, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId cannot be null or empty");
+            if (string.IsNullOrEmpty(sessionId))
+                throw new BadParameterException("sessionId cannot be null or empty");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("session_id", sessionId)
+            };
+
+            return TwitchPostGenericAsync<EndGuestStarSessionResponse>("/guest_star/session", ApiVersion.Helix, getParams, accessToken);
         }
         #endregion
     }
