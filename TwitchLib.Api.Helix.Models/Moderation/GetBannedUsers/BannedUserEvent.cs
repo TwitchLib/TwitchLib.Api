@@ -33,7 +33,7 @@ namespace TwitchLib.Api.Helix.Models.Moderation.GetBannedUsers
         /// The UTC date and time (in RFC3999 format) when the ban was created.
         /// </summary>
         [JsonProperty(PropertyName = "created_at")]
-        public string CreatedAt { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
 
         /// <summary>
         /// The reason for the ban if provided by the moderator.
