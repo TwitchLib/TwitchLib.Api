@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+using System;
+using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.Videos.GetVideos
 {
