@@ -68,7 +68,7 @@ namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
                 case "chat:edit":
                     return AuthScopes.Chat_Edit;
                 case "chat:moderate":
-                    return AuthScopes.Chat_Moderate;
+                    return AuthScopes.Channel_Moderate;
                 case "channel_editor":
                     return AuthScopes.Channel_Editor;
                 case "channel_feed_read":
