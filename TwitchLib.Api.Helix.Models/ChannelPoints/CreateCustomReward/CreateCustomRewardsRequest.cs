@@ -16,16 +16,16 @@ namespace TwitchLib.Api.Helix.Models.ChannelPoints.CreateCustomReward
       public string Title { get; set; }
 
       /// <summary>
-      /// The prompt shown to the viewer when they redeem the reward. Specify a prompt if IsUserInputRequired is true. The prompt is limited to a maximum of 200 characters.
-      /// </summary>
-      [JsonProperty(PropertyName = "prompt")]
-      public string Prompt { get; set; }
-
-      /// <summary>
       /// The cost of the reward, in Channel Points. The minimum is 1 point.
       /// </summary>
       [JsonProperty(PropertyName = "cost")]
       public int Cost { get; set; }
+
+      /// <summary>
+      /// The prompt shown to the viewer when they redeem the reward. Specify a prompt if IsUserInputRequired is true. The prompt is limited to a maximum of 200 characters.
+      /// </summary>
+      [JsonProperty(PropertyName = "prompt")]
+      public string Prompt { get; set; }
 
       /// <summary>
       /// A Boolean value that determines whether the reward is enabled. Viewers see only enabled rewards. The default is true.

@@ -34,16 +34,16 @@ namespace TwitchLib.Api.Helix.Models.ChannelPoints
       public string Id { get; protected set; }
 
       /// <summary>
-      /// The ID that uniquely identifies the user that redeemed the reward.
-      /// </summary>
-      [JsonProperty(PropertyName = "user_id")]
-      public string UserId { get; protected set; }
-
-      /// <summary>
       /// The user’s login name. (Name is lowercase)
       /// </summary>
       [JsonProperty(PropertyName = "user_login")]
       public string UserLogin { get; protected set; }
+
+      /// <summary>
+      /// The ID that uniquely identifies the user that redeemed the reward.
+      /// </summary>
+      [JsonProperty(PropertyName = "user_id")]
+      public string UserId { get; protected set; }
 
       /// <summary>
       /// The user’s display name. (Name has capitalization)

@@ -29,16 +29,16 @@ namespace TwitchLib.Api.Helix.Models.ChannelPoints.UpdateCustomReward
       public int? Cost { get; set; }
 
       /// <summary>
-      /// A Boolean value that indicates whether the reward is enabled. Set to true to enable the reward. Viewers see only enabled rewards.
-      /// </summary>
-      [JsonProperty(PropertyName = "is_enabled")]
-      public bool? IsEnabled { get; set; }
-
-      /// <summary>
       /// The background color to use for the reward. Specify the color using Hex format (for example, #00E5CB).
       /// </summary>
       [JsonProperty(PropertyName = "background_color")]
       public string BackgroundColor { get; set; }
+
+      /// <summary>
+      /// A Boolean value that indicates whether the reward is enabled. Set to true to enable the reward. Viewers see only enabled rewards.
+      /// </summary>
+      [JsonProperty(PropertyName = "is_enabled")]
+      public bool? IsEnabled { get; set; }
 
       /// <summary>
       /// A Boolean value that determines whether users must enter information to redeem the reward. Set to true if user input is required. See the Prompt field.
