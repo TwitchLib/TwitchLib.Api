@@ -2,7 +2,6 @@
 
 namespace TwitchLib.Api.Helix.Models.ChannelPoints.UpdateRedemptionStatus
 {
-
    /// <summary>
    /// The response for updating a redemption’s status.
    /// </summary>

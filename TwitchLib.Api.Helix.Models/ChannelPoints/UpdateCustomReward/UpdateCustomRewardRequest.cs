@@ -10,9 +10,6 @@ namespace TwitchLib.Api.Helix.Models.ChannelPoints.UpdateCustomReward
    [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
    public class UpdateCustomRewardRequest
    {
-      [JsonProperty(PropertyName = "broadcaster_id")]
-      public string BroadcasterId { get; set; }
-
       /// <summary>
       /// The reward’s title. The title may contain a maximum of 45 characters and it must be unique amongst all of the broadcaster’s custom rewards.
       /// </summary>
