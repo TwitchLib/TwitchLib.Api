@@ -36,6 +36,8 @@ namespace TwitchLib.Api.Core.Common
                     return "channel_feed_edit";
                 case AuthScopes.Channel_Feed_Read:
                     return "channel_feed_read";
+                case AuthScopes.Channel_Moderate:
+                    return "channel:moderate";
                 case AuthScopes.Channel_Read:
                     return "channel_read";
                 case AuthScopes.Channel_Stream:
@@ -45,8 +47,6 @@ namespace TwitchLib.Api.Core.Common
 
                 case AuthScopes.Chat_Edit:
                     return "chat:edit";
-                case AuthScopes.Chat_Moderate:
-                    return "chat:moderate";
                 case AuthScopes.Chat_Read:
                     return "chat:read";
 

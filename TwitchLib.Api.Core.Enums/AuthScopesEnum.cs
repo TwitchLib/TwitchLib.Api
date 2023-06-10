@@ -9,14 +9,13 @@
         Channel_Editor,
         Channel_Feed_Edit,
         Channel_Feed_Read,
+        Channel_Moderate,
         Channel_Read,
-
         Channel_Stream,
         Channel_Subscriptions,
 
         Chat_Read,
         Chat_Edit,
-        Chat_Moderate,
 
         Collections_Edit,
 
