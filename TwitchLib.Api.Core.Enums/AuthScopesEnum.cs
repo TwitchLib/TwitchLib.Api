@@ -13,7 +13,7 @@
         Channel_Subscriptions,
         Chat_Read,
         Chat_Edit,
-        Chat_Moderate,
+        Channel_Moderate,
         Collections_Edit,
         Communities_Edit,
         Communities_Moderate,
