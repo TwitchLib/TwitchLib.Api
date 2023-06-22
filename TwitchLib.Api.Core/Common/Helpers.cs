@@ -154,6 +154,8 @@ namespace TwitchLib.Api.Core.Common
                     return "moderator:manage:chat_messages";
                 case AuthScopes.Helix_Moderator_Manage_Chat_Settings:
                     return "moderator:manage:chat_settings";
+                case AuthScopes.Helix_Moderator_Manage_Shoutouts:
+                    return "moderator:manage:shoutouts";
                 case AuthScopes.Helix_Moderator_Read_Automod_Settings:
                     return "moderator:read:automod_settings";
                 case AuthScopes.Helix_Moderator_Read_Blocked_Terms:

@@ -56,6 +56,7 @@
         Helix_Moderator_Manage_Automod_Settings,
         Helix_moderator_Manage_Chat_Messages,
         Helix_Moderator_Manage_Chat_Settings,
+        Helix_Moderator_Manage_Shoutouts,
         Helix_Moderator_Read_Blocked_Terms,
         Helix_Moderator_Read_Automod_Settings,
         Helix_Moderator_Read_Chat_Settings,
