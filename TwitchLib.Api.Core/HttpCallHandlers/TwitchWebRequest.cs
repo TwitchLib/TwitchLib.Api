@@ -32,7 +32,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
 
         public Task PutBytesAsync(string url, byte[] payload)
         {
-            return Task.Factory.StartNew(() =>
+            return Task.Factory.StartNew(async ( ) =>
             {
                 try
                 {
@@ -41,7 +41,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 }
                 catch (WebException ex)
                 {
-                    HandleWebException(ex);
+                   await HandleWebException(ex);
                 }
             });
 
@@ -91,7 +91,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                     return new KeyValuePair<int, string>((int)response.StatusCode, data);
                 }
             }
-            catch (WebException ex) { HandleWebException(ex); }
+            catch (WebException ex) { await HandleWebException(ex); }
 
             return new KeyValuePair<int, string>(0, null);
         }
@@ -118,7 +118,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             });
         }
 
-        private void HandleWebException(WebException e)
+        private async Task HandleWebException(WebException e)
         {
             if (!(e.Response is HttpWebResponse errorResp))
                 throw e;
@@ -131,13 +131,13 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 {
                     using (var reader = new StreamReader(responseStream))
                     {
-                        var objText = reader.ReadToEnd();
+                        var objText = await reader.ReadToEndAsync();
                         response.Content = new StringContent(objText, Encoding.UTF8, "application/json");
                     }
                 }
             }
             OnCallError?.Invoke(this,response);
-            var reason = " Twitch returned " + response.ReasonPhrase + "With content "+ response?.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var reason = " Twitch returned " + response.ReasonPhrase + "With content "+ await response?.Content.ReadAsStringAsync();
 
             switch (errorResp.StatusCode)
             {

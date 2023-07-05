@@ -44,7 +44,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             var response = await _http.PutAsync(new Uri(url), new ByteArrayContent(payload)).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
-                HandleWebException(response);
+               await HandleWebException(response);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 return new KeyValuePair<int, string>((int)response.StatusCode, respStr);
             }
 
-            HandleWebException(response);
+            await HandleWebException(response);
             return new KeyValuePair<int, string>(0, null);
         }
 
@@ -121,9 +121,9 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             return (int)response.StatusCode;
         }
 
-        private void HandleWebException(HttpResponseMessage errorResp)
+        private async Task HandleWebException(HttpResponseMessage errorResp)
         {
-            var reason = " Twitch returned " + errorResp.ReasonPhrase + "With content " + errorResp?.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var reason = " Twitch returned " + errorResp.ReasonPhrase + "With content " + await errorResp?.Content.ReadAsStringAsync();
             OnCallError?.Invoke(this,errorResp);
 
             switch (errorResp?.StatusCode)
