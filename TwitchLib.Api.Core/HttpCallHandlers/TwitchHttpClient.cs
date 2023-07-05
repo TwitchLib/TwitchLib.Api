@@ -21,6 +21,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
     {
         private readonly ILogger<TwitchHttpClient> _logger;
         private readonly HttpClient _http;
+        public event EventHandler<HttpResponseMessage> OnCallError ;
 
         /// <summary>
         /// Creates an Instance of the TwitchHttpClient Class.
@@ -122,30 +123,37 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
 
         private void HandleWebException(HttpResponseMessage errorResp)
         {
-            switch (errorResp.StatusCode)
+            var reason = " Twitch returned " + errorResp?.ReasonPhrase;
+            OnCallError?.Invoke(this,errorResp);
+
+            switch (errorResp?.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
-                    throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set. \n 2. Your refresh token was invalid. \n 3. You requested a username when the server was expecting a user ID.", errorResp);
+                    throw new BadRequestException("Your request failed because either: \n" +
+                                                  " 1. Your ClientID was invalid/not set. \n" +
+                                                  " 2. Your refresh token was invalid. \n" +
+                                                  " 3. You requested a username when the server was expecting a user ID." +
+                                                  reason, errorResp);
                 case HttpStatusCode.Unauthorized:
                     var authenticateHeader = errorResp.Headers.WwwAuthenticate;
                     if (authenticateHeader == null || authenticateHeader.Count <= 0)
-                        throw new BadScopeException("Your request was blocked due to bad credentials (Do you have the right scope for your access token?).", errorResp);
-                    throw new TokenExpiredException("Your request was blocked due to an expired Token. Please refresh your token and update your API instance settings.", errorResp);
+                        throw new BadScopeException("Your request was blocked due to bad credentials (Do you have the right scope for your access token?)." + reason, errorResp);
+                    throw new TokenExpiredException("Your request was blocked due to an expired Token. Please refresh your token and update your API instance settings." + reason, errorResp);
                 case HttpStatusCode.NotFound:
-                    throw new BadResourceException("The resource you tried to access was not valid.", errorResp);
+                    throw new BadResourceException("The resource you tried to access was not valid." + reason, errorResp);
                 case (HttpStatusCode)429:
-                    errorResp.Headers.TryGetValues("Ratelimit-Reset", out var resetTime);
-                    throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made", resetTime.FirstOrDefault(), errorResp);
+                    errorResp.Headers.TryGetValues("Ratelimit-Reset" + reason, out var resetTime);
+                    throw new TooManyRequestsException("You have reached your rate limit. Too many requests were made" + reason, resetTime.FirstOrDefault(), errorResp);
                 case HttpStatusCode.BadGateway:
-                    throw new BadGatewayException("The API answered with a 502 Bad Gateway. Please retry your request", errorResp);
+                    throw new BadGatewayException("The API answered with a 502 Bad Gateway. Please retry your request" + reason, errorResp);
                 case HttpStatusCode.GatewayTimeout:
-                    throw new GatewayTimeoutException("The API answered with a 504 Gateway Timeout. Please retry your request", errorResp);
+                    throw new GatewayTimeoutException("The API answered with a 504 Gateway Timeout. Please retry your request" + reason, errorResp);
                 case HttpStatusCode.InternalServerError:
-                    throw new InternalServerErrorException("The API answered with a 500 Internal Server Error. Please retry your request", errorResp);
+                    throw new InternalServerErrorException("The API answered with a 500 Internal Server Error. Please retry your request" + reason, errorResp);
                 case HttpStatusCode.Forbidden:
-                    throw new BadTokenException("The token provided in the request did not match the associated user. Make sure the token you're using is from the resource owner (streamer? viewer?)", errorResp);
+                    throw new BadTokenException("The token provided in the request did not match the associated user. Make sure the token you're using is from the resource owner (streamer? viewer?)" + reason, errorResp);
                 default:
-                    throw new HttpRequestException("Something went wrong during the request! Please try again later");
+                    throw new HttpRequestException("Something went wrong during the request! Please try again later" + reason);
             }
         }
 
