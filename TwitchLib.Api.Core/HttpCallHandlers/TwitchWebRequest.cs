@@ -137,7 +137,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 }
             }
             OnCallError?.Invoke(this,response);
-            var reason = " Twitch returned " + response.ReasonPhrase;
+            var reason = " Twitch returned " + response.ReasonPhrase + "With content "+ response?.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
             switch (errorResp.StatusCode)
             {
