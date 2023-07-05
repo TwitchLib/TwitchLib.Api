@@ -123,7 +123,11 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
 
         private async Task HandleWebException(HttpResponseMessage errorResp)
         {
-            var reason = " Twitch returned " + errorResp.ReasonPhrase + "With content " + await errorResp?.Content.ReadAsStringAsync();
+            if (errorResp == null)
+            {
+                return;
+            }
+            var reason = " Twitch returned " + errorResp.ReasonPhrase + "With content " + await errorResp.Content.ReadAsStringAsync();
             OnCallError?.Invoke(this,errorResp);
 
             switch (errorResp?.StatusCode)
