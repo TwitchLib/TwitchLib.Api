@@ -56,7 +56,7 @@ namespace TwitchLib.Api.Helix
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns></returns>
         /// <exception cref="BadParameterException"></exception>
-        public Task ModifyChannelInformationAsync(string broadcasterId, ModifyChannelInformationRequest request, string accessToken = null)
+        public async Task<bool> ModifyChannelInformationAsync(string broadcasterId, ModifyChannelInformationRequest request, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
@@ -66,7 +66,10 @@ namespace TwitchLib.Api.Helix
                 new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
             };
 
-            return TwitchPatchAsync("/channels", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
+            var response = await TwitchPatchAsync("/channels", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
+
+            // Successfully updated the channel's properties if return code is 204 (No Content)
+            return response.Key == 204;
         }
         #endregion
 

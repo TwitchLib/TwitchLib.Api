@@ -26,148 +26,270 @@ namespace TwitchLib.Api.Core.Common
         {
             switch (scope)
             {
-                case AuthScopes.Channel_Check_Subscription:
-                    return "channel_check_subscription";
-                case AuthScopes.Channel_Commercial:
-                    return "channel_commercial";
-                case AuthScopes.Channel_Editor:
-                    return "channel_editor";
-                case AuthScopes.Channel_Feed_Edit:
-                    return "channel_feed_edit";
-                case AuthScopes.Channel_Feed_Read:
-                    return "channel_feed_read";
                 case AuthScopes.Chat_Read:
                     return "chat:read";
                 case AuthScopes.Channel_Moderate:
                     return "channel:moderate";
                 case AuthScopes.Chat_Edit:
                     return "chat:edit";
-                case AuthScopes.Channel_Read:
-                    return "channel_read";
-                case AuthScopes.Channel_Stream:
-                    return "channel_stream";
-                case AuthScopes.Channel_Subscriptions:
-                    return "channel_subscriptions";
-                case AuthScopes.Collections_Edit:
-                    return "collections_edit";
-                case AuthScopes.Communities_Edit:
-                    return "communities_edit";
-                case AuthScopes.Communities_Moderate:
-                    return "communities_moderate";
-                case AuthScopes.OpenId:
-                    return "openid";
-                case AuthScopes.User_Blocks_Edit:
-                    return "user_blocks_edit";
-                case AuthScopes.User_Blocks_Read:
-                    return "user_blocks_read";
-                case AuthScopes.User_Follows_Edit:
-                    return "user_follows_edit";
-                case AuthScopes.User_Read:
-                    return "user_read";
-                case AuthScopes.User_Subscriptions:
-                    return "user_subscriptions";
-                case AuthScopes.Viewing_Activity_Read:
-                    return "viewing_activity_read";
-                case AuthScopes.Helix_Analytics_Read_Extensions:
+                case AuthScopes.Whisper_Read:
+                    return "whispers:read";
+                case AuthScopes.Whisper_Edit:
+                    return "whispers:edit";
+                case AuthScopes.Analytics_Read_Extensions:
                     return "analytics:read:extensions";
-                case AuthScopes.Helix_Analytics_Read_Games:
+                case AuthScopes.Analytics_Read_Games:
                     return "analytics:read:games";
-                case AuthScopes.Helix_Bits_Read:
+                case AuthScopes.Bits_Read:
                     return "bits:read";
-                case AuthScopes.Helix_Channel_Edit_Commercial:
+                case AuthScopes.Channel_Edit_Commercial:
                     return "channel:edit:commercial";
-                case AuthScopes.Helix_Channel_Manage_Broadcast:
+                case AuthScopes.Channel_Manage_Broadcast:
                     return "channel:manage:broadcast";
-                case AuthScopes.Helix_Channel_Manage_Extensions:
+                case AuthScopes.Channel_Manage_Extensions:
                     return "channel:manage:extensions";
-                case AuthScopes.Helix_Channel_Manage_Moderators:
+                case AuthScopes.Channel_Manage_Moderators:
                     return "channel:manage:moderators";
-                case AuthScopes.Helix_Channel_Manage_Redemptions:
+                case AuthScopes.Channel_Manage_Redemptions:
                     return "channel:manage:redemptions";
-                case AuthScopes.Helix_Channel_Manage_Polls:
+                case AuthScopes.Channel_Manage_Polls:
                     return "channel:manage:polls";
-                case AuthScopes.Helix_Channel_Manage_Predictions:
+                case AuthScopes.Channel_Manage_Predictions:
                     return "channel:manage:predictions";
-                case AuthScopes.Helix_Channel_Manage_Schedule:
+                case AuthScopes.Channel_Manage_Schedule:
                     return "channel:manage:schedule";
-                case AuthScopes.Helix_Channel_Manage_Videos:
+                case AuthScopes.Channel_Manage_Videos:
                     return "channel:manage:videos";
-                case AuthScopes.Helix_Channel_Manage_VIPs:
+                case AuthScopes.Channel_Manage_VIPs:
                     return "channel:manage:vips";
-                case AuthScopes.Helix_Channel_Read_Charity:
+                case AuthScopes.Channel_Manage_Guest_Star:
+                    return "channel:manage:guest_star";
+                case AuthScopes.Channel_Manage_Raids:
+                    return "channel:manage:raids";
+                case AuthScopes.Channel_Read_Charity:
                     return "channel:read:charity";
-                case AuthScopes.Helix_Channel_Read_Editors:
+                case AuthScopes.Channel_Read_Editors:
                     return "channel:read:editors";
-                case AuthScopes.Helix_Channel_Read_Goals:
+                case AuthScopes.Channel_Read_Goals:
                     return "channel:read:goals";
-                case AuthScopes.Helix_Channel_Read_Hype_Train:
+                case AuthScopes.Channel_Read_Hype_Train:
                     return "channel:read:hype_train";
-                case AuthScopes.Helix_Channel_Read_Polls:
+                case AuthScopes.Channel_Read_Polls:
                     return "channel:read:polls";
-                case AuthScopes.Helix_Channel_Read_Predictions:
+                case AuthScopes.Channel_Read_Predictions:
                     return "channel:read:predictions";
-                case AuthScopes.Helix_Channel_Read_Redemptions:
+                case AuthScopes.Channel_Read_Redemptions:
                     return "channel:read:redemptions";
-                case AuthScopes.Helix_Channel_Read_Stream_Key:
+                case AuthScopes.Channel_Read_Stream_Key:
                     return "channel:read:stream_key";
-                case AuthScopes.Helix_Channel_Read_Subscriptions:
+                case AuthScopes.Channel_Read_Subscriptions:
                     return "channel:read:subscriptions";
-                case AuthScopes.Helix_Channel_Read_VIPs:
+                case AuthScopes.Channel_Read_VIPs:
                     return "channel:read:vips";
-                case AuthScopes.Helix_Clips_Edit:
+                case AuthScopes.Channel_Read_Guest_Star:
+                    return "channel:read:guest_star";
+                case AuthScopes.Clips_Edit:
                     return "clips:edit";
-                case AuthScopes.Helix_Moderation_Read:
+                case AuthScopes.Moderation_Read:
                     return "moderation:read";
-                case AuthScopes.Helix_User_Edit:
+                case AuthScopes.User_Edit:
                     return "user:edit";
-                case AuthScopes.Helix_User_Edit_Broadcast:
-                    return "user:edit:broadcast";
-                case AuthScopes.Helix_User_Edit_Follows:
+                case AuthScopes.User_Edit_Follows:
                     return "user:edit:follows";
-                case AuthScopes.Helix_User_Read_BlockedUsers:
+                case AuthScopes.User_Read_BlockedUsers:
                     return "user:read:blocked_users";
-                case AuthScopes.Helix_User_Read_Broadcast:
+                case AuthScopes.User_Read_Broadcast:
                     return "user:read:broadcast";
-                case AuthScopes.Helix_User_Read_Email:
+                case AuthScopes.User_Read_Email:
                     return "user:read:email";
-                case AuthScopes.Helix_User_Read_Follows:
+                case AuthScopes.User_Read_Follows:
                     return "user:read:follows";
-                case AuthScopes.Helix_User_Read_Subscriptions:
+                case AuthScopes.User_Read_Subscriptions:
                     return "user:read:subscriptions";
-                case AuthScopes.Helix_User_Manage_BlockedUsers:
+                case AuthScopes.User_Manage_BlockedUsers:
                     return "user:manage:blocked_users";
-                case AuthScopes.Helix_User_Manage_Chat_Color:
+                case AuthScopes.User_Manage_Chat_Color:
                     return "user:manage:chat_color";
-                case AuthScopes.Helix_User_Manage_Whispers:
+                case AuthScopes.User_Manage_Whispers:
                     return "user:manage:whispers";
-                case AuthScopes.Helix_Moderator_Manage_Announcements:
+                case AuthScopes.Moderator_Manage_Announcements:
                     return "moderator:manage:announcements";
-                case AuthScopes.Helix_Moderator_Manage_Automod:
+                case AuthScopes.Moderator_Manage_Automod:
                     return "moderator:manage:automod";
-                case AuthScopes.Helix_Moderator_Manage_Automod_Settings:
+                case AuthScopes.Moderator_Manage_Automod_Settings:
                     return "moderator:manage:automod_settings";
-                case AuthScopes.Helix_Moderator_Manage_Banned_Users:
+                case AuthScopes.Moderator_Manage_Banned_Users:
                     return "moderator:manage:banned_users";
-                case AuthScopes.Helix_Moderator_Manage_Blocked_Terms:
+                case AuthScopes.Moderator_Manage_Blocked_Terms:
                     return "moderator:manage:blocked_terms";
-                case AuthScopes.Helix_moderator_Manage_Chat_Messages:
+                case AuthScopes.Moderator_Manage_Chat_Messages:
                     return "moderator:manage:chat_messages";
-                case AuthScopes.Helix_Moderator_Manage_Chat_Settings:
+                case AuthScopes.Moderator_Manage_Chat_Settings:
                     return "moderator:manage:chat_settings";
-                case AuthScopes.Helix_Moderator_Read_Automod_Settings:
+                case AuthScopes.Moderator_Read_Automod_Settings:
                     return "moderator:read:automod_settings";
-                case AuthScopes.Helix_Moderator_Read_Blocked_Terms:
+                case AuthScopes.Moderator_Read_Blocked_Terms:
                     return "moderator:read:blocked_terms";
-                case AuthScopes.Helix_Moderator_Read_Chat_Settings:
+                case AuthScopes.Moderator_Read_Chat_Settings:
                     return "moderator:read:chat_settings";
-                case AuthScopes.Helix_Moderator_Read_Chatters:
+                case AuthScopes.Moderator_Read_Chatters:
                     return "moderator:read:chatters";
-                case AuthScopes.Helix_Moderator_Read_Followers:
+                case AuthScopes.Moderator_Read_Followers:
                     return "moderator:read:followers";
+                case AuthScopes.Moderator_Read_Guest_Star:
+                    return "moderator:read:guest_star";
+                case AuthScopes.Moderator_Read_Shield_Mode:
+                    return "moderator:read:shield_mode";
+                case AuthScopes.Moderator_Read_Shoutouts:
+                    return "moderator:read:shoutouts";
+                case AuthScopes.Moderator_Manage_Guest_Star:
+                    return "moderator:manage:guest_star";
+                case AuthScopes.Moderator_Manage_Shield_Mode:
+                    return "moderator:manage:shield_mode";
+                case AuthScopes.Moderator_Manage_Shoutouts:
+                    return "moderator:manage:shoutouts";
                 case AuthScopes.Any:
                 case AuthScopes.None:
                 default:
-                    return "";
+                    return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Converts Twitch string to AuthScope enum.
+        /// </summary>
+        /// <param name="scope">Scope as twitch string</param>
+        /// <returns>Twitch scope as AuthScope</returns>
+        public static AuthScopes StringToScope(string scope)
+        {
+            switch (scope)
+            {
+                case "chat:read":
+                    return AuthScopes.Chat_Read;
+                case "channel:moderate":
+                    return AuthScopes.Channel_Moderate;
+                case "chat:edit":
+                    return AuthScopes.Chat_Edit;
+                case "whispers:read":
+                    return AuthScopes.Whisper_Read;
+                case "whispers:edit":
+                    return AuthScopes.Whisper_Edit;
+                case "analytics:read:extensions":
+                    return AuthScopes.Analytics_Read_Extensions;
+                case "analytics:read:games":
+                    return AuthScopes.Analytics_Read_Games;
+                case "bits:read":
+                    return AuthScopes.Bits_Read;
+                case "channel:edit:commercial":
+                    return AuthScopes.Channel_Edit_Commercial;
+                case "channel:manage:broadcast":
+                    return AuthScopes.Channel_Manage_Broadcast;
+                case "channel:manage:extensions":
+                    return AuthScopes.Channel_Manage_Extensions;
+                case "channel:manage:moderators":
+                    return AuthScopes.Channel_Manage_Moderators;
+                case "channel:manage:redemptions":
+                    return AuthScopes.Channel_Manage_Redemptions;
+                case "channel:manage:polls":
+                    return AuthScopes.Channel_Manage_Polls;
+                case "channel:manage:predictions":
+                    return AuthScopes.Channel_Manage_Predictions;
+                case "channel:manage:schedule":
+                    return AuthScopes.Channel_Manage_Schedule;
+                case "channel:manage:videos":
+                    return AuthScopes.Channel_Manage_Videos;
+                case "channel:manage:vips":
+                    return AuthScopes.Channel_Manage_VIPs;
+                case "channel:manage:guest_star":
+                    return AuthScopes.Channel_Manage_Guest_Star;
+                case "channel:manage:raids":
+                    return AuthScopes.Channel_Manage_Raids;
+                case "channel:read:charity":
+                    return AuthScopes.Channel_Read_Charity;
+                case "channel:read:editors":
+                    return AuthScopes.Channel_Read_Editors;
+                case "channel:read:goals":
+                    return AuthScopes.Channel_Read_Goals;
+                case "channel:read:hype_train":
+                    return AuthScopes.Channel_Read_Hype_Train;
+                case "channel:read:polls":
+                    return AuthScopes.Channel_Read_Polls;
+                case "channel:read:predictions":
+                    return AuthScopes.Channel_Read_Predictions;
+                case "channel:read:redemptions":
+                    return AuthScopes.Channel_Read_Redemptions;
+                case "channel:read:stream_key":
+                    return AuthScopes.Channel_Read_Stream_Key;
+                case "channel:read:subscriptions":
+                    return AuthScopes.Channel_Read_Subscriptions;
+                case "channel:read:vips":
+                    return AuthScopes.Channel_Read_VIPs;
+                case "channel:read:guest_star":
+                    return AuthScopes.Channel_Read_Guest_Star;
+                case "clips:edit":
+                    return AuthScopes.Clips_Edit;
+                case "moderation:read":
+                    return AuthScopes.Moderation_Read;
+                case "user:edit":
+                    return AuthScopes.User_Edit;
+                case "user:edit:follows":
+                    return AuthScopes.User_Edit_Follows;
+                case "user:read:blocked_users":
+                    return AuthScopes.User_Read_BlockedUsers;
+                case "user:read:broadcast":
+                    return AuthScopes.User_Read_Broadcast;
+                case "user:read:email":
+                    return AuthScopes.User_Read_Email;
+                case "user:read:follows":
+                    return AuthScopes.User_Read_Follows;
+                case "user:read:subscriptions":
+                    return AuthScopes.User_Read_Subscriptions;
+                case "user:manage:blocked_users":
+                    return AuthScopes.User_Manage_BlockedUsers;
+                case "user:manage:chat_color":
+                    return AuthScopes.User_Manage_Chat_Color;
+                case "user:manage:whispers":
+                    return AuthScopes.User_Manage_Whispers;
+                case "moderator:manage:announcements":
+                    return AuthScopes.Moderator_Manage_Announcements;
+                case "moderator:manage:automod":
+                    return AuthScopes.Moderator_Manage_Automod;
+                case "moderator:manage:automod_settings":
+                    return AuthScopes.Moderator_Manage_Automod_Settings;
+                case "moderator:manage:banned_users":
+                    return AuthScopes.Moderator_Manage_Banned_Users;
+                case "moderator:manage:blocked_terms":
+                    return AuthScopes.Moderator_Manage_Blocked_Terms;
+                case "moderator:manage:chat_messages":
+                    return AuthScopes.Moderator_Manage_Chat_Messages;
+                case "moderator:manage:chat_settings":
+                    return AuthScopes.Moderator_Manage_Chat_Settings;
+                case "moderator:manage:guest_star":
+                    return AuthScopes.Moderator_Manage_Guest_Star;
+                case "moderator:manage:shield_mode":
+                    return AuthScopes.Moderator_Manage_Shield_Mode;
+                case "moderator:manage:shoutouts":
+                    return AuthScopes.Moderator_Manage_Shoutouts;
+                case "moderator:read:automod_settings":
+                    return AuthScopes.Moderator_Read_Automod_Settings;
+                case "moderator:read:blocked_terms":
+                    return AuthScopes.Moderator_Read_Blocked_Terms;
+                case "moderator:read:chat_settings":
+                    return AuthScopes.Moderator_Read_Chat_Settings;
+                case "moderator:read:chatters":
+                    return AuthScopes.Moderator_Read_Chatters;
+                case "moderator:read:followers":
+                    return AuthScopes.Moderator_Read_Followers;
+                case "moderator:read:guest_star":
+                    return AuthScopes.Moderator_Read_Guest_Star;
+                case "moderator:read:shield_mode":
+                    return AuthScopes.Moderator_Read_Shield_Mode;
+                case "moderator:read:shoutouts":
+                    return AuthScopes.Moderator_Read_Shoutouts;
+                case "":
+                    return AuthScopes.None;
+                default:
+                    throw new Exception("Unknown scope");
             }
         }
 
