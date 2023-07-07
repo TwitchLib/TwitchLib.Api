@@ -21,7 +21,6 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
     {
         private readonly ILogger<TwitchHttpClient> _logger;
         private readonly HttpClient _http;
-        public event EventHandler<HttpResponseMessage> OnCallError ;
 
         /// <summary>
         /// Creates an Instance of the TwitchHttpClient Class.
@@ -128,7 +127,6 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 return;
             }
             var reason = " Twitch returned " + errorResp.ReasonPhrase + "With content " + await errorResp.Content.ReadAsStringAsync();
-            OnCallError?.Invoke(this,errorResp);
 
             switch (errorResp?.StatusCode)
             {
