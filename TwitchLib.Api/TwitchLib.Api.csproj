@@ -21,6 +21,7 @@
     <AssemblyVersion>3.10.0</AssemblyVersion>
     <FileVersion>3.10.0</FileVersion>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
