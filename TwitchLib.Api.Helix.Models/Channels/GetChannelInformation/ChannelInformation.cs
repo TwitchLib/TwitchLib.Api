@@ -26,18 +26,18 @@ namespace TwitchLib.Api.Helix.Models.Channels.GetChannelInformation
       public string BroadcasterName { get; protected set; }
 
       /// <summary>
-      /// <para>The broadcaster’s preferred language.</para>
-      /// <para>The value is an ISO 639-1 two-letter language code (for example, en for English). The value is set to “other” if the language is not a Twitch supported language.</para>
-      /// </summary>
-      [JsonProperty(PropertyName = "broadcaster_language")]
-      public string BroadcasterLanguage { get; protected set; }
-
-      /// <summary>
       /// <para>An ID that uniquely identifies the game that the broadcaster is playing or last played.</para> 
       /// <para>The value is an empty string if the broadcaster has never played a game.</para>
       /// </summary>
       [JsonProperty(PropertyName = "game_id")]
       public string GameId { get; protected set; }
+
+      /// <summary>
+      /// <para>The broadcaster’s preferred language.</para>
+      /// <para>The value is an ISO 639-1 two-letter language code (for example, en for English). The value is set to “other” if the language is not a Twitch supported language.</para>
+      /// </summary>
+      [JsonProperty(PropertyName = "broadcaster_language")]
+      public string BroadcasterLanguage { get; protected set; }
 
       /// <summary>
       /// <para> 	The name of the game that the broadcaster is playing or last played.</para>
