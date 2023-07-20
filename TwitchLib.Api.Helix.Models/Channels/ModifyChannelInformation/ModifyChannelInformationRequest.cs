@@ -18,13 +18,6 @@ namespace TwitchLib.Api.Helix.Models.Channels.ModifyChannelInformation
       public string GameId { get; set; }
 
       /// <summary>
-      /// <para>The title of the broadcaster's stream.</para>
-      /// <para>You may not set this field to an empty string.</para>
-      /// </summary>
-      [JsonProperty(PropertyName = "title", NullValueHandling = NullValueHandling.Ignore)]
-      public string Title { get; set; }
-
-      /// <summary>
       /// <para>The broadcaster’s preferred language.</para>
       /// <para>Set the value to an ISO 639-1 two-letter language code - for example, en for English.</para>
       /// <para>Set the value to “other” if the broadcaster’s preferred language is not a Twitch supported language.</para>
@@ -32,6 +25,13 @@ namespace TwitchLib.Api.Helix.Models.Channels.ModifyChannelInformation
       /// </summary>
       [JsonProperty(PropertyName = "broadcaster_language", NullValueHandling = NullValueHandling.Ignore)]
       public string BroadcasterLanguage { get; set; }
+
+      /// <summary>
+      /// <para>The title of the broadcaster's stream.</para>
+      /// <para>You may not set this field to an empty string.</para>
+      /// </summary>
+      [JsonProperty(PropertyName = "title", NullValueHandling = NullValueHandling.Ignore)]
+      public string Title { get; set; }
 
       /// <summary>
       /// <para>The number of seconds you want your broadcast buffered before streaming it live. The delay helps ensure fairness during competitive play.</para>
