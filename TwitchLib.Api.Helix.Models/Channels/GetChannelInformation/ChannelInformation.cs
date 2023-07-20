@@ -65,5 +65,17 @@ namespace TwitchLib.Api.Helix.Models.Channels.GetChannelInformation
       /// </summary>
       [JsonProperty(PropertyName = "tags")]
       public string[] Tags { get; protected set; }
+
+      /// <summary>
+      /// <para>The Content Classification Labels (CCL) applied to the channel.</para>
+      /// </summary>
+      [JsonProperty(PropertyName = "content_classification_labels")]
+      public string[] ContentClassificationLabels { get; protected set; }
+
+      /// <summary>
+      /// <para>Boolean flag indicating if the channel has branded content.</para>
+      /// </summary>
+      [JsonProperty(PropertyName = "is_branded_content")]
+      public bool IsBrandedContent { get; protected set; }
    }
 }
