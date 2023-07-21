@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using TwitchLib.Api.Core.Enums;
 
 namespace TwitchLib.Api.Helix.Models.Channels.ModifyChannelInformation
@@ -13,6 +14,7 @@ namespace TwitchLib.Api.Helix.Models.Channels.ModifyChannelInformation
       /// <para>Can be one of the following values:
       /// DrugsIntoxication, SexualThemes, ViolentGraphic, Gambling, ProfanityVulgarity</para>
       /// </summary>
+      [JsonConverter(typeof(StringEnumConverter))]
       [JsonProperty(PropertyName = "id")]
       public ContentClassificationLabelEnum Id { get; set; }
 
