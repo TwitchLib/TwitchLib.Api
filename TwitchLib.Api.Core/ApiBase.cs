@@ -338,10 +338,18 @@ namespace TwitchLib.Api.Core
             {
                 for (var i = 0; i < getParams.Count; i++)
                 {
+                    // When "after" is null, then Uri.EscapeDataString dies with null exception.
+                    var value = "";
+
+                    if (getParams[i].Value != null)
+                        value = getParams[i].Value;
+
                     if (i == 0)
-                        url += $"?{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                        url += "?";
                     else
-                        url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                        url += "&";
+
+                    url += $"{getParams[i].Key}={Uri.EscapeDataString(value)}";
                 }
             }
             return url;

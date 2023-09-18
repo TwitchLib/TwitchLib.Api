@@ -32,7 +32,7 @@ namespace TwitchLib.Api
             http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             Settings = settings ?? new ApiSettings();
 
-            Auth = new Auth.Auth(Settings, rateLimiter, http);
+            Auth = new Auth.Auth(_logger, Settings, rateLimiter, http);
             Helix = new Helix.Helix(loggerFactory, rateLimiter, Settings, http);
             ThirdParty = new ThirdParty.ThirdParty(Settings, rateLimiter, http);
             Undocumented = new Undocumented(Settings, rateLimiter, http);

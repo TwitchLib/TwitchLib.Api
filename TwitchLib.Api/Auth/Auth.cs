@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using TwitchLib.Api.Core;
@@ -11,8 +15,33 @@ namespace TwitchLib.Api.Auth
     /// <summary>These endpoints fall outside of v5 and Helix, and relate to Authorization</summary>
     public class Auth : ApiBase
     {
-        public Auth(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        private ILogger _logger;
+
+        public Auth(ILogger logger, IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         {
+            _logger = logger;
+        }
+
+        public AccessCodeResponse GetAccessCodeFromClientIdAndSecret(CancellationTokenSource cancellationToken, string clientId, string secret, int listenerPort = 5000)
+        {
+            // TODO: Clean up the scopes!
+            List<AuthScopes> scopes = new List<AuthScopes>();
+            scopes.Add(AuthScopes.Helix_Channel_Manage_Polls);
+            scopes.Add(AuthScopes.Helix_Channel_Read_Polls);
+
+            string authorizationUrl = GetAuthorizationCodeUrl($"http://localhost:{listenerPort}/api/callback", scopes, forceVerify: false, state: Guid.NewGuid().ToString(), clientId: clientId);
+
+            // Launch a browser to authorize the user's scope and trigger Twitch to return an access code.
+            Process process = new Process();
+            process.StartInfo.UseShellExecute = true;
+            process.StartInfo.FileName = authorizationUrl;
+            process.Start();
+
+            var authenticationServerManager = new AuthenticationServerManager();
+
+            AccessCodeResponse response = authenticationServerManager.WaitForAuthorizationCodeCallback(_logger, cancellationToken, listenerPort);
+
+            return response;
         }
 
         /// <summary>
