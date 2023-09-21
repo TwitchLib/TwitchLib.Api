@@ -1,5 +1,7 @@
 using System.ComponentModel;
+using EmbedIO.Authentication;
 using Microsoft.Extensions.Logging;
+using TwitchLib.Api.Auth;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.HttpCallHandlers;
 using TwitchLib.Api.Core.Interfaces;
@@ -32,10 +34,15 @@ namespace TwitchLib.Api
             http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             Settings = settings ?? new ApiSettings();
 
+            
+
             Auth = new Auth.Auth(_logger, Settings, rateLimiter, http);
-            Helix = new Helix.Helix(loggerFactory, rateLimiter, Settings, http);
+
+            var userAccessTokenManager = new UserAccessTokenManager(settings, Auth);
+
+            Helix = new Helix.Helix(loggerFactory, rateLimiter, Settings, http, userAccessTokenManager);
             ThirdParty = new ThirdParty.ThirdParty(Settings, rateLimiter, http);
-            Undocumented = new Undocumented(Settings, rateLimiter, http);
+            Undocumented = new Undocumented(Settings, rateLimiter, http, userAccessTokenManager);
 
             Settings.PropertyChanged += SettingsPropertyChanged;
         }

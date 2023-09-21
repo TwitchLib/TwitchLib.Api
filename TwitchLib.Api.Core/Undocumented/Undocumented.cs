@@ -15,7 +15,7 @@ namespace TwitchLib.Api.Core.Undocumented
     /// </summary>
     public class Undocumented : ApiBase
     {
-        public Undocumented(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public Undocumented(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager) : base(settings, rateLimiter, http, userAccessTokenManager)
         {
         }
 

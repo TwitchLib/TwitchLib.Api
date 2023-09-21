@@ -15,6 +15,7 @@ namespace TwitchLib.Api.Core
     public class ApiBase
     {
         private readonly TwitchLibJsonSerializer _jsonSerializer;
+        private readonly IUserAccessTokenManager _userAccessTokenManager;
         protected readonly IApiSettings Settings;
         private readonly IRateLimiter _rateLimiter;
         private readonly IHttpCallHandler _http;
@@ -25,12 +26,13 @@ namespace TwitchLib.Api.Core
         private DateTime? _serverBasedAccessTokenExpiry;
         private string _serverBasedAccessToken;
 
-        public ApiBase(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
+        public ApiBase(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager)
         {
             Settings = settings; 
             _rateLimiter = rateLimiter;
             _http = http;
             _jsonSerializer = new TwitchLibJsonSerializer();
+            _userAccessTokenManager = userAccessTokenManager;
         }
 
         public async ValueTask<string> GetAccessTokenAsync(string accessToken = null)
@@ -39,6 +41,8 @@ namespace TwitchLib.Api.Core
                 return accessToken;
             if (!string.IsNullOrWhiteSpace(Settings.AccessToken))
                 return Settings.AccessToken;
+            if (Settings.UseUserTokenForHelixCalls && _userAccessTokenManager != null)
+                return await GenerateUserAccessToken();
             if (!string.IsNullOrWhiteSpace(Settings.Secret) && !string.IsNullOrWhiteSpace(Settings.ClientId) && !Settings.SkipAutoServerTokenGeneration)
             {
                 if (_serverBasedAccessTokenExpiry == null || _serverBasedAccessTokenExpiry - TimeSpan.FromMinutes(1) < DateTime.Now)
@@ -48,6 +52,11 @@ namespace TwitchLib.Api.Core
             }
 
             return null;
+        }
+
+        private async Task<string> GenerateUserAccessToken()
+        {
+            return await _userAccessTokenManager.GetUserAccessToken();
         }
 
         internal async Task<string> GenerateServerBasedAccessToken()

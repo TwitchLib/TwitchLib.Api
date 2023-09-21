@@ -30,7 +30,7 @@ namespace TwitchLib.Api.ThirdParty
 
         public class UsernameChangeApi : ApiBase
         {
-            public UsernameChangeApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+            public UsernameChangeApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http, null)
             {
             }
 
@@ -52,7 +52,7 @@ namespace TwitchLib.Api.ThirdParty
 
         public class ModLookupApi : ApiBase
         {
-            public ModLookupApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+            public ModLookupApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http, null)
             {
             }
 
@@ -92,7 +92,7 @@ namespace TwitchLib.Api.ThirdParty
             private string _apiId;
             private Timer _pingTimer;
 
-            public AuthorizationFlowApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+            public AuthorizationFlowApi(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http, null)
             {
             }
 

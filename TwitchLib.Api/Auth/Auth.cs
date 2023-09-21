@@ -17,12 +17,12 @@ namespace TwitchLib.Api.Auth
     {
         private ILogger _logger;
 
-        public Auth(ILogger logger, IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public Auth(ILogger logger, IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http, null)
         {
             _logger = logger;
         }
 
-        public AccessCodeResponse GetAccessCodeFromClientIdAndSecret(CancellationTokenSource cancellationToken, string clientId, string secret, int listenerPort = 5000)
+        internal AccessCodeResponse GetAccessCodeFromClientIdAndSecret(CancellationTokenSource cancellationToken, string clientId, string secret, int listenerPort = 5000)
         {
             // TODO: Clean up the scopes!
             List<AuthScopes> scopes = new List<AuthScopes>();
@@ -31,15 +31,17 @@ namespace TwitchLib.Api.Auth
 
             string authorizationUrl = GetAuthorizationCodeUrl($"http://localhost:{listenerPort}/api/callback", scopes, forceVerify: false, state: Guid.NewGuid().ToString(), clientId: clientId);
 
+            Console.WriteLine($"authorizationUrl: {authorizationUrl}");
+
             // Launch a browser to authorize the user's scope and trigger Twitch to return an access code.
             Process process = new Process();
             process.StartInfo.UseShellExecute = true;
             process.StartInfo.FileName = authorizationUrl;
             process.Start();
 
-            var authenticationServerManager = new AuthenticationServerManager();
+            var authenticationServerManager = new AuthenticationServerManager(_logger);
 
-            AccessCodeResponse response = authenticationServerManager.WaitForAuthorizationCodeCallback(_logger, cancellationToken, listenerPort);
+            AccessCodeResponse response = authenticationServerManager.WaitForAuthorizationCodeCallback(cancellationToken, listenerPort);
 
             return response;
         }

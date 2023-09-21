@@ -17,7 +17,7 @@ namespace TwitchLib.Api.Helix
     /// </summary>
     public class Predictions : ApiBase
     {
-        public Predictions(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public Predictions(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager) : base(settings, rateLimiter, http, userAccessTokenManager)
         {
         }
 

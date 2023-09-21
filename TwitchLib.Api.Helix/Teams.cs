@@ -12,7 +12,7 @@ namespace TwitchLib.Api.Helix
     /// </summary>
     public class Teams : ApiBase
     {
-        public Teams(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public Teams(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager) : base(settings, rateLimiter, http, userAccessTokenManager)
         {
         }
 
