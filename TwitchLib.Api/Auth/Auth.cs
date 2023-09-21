@@ -16,22 +16,19 @@ namespace TwitchLib.Api.Auth
     public class Auth : ApiBase
     {
         private ILogger _logger;
+        private IApiSettings _settings;
 
         public Auth(ILogger logger, IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http, null)
         {
             _logger = logger;
+            _settings = settings;
         }
 
         internal AccessCodeResponse GetAccessCodeFromClientIdAndSecret(CancellationTokenSource cancellationToken, string clientId, string secret, int listenerPort = 5000)
         {
-            // TODO: Clean up the scopes!
-            List<AuthScopes> scopes = new List<AuthScopes>();
-            scopes.Add(AuthScopes.Helix_Channel_Manage_Polls);
-            scopes.Add(AuthScopes.Helix_Channel_Read_Polls);
+            string authorizationUrl = GetAuthorizationCodeUrl($"http://localhost:{listenerPort}/api/callback", _settings.Scopes, forceVerify: false, state: Guid.NewGuid().ToString(), clientId: clientId);
 
-            string authorizationUrl = GetAuthorizationCodeUrl($"http://localhost:{listenerPort}/api/callback", scopes, forceVerify: false, state: Guid.NewGuid().ToString(), clientId: clientId);
-
-            Console.WriteLine($"authorizationUrl: {authorizationUrl}");
+            _logger.LogTrace($"Auth::GetAccessCodeFromClientIdAndSecret(): authorizationUrl = {authorizationUrl}");
 
             // Launch a browser to authorize the user's scope and trigger Twitch to return an access code.
             Process process = new Process();

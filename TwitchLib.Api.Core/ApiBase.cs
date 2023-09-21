@@ -12,6 +12,10 @@ using TwitchLib.Api.Core.Models;
 
 namespace TwitchLib.Api.Core
 {
+    /// <summary>
+    /// A base class for any method calling the Twitch API. Provides authorization credentials and
+    /// abstracts for calling basic web methods.
+    /// </summary>
     public class ApiBase
     {
         private readonly TwitchLibJsonSerializer _jsonSerializer;
@@ -26,6 +30,13 @@ namespace TwitchLib.Api.Core
         private DateTime? _serverBasedAccessTokenExpiry;
         private string _serverBasedAccessToken;
 
+        /// <summary>
+        /// Standard constructor for all derived API methods.
+        /// </summary>
+        /// <param name="settings">Can be null.</param>
+        /// <param name="rateLimiter">Can be null.</param>
+        /// <param name="http">Can be null.</param>
+        /// <param name="userAccessTokenManager">Can be null.</param>
         public ApiBase(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager)
         {
             Settings = settings; 
@@ -35,7 +46,7 @@ namespace TwitchLib.Api.Core
             _userAccessTokenManager = userAccessTokenManager;
         }
 
-        public async ValueTask<string> GetAccessTokenAsync(string accessToken = null)
+        private async ValueTask<string> GetAccessTokenAsync(string accessToken = null)
         {
             if (!string.IsNullOrWhiteSpace(accessToken))
                 return accessToken;

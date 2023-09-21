@@ -38,7 +38,7 @@ namespace TwitchLib.Api
 
             Auth = new Auth.Auth(_logger, Settings, rateLimiter, http);
 
-            var userAccessTokenManager = new UserAccessTokenManager(settings, Auth);
+            var userAccessTokenManager = new UserAccessTokenManager(settings, Auth, _logger);
 
             Helix = new Helix.Helix(loggerFactory, rateLimiter, Settings, http, userAccessTokenManager);
             ThirdParty = new ThirdParty.ThirdParty(Settings, rateLimiter, http);

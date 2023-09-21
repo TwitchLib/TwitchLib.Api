@@ -16,6 +16,7 @@ namespace TwitchLib.Api.Core
         private bool _skipAutoServerTokenGeneration;
         private List<AuthScopes> _scopes = new List<AuthScopes>();
         private int _oauthResponsePort = 5000;
+        private string _oAuthResponseHostname = "localhost";
         private string _oauthTokenFile = System.Environment.ExpandEnvironmentVariables("%AppData%\\TwitchLib.API\\" + System.Diagnostics.Process.GetCurrentProcess().ProcessName + ".json");
         private bool _useUserTokenForHelixCalls = false;
         private bool _enableInsecureTokenStorage = false;
@@ -82,6 +83,12 @@ namespace TwitchLib.Api.Core
                 }
             }
         }
+        /// <summary>
+        /// Add scopes that your application will be using to this collection before calling any Helix APIs. 
+        /// A list of scopes can be found here: https://dev.twitch.tv/docs/authentication/scopes/
+        /// See the TwitchAPI reference for the scopes specific to each API. 
+        /// Note: Do not add ALL the scopes, or your account may be banned (see warning here: https://dev.twitch.tv/docs/authentication/scopes/)
+        /// </summary>
         public List<AuthScopes> Scopes
         {
             get => _scopes;
@@ -110,6 +117,23 @@ namespace TwitchLib.Api.Core
                 if (value != _oauthResponsePort)
                 {
                     _oauthResponsePort = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        ///  Set this value to a hostname or IP address if you have a multi-homed machine (more than one IP address) 
+        ///  and you would like to bind the OAuth response listener to a specific IP address. Defaults to 'localhost'
+        /// </summary>
+        public string OAuthResponseHostname
+        {
+            get => _oAuthResponseHostname;
+            set
+            {
+                if (value != _oAuthResponseHostname)
+                {
+                    _oAuthResponseHostname = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -157,6 +181,9 @@ namespace TwitchLib.Api.Core
         /// Setting this value to true will enable storage of the oAuth refresh token and other data. This storage will be done in 
         /// an unencrypted, insecure local file. Anyone else with access to your computer could read this file and gain access to 
         /// your Twitch account in unexpected ways. Only set this value to true if you have properly secured your computer.
+        /// If you do not set this value to True, and UseUserTokenForHelixCalls = True, a browser window will always open on the
+        /// first call to any Helix API to perform the OAuth handshake.
+        /// Defaults to: False
         /// </summary>
         public bool EnableInsecureTokenStorage
         {
@@ -171,6 +198,11 @@ namespace TwitchLib.Api.Core
             }
         }
 
+
+
+        /// <summary>
+        /// This event fires when ever a property is changed on the settings class.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
