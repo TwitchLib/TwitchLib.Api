@@ -13,7 +13,7 @@ namespace TwitchLib.Api.Helix
 {
     public class EventSub : ApiBase
     {
-        public EventSub(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public EventSub(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager) : base(settings, rateLimiter, http, userAccessTokenManager)
         {
         }
 

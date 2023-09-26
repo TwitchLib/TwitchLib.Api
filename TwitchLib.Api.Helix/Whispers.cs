@@ -13,7 +13,7 @@ namespace TwitchLib.Api.Helix
     /// </summary>
     public class Whispers : ApiBase
     {
-        public Whispers(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public Whispers(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager) : base(settings, rateLimiter, http, userAccessTokenManager)
         { }
 
         #region SendWhisper

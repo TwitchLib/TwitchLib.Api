@@ -14,7 +14,7 @@ namespace TwitchLib.Api.Helix
     /// </summary>
     public class Games : ApiBase
     {
-        public Games(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public Games(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager) : base(settings, rateLimiter, http, userAccessTokenManager)
         {
         }
 

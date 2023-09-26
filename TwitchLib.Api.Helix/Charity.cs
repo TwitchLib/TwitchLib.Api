@@ -15,7 +15,7 @@ namespace TwitchLib.Api.Helix
     public class Charity : ApiBase
     {
 
-        public Charity(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public Charity(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager) : base(settings, rateLimiter, http, userAccessTokenManager)
         {
         }
 

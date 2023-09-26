@@ -13,7 +13,7 @@ namespace TwitchLib.Api.Helix
     /// </summary>
     public class Goals : ApiBase
     {
-        public Goals(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public Goals(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager) : base(settings, rateLimiter, http, userAccessTokenManager)
         {
         }
 

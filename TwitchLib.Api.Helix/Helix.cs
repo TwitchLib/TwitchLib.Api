@@ -136,41 +136,41 @@ namespace TwitchLib.Api.Helix
         /// <param name="rateLimiter">Instance Of RateLimiter, otherwise no ratelimiter is used.</param>
         /// <param name="settings">Instance of ApiSettings, otherwise defaults used, can be changed later</param>
         /// <param name="http">Instance of HttpCallHandler, otherwise default handler used</param>
-        public Helix(ILoggerFactory loggerFactory = null, IRateLimiter rateLimiter = null, IApiSettings settings = null, IHttpCallHandler http = null)
+        public Helix(ILoggerFactory loggerFactory = null, IRateLimiter rateLimiter = null, IApiSettings settings = null, IHttpCallHandler http = null, IUserAccessTokenManager userAccessTokenManager = null)
         {
             _logger = loggerFactory?.CreateLogger<Helix>();
             rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
             http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
             Settings = settings ?? new ApiSettings();
 
-            Analytics = new Analytics(Settings, rateLimiter, http);
-            Ads = new Ads(Settings, rateLimiter, http);
-            Bits = new Bits(Settings, rateLimiter, http);
-            Chat = new Chat(Settings, rateLimiter, http);
-            Channels = new Channels(Settings, rateLimiter, http);
-            ChannelPoints = new ChannelPoints(Settings, rateLimiter, http);
-            Charity = new Charity(Settings, rateLimiter, http);
-            Clips = new Clips(Settings, rateLimiter, http);
-            Entitlements = new Entitlements(Settings, rateLimiter, http);
-            EventSub = new EventSub(Settings, rateLimiter, http);
-            Extensions = new Extensions(Settings, rateLimiter, http);
-            Games = new Games(Settings, rateLimiter, http);
-            Goals = new Goals(settings, rateLimiter, http);
-            HypeTrain = new HypeTrain(Settings, rateLimiter, http);
-            Moderation = new Moderation(Settings, rateLimiter, http);
-            Polls = new Polls(Settings, rateLimiter, http);
-            Predictions = new Predictions(Settings, rateLimiter, http);
-            Raids = new Raids(settings, rateLimiter, http);
-            Schedule = new Schedule(Settings, rateLimiter, http);
-            Search = new Search(Settings, rateLimiter, http);
-            Soundtrack = new Soundtrack(Settings, rateLimiter, http);
-            Streams = new Streams(Settings, rateLimiter, http);
-            Subscriptions = new Subscriptions(Settings, rateLimiter, http);
-            Tags = new Tags(Settings, rateLimiter, http);
-            Teams = new Teams(Settings, rateLimiter, http);
-            Users = new Users(Settings, rateLimiter, http);
-            Videos = new Videos(Settings, rateLimiter, http);
-            Whispers = new Whispers(Settings, rateLimiter, http);
+            Analytics = new Analytics(Settings, rateLimiter, http, userAccessTokenManager);
+            Ads = new Ads(Settings, rateLimiter, http, userAccessTokenManager);
+            Bits = new Bits(Settings, rateLimiter, http, userAccessTokenManager);
+            Chat = new Chat(Settings, rateLimiter, http, userAccessTokenManager);
+            Channels = new Channels(Settings, rateLimiter, http, userAccessTokenManager);
+            ChannelPoints = new ChannelPoints(Settings, rateLimiter, http, userAccessTokenManager);
+            Charity = new Charity(Settings, rateLimiter, http, userAccessTokenManager);
+            Clips = new Clips(Settings, rateLimiter, http, userAccessTokenManager);
+            Entitlements = new Entitlements(Settings, rateLimiter, http, userAccessTokenManager);
+            EventSub = new EventSub(Settings, rateLimiter, http, userAccessTokenManager);
+            Extensions = new Extensions(Settings, rateLimiter, http, userAccessTokenManager);
+            Games = new Games(Settings, rateLimiter, http, userAccessTokenManager);
+            Goals = new Goals(settings, rateLimiter, http, userAccessTokenManager);
+            HypeTrain = new HypeTrain(Settings, rateLimiter, http, userAccessTokenManager);
+            Moderation = new Moderation(Settings, rateLimiter, http, userAccessTokenManager);
+            Polls = new Polls(Settings, rateLimiter, http, userAccessTokenManager);
+            Predictions = new Predictions(Settings, rateLimiter, http, userAccessTokenManager);
+            Raids = new Raids(settings, rateLimiter, http, userAccessTokenManager);
+            Schedule = new Schedule(Settings, rateLimiter, http, userAccessTokenManager);
+            Search = new Search(Settings, rateLimiter, http, userAccessTokenManager);
+            Soundtrack = new Soundtrack(Settings, rateLimiter, http, userAccessTokenManager);
+            Streams = new Streams(Settings, rateLimiter, http, userAccessTokenManager);
+            Subscriptions = new Subscriptions(Settings, rateLimiter, http, userAccessTokenManager);
+            Tags = new Tags(Settings, rateLimiter, http, userAccessTokenManager);
+            Teams = new Teams(Settings, rateLimiter, http, userAccessTokenManager);
+            Users = new Users(Settings, rateLimiter, http, userAccessTokenManager);
+            Videos = new Videos(Settings, rateLimiter, http, userAccessTokenManager);
+            Whispers = new Whispers(Settings, rateLimiter, http, userAccessTokenManager);
         }
     }
 }
