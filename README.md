@@ -3,7 +3,7 @@ API component of TwitchLib.
 
 For a general overview and examples, refer to https://github.com/TwitchLib/TwitchLib/blob/master/README.md
 
-For Helix API Examples, refer to https://github.com/TwitchLib/TwitchLib.Api/tree/master/TwitchLib.Api.Helix/README.MD
+For Helix API Examples, refer to https://github.com/TwitchLib/TwitchLib.Api/blob/master/TwitchLib.Api.Helix/README.MD
 
 ```csharp
 using System;
