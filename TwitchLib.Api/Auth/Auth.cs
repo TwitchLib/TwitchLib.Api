@@ -18,15 +18,15 @@ namespace TwitchLib.Api.Auth
         private ILogger _logger;
         private IApiSettings _settings;
 
-        public Auth(ILogger logger, IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http, null)
+        internal Auth(ILogger logger, IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http, null)
         {
             _logger = logger;
             _settings = settings;
         }
 
-        internal AccessCodeResponse GetAccessCodeFromClientIdAndSecret(CancellationTokenSource cancellationToken, string clientId, string secret, int listenerPort = 5000)
+        internal AccessCodeResponse GetAccessCodeFromClientIdAndSecret(CancellationTokenSource cancellationToken, string clientId, string secret)
         {
-            string authorizationUrl = GetAuthorizationCodeUrl($"http://localhost:{listenerPort}/api/callback", _settings.Scopes, forceVerify: false, state: Guid.NewGuid().ToString(), clientId: clientId);
+            string authorizationUrl = GetAuthorizationCodeUrl($"http://{_settings.OAuthResponseHostname}:{_settings.OAuthResponsePort}/api/callback", _settings.Scopes, forceVerify: false, state: Guid.NewGuid().ToString(), clientId: clientId);
 
             _logger.LogTrace($"Auth::GetAccessCodeFromClientIdAndSecret(): authorizationUrl = {authorizationUrl}");
 
@@ -38,7 +38,7 @@ namespace TwitchLib.Api.Auth
 
             var authenticationServerManager = new AuthenticationServerManager(_logger);
 
-            AccessCodeResponse response = authenticationServerManager.WaitForAuthorizationCodeCallback(cancellationToken, listenerPort);
+            AccessCodeResponse response = authenticationServerManager.WaitForAuthorizationCodeCallback(cancellationToken, _settings.OAuthResponseHostname, _settings.OAuthResponsePort);
 
             return response;
         }

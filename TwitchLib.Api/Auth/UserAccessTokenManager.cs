@@ -24,6 +24,7 @@ namespace TwitchLib.Api.Auth
         private ILogger _logger;
 
         private DateTime _tokenExpiration = DateTime.MinValue;
+        private DateTime _tokenValidation = DateTime.MinValue;
         private string _refreshToken = null;
         private string _accessToken = null;
         private string[] _scopes;
@@ -66,12 +67,25 @@ namespace TwitchLib.Api.Auth
 
             // If the token hasn't expired yet, then we can return it.
             if (_tokenExpiration > DateTime.Now.AddMinutes(5))
-                return _accessToken;
+            {
+                // Ensure that the token is still valid once every 55 minutes.
+                if(_tokenValidation.AddMinutes(55) > DateTime.Now || IsAccessTokenStillValid(_accessToken) == true)
+                    return _accessToken;
+            }
 
             // If the token has expired, then do a refresh
             await Refresh();
 
             return _accessToken;
+        }
+
+        private bool IsAccessTokenStillValid(string accessToken)
+        {
+            _tokenValidation = DateTime.Now;
+
+            var result = _auth.ValidateAccessTokenAsync(accessToken);
+
+            return result.Result != null;
         }
 
         private bool DoScopesMatchSettings(List<AuthScopes> desiredScopes, string[] currentScopes)

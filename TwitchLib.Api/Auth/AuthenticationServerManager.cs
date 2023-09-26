@@ -24,7 +24,7 @@ namespace TwitchLib.Api.Auth
 
         private event EventHandler<AccessCodeResponse> _accessCodeReceived;
 
-        internal AccessCodeResponse WaitForAuthorizationCodeCallback(CancellationTokenSource cancellationToken, int listenerPort)
+        internal AccessCodeResponse WaitForAuthorizationCodeCallback(CancellationTokenSource cancellationToken, string hostname, int listenerPort)
         {
             AccessCodeResponse returnValue = null;
             AutoResetEvent waitHandle = new AutoResetEvent(false);
@@ -35,7 +35,7 @@ namespace TwitchLib.Api.Auth
                 waitHandle.Set();
             };
 
-            StartLocalService(cancellationToken.Token, listenerPort);
+            StartLocalService(cancellationToken.Token, hostname, listenerPort);
 
             // Wait for oAuth to complete and Twitch to call us back with the Access Code.
             if (waitHandle.WaitOne(30 * 1000) == false)
@@ -50,10 +50,10 @@ namespace TwitchLib.Api.Auth
             return returnValue;
         }
 
-        private void StartLocalService(CancellationToken cancellationToken, int port = 5000)
+        private void StartLocalService(CancellationToken cancellationToken, string hostname, int port = 5000)
         {
             WebServer ws = new WebServer(o => o
-                .WithUrlPrefix($"http://localhost:{port}")
+                .WithUrlPrefix($"http://{hostname}:{port}")
                 .WithMode(HttpListenerMode.EmbedIO))
                 .WithWebApi("/api", m => m
                 .WithController<ApiController>(() => { return new ApiController(_accessCodeReceived); }));
