@@ -81,7 +81,8 @@ Before you get started with the Helix API, you must first register your applicat
     catch (Exception ex)
     {
         Console.WriteLine($"\n\n\nCan't use an App Access Token with the Helix Moderation API: {ex.Message}\n\n\n");
-    }```
+    }
+```
 
 # Example 2 - User Access Token
 ```csharp
