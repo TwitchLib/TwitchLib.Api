@@ -41,7 +41,7 @@ Authentication is controlled by several settings in the AppSettings class that y
 
 
 # Prerequisites
-Before you get started with the Helix API, you must first register your application with the Twitch Developer console. Follow the Twitch API guide <a href="https://dev.twitch.tv/docs/authentication/register-app/">here</a>. Come back once you have your Application's ClientId and Secret. 
+Before you get started with the Helix API, you must first register your application with the Twitch Developer console. Follow the Twitch API guide <a href="https://dev.twitch.tv/docs/authentication/register-app/">here</a>. Use http://localhost:5000/api/callback for your OAuth Redirect URL. Come back once you have your Application's ClientId and Secret. 
 
 # Example 1 - App Access Token
 ```csharp

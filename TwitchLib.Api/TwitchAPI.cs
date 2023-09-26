@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using EmbedIO.Authentication;
 using Microsoft.Extensions.Logging;
 using TwitchLib.Api.Auth;
 using TwitchLib.Api.Core;
