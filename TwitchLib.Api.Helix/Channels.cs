@@ -6,12 +6,14 @@ using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
+using TwitchLib.Api.Helix.Models.Channels.GetAdSchedule;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelEditors;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelFollowers;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelInformation;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelVIPs;
 using TwitchLib.Api.Helix.Models.Channels.GetFollowedChannels;
 using TwitchLib.Api.Helix.Models.Channels.ModifyChannelInformation;
+using TwitchLib.Api.Helix.Models.Channels.SnoozeNextAd;
 
 namespace TwitchLib.Api.Helix
 {
@@ -277,6 +279,51 @@ namespace TwitchLib.Api.Helix
                 getParams.Add(new KeyValuePair<string, string>("after", after));
             
             return TwitchGetGenericAsync<GetChannelFollowersResponse>("/channels/followers", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
+
+        #region GetAdSchedule
+
+        /// <summary>
+        /// Returns ad schedule related information, including snooze, when the last ad was run, when the next ad is scheduled, and if the channel is currently in pre-roll free time.
+        /// </summary>
+        /// <param name="broadcasterId">The broadcaster's ID. Ad schedule is relevant to this broadcaster, and so should the auth.</param>
+        /// <param name="accessToken"> Optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetAdScheduleResponse"></returns>
+        public Task<GetAdScheduleResponse> GetAdScheduleAsync(string broadcasterId, string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+            };
+
+            return TwitchGetGenericAsync<GetAdScheduleResponse>("/channels/ads", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
+
+        #region SnoozeNextAd
+
+        /// <summary>
+        /// If available, pushes back the timestamp of the upcoming automatic mid-roll ad by 5 minutes. This endpoint duplicates the snooze functionality in the creator dashboard’s Ads Manager.
+        /// </summary>
+        /// <param name="broadcasterId">The broadcaster's ID. Ad snoozing is relevant to this broadcaster, and so should the auth.</param>
+        /// <param name="accessToken"> Optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="SnoozeNextAdResponse"></returns>
+        public Task<SnoozeNextAdResponse> SnoozeNextAd(string broadcasterId, string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+            };
+
+            return TwitchPostGenericAsync<SnoozeNextAdResponse>("/channels/ads/schedule/snooze", ApiVersion.Helix, null, getParams, accessToken);
         }
 
         #endregion
