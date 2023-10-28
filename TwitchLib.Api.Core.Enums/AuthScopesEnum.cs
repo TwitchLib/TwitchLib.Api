@@ -48,12 +48,22 @@ namespace TwitchLib.Api.Core.Enums
         /// View Bits information for a channel.
         /// </summary>
         Bits_Read,
+
+        /// <summary>
+        /// Allows the client’s bot users access to a channel.
+        /// </summary>
+        Channel_Bot,
         
         /// <summary>
         /// Run commercials on a channel.
         /// </summary>
         Channel_Edit_Commercial,
-        
+
+        /// <summary>
+        /// Manage ads schedule on a channel.
+        /// </summary>
+        Channel_Manage_Ads,
+
         /// <summary>
         /// Manage a channel’s broadcast configuration, including updating channel configuration and managing stream markers and stream tags.
         /// </summary>
@@ -108,7 +118,12 @@ namespace TwitchLib.Api.Core.Enums
         /// Add or remove the VIP role from users in your channel.
         /// </summary>
         Channel_Manage_VIPs,
-        
+
+        /// <summary>
+        /// Read the ads schedule and details on your channel.
+        /// </summary>
+        Channel_Read_Ads,
+
         /// <summary>
         /// Read charity campaign details and user donations on your channel.
         /// </summary>
@@ -263,7 +278,13 @@ namespace TwitchLib.Api.Core.Enums
         /// View a broadcaster’s shoutouts.
         /// </summary>
         Moderator_Read_Shoutouts,
-        
+
+
+        /// <summary>
+        /// Allows client’s bot to act as this user.
+        /// </summary>
+        User_Bot,
+
         /// <summary>
         /// Manage a user object.
         /// </summary>
@@ -299,6 +320,11 @@ namespace TwitchLib.Api.Core.Enums
         /// View a user’s broadcasting configuration, including Extension configurations.
         /// </summary>
         User_Read_Broadcast,
+
+        /// <summary>
+        /// View live stream chat and room messages.
+        /// </summary>
+        User_Read_Chat,
         
         /// <summary>
         /// View a user’s email address.
