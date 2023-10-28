@@ -13,7 +13,7 @@ namespace TwitchLib.Api.Helix.Models.Channels.GetAdSchedule
         /// <summary>
         /// <para>A list that contains information related to the channel’s ad schedule.</para>
         /// </summary>
-        [JsonProperty(PropertyName = "snooze_count")]
+        [JsonProperty(PropertyName = "data")]
         public AdSchedule[] Data { get; protected set; }
     }
 }

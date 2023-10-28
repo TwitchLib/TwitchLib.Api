@@ -28,8 +28,8 @@ namespace TwitchLib.Api.Helix.Models.Channels.GetAdSchedule
         /// <summary>
         /// <para>The length in seconds of the scheduled upcoming ad break.</para>
         /// </summary>
-        [JsonProperty(PropertyName = "length_seconds")]
-        public int LengthSeconds { get;protected set; }
+        [JsonProperty(PropertyName = "lengths_seconds")]
+        public int LengthsSeconds { get;protected set; }
         /// <summary>
         /// <para>The UTC timestamp of the broadcaster’s last ad-break, in RFC3339 format. Empty if the channel has not run an ad or is not live.</para>
         /// </summary>
