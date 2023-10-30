@@ -101,10 +101,6 @@ namespace TwitchLib.Api.Helix
       /// </summary>
       public Search Search { get; }
       /// <summary>
-      /// Soundtrack related Helix APIs
-      /// </summary>
-      public Soundtrack Soundtrack { get; }
-      /// <summary>
       /// Stream related Helix APIs
       /// </summary>
       public Streams Streams { get; }
@@ -168,7 +164,6 @@ namespace TwitchLib.Api.Helix
          Raids = new Raids(settings, rateLimiter, http);
          Schedule = new Schedule(Settings, rateLimiter, http);
          Search = new Search(Settings, rateLimiter, http);
-         Soundtrack = new Soundtrack(Settings, rateLimiter, http);
          Streams = new Streams(Settings, rateLimiter, http);
          Subscriptions = new Subscriptions(Settings, rateLimiter, http);
          Tags = new Tags(Settings, rateLimiter, http);
