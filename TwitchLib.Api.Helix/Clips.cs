@@ -52,11 +52,15 @@ namespace TwitchLib.Api.Helix
         /// Ending date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.)
         /// <para>If this is specified, started_at also must be specified; otherwise, the time period is ignored.</para>
         /// </param>
+        /// <param name="isFeatured">
+        /// A Boolean value that determines whether the response includes featured clips.
+        /// <para>If true, returns only clips that are featured. If false, returns only clips that aren’t featured. All clips are returned if this parameter is not present.</para>
+        /// </param>
         /// <param name="first">Maximum number of objects to return. Maximum: 100. Default: 20.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetClipsResponse"></returns>
         /// <exception cref="BadParameterException"></exception>
-        public Task<GetClipsResponse> GetClipsAsync(List<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, int first = 20, string accessToken = null)
+        public Task<GetClipsResponse> GetClipsAsync(List<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, bool? isFeatured = null, int first = 20, string accessToken = null)
         {
             if (first < 0 || first > 100)
                 throw new BadParameterException("'first' must between 0 (inclusive) and 100 (inclusive).");
@@ -91,6 +95,9 @@ namespace TwitchLib.Api.Helix
 
             if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
+            
+            if (isFeatured.HasValue)
+                getParams.Add(new KeyValuePair<string, string>("is_featured", isFeatured.Value.ToString()));
 
             getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
 
