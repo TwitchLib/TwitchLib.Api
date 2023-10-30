@@ -106,5 +106,11 @@ namespace TwitchLib.Api.Helix.Models.Clips.GetClips
       /// </summary>
       [JsonProperty(PropertyName = "vod_offset")]
       public int VodOffset { get; protected set; }
+      
+      /// <summary>
+      /// A Boolean value that indicates if the clip is featured or not.
+      /// </summary>
+      [JsonProperty(PropertyName = "is_featured")]
+      public bool IsFeatured { get; protected set; }
    }
 }
