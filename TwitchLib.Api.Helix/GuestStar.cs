@@ -7,6 +7,7 @@ using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.GuestStar.CreateGuestStarSession;
 using TwitchLib.Api.Helix.Models.GuestStar.GetChannelGuestStarSettings;
+using TwitchLib.Api.Helix.Models.GuestStar.GetGuestStarInvites;
 using TwitchLib.Api.Helix.Models.GuestStar.GetGuestStarSession;
 using TwitchLib.Api.Helix.Models.GuestStar.UpdateChannelGuestStarSettings;
 
@@ -27,7 +28,7 @@ public class GuestStar : ApiBase
     /// </summary>
     /// <param name="broadcasterId">The ID of the broadcaster you want to get guest star settings for.</param>
     /// <param name="moderatorId">The ID of the broadcaster or a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID in the user access token.</param>
-    /// <param name="accessToken"> Optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <param name="accessToken">Optional access token to override the use of the stored one in the TwitchAPI instance</param>
     /// <returns cref="GetChannelGuestStarSettingsResponse"></returns>
     /// <exception cref="BadParameterException"></exception>
     public Task<GetChannelGuestStarSettingsResponse> GetChannelGuestStarSettingsAsync(string broadcasterId, string moderatorId, string accessToken = null)
@@ -55,9 +56,9 @@ public class GuestStar : ApiBase
     /// Twitch Docs: Update Channel Guest Star Settings</see></para>
     /// <para>Mutates the channel settings for configuration of the Guest Star feature for a particular host.</para>
     /// </summary>
-    /// <param name="broadcasterId"></param>
-    /// <param name="newSettings"></param>
-    /// <param name="accessToken"></param>
+    /// <param name="broadcasterId">The ID of the broadcaster you want to update Guest Star settings for.</param>
+    /// <param name="newSettings">The new settings you want to apply</param>
+    /// <param name="accessToken">Optional access token to override the use of the stored one in the TwitchAPI instance</param>
     /// <exception cref="BadParameterException"></exception>
     public Task UpdateChannelGuestStarSettingsAsync(string broadcasterId, UpdateChannelGuestStarSettingsRequest newSettings, string accessToken = null)
     {
@@ -88,7 +89,7 @@ public class GuestStar : ApiBase
     /// </summary>
     /// <param name="broadcasterId">ID for the user hosting the Guest Star session.</param>
     /// <param name="moderatorId">The ID of the broadcaster or a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID in the user access token.</param>
-    /// <param name="accessToken"> Optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <param name="accessToken">Optional access token to override the use of the stored one in the TwitchAPI instance</param>
     /// <returns cref="GetGuestStarSessionResponse"></returns>
     /// <exception cref="BadParameterException"></exception>
     public Task<GetGuestStarSessionResponse> GetGuestStarSessionAsync(string broadcasterId, string moderatorId, string accessToken = null)
@@ -117,7 +118,7 @@ public class GuestStar : ApiBase
     /// <para>Programmatically creates a Guest Star session on behalf of the broadcaster. Requires the broadcaster to be present in the call interface, or the call will be ended automatically.</para>
     /// </summary>
     /// <param name="broadcasterId">The ID of the broadcaster you want to create a Guest Star session for. Provided broadcaster_id must match the user_id in the auth token.</param>
-    /// <param name="accessToken"> Optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <param name="accessToken">Optional access token to override the use of the stored one in the TwitchAPI instance</param>
     /// <returns cref="CreateGuestStarSessionResponse"></returns>
     /// <exception cref="BadParameterException"></exception>
     public Task<CreateGuestStarSessionResponse> CreateGuestStarSession(string broadcasterId, string accessToken = null)
@@ -144,7 +145,7 @@ public class GuestStar : ApiBase
     /// </summary>
     /// <param name="broadcasterId">The ID of the broadcaster you want to end a Guest Star session for. Provided broadcaster_id must match the user_id in the auth token.</param>
     /// <param name="sessionId">ID for the session to end on behalf of the broadcaster.</param>
-    /// <param name="accessToken"> Optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <param name="accessToken">Optional access token to override the use of the stored one in the TwitchAPI instance</param>
     /// <returns cref="EndGuestStarSessionResponse"></returns>
     /// <exception cref="BadParameterException"></exception>
     public Task<EndGuestStarSessionResponse> EndGuestStarSession(string broadcasterId, string sessionId, string accessToken = null)
@@ -164,5 +165,113 @@ public class GuestStar : ApiBase
         return TwitchDeleteGenericAsync<EndGuestStarSessionResponse>("/guest_star/session", ApiVersion.Helix, getParams, accessToken);
     }
 
+    #endregion
+    
+    #region GetGuestStarInvites
+
+    /// <summary>
+    /// <para><see href="https://dev.twitch.tv/docs/api/reference/#get-guest-star-invites">
+    /// Twitch Docs: Get Guest Star Invites</see></para>
+    /// <para>Provides the caller with a list of pending invites to a Guest Star session, including the invitee’s ready status while joining the waiting room.</para>
+    /// </summary>
+    /// <param name="broadcasterId">The ID of the broadcaster running the Guest Star session.</param>
+    /// <param name="moderatorId">The ID of the broadcaster or a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID in the user access token.</param>
+    /// <param name="sessionId">The session ID to query for invite status.</param>
+    /// <param name="accessToken">Optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <returns cref="GetGuestStarSessionResponse"></returns>
+    /// <exception cref="BadParameterException"></exception>
+    public Task<GetGuestStarInvitesResponse> GetGuestStarInvitesAsync(string broadcasterId, string moderatorId, string sessionId, string accessToken = null)
+    {
+        if (string.IsNullOrWhiteSpace(broadcasterId))
+            throw new BadParameterException("broadcasterId must be set");
+        if (string.IsNullOrWhiteSpace(moderatorId))
+            throw new BadParameterException("moderatorId must be set");
+        if (string.IsNullOrWhiteSpace(sessionId))
+            throw new BadParameterException("sessionId must be set");
+        
+        var getParams = new List<KeyValuePair<string, string>>
+        {
+            new ("broadcaster_id", broadcasterId),
+            new ("moderator_id", moderatorId),
+            new ("session_id", sessionId)
+        };
+        
+        return TwitchGetGenericAsync<GetGuestStarInvitesResponse>("/guest_star/invites", ApiVersion.Helix, getParams, accessToken);
+    }
+    
+    #endregion
+    
+    #region SendGuestStarInvite
+
+    /// <summary>
+    /// <para><see href="https://dev.twitch.tv/docs/api/reference/#send-guest-star-invite">
+    /// Twitch Docs: Send Guest Star Invite</see></para>
+    /// <para>Sends an invite to a specified guest on behalf of the broadcaster for a Guest Star session in progress.</para>
+    /// </summary>
+    /// <param name="broadcasterId">The ID of the broadcaster running the Guest Star session.</param>
+    /// <param name="moderatorId">The ID of the broadcaster or a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID in the user access token.</param>
+    /// <param name="sessionId">The session ID for the invite to be sent on behalf of the broadcaster.</param>
+    /// <param name="guestId">Twitch User ID for the guest to invite to the Guest Star session.</param>
+    /// <param name="accessToken">Optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <exception cref="BadParameterException"></exception>
+    public Task SendGuestStarInvitesAsync(string broadcasterId, string moderatorId, string sessionId, string guestId, string accessToken = null)
+    {
+        if (string.IsNullOrWhiteSpace(broadcasterId))
+            throw new BadParameterException("broadcasterId must be set");
+        if (string.IsNullOrWhiteSpace(moderatorId))
+            throw new BadParameterException("moderatorId must be set");
+        if (string.IsNullOrWhiteSpace(sessionId))
+            throw new BadParameterException("sessionId must be set");
+        if (string.IsNullOrWhiteSpace(guestId))
+            throw new BadParameterException("guestId must be set");
+        
+        var getParams = new List<KeyValuePair<string, string>>
+        {
+            new ("broadcaster_id", broadcasterId),
+            new ("moderator_id", moderatorId),
+            new ("session_id", sessionId),
+            new ("guest_id", guestId)
+        };
+        
+        return TwitchPostAsync("/guest_star/invites", ApiVersion.Helix, null, getParams, accessToken);
+    }
+    
+    #endregion
+    
+    #region DeleteGuestStarInvite
+
+    /// <summary>
+    /// <para><see href="https://dev.twitch.tv/docs/api/reference/#delete-guest-star-invite">
+    /// Twitch Docs: Delete Guest Star Invite</see></para>
+    /// <para>Revokes a previously sent invite for a Guest Star session.</para>
+    /// </summary>
+    /// <param name="broadcasterId">The ID of the broadcaster running the Guest Star session.</param>
+    /// <param name="moderatorId">The ID of the broadcaster or a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID in the user access token.</param>
+    /// <param name="sessionId">The ID of the session for the invite to be revoked on behalf of the broadcaster.</param>
+    /// <param name="guestId">Twitch User ID for the guest to revoke the Guest Star session invite from.</param>
+    /// <param name="accessToken">Optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <exception cref="BadParameterException"></exception>
+    public Task DeleteGuestStarInvitesAsync(string broadcasterId, string moderatorId, string sessionId, string guestId, string accessToken = null)
+    {
+        if (string.IsNullOrWhiteSpace(broadcasterId))
+            throw new BadParameterException("broadcasterId must be set");
+        if (string.IsNullOrWhiteSpace(moderatorId))
+            throw new BadParameterException("moderatorId must be set");
+        if (string.IsNullOrWhiteSpace(sessionId))
+            throw new BadParameterException("sessionId must be set");
+        if (string.IsNullOrWhiteSpace(guestId))
+            throw new BadParameterException("guestId must be set");
+        
+        var getParams = new List<KeyValuePair<string, string>>
+        {
+            new ("broadcaster_id", broadcasterId),
+            new ("moderator_id", moderatorId),
+            new ("session_id", sessionId),
+            new ("guest_id", guestId)
+        };
+        
+        return TwitchDeleteAsync("/guest_star/invites", ApiVersion.Helix, getParams, accessToken);
+    }
+    
     #endregion
 }
