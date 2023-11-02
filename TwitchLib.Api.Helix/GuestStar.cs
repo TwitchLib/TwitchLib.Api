@@ -418,7 +418,7 @@ public class GuestStar : ApiBase
 
     /// <summary>
     /// <para><see href="https://dev.twitch.tv/docs/api/reference/#update-guest-star-slot-settings">
-    /// Twitch Docs: Update Guest Star Slo Settings</see></para>
+    /// Twitch Docs: Update Guest Star Slot Settings</see></para>
     /// <para>Allows a user to update slot settings for a particular guest within a Guest Star session, such as allowing the user to share audio or video within the call as a host. These settings will be broadcasted to all subscribers which control their view of the guest in that slot. One or more of the optional parameters to this API can be specified at any time.</para>
     /// </summary>
     /// <param name="broadcasterId">The ID of the broadcaster running the Guest Star session.</param>
