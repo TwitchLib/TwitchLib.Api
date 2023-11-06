@@ -73,6 +73,10 @@ namespace TwitchLib.Api.Helix
       /// </summary>
       public Goals Goals { get; }
       /// <summary>
+      /// GuestStar related Helix APIs
+      /// </summary>
+      public GuestStar GuestStar { get; }
+      /// <summary>
       /// HypeTrain related Helix APIs
       /// </summary>
       public HypeTrain HypeTrain { get; }
@@ -157,6 +161,7 @@ namespace TwitchLib.Api.Helix
          Extensions = new Extensions(Settings, rateLimiter, http);
          Games = new Games(Settings, rateLimiter, http);
          Goals = new Goals(settings, rateLimiter, http);
+         GuestStar = new GuestStar(settings, rateLimiter, http);
          HypeTrain = new HypeTrain(Settings, rateLimiter, http);
          Moderation = new Moderation(Settings, rateLimiter, http);
          Polls = new Polls(Settings, rateLimiter, http);
