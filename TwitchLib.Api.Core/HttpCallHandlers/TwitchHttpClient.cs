@@ -121,7 +121,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             return (int)response.StatusCode;
         }
 
-        private async void HandleWebException(HttpResponseMessage errorResp)
+        private async Task HandleWebException(HttpResponseMessage errorResp)
         {
             var bodyContent = await errorResp.Content.ReadAsStringAsync();
             var deserializedError = JsonConvert.DeserializeObject<TwitchErrorResponse>(bodyContent);
