@@ -22,7 +22,7 @@ namespace TwitchLib.Api.Services.Core.FollowerService
                 channelId = (await _api.Helix.Users.GetUsersAsync(logins: new List<string> { channel })).Users.FirstOrDefault()?.Id;
                 _channelToId[channel] = channelId ?? throw new InvalidOperationException($"No channel with the name \"{channel}\" could be found.");
             }
-            return await _api.Helix.Channels.GetChannelFollowersAsync(channel, null, queryCount);
+            return await _api.Helix.Channels.GetChannelFollowersAsync(channelId, null, queryCount);
         }
 
         public void ClearCache()
