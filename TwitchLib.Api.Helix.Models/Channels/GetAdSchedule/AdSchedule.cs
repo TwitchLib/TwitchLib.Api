@@ -25,8 +25,8 @@ namespace TwitchLib.Api.Helix.Models.Channels.GetAdSchedule
         /// <summary>
         /// <para>The length in seconds of the scheduled upcoming ad break.</para>
         /// </summary>
-        [JsonProperty(PropertyName = "length_seconds")]
-        public int LengthSeconds { get;protected set; }
+        [JsonProperty(PropertyName = "duration")]
+        public int Duration { get; protected set; }
         /// <summary>
         /// <para>The UTC timestamp of the broadcaster’s last ad-break, in RFC3339 format. Empty if the channel has not run an ad or is not live.</para>
         /// </summary>
@@ -35,7 +35,7 @@ namespace TwitchLib.Api.Helix.Models.Channels.GetAdSchedule
         /// <summary>
         /// <para>The amount of pre-roll free time remaining for the channel in seconds. Returns 0 if they are currently not pre-roll free.</para>
         /// </summary>
-        [JsonProperty(PropertyName = "preroll_free_time_seconds")]
-        public int PrerollFreeTimeSeconds { get; protected set; }
+        [JsonProperty(PropertyName = "preroll_free_time")]
+        public int PrerollFreeTime { get; protected set; }
     }
 }
