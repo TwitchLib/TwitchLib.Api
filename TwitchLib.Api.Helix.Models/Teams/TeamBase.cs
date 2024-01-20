@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+using System;
+using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.Teams
 {
@@ -9,9 +10,10 @@ namespace TwitchLib.Api.Helix.Models.Teams
         [JsonProperty(PropertyName = "background_image_url")]
         public string BackgroundImageUrl { get; protected set; }
         [JsonProperty(PropertyName = "created_at")]
-        public string CreatedAt { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
         [JsonProperty(PropertyName = "updated_at")]
-        public string UpdatedAt { get; protected set; }
+        public DateTime UpdatedAt { get; protected set; }
+        [JsonProperty(PropertyName = "info")]
         public string Info { get; protected set; }
         [JsonProperty(PropertyName = "thumbnail_url")]
         public string ThumbnailUrl { get; protected set; }

@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+using System;
+using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.Videos.GetVideos
 {
     public class Video
     {
         [JsonProperty(PropertyName = "created_at")]
-        public string CreatedAt { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
         [JsonProperty(PropertyName = "description")]
         public string Description { get; protected set; }
         [JsonProperty(PropertyName = "duration")]
@@ -15,7 +16,7 @@ namespace TwitchLib.Api.Helix.Models.Videos.GetVideos
         [JsonProperty(PropertyName = "language")]
         public string Language { get; protected set; }
         [JsonProperty(PropertyName = "published_at")]
-        public string PublishedAt { get; protected set; }
+        public DateTime PublishedAt { get; protected set; }
         [JsonProperty(PropertyName = "thumbnail_url")]
         public string ThumbnailUrl { get; protected set; }
         [JsonProperty(PropertyName = "title")]
