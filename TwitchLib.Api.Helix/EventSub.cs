@@ -9,6 +9,7 @@ using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.EventSub;
 using TwitchLib.Api.Helix.Models.EventSub.Conduits.CreateConduit;
+using TwitchLib.Api.Helix.Models.EventSub.Conduits.GetConduits;
 
 namespace TwitchLib.Api.Helix
 {
@@ -149,6 +150,11 @@ namespace TwitchLib.Api.Helix
             var payLoad = JsonConvert.SerializeObject(request);
             
             return TwitchPostGenericAsync<CreateConduitResponse>("/eventsub/conduits", ApiVersion.Helix, payLoad, null, accessToken, clientId);
+        }
+
+        public Task<GetConduitsResponse> GetConduitsAsync(string clientId = null, string accessToken = null)
+        {
+            return TwitchGetGenericAsync<GetConduitsResponse>("/eventsub/conduits", ApiVersion.Helix, null, accessToken, clientId);
         }
 
         #endregion
