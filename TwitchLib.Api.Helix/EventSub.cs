@@ -10,6 +10,7 @@ using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.EventSub;
 using TwitchLib.Api.Helix.Models.EventSub.Conduits.CreateConduit;
 using TwitchLib.Api.Helix.Models.EventSub.Conduits.GetConduits;
+using TwitchLib.Api.Helix.Models.EventSub.Conduits.UpdateConduit;
 
 namespace TwitchLib.Api.Helix
 {
@@ -155,6 +156,22 @@ namespace TwitchLib.Api.Helix
         public Task<GetConduitsResponse> GetConduitsAsync(string clientId = null, string accessToken = null)
         {
             return TwitchGetGenericAsync<GetConduitsResponse>("/eventsub/conduits", ApiVersion.Helix, null, accessToken, clientId);
+        }
+
+        public Task<UpdateConduitResponse> UpdateConduitAsync(string conduitId, int shardCount, string clientId = null, string accessToken = null)
+        {
+            if (shardCount is <= 0 or > 20_0000)
+                throw new BadParameterException("shardCount must be greater than 0 and less or equal than 20000");
+            
+            var request = new UpdateConduitRequest
+            {
+                Id = conduitId,
+                ShardCount = shardCount
+            };
+
+            var payLoad = JsonConvert.SerializeObject(request);
+            
+            return TwitchPatchGenericAsync<UpdateConduitResponse>("/eventsub/conduits", ApiVersion.Helix, payLoad, null, accessToken, clientId);
         }
 
         #endregion
