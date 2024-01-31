@@ -8,6 +8,7 @@ using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
+using TwitchLib.Api.Helix.Models.Channels.SendChatMessage;
 using TwitchLib.Api.Helix.Models.Chat;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetChannelChatBadges;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetGlobalChatBadges;
@@ -295,6 +296,34 @@ namespace TwitchLib.Api.Helix
             };
 
             return TwitchPostAsync("/chat/shoutouts", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        public Task<SendChatMessageResponse> SendChatMessage(string broadcasterId, string senderId, string message, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+
+            if (string.IsNullOrEmpty(senderId))
+                throw new BadParameterException("senderId must be set");
+
+            if (string.IsNullOrEmpty(message))
+                throw new BadParameterException("message must be set");
+
+            //var postParams = new List<KeyValuePair<string, string>>
+            //{
+            //    new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+            //    new KeyValuePair<string, string>("sender_id", senderId),
+            //    new KeyValuePair<string, string>("message", message)
+            //};
+
+            var json = new JObject
+            {
+                ["broadcaster_id"] = broadcasterId,
+                ["sender_id"] = senderId,
+                ["message"] = message
+            };
+
+            return TwitchPostGenericAsync<SendChatMessageResponse>("/chat/messages", ApiVersion.Helix, json.ToString(), null, accessToken);
         }
 
         #endregion
