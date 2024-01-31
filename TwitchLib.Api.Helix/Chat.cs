@@ -318,13 +318,6 @@ namespace TwitchLib.Api.Helix
             if (string.IsNullOrEmpty(message))
                 throw new BadParameterException("message must be set");
 
-            //var postParams = new List<KeyValuePair<string, string>>
-            //{
-            //    new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-            //    new KeyValuePair<string, string>("sender_id", senderId),
-            //    new KeyValuePair<string, string>("message", message)
-            //};
-
             var json = new JObject
             {
                 ["broadcaster_id"] = broadcasterId,
