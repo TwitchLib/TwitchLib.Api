@@ -74,6 +74,7 @@ namespace TwitchLib.Api.Core.Common
                 AuthScopes.User_Manage_BlockedUsers => "user:manage:blocked_users",
                 AuthScopes.User_Manage_Chat_Color => "user:manage:chat_color",
                 AuthScopes.User_Manage_Whispers => "user:manage:whispers",
+                AuthScopes.User_Write_Chat => "user:write:chat",
                 AuthScopes.Moderator_Manage_Announcements => "moderator:manage:announcements",
                 AuthScopes.Moderator_Manage_Automod => "moderator:manage:automod",
                 AuthScopes.Moderator_Manage_Automod_Settings => "moderator:manage:automod_settings",
