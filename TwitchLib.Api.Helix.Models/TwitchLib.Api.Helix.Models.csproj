@@ -35,4 +35,8 @@
   <ItemGroup>
     <None Include="twitchlib.png" Pack="true" PackagePath="\" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EventSub\Conduits\GetConduitShards" />
+    <Folder Include="EventSub\Conduits\UpdateConduitShards" />
+  </ItemGroup>
 </Project>
