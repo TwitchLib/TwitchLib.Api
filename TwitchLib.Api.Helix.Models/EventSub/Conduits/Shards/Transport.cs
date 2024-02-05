@@ -6,7 +6,7 @@ public class Transport
 {
     /// <summary>
     /// <para>The transport method. Possible values are:</para>
-    /// <para>webook, websocket</para>
+    /// <para>webhook, websocket</para>
     /// </summary>
     [JsonProperty(PropertyName = "method")]
     public string Method { get; protected set; }

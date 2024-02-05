@@ -13,5 +13,5 @@ public class UpdateConduitShardsRequest
     /// <para>List of shards to update.</para>
     /// </summary>
     [JsonProperty(PropertyName = "shards")]
-    public int Shards { get; set; }
+    public ShardUpdate[] Shards { get; set; }
 }
