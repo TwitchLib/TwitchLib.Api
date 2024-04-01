@@ -8,7 +8,7 @@ public class UpdateConduitShardsRequest
     /// <para>Conduit ID.</para>
     /// </summary>
     [JsonProperty(PropertyName = "conduit_id")]
-    public int ShardCount { get; set; }
+    public string ConduitId { get; set; }
     /// <summary>
     /// <para>List of shards to update.</para>
     /// </summary>

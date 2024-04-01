@@ -247,9 +247,9 @@ namespace TwitchLib.Api.Helix
             
             foreach (var shard in request.Shards)
             {
-                if (validMethods.Contains(shard.Transport.Method))
+                if (!validMethods.Contains(shard.Transport.Method))
                     throw new BadParameterException($"request.Shards.Transport.Method valid values: {String.Join(", ", validMethods)}");
-                if (shard.Transport.Secret.Length < secretMinLength || shard.Transport.Secret.Length > secretMaxLength)
+                if (shard.Transport.Secret != null && (shard.Transport.Secret.Length < secretMinLength || shard.Transport.Secret.Length > secretMaxLength))
                     throw new BadParameterException(
                         $"request.Shards.Transport.Secret must be greater than or equal to {secretMinLength} and less than or equal to {secretMaxLength}");
             }

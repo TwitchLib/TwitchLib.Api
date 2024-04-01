@@ -12,6 +12,6 @@ public class UpdateConduitShardsResponse
     /// <summary>
     /// <para>List of unsuccessful updates.</para>
     /// </summary>
-    [JsonProperty(PropertyName = "data")]
+    [JsonProperty(PropertyName = "errors")]
     public Error[] Errors { get; protected set; }
 }

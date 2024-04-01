@@ -8,7 +8,7 @@ public class ShardUpdate
     /// <para>Shard ID.</para>
     /// </summary>
     [JsonProperty(PropertyName = "id")]
-    public int Id { get; set; }
+    public string Id { get; set; }
     /// <summary>
     /// <para>The transport details that you want Twitch to use when sending you notifications.</para>
     /// </summary>
