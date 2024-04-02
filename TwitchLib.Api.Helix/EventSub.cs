@@ -160,7 +160,7 @@ namespace TwitchLib.Api.Helix
         public async Task<CreateConduitsResponse> CreateConduits(CreateConduitsRequest request, string clientId = null,
             string accessToken = null)
         {
-            if (request.ShardCount is <= 0 or > 20_0000)
+            if (request.ShardCount is <= 0 or > 20_000)
                 throw new BadParameterException("request.ShardCount must be greater than 0 and less or equal than 20000");
             
             return await TwitchPostGenericAsync<CreateConduitsResponse>("/eventsub/conduits", ApiVersion.Helix,
@@ -177,7 +177,7 @@ namespace TwitchLib.Api.Helix
         public async Task<UpdateConduitsResponse> UpdateConduits(UpdateConduitsRequest request, string clientId = null,
             string accessToken = null)
         {
-            if (request.ShardCount is <= 0 or > 20_0000)
+            if (request.ShardCount is <= 0 or > 20_000)
                 throw new BadParameterException("request.ShardCount must be greater than 0 and less or equal than 20000");
             
             return await TwitchPatchGenericAsync<UpdateConduitsResponse>("/eventsub/conduits", ApiVersion.Helix,
