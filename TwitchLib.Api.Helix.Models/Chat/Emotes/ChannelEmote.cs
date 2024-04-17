@@ -5,6 +5,11 @@ namespace TwitchLib.Api.Helix.Models.Chat.Emotes
     public class ChannelEmote : Emote
     {
         /// <summary>
+        /// Contains the image URLs for the emote.
+        /// </summary>
+        [JsonProperty("images")]
+        public EmoteImages Images { get; protected set; }
+        /// <summary>
         /// The subscriber tier at which the emote is unlocked.
         /// </summary>
         [JsonProperty("tier")]
