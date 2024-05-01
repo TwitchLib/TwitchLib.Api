@@ -15,6 +15,11 @@ namespace TwitchLib.Api.Helix.Models.Chat.Emotes
         [JsonProperty("emote_set_id")]
         public string EmoteSetId { get; protected set; }
         /// <summary>
+        /// Contains the image URLs for the emote.
+        /// </summary>
+        [JsonProperty("images")]
+        public EmoteImages Images { get; protected set; }
+        /// <summary>
         /// The ID of the broadcaster who owns the emote.
         /// </summary>
         [JsonProperty("owner_id")]

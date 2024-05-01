@@ -15,11 +15,6 @@ namespace TwitchLib.Api.Helix.Models.Chat.Emotes
         [JsonProperty("name")]
         public string Name { get; protected set; }
         /// <summary>
-        /// Contains the image URLs for the emote.
-        /// </summary>
-        [JsonProperty("images")]
-        public EmoteImages Images { get; protected set; }
-        /// <summary>
         /// The formats that the emote is available in.
         /// </summary>
         [JsonProperty("format")]

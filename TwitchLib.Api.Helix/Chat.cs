@@ -16,6 +16,7 @@ using TwitchLib.Api.Helix.Models.Chat.ChatSettings;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetChannelEmotes;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetEmoteSets;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetGlobalEmotes;
+using TwitchLib.Api.Helix.Models.Chat.Emotes.GetUserEmotes;
 using TwitchLib.Api.Helix.Models.Chat.GetChatters;
 using TwitchLib.Api.Helix.Models.Chat.GetUserChatColor;
 
@@ -147,6 +148,35 @@ namespace TwitchLib.Api.Helix
         public Task<GetGlobalEmotesResponse> GetGlobalEmotesAsync(string accessToken = null)
         {
             return TwitchGetGenericAsync<GetGlobalEmotesResponse>("/chat/emotes/global", ApiVersion.Helix, accessToken: accessToken);
+        }
+
+        /// <summary>
+        /// Retrieves emotes available to the user across all channels.
+        /// </summary>
+        /// <param name="userId">The ID of the user. This ID must match the user ID in the user access token.</param>
+        /// <param name="after">The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value.</param>
+        /// <param name="broadcasterId">The User ID of a broadcaster you wish to get follower emotes of. Using this query parameter will guarantee inclusion of the broadcaster’s follower emotes in the response body.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetUserEmotesResponse"></returns>
+        public Task<GetUserEmotesResponse> GetUserEmotesAsync(string userId, string after = null,
+            string broadcasterId = null, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(userId))
+                throw new BadParameterException("userId must be set");
+            
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("user_id", userId)
+            };
+            
+            if (!string.IsNullOrEmpty(after))
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+            
+            if (!string.IsNullOrEmpty(broadcasterId))
+                getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
+
+            return TwitchGetGenericAsync<GetUserEmotesResponse>("/chat/emotes/user", ApiVersion.Helix, getParams,
+                accessToken);
         }
         #endregion
 
