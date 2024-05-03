@@ -6,6 +6,7 @@ using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
+using TwitchLib.Api.Helix.Models.Ads;
 using TwitchLib.Api.Helix.Models.Channels.GetAdSchedule;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelEditors;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelFollowers;
@@ -324,6 +325,26 @@ namespace TwitchLib.Api.Helix
             };
 
             return TwitchPostGenericAsync<SnoozeNextAdResponse>("/channels/ads/schedule/snooze", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        #endregion
+        
+        #region StartCommercial
+
+        /// <summary>
+        /// <para><see href="https://dev.twitch.tv/docs/api/reference/#start-commercial">
+        /// Twitch Docs: Start Commercial</see></para>
+        /// <para>Starts a commercial on the specified channel.</para>
+        /// <para>Only partners and affiliates may run commercials and they must be streaming live at the time.
+        /// Only the broadcaster may start a commercial - the broadcaster’s editors and moderators may not start commercials on behalf of the broadcaster.</para>
+        /// <para><b>Requires a user access token that includes the channel:edit:commercial scope.</b></para>
+        /// </summary>
+        /// <param name="request" cref="StartCommercialRequest"></param>
+        /// <param name="accessToken">Optional access token to override the use of the stored one in the TwitchAPI instance.</param>
+        /// <returns cref="StartCommercialResponse"></returns>
+        public Task<StartCommercialResponse> StartCommercialAsync(StartCommercialRequest request, string accessToken = null)
+        {
+            return TwitchPostGenericAsync<StartCommercialResponse>("/channels/commercial", ApiVersion.Helix, JsonConvert.SerializeObject(request), null, accessToken);
         }
 
         #endregion
