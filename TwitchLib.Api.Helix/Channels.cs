@@ -6,7 +6,6 @@ using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
-using TwitchLib.Api.Helix.Models.Ads;
 using TwitchLib.Api.Helix.Models.Channels.GetAdSchedule;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelEditors;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelFollowers;
@@ -15,6 +14,7 @@ using TwitchLib.Api.Helix.Models.Channels.GetChannelVIPs;
 using TwitchLib.Api.Helix.Models.Channels.GetFollowedChannels;
 using TwitchLib.Api.Helix.Models.Channels.ModifyChannelInformation;
 using TwitchLib.Api.Helix.Models.Channels.SnoozeNextAd;
+using TwitchLib.Api.Helix.Models.Channels.StartCommercial;
 
 namespace TwitchLib.Api.Helix
 {

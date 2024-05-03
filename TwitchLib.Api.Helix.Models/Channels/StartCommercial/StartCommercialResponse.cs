@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Ads
+namespace TwitchLib.Api.Helix.Models.Channels.StartCommercial
 {
    /// <summary>
    /// The response for starting a commercial on a specified channel.
