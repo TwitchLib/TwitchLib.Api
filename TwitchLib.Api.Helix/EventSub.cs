@@ -37,7 +37,7 @@ namespace TwitchLib.Api.Helix
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="CreateEventSubSubscriptionResponse"></returns>
         public Task<CreateEventSubSubscriptionResponse> CreateEventSubSubscriptionAsync(string type, string version, Dictionary<string, string> condition, EventSubTransportMethod method, string websocketSessionId = null, string webhookCallback = null,
-            string webhookSecret = null, conduitId = null, string clientId = null, string accessToken = null)
+            string webhookSecret = null, string conduitId = null, string clientId = null, string accessToken = null)
         {
             if (string.IsNullOrEmpty(type))
                 throw new BadParameterException("type must be set");
