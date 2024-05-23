@@ -30,13 +30,14 @@ namespace TwitchLib.Api.Helix
         /// <param name="condition">The parameter values that are specific to the specified subscription type.</param>
         /// <param name="method">The transport method. Supported values: Webhook, Websocket.</param>
         /// <param name="websocketSessionId">The session Id of a websocket connection that you want to subscribe to an event for. Only needed if method is Websocket</param>
+        /// <param name="conduitId">The conduit Id of a EventSub conduit. Only needed if method is Conduit.</param>
         /// <param name="webhookCallback">The callback URL where the Webhook notification should be sent. Only needed if method is Webhook</param>
         /// <param name="webhookSecret">The secret used for verifying a Webhooks signature. Only needed if method is Webhook</param>
         /// <param name="clientId">optional Client ID to override the use of the stored one in the TwitchAPI instance</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="CreateEventSubSubscriptionResponse"></returns>
         public Task<CreateEventSubSubscriptionResponse> CreateEventSubSubscriptionAsync(string type, string version, Dictionary<string, string> condition, EventSubTransportMethod method, string websocketSessionId = null, string webhookCallback = null,
-            string webhookSecret = null, string clientId = null, string accessToken = null)
+            string webhookSecret = null, conduitId = null, string clientId = null, string accessToken = null)
         {
             if (string.IsNullOrEmpty(type))
                 throw new BadParameterException("type must be set");
@@ -82,6 +83,22 @@ namespace TwitchLib.Api.Helix
                         {
                             method = method.ToString().ToLowerInvariant(),
                             session_id = websocketSessionId
+                        }
+                    };
+                    return TwitchPostGenericAsync<CreateEventSubSubscriptionResponse>("/eventsub/subscriptions", ApiVersion.Helix, JsonConvert.SerializeObject(websocketBody), null, accessToken, clientId);
+                case EventSubTransportMethod.Conduit:
+                    if (string.IsNullOrWhiteSpace(conduitId))
+                        throw new BadParameterException("conduitId must be set");
+                    
+                    var websocketBody = new
+                    {
+                        type,
+                        version,
+                        condition,
+                        transport = new
+                        {
+                            method = method.ToString().ToLowerInvariant(),
+                            conduit_id = conduitId
                         }
                     };
                     return TwitchPostGenericAsync<CreateEventSubSubscriptionResponse>("/eventsub/subscriptions", ApiVersion.Helix, JsonConvert.SerializeObject(websocketBody), null, accessToken, clientId);
