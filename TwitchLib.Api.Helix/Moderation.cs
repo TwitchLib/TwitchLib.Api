@@ -703,7 +703,7 @@ namespace TwitchLib.Api.Helix
                 throw new BadParameterException("moderatorId must be set");
 
             string[] validStatus = { "pending", "approved", "denied", "acknowledged", "canceled" };
-            if (string.IsNullOrEmpty(status) || !validStatus.Contains(status.ToLower()))
+            if (string.IsNullOrEmpty(status) || !validStatus.Contains(status))
                 throw new BadParameterException("status must be set and a valid value");
 
             var getParams = new List<KeyValuePair<string, string>>
@@ -752,7 +752,7 @@ namespace TwitchLib.Api.Helix
                 throw new BadParameterException("unbanRequestId must be set");
 
             string[] validStatus = { "approved", "denied" };
-            if (string.IsNullOrEmpty(status) || !validStatus.Contains(status.ToLower()))
+            if (string.IsNullOrEmpty(status) || !validStatus.Contains(status))
                 throw new BadParameterException("status must be set and a valid value");
 
             var getParams = new List<KeyValuePair<string, string>>
