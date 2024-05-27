@@ -187,7 +187,7 @@ namespace TwitchLib.Api.Helix
         /// </summary>
         /// <param name="broadcasterId">User ID of the broadcaster who owns the channel streaming schedule.</param>
         /// <returns></returns>
-        public Task GetChanneliCalendarAsync(string broadcasterId)
+        public Task<string> GetChanneliCalendarAsync(string broadcasterId)
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
