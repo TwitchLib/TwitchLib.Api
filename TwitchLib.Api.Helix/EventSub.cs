@@ -90,7 +90,7 @@ namespace TwitchLib.Api.Helix
                     if (string.IsNullOrWhiteSpace(conduitId))
                         throw new BadParameterException("conduitId must be set");
                     
-                    var websocketBody = new
+                    var conduitBody = new
                     {
                         type,
                         version,
@@ -101,7 +101,7 @@ namespace TwitchLib.Api.Helix
                             conduit_id = conduitId
                         }
                     };
-                    return TwitchPostGenericAsync<CreateEventSubSubscriptionResponse>("/eventsub/subscriptions", ApiVersion.Helix, JsonConvert.SerializeObject(websocketBody), null, accessToken, clientId);
+                    return TwitchPostGenericAsync<CreateEventSubSubscriptionResponse>("/eventsub/subscriptions", ApiVersion.Helix, JsonConvert.SerializeObject(conduitBody), null, accessToken, clientId);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(method), method, null);
             }
