@@ -21,10 +21,6 @@ namespace TwitchLib.Api.Helix
       /// </summary>
       public Analytics Analytics { get; }
       /// <summary>
-      /// Ads related Helix APIs
-      /// </summary>
-      public Ads Ads { get; }
-      /// <summary>
       /// Bits related Helix APIs
       /// </summary>
       public Bits Bits { get; }
@@ -148,7 +144,6 @@ namespace TwitchLib.Api.Helix
          Settings = settings ?? new ApiSettings();
 
          Analytics = new Analytics(Settings, rateLimiter, http);
-         Ads = new Ads(Settings, rateLimiter, http);
          Bits = new Bits(Settings, rateLimiter, http);
          Chat = new Chat(Settings, rateLimiter, http);
          Channels = new Channels(Settings, rateLimiter, http);
