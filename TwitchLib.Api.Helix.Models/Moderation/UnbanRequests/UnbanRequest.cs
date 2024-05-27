@@ -74,12 +74,12 @@ namespace TwitchLib.Api.Helix.Models.Moderation.UnbanRequests
         /// Timestamp of when the unban request was created.
         /// </summary>
         [JsonProperty(PropertyName = "created_at")]
-        public string CreatedAt { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
         /// <summary>
         /// Timestamp of when moderator/broadcaster approved or denied the request.
         /// </summary>
         [JsonProperty(PropertyName = "resolved_at")]
-        public string ResolvedAt { get; protected set; }
+        public DateTime? ResolvedAt { get; protected set; }
         /// <summary>
         /// Text input by the resolver (moderator) of the unban. request
         /// </summary>
