@@ -1,12 +1,15 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
+using TwitchLib.Api.Helix.Models.Entitlements;
 using TwitchLib.Api.Helix.Models.Moderation.AutomodSettings;
 using TwitchLib.Api.Helix.Models.Moderation.BanUser;
 using TwitchLib.Api.Helix.Models.Moderation.BlockedTerms;
@@ -19,6 +22,9 @@ using TwitchLib.Api.Helix.Models.Moderation.GetModerators;
 using TwitchLib.Api.Helix.Models.Moderation.ShieldModeStatus;
 using TwitchLib.Api.Helix.Models.Moderation.ShieldModeStatus.GetShieldModeStatus;
 using TwitchLib.Api.Helix.Models.Moderation.ShieldModeStatus.UpdateShieldModeStatus;
+using TwitchLib.Api.Helix.Models.Moderation.UnbanRequests;
+using TwitchLib.Api.Helix.Models.Moderation.UnbanRequests.GetUnbanRequests;
+using TwitchLib.Api.Helix.Models.Moderation.UnbanRequests.ResolveUnbanRequests;
 
 namespace TwitchLib.Api.Helix
 {
@@ -666,6 +672,105 @@ namespace TwitchLib.Api.Helix
             };
 
             return TwitchPutGenericAsync<ShieldModeStatus>("/moderation/shield_mode", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region UnbanRequests
+
+        #region GetUnbanRequests
+
+        /// <summary>
+        /// Gets a list of unban requests for a broadcaster’s channel.
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster whose channel is receiving unban requests.</param>
+        /// <param name="moderatorId">The ID of the broadcaster or a user that has permission to moderate the broadcaster’s unban requests. This ID must match the user ID in the user access token.</param>
+        /// <param name="status">Filter by a status: pending, approved, denied, acknowledged, canceled</param>
+        /// <param name="userId">The ID used to filter what unban requests are returned.</param>
+        /// <param name="after">Cursor used to get next page of results. Pagination object in response contains cursor value.</param>
+        /// <param name="first">The maximum number of items to return per page in response</param>
+        /// <param name="accessToken">optional access token to override the one used while creating the TwitchAPI object</param>
+        /// <returns></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<GetUnbanRequestsResponse> GetUnbanRequestsAsync(string broadcasterId, string moderatorId, string status, string userId = null, string after = null, int first = 0, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+
+            if (string.IsNullOrEmpty(moderatorId))
+                throw new BadParameterException("moderatorId must be set");
+
+            string[] validStatus = { "pending", "approved", "denied", "acknowledged", "canceled" };
+            if (string.IsNullOrEmpty(status) || !validStatus.Contains(status.ToLower()))
+                throw new BadParameterException("status must be set and a valid value");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("moderator_id", moderatorId),
+                new KeyValuePair<string, string>("status", status),
+            };
+
+            if (!string.IsNullOrEmpty(userId))
+                getParams.Add(new KeyValuePair<string, string>("user_id", userId));
+
+            if (!string.IsNullOrEmpty(after))
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+
+            if (first > 0)
+                getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
+
+            return TwitchGetGenericAsync<GetUnbanRequestsResponse>("/moderation/unban_requests", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
+
+        #region ResolveUnbanRequests
+
+        /// <summary>
+        /// Resolves an unban request by approving or denying it.
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster whose channel is approving or denying the unban request.</param>
+        /// <param name="moderatorId">	The ID of the broadcaster or a user that has permission to moderate the broadcaster’s unban requests. This ID must match the user ID in the user access token.</param>
+        /// <param name="unbanRequestId">The ID of the broadcaster or a user that has permission to moderate the broadcaster’s unban requests. This ID must match the user ID in the user access token.</param>
+        /// <param name="status">Resolution status: approved, denied</param>
+        /// <param name="resolutionText">Message supplied by the unban request resolver. The message is limited to a maximum of 500 characters.</param>
+        /// <param name="accessToken">optional access token to override the one used while creating the TwitchAPI object</param>
+        /// <returns></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<ResolveUnbanRequestsResponse> ResolveUnbanRequestsAsync(string broadcasterId, string moderatorId, string unbanRequestId, string status, string resolutionText, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+
+            if (string.IsNullOrEmpty(moderatorId))
+                throw new BadParameterException("moderatorId must be set");
+
+            if (string.IsNullOrEmpty(unbanRequestId))
+                throw new BadParameterException("unbanRequestId must be set");
+
+            string[] validStatus = { "approved", "denied" };
+            if (string.IsNullOrEmpty(status) || !validStatus.Contains(status.ToLower()))
+                throw new BadParameterException("status must be set and a valid value");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("moderator_id", moderatorId),
+                new KeyValuePair<string, string>("unban_request_id", unbanRequestId),
+                new KeyValuePair<string, string>("status", status)
+            };
+            if (!string.IsNullOrEmpty(resolutionText))
+            {
+                if (resolutionText.Length > 500)
+                    throw new BadParameterException("resolutionText cannot be longer than 500 characters");
+
+                getParams.Add(new KeyValuePair<string, string>("resolution_text", resolutionText));
+            }
+
+            return TwitchPatchGenericAsync<ResolveUnbanRequestsResponse>("/moderation/unban_requests", ApiVersion.Helix, null, getParams, accessToken);
         }
 
         #endregion
