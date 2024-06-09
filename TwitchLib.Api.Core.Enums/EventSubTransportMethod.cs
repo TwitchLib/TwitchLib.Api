@@ -3,6 +3,7 @@
     public enum EventSubTransportMethod
     {
         Webhook,
-        Websocket
+        Websocket,
+        Conduit
     }
 }
