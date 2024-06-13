@@ -17,6 +17,7 @@ using TwitchLib.Api.Helix.Models.Moderation.CheckAutoModStatus;
 using TwitchLib.Api.Helix.Models.Moderation.CheckAutoModStatus.Request;
 using TwitchLib.Api.Helix.Models.Moderation.GetBannedEvents;
 using TwitchLib.Api.Helix.Models.Moderation.GetBannedUsers;
+using TwitchLib.Api.Helix.Models.Moderation.GetModeratedChannels;
 using TwitchLib.Api.Helix.Models.Moderation.GetModeratorEvents;
 using TwitchLib.Api.Helix.Models.Moderation.GetModerators;
 using TwitchLib.Api.Helix.Models.Moderation.ShieldModeStatus;
@@ -774,6 +775,39 @@ namespace TwitchLib.Api.Helix
         }
 
         #endregion
+
+        #endregion
+
+        #region GetModeratedChannels
+        /// <summary>
+        /// Gets a list of channels that the specified user has moderator privileges in.
+        /// <para>Requires a user access token that includes the user:read:moderated_channels scope.</para>
+        /// <para>The ID in the broadcaster_id query parameter must match the user ID in the access token.</para>
+        /// </summary>
+        /// <param name="userId"> Id of the user you want the list of channels that this user has moderator privileges in.</param>
+        /// <param name="first">Maximum number of objects to return. Maximum: 100. Default: 20.</param>
+        /// <param name="after">Cursor for forward pagination: tells the server where to start fetching the next set of results in a multi-page response.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetModeratedChannelsResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<GetModeratedChannelsResponse> GetModeratedChannelsAsync(string userId, int first = 20, string after = null, string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new BadParameterException("userId cannot be null/empty/whitespace");
+            if (first > 100 || first < 1)
+                throw new BadParameterException("first must be greater than 0 and less than 101");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("user_id", userId),
+                new KeyValuePair<string, string>("first", first.ToString())
+            };
+
+            if (!string.IsNullOrWhiteSpace(after))
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+
+            return TwitchGetGenericAsync<GetModeratedChannelsResponse>("/moderation/channels", ApiVersion.Helix, getParams, accessToken);
+        }
 
         #endregion
     }
