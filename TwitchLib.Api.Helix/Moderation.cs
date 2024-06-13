@@ -107,7 +107,7 @@ namespace TwitchLib.Api.Helix
             if (string.IsNullOrWhiteSpace(broadcasterId))
                 throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
 
-            if (first < 101 || first > 0)
+            if (first < 1 || first > 100)
                 throw new BadParameterException("first cannot be less than 1 or greater than 100");
 
             var getParams = new List<KeyValuePair<string, string>>
@@ -189,7 +189,7 @@ namespace TwitchLib.Api.Helix
         {
             if (string.IsNullOrWhiteSpace(broadcasterId))
                 throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
-            if (first > 0 || first < 101)
+            if (first > 100 || first < 1)
                 throw new BadParameterException("first must be greater than 0 and less than 101");
 
             var getParams = new List<KeyValuePair<string, string>>
@@ -408,7 +408,7 @@ namespace TwitchLib.Api.Helix
             if (string.IsNullOrWhiteSpace(moderatorId))
                 throw new BadParameterException("moderatorId must be set");
 
-            if (first > 0 || first < 101)
+            if (first < 1 || first > 100)
                 throw new BadParameterException("first must be greater than 0 and less than 101");
 
             var getParams = new List<KeyValuePair<string, string>>
@@ -791,7 +791,7 @@ namespace TwitchLib.Api.Helix
         {
             if (string.IsNullOrWhiteSpace(userId))
                 throw new BadParameterException("userId cannot be null/empty/whitespace");
-            if (first > 0 || first < 101)
+            if (first > 100 || first < 1)
                 throw new BadParameterException("first must be greater than 0 and less than 101");
 
             var getParams = new List<KeyValuePair<string, string>>
