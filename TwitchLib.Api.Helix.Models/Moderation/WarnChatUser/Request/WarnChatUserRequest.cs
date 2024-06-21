@@ -19,4 +19,3 @@ public class WarnChatUserRequest
     [JsonProperty(PropertyName = "reason")]
     public string Reason { get; set; } = string.Empty;
 }
-}
