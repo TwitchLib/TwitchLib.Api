@@ -26,6 +26,8 @@ using TwitchLib.Api.Helix.Models.Moderation.ShieldModeStatus.UpdateShieldModeSta
 using TwitchLib.Api.Helix.Models.Moderation.UnbanRequests;
 using TwitchLib.Api.Helix.Models.Moderation.UnbanRequests.GetUnbanRequests;
 using TwitchLib.Api.Helix.Models.Moderation.UnbanRequests.ResolveUnbanRequests;
+using TwitchLib.Api.Helix.Models.Moderation.WarnChatUser;
+using TwitchLib.Api.Helix.Models.Moderation.WarnChatUser.Request;
 
 namespace TwitchLib.Api.Helix
 {
@@ -807,6 +809,52 @@ namespace TwitchLib.Api.Helix
                 getParams.Add(new KeyValuePair<string, string>("after", after));
 
             return TwitchGetGenericAsync<GetModeratedChannelsResponse>("/moderation/channels", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
+
+        #region WarnChatUser
+        /// <summary>
+        /// Warns a user in the specified broadcaster’s chat room, preventing them from chat interaction until the warning is acknowledged.
+        /// <para>New warnings can be issued to a user when they already have a warning in the channel (new warning will replace old warning).</para>
+        /// <para>Requires a user access token that includes the moderator:manage:warnings scope.</para>
+        /// <para>Query parameter moderator_id must match the user_id in the user access token.</para>
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the channel in which the warning will take effect.</param>
+        /// <param name="moderatorId">The ID of the twitch user who requested the warning.</param>
+        /// <param name="warnChatUserRequest">request object contains information about the warning.</param>
+        /// <param name="accessToken">optional access token to override the one used while creating the TwitchAPI object</param>
+        /// <returns cref="WarnChatUserResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<WarnChatUserResponse> WarnChatUserAsync(string broadcasterId, string moderatorId, WarnChatUserRequest warnChatUserRequest, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+
+            if (string.IsNullOrEmpty(moderatorId))
+                throw new BadParameterException("moderatorId must be set");
+
+            if (warnChatUserRequest == null)
+                throw new BadParameterException("warnChatUserRequest cannot be null");
+
+            if (string.IsNullOrWhiteSpace(warnChatUserRequest.UserId))
+                throw new BadParameterException("warnChatUserRequest.UserId must be set");
+
+            if (warnChatUserRequest.Reason.Length > 500)
+                throw new BadParameterException("warnChatUserRequest.Reason can't be greater then 500 characters.");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new KeyValuePair<string, string>("moderator_id", moderatorId)
+            };
+
+            var body = new
+            {
+                data = warnChatUserRequest
+            };
+
+            return TwitchPostGenericAsync<WarnChatUserResponse>("/moderation/warnings", ApiVersion.Helix, JsonConvert.SerializeObject(body), getParams, accessToken);
         }
 
         #endregion
