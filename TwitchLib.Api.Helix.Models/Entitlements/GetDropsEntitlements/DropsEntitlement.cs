@@ -5,9 +5,7 @@ using TwitchLib.Api.Core.Enums;
 namespace TwitchLib.Api.Helix.Models.Entitlements.GetDropsEntitlements;
 
 /// <summary>
-///         /// <summary>
 /// An organization’s entitlement that has been granted to a game, a user, or both.
-/// </summary>
 /// </summary>
 public class DropsEntitlement
 {

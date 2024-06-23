@@ -21,7 +21,7 @@ public class StartCommercialResponse
   public string Message { get; protected set; }
 
   /// <summary>
-  ///  	The number of seconds you must wait before running another commercial.
+  /// The number of seconds you must wait before running another commercial.
   /// </summary>
   [JsonProperty(PropertyName = "retry_after")]
   public int RetryAfter { get; protected set; }

@@ -15,7 +15,7 @@ public class Transaction
     public string Id { get; protected set; }
 
     /// <summary>
-    /// 	The UTC date and time (in RFC3339 format) of the transaction.
+    /// The UTC date and time (in RFC3339 format) of the transaction.
     /// </summary>
     [JsonProperty(PropertyName = "timestamp")]
     public DateTime Timestamp { get; protected set; }

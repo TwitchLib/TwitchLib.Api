@@ -57,7 +57,6 @@ public class ChatSettingsResponseModel
 
     /// <summary>
     /// The amount of time, in seconds, that users must wait between sending messages.
-    /// 
     /// </summary>
     [JsonProperty(PropertyName = "slow_mode_wait_time")]
     public int? SlowModeWaitDuration { get; protected set; }

@@ -9,7 +9,7 @@ namespace TwitchLib.Api.Helix.Models.Common;
 public class Tag
 {
     /// <summary>
-    /// 	An ID that identifies this tag.
+    /// An ID that identifies this tag.
     /// </summary>
     [JsonProperty(PropertyName = "tag_id")]
     public string TagId { get; protected set; }

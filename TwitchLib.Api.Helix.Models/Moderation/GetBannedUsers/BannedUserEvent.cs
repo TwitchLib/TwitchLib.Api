@@ -51,7 +51,7 @@ public class BannedUserEvent
     public string ModeratorId { get; protected set; }
 
     /// <summary>
-    /// 	Login of the moderator who initiated the ban.
+    /// Login of the moderator who initiated the ban.
     /// </summary>
     [JsonProperty(PropertyName = "moderator_login")]
     public string ModeratorLogin { get; protected set; }

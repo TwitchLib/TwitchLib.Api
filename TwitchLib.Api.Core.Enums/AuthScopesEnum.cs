@@ -350,7 +350,7 @@ namespace TwitchLib.Api.Core.Enums
         User_Read_Subscriptions,
 
         /// <summary>
-        /// 
+        /// User write chat
         /// </summary>
         User_Write_Chat,
 

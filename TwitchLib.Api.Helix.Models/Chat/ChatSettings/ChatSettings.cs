@@ -9,8 +9,7 @@ public class ChatSettings
 {
     /// <summary>
     /// A Boolean value that determines whether chat messages must contain only emotes.
-    /// </summary>
-    ///         
+    /// </summary>    
     [JsonProperty(PropertyName = "emote_mode")]
     public bool? EmoteMode;
 

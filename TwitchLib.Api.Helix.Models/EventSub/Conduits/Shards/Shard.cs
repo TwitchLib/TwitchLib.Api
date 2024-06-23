@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 namespace TwitchLib.Api.Helix.Models.EventSub.Conduits.Shards;
 
 /// <summary>
-/// 
+/// A Shard.
 /// </summary>
 public class Shard
 {

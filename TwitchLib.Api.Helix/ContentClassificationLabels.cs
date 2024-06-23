@@ -12,9 +12,7 @@ namespace TwitchLib.Api.Helix
    /// </summary>
    public class ContentClassificationLabels : ApiBase
    {
-      /// <summary>
-      /// 
-      /// </summary>
+
       public ContentClassificationLabels(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
       {}
 
