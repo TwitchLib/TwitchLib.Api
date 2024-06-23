@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Games;
+namespace TwitchLib.Api.Helix.Models.Search;
 
 /// <summary>
 /// The category or game.
@@ -8,26 +8,20 @@ namespace TwitchLib.Api.Helix.Models.Games;
 public class Game
 {
     /// <summary>
-    /// An ID that identifies the category or game.
+    /// An ID that uniquely identifies the game or category.
     /// </summary>
     [JsonProperty(PropertyName = "id")]
     public string Id { get; protected set; }
 
     /// <summary>
-    /// The category’s or game’s name.
+    /// The name of the game or category.
     /// </summary>
     [JsonProperty(PropertyName = "name")]
     public string Name { get; protected set; }
 
     /// <summary>
-    /// A URL to the category’s or game’s box art. You must replace the {width}x{height} placeholder with the size of image you want.
+    /// A URL to an image of the game’s box art or streaming category.
     /// </summary>
     [JsonProperty(PropertyName = "box_art_url")]
     public string BoxArtUrl { get; protected set; }
-
-    /// <summary>
-    /// The ID that IGDB uses to identify this game. 
-    /// </summary>
-    [JsonProperty(PropertyName = "igdb_id")]
-    public string IgdbId { get; protected set; }
 }

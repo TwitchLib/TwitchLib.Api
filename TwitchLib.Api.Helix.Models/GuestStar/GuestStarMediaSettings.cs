@@ -2,6 +2,9 @@
 
 namespace TwitchLib.Api.Helix.Models.GuestStar;
 
+/// <summary>
+/// Information about the guest’s audio settings
+/// </summary>
 public class GuestStarMediaSettings
 {
     /// <summary>

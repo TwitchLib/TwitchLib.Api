@@ -3,6 +3,9 @@ using TwitchLib.Api.Helix.Models.Common;
 
 namespace TwitchLib.Api.Helix.Models.EventSub.Conduits.Shards.GetConduitShards;
 
+/// <summary>
+/// Get Conduit Shards Response object.
+/// </summary>
 public class GetConduitShardsResponse
 {
     /// <summary>
@@ -10,6 +13,7 @@ public class GetConduitShardsResponse
     /// </summary>
     [JsonProperty(PropertyName = "data")]
     public Shard[] Shards { get; protected set; }
+
     /// <summary>
     /// <para>Contains information used to page through a list of results. The object is empty if there are no more pages left to page through.</para>
     /// </summary>

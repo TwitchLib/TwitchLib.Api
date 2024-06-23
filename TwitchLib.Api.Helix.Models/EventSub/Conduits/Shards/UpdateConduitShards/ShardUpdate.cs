@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.EventSub.Conduits.Shards.UpdateConduitShards;
 
+/// <summary>
+/// Shard to update.
+/// </summary>
 public class ShardUpdate
 {
     /// <summary>
@@ -9,6 +12,7 @@ public class ShardUpdate
     /// </summary>
     [JsonProperty(PropertyName = "id")]
     public string Id { get; set; }
+
     /// <summary>
     /// <para>The transport details that you want Twitch to use when sending you notifications.</para>
     /// </summary>

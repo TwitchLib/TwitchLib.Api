@@ -2,6 +2,9 @@
 
 namespace TwitchLib.Api.Helix.Models.GuestStar.GetGuestStarInvites;
 
+/// <summary>
+/// Get guest star invites response object.
+/// </summary>
 public class GetGuestStarInvitesResponse
 {
     /// <summary>

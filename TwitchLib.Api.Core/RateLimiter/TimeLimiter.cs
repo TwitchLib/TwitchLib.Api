@@ -7,6 +7,9 @@ using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Core.RateLimiter
 {
+    /// <summary>
+    /// Time Limiter
+    /// </summary>
     public class TimeLimiter : IRateLimiter
     {
         private readonly IAwaitableConstraint _ac;

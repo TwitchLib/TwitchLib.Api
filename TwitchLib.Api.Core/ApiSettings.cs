@@ -6,6 +6,9 @@ using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Core
 {
+    /// <summary>
+    /// Api Settings
+    /// </summary>
     public class ApiSettings : IApiSettings, INotifyPropertyChanged
     {
         private string _clientId;

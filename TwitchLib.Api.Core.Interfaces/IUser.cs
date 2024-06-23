@@ -2,6 +2,9 @@
 
 namespace TwitchLib.Api.Core.Interfaces
 {
+    /// <summary>
+    /// Interface for a user
+    /// </summary>
     public interface IUser
     {
         string Id { get; }

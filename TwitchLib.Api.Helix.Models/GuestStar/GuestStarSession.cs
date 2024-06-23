@@ -2,6 +2,9 @@
 
 namespace TwitchLib.Api.Helix.Models.GuestStar;
 
+/// <summary>
+/// The session details
+/// </summary>
 public class GuestStarSession
 {
     /// <summary>
@@ -9,7 +12,7 @@ public class GuestStarSession
     /// </summary>
     [JsonProperty(PropertyName = "id")]
     public string Id { get; protected set; }
-    
+
     /// <summary>
     /// List of guests currently interacting with the Guest Star session.
     /// </summary>

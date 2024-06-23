@@ -1,20 +1,23 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace TwitchLib.Api.Helix.Models.Bits.ExtensionBitsProducts;
+namespace TwitchLib.Api.Helix.Models.Extensions.Transactions;
 
 /// <summary>
-/// An object that contains the product’s cost information.
+/// Details about the digital product’s cost.
 /// </summary>
 public class Cost
 {
     /// <summary>
-    /// The product’s price.
+    /// The amount exchanged for the digital product.
     /// </summary>
     [JsonProperty(PropertyName = "amount")]
     public int Amount { get; protected set; }
 
     /// <summary>
-    /// The type of currency.
+    /// The type of currency exchanged. 
     /// </summary>
     [JsonProperty(PropertyName = "type")]
     public string Type { get; protected set; }
