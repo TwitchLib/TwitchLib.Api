@@ -7,6 +7,9 @@ using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Core.RateLimiter
 {
+    /// <summary>
+    /// Count By Interval Awaitable Constraint
+    /// </summary>
     public class CountByIntervalAwaitableConstraint : IAwaitableConstraint
     {
         public IReadOnlyList<DateTime> TimeStamps => _timeStamps.ToList();

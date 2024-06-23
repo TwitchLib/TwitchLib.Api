@@ -2,6 +2,9 @@
 
 namespace TwitchLib.Api.Helix.Models.GuestStar.GetGuestStarSession;
 
+/// <summary>
+/// Get guest star session response object.
+/// </summary>
 public class GetGuestStarSessionResponse
 {
     /// <summary>

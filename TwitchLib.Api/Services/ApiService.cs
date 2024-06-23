@@ -7,6 +7,9 @@ using TwitchLib.Api.Services.Events;
 
 namespace TwitchLib.Api.Services
 {
+    /// <summary>
+    /// Api Service
+    /// </summary>
     public class ApiService
     {
         protected readonly ITwitchAPI _api;
@@ -17,10 +20,12 @@ namespace TwitchLib.Api.Services
         /// The list with channels to monitor.
         /// </summary>
         public List<string> ChannelsToMonitor { get; private set; }
+
         /// <summary>
         /// How often the service is being updated in seconds.
         /// </summary>
         public int IntervalInSeconds => _serviceTimer.IntervalInSeconds;
+
         /// <summary>
         /// Whether the service is currently enabled or not.
         /// </summary>
@@ -30,14 +35,17 @@ namespace TwitchLib.Api.Services
         /// Event invoked when the service has started.
         /// </summary>
         public event EventHandler<OnServiceStartedArgs> OnServiceStarted;
+
         /// <summary>
         /// Event invoked when the service has stopped.
         /// </summary>
         public event EventHandler<OnServiceStoppedArgs> OnServiceStopped;
+
         /// <summary>
         /// Event invoked when the service is updating.
         /// </summary>
         public event EventHandler<OnServiceTickArgs> OnServiceTick;
+
         /// <summary>
         /// Event invoked when the channels have been set.
         /// </summary>

@@ -4,6 +4,9 @@ using TwitchLib.Api.Core.Enums;
 
 namespace TwitchLib.Api.Core.Interfaces
 {
+    /// <summary>
+    /// Interface for HTTP call handler
+    /// </summary>
     public interface IHttpCallHandler
     {
         Task<KeyValuePair<int, string>> GeneralRequestAsync(string url, string method, string payload = null, ApiVersion api = ApiVersion.Helix, string clientId = null, string accessToken = null);

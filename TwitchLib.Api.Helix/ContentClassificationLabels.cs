@@ -13,15 +13,13 @@ namespace TwitchLib.Api.Helix
    public class ContentClassificationLabels : ApiBase
    {
       /// <summary>
-      /// <para></para>
+      /// 
       /// </summary>
-      /// <param name="settings"></param>
-      /// <param name="rateLimiter"></param>
-      /// <param name="http"></param>
       public ContentClassificationLabels(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
       {}
 
       #region GetContentClassificationLabels
+
       /// <summary>
       /// <para><see href="https://dev.twitch.tv/docs/api/reference/#get-content-classification-labels">
       /// TwitchAPI Docs: Get Content Classification Labels </see></para>

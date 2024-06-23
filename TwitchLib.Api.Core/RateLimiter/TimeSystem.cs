@@ -5,6 +5,9 @@ using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Core.RateLimiter
 {
+    /// <summary>
+    /// Time System
+    /// </summary>
     public class TimeSystem : ITime
     {
         public static ITime StandardTime { get; }

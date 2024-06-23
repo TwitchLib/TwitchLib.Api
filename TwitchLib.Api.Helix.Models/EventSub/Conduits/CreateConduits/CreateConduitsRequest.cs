@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.EventSub.Conduits.CreateConduits;
 
+/// <summary>
+/// Request object for Create Conduits.
+/// </summary>
 public class CreateConduitsRequest
 {
     /// <summary>

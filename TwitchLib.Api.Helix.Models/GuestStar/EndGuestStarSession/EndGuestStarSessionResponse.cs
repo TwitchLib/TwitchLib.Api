@@ -2,6 +2,9 @@
 
 namespace TwitchLib.Api.Helix.Models.GuestStar.CreateGuestStarSession;
 
+/// <summary>
+/// End guest start session response object
+/// </summary>
 public class EndGuestStarSessionResponse
 {
     /// <summary>

@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.EventSub.Conduits.UpdateConduits;
 
+/// <summary>
+/// Update conduits response object.
+/// </summary>
 public class UpdateConduitsResponse
 {
     /// <summary>

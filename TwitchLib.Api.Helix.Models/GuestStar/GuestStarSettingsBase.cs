@@ -2,6 +2,9 @@
 
 namespace TwitchLib.Api.Helix.Models.GuestStar;
 
+/// <summary>
+/// Guest Star Settings Base
+/// </summary>
 public abstract class GuestStarSettingsBase
 {
     /// <summary>

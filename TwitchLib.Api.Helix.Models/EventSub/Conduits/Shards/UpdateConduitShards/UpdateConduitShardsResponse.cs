@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.EventSub.Conduits.Shards.UpdateConduitShards;
 
+/// <summary>
+/// Update conduit shards Response object.
+/// </summary>
 public class UpdateConduitShardsResponse
 {
     /// <summary>
@@ -9,6 +12,7 @@ public class UpdateConduitShardsResponse
     /// </summary>
     [JsonProperty(PropertyName = "data")]
     public Shard[] Shards { get; protected set; }
+
     /// <summary>
     /// <para>List of unsuccessful updates.</para>
     /// </summary>

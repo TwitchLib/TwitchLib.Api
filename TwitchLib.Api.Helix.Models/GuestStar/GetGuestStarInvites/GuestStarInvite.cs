@@ -2,6 +2,9 @@
 
 namespace TwitchLib.Api.Helix.Models.GuestStar.GetGuestStarInvites;
 
+/// <summary>
+/// An invite object describing the invited user as well as their ready status.
+/// </summary>
 public class GuestStarInvite
 {
     /// <summary>
@@ -9,13 +12,13 @@ public class GuestStarInvite
     /// </summary>
     [JsonProperty(PropertyName = "user_id")]
     public string UserId { get; protected set; }
-    
+
     /// <summary>
     /// Timestamp when this user was invited to the session.
     /// </summary>
     [JsonProperty(PropertyName = "invited_at")]
     public string InvitedAt { get; protected set; }
-    
+
     /// <summary>
     /// Status representing the invited user’s join state. Can be one of the following:
     /// <para>INVITED: The user has been invited to the session but has not acknowledged it.</para>
@@ -24,25 +27,25 @@ public class GuestStarInvite
     /// </summary>
     [JsonProperty(PropertyName = "status")]
     public string Status { get; protected set; }
-    
+
     /// <summary>
     /// Flag signaling that the invited user has chosen to disable their local video device. The user has hidden themselves, but they may choose to reveal their video feed upon joining the session.
     /// </summary>
     [JsonProperty(PropertyName = "is_video_enabled")]
     public bool IsVideoEnabled { get; protected set; }
-    
+
     /// <summary>
     /// Flag signaling that the invited user has chosen to disable their local audio device. The user has muted themselves, but they may choose to unmute their audio feed upon joining the session.
     /// </summary>
     [JsonProperty(PropertyName = "is_audio_enabled")]
     public bool IsAudioEnabled { get; protected set; }
-    
+
     /// <summary>
     /// Flag signaling that the invited user has chosen to disable their local video device. The user has hidden themselves, but they may choose to reveal their video feed upon joining the session.
     /// </summary>
     [JsonProperty(PropertyName = "is_video_available")]
     public bool IsVideoAvailable { get; protected set; }
-    
+
     /// <summary>
     /// Flag signaling that the invited user has chosen to disable their local audio device. The user has muted themselves, but they may choose to unmute their audio feed upon joining the session.
     /// </summary>

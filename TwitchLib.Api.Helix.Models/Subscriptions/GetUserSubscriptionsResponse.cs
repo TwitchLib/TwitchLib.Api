@@ -1,10 +1,15 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Subscriptions
+namespace TwitchLib.Api.Helix.Models.Subscriptions;
+
+/// <summary>
+/// Get user subscriptions response object.
+/// </summary>
+public class GetUserSubscriptionsResponse
 {
-    public class GetUserSubscriptionsResponse
-    {
-        [JsonProperty(PropertyName = "data")]
-        public Subscription[] Data { get; protected set; }
-    }
+    /// <summary>
+    /// The list of subscriptions for the user.
+    /// </summary>
+    [JsonProperty(PropertyName = "data")]
+    public Subscription[] Data { get; protected set; }
 }

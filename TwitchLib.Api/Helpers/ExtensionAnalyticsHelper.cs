@@ -7,6 +7,9 @@ using TwitchLib.Api.Helix.Models.Helpers;
 
 namespace TwitchLib.Api.Helpers
 {
+    /// <summary>
+    /// Extension Analytics Helper
+    /// </summary>
     public static class ExtensionAnalyticsHelper
     {
         public static async Task<List<ExtensionAnalytics>> HandleUrlAsync(string url)
