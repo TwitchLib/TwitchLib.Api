@@ -15,7 +15,7 @@ public class SearchCategoriesResponse
     public Game[] Games { get; protected set; }
 
     /// <summary>
-    /// 
+    /// The information used to page through the list of results.
     /// </summary>
     [JsonProperty(PropertyName = "pagination")]
     public Pagination Pagination { get; protected set; }
