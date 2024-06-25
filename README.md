@@ -32,10 +32,7 @@ namespace Example
             API.Settings.ClientId = "";
             API.Settings.AccessToken = "";               
 
-            Monitor = new LiveStreamMonitorService(API, 60);
-            
-            List<string> lst = new List<string>{ "ID1", "ID2" };
-            Monitor.SetChannelsById(lst);            
+            Monitor = new LiveStreamMonitorService(API, 60);      
 
             Monitor.OnStreamOnline += Monitor_OnStreamOnline;
             Monitor.OnStreamOffline += Monitor_OnStreamOffline;
@@ -44,6 +41,8 @@ namespace Example
             Monitor.OnServiceStarted += Monitor_OnServiceStarted;
             Monitor.OnChannelsSet += Monitor_OnChannelsSet;
 
+            List<string> lst = new List<string>{ "ID1", "ID2" };
+            Monitor.SetChannelsById(lst);      
 
             Monitor.Start(); //Keep at the end!
 
