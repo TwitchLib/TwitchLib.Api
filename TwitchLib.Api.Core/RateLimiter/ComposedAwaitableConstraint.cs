@@ -5,11 +5,14 @@ using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Core.RateLimiter
 {
+    /// <summary>
+    /// Composed Awaitable Constraint
+    /// </summary>
     public class ComposedAwaitableConstraint : IAwaitableConstraint
     {
         private IAwaitableConstraint _ac1;
         private IAwaitableConstraint _ac2;
-        private readonly SemaphoreSlim _semafore = new SemaphoreSlim(1, 1);
+        private readonly SemaphoreSlim _semafore = new(1, 1);
 
         internal ComposedAwaitableConstraint(IAwaitableConstraint ac1, IAwaitableConstraint ac2)
         {

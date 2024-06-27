@@ -17,6 +17,8 @@ namespace TwitchLib.Api.Helix
         {
         }
 
+        #region GetHypeTrainEvents
+
         /// <summary>
         /// Gets the information of the most recent Hype Train of the given channel ID.
         /// <para>When there is currently an active Hype Train, it returns information about that Hype Train. </para>
@@ -39,8 +41,8 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("first", first.ToString())
+                new("broadcaster_id", broadcasterId),
+                new("first", first.ToString())
             };
 
             if (!string.IsNullOrWhiteSpace(cursor))
@@ -48,5 +50,6 @@ namespace TwitchLib.Api.Helix
 
             return TwitchGetGenericAsync<GetHypeTrainResponse>("/hypetrain/events", ApiVersion.Helix, getParams, accessToken);
         }
+        #endregion
     }
 }

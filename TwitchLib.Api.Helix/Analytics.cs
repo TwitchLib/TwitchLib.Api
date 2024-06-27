@@ -17,9 +17,6 @@ namespace TwitchLib.Api.Helix
       /// <summary>
       /// Analytics related APIs
       /// </summary>
-      /// <param name="settings"></param>
-      /// <param name="rateLimiter"></param>
-      /// <param name="http"></param>
       public Analytics(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
       {
       }
@@ -87,7 +84,7 @@ namespace TwitchLib.Api.Helix
       {
          var getParams = new List<KeyValuePair<string, string>>
          {
-               new KeyValuePair<string, string>("first", first.ToString())
+               new("first", first.ToString())
          };
 
          if (!string.IsNullOrWhiteSpace(gameId))
@@ -173,7 +170,7 @@ namespace TwitchLib.Api.Helix
       {
          var getParams = new List<KeyValuePair<string, string>>
          {
-               new KeyValuePair<string, string>("first", first.ToString())
+               new("first", first.ToString())
          };
 
          if (!string.IsNullOrWhiteSpace(extensionId))

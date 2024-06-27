@@ -16,6 +16,8 @@ namespace TwitchLib.Api.Helix
         {
         }
 
+        #region StartRaid
+
         /// <summary>
         /// Raid another channel by sending the broadcaster’s viewers to the targeted channel.
         /// <para>Rate Limit: The limit is 10 requests within a 10-minute window.</para>
@@ -30,12 +32,15 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("from_broadcaster_id", fromBroadcasterId),
-                new KeyValuePair<string, string>("to_broadcaster_id", toBroadcasterId)
+                new("from_broadcaster_id", fromBroadcasterId),
+                new("to_broadcaster_id", toBroadcasterId)
             };
 
             return TwitchPostGenericAsync<StartRaidResponse>("/raids", ApiVersion.Helix, string.Empty, getParams: getParams, accessToken: accessToken);
         }
+        #endregion
+
+        #region CancelRaid
 
         /// <summary>
         /// Cancel a pending raid.
@@ -50,10 +55,11 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+                new("broadcaster_id", broadcasterId),
             };
 
             return TwitchDeleteAsync("/raids", ApiVersion.Helix, getParams: getParams, accessToken: accessToken);
         }
+        #endregion
     }
 }

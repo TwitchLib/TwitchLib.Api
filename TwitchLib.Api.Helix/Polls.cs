@@ -12,11 +12,16 @@ using TwitchLib.Api.Helix.Models.Polls.GetPolls;
 
 namespace TwitchLib.Api.Helix
 {
+    /// <summary>
+    /// Polls related APIs
+    /// </summary>
     public class Polls : ApiBase
     {
         public Polls(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
         {
         }
+
+        #region GetPolls
 
         /// <summary>
         /// Get information about all polls or specific polls for a Twitch channel. Poll information is available for 90 days.
@@ -36,8 +41,8 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             { 
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("first", first.ToString())
+                new("broadcaster_id", broadcasterId),
+                new("first", first.ToString())
             };
 
             if (ids != null && ids.Count > 0)
@@ -50,6 +55,9 @@ namespace TwitchLib.Api.Helix
 
             return TwitchGetGenericAsync<GetPollsResponse>("/polls", ApiVersion.Helix, getParams, accessToken);
         }
+        #endregion
+
+        #region CreatePollAsync
 
         /// <summary>
         /// Create a poll for a specific Twitch channel.
@@ -62,6 +70,9 @@ namespace TwitchLib.Api.Helix
         {
             return TwitchPostGenericAsync<CreatePollResponse>("/polls", ApiVersion.Helix, JsonConvert.SerializeObject(request), accessToken: accessToken);
         }
+        #endregion
+
+        #region EndPoll
 
         /// <summary>
         /// End a poll that is currently active.
@@ -87,5 +98,6 @@ namespace TwitchLib.Api.Helix
 
             return TwitchPatchGenericAsync<EndPollResponse>("/polls", ApiVersion.Helix, json.ToString(), accessToken: accessToken);
         }
+        #endregion
     }
 }

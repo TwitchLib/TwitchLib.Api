@@ -19,6 +19,7 @@ namespace TwitchLib.Api.Helix
         }
 
         #region GetDropsEntitlements
+
         /// <summary>
         /// Gets a list of entitlements for a given organization that have been granted to a game, user, or both.
         /// <para>The client ID associated with the access token must have ownership of the game:</para>
@@ -34,7 +35,7 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("first", first.ToString())
+                new("first", first.ToString())
             };
 
             if(!string.IsNullOrWhiteSpace(id))
@@ -62,6 +63,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region UpdateDropsEntitlements
+
         /// <summary>
         /// Updates the fulfillment status on a set of Drops entitlements, specified by their entitlement IDs.
         /// <para>The client ID associated with the access token must have ownership of the game</para>

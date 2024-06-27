@@ -18,6 +18,7 @@ namespace TwitchLib.Api.Helix
         }
 
         #region GetCreatorGoals
+
         /// <summary>
         /// Gets the broadcaster’s list of active goals. Use this to get the current progress of each goal.
         /// <para>Requires a user OAuth access token with scope set to channel:read:goals. </para>
@@ -34,7 +35,7 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new("broadcaster_id", broadcasterId)
             };
 
             return TwitchGetGenericAsync<GetCreatorGoalsResponse>("/goals", ApiVersion.Helix, getParams, accessToken);

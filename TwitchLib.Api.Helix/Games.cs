@@ -19,6 +19,7 @@ namespace TwitchLib.Api.Helix
         }
 
         #region GetGames
+
         /// <summary>
         /// Gets game information by game ID or name.
         /// <para>For a query to be valid, name and/or id must be specified.</para>
@@ -76,6 +77,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region GetTopGames
+
         /// <summary>
         /// Gets games sorted by number of current viewers on Twitch, most popular first.
         /// </summary>
@@ -92,7 +94,7 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
                 {
-                        new KeyValuePair<string, string>("first", first.ToString())
+                        new("first", first.ToString())
                 };
 
             if (!string.IsNullOrWhiteSpace(before))
