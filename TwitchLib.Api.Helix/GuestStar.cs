@@ -13,6 +13,9 @@ using TwitchLib.Api.Helix.Models.GuestStar.UpdateChannelGuestStarSettings;
 
 namespace TwitchLib.Api.Helix;
 
+/// <summary>
+/// Gueststar related APIs
+/// </summary>
 public class GuestStar : ApiBase
 {
     public GuestStar(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings,
@@ -413,8 +416,8 @@ public class GuestStar : ApiBase
     }
 
     #endregion
-    
-        #region DeleteGuestStarSlot
+
+    #region UpdateGuestStarSlotSettings
 
     /// <summary>
     /// <para><see href="https://dev.twitch.tv/docs/api/reference/#update-guest-star-slot-settings">

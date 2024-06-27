@@ -24,6 +24,7 @@ namespace TwitchLib.Api.Helix
         }
 
         #region CreateCustomRewards
+
         /// <summary>
         /// Creates a Custom Reward on a channel.
         /// <para>Required scope: channel:manage:redemptions</para>
@@ -40,7 +41,7 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new("broadcaster_id", broadcasterId)
             };
 
             return TwitchPostGenericAsync<CreateCustomRewardsResponse>("/channel_points/custom_rewards", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
@@ -48,6 +49,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region DeleteCustomReward
+
         /// <summary>
         /// Deletes a Custom Reward on a channel.
         /// <para>Required scope: channel:manage:redemptions</para>
@@ -68,8 +70,8 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("id", rewardId)
+                new("broadcaster_id", broadcasterId),
+                new("id", rewardId)
             };
 
             return TwitchDeleteAsync("/channel_points/custom_rewards", ApiVersion.Helix, getParams, accessToken);
@@ -77,6 +79,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region GetCustomReward
+
         /// <summary>
         /// Returns a list of Custom Reward objects for the Custom Rewards on a channel.
         /// <para>Required scope: channel:read:redemptions</para>
@@ -93,8 +96,8 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("only_manageable_rewards", onlyManageableRewards.ToString().ToLower())
+                new("broadcaster_id", broadcasterId),
+                new("only_manageable_rewards", onlyManageableRewards.ToString().ToLower())
             };
 
             if (rewardIds != null && rewardIds.Count > 0)
@@ -107,6 +110,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region UpdateCustomReward
+
         /// <summary>
         /// Updates a Custom Reward created on a channel.
         /// <para>The Custom Reward specified by id must have been created by the ClientId attached to the user OAuth token.</para>
@@ -124,8 +128,8 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("id", rewardId)
+                new("broadcaster_id", broadcasterId),
+                new("id", rewardId)
             };
 
             return TwitchPatchGenericAsync<UpdateCustomRewardResponse>("/channel_points/custom_rewards", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
@@ -133,6 +137,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region GetCustomRewardRedemption
+
         /// <summary>
         /// Returns Custom Reward Redemption objects for a Custom Reward on a channel that was created by the same ClientId.
         /// <para>Developers only have access to get and update redemptions for the rewards created programmatically by the same ClientId.</para>
@@ -164,8 +169,8 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("reward_id", rewardId),
+                new("broadcaster_id", broadcasterId),
+                new("reward_id", rewardId),
             };
 
             if (redemptionIds != null && redemptionIds.Count > 0)
@@ -198,6 +203,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region UpdateCustomRewardRedemption
+
         /// <summary>
         /// Updates a Custom Reward created on a channel.
         /// <para>The Custom Reward specified by id must have been created by the ClientId attached to the user OAuth token.</para>
@@ -216,8 +222,8 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("reward_id", rewardId)
+                new("broadcaster_id", broadcasterId),
+                new("reward_id", rewardId)
             };
 
             getParams.AddRange(redemptionIds.Select(redemptionId => new KeyValuePair<string, string>("id", redemptionId)));

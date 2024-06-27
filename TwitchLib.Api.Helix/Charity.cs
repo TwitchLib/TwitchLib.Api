@@ -20,6 +20,7 @@ namespace TwitchLib.Api.Helix
         }
 
         #region GetCharityCampaign
+
         /// <summary>
         /// Gets information about the charity campaign that a broadcaster is running, such as their fundraising goal and the amount that’s been donated so far.
         /// Requires an user access token that includes the channel:read:charity scope. 
@@ -35,7 +36,7 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new("broadcaster_id", broadcasterId)
             };
 
             return TwitchGetGenericAsync<GetCharityCampaignResponse>("/charity/campaigns", ApiVersion.Helix, getParams, accessToken);
@@ -43,6 +44,7 @@ namespace TwitchLib.Api.Helix
         #endregion
 
         #region GetCharityCampaignDonations
+
         /// <summary>
         /// Gets the list of donations that users have made to the broadcaster’s active charity campaign.
         /// Requires a user access token that includes the channel:read:charity scope.
@@ -63,8 +65,8 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("first", first.ToString())
+                new("broadcaster_id", broadcasterId),
+                new("first", first.ToString())
             };
 
             if (!string.IsNullOrWhiteSpace(after))

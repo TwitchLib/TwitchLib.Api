@@ -42,7 +42,7 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("extension_id", extensionId)
+                new("extension_id", extensionId)
             };
 
             if (ids != null)
@@ -81,8 +81,8 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("extension_id", extensionId),
-                new KeyValuePair<string, string>("first", first.ToString())
+                new("extension_id", extensionId),
+                new("first", first.ToString())
             };
 
             if (!string.IsNullOrWhiteSpace(after))
@@ -109,7 +109,7 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("extension_id", extensionId),
+                new("extension_id", extensionId),
             };
 
             if (!string.IsNullOrWhiteSpace(extensionVersion))

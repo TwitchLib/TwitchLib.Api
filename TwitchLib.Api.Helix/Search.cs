@@ -38,7 +38,7 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("query", encodedSearchQuery)
+                new("query", encodedSearchQuery)
             };
 
             if (!string.IsNullOrWhiteSpace(after))
@@ -75,8 +75,8 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("query", encodedSearchQuery),
-                new KeyValuePair<string, string>("live_only", liveOnly.ToString())
+                new("query", encodedSearchQuery),
+                new("live_only", liveOnly.ToString())
             };
 
             if (!string.IsNullOrWhiteSpace(after))

@@ -21,6 +21,7 @@ namespace TwitchLib.Api.Helix
         { }
 
         #region GetClips
+
         /// <summary>
         /// Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only).
         /// <para>Note: The clips service returns a maximum of 1000 clips.</para>
@@ -123,7 +124,7 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new("broadcaster_id", broadcasterId)
             };
 
             return TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, accessToken);

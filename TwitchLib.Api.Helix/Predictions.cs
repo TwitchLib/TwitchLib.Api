@@ -21,6 +21,8 @@ namespace TwitchLib.Api.Helix
         {
         }
 
+        #region GetPredictions
+
         /// <summary>
         /// Get information about all Channel Points Predictions or specific Channel Points Predictions for a Twitch channel.
         /// <para>Results are ordered by most recent, so it can be assumed that the currently active or locked Prediction will be the first item.</para>
@@ -41,8 +43,8 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("first", first.ToString())
+                new("broadcaster_id", broadcasterId),
+                new("first", first.ToString())
             };
 
             if (ids != null && ids.Count > 0)
@@ -53,6 +55,9 @@ namespace TwitchLib.Api.Helix
 
             return TwitchGetGenericAsync<GetPredictionsResponse>("/predictions", ApiVersion.Helix, getParams, accessToken);
         }
+        #endregion
+
+        #region CreatePrediction
 
         /// <summary>
         /// Create a Channel Points Prediction for a specific Twitch channel.
@@ -65,6 +70,9 @@ namespace TwitchLib.Api.Helix
         {
             return TwitchPostGenericAsync<CreatePredictionResponse>("/predictions", ApiVersion.Helix, JsonConvert.SerializeObject(request), accessToken: accessToken);
         }
+        #endregion
+
+        #region EndPredictionAsync
 
         /// <summary>
         /// Lock, resolve, or cancel a Channel Points Prediction.
@@ -100,5 +108,6 @@ namespace TwitchLib.Api.Helix
 
             return TwitchPatchGenericAsync<EndPredictionResponse>("/predictions", ApiVersion.Helix, json.ToString(), accessToken: accessToken);
         }
+        #endregion
     }
 }

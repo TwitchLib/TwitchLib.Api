@@ -18,6 +18,8 @@ namespace TwitchLib.Api.Helix
         {
         }
 
+        #region CheckUserSubscription
+
         /// <summary>
         /// Checks if a specific user (userId) is subscribed to a specific channel (broadcasterId).
         /// <para>Requires User access token with scope user:read:subscriptions</para>
@@ -39,12 +41,15 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("user_id", userId)
+                new("broadcaster_id", broadcasterId),
+                new("user_id", userId)
             };
 
             return TwitchGetGenericAsync<CheckUserSubscriptionResponse>("/subscriptions/user", ApiVersion.Helix, getParams, accessToken);
         }
+        #endregion
+
+        #region GetUserSubscriptions
 
         /// <summary>
         /// Gets a list of users that subscribe to the specified broadcaster filtered by a list of UserIds.
@@ -65,13 +70,16 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new("broadcaster_id", broadcasterId)
             };
 
             getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("user_id", userId)));
 
             return TwitchGetGenericAsync<GetUserSubscriptionsResponse>("/subscriptions", ApiVersion.Helix, getParams, accessToken);
         }
+        #endregion
+
+        #region GetBroadcasterSubscriptions
 
         /// <summary>
         /// Gets a list of users that subscribe to the specified broadcaster.
@@ -93,8 +101,8 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("first", first.ToString())
+                new("broadcaster_id", broadcasterId),
+                new("first", first.ToString())
             };
 
             if (!string.IsNullOrWhiteSpace(after)) 
@@ -102,5 +110,6 @@ namespace TwitchLib.Api.Helix
 
             return TwitchGetGenericAsync<GetBroadcasterSubscriptionsResponse>("/subscriptions", ApiVersion.Helix, getParams, accessToken);
         }
+        #endregion
     }
 }
