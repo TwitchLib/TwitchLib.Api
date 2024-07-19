@@ -146,8 +146,8 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 case HttpStatusCode.NotFound:
                     throw new BadResourceException(actualContent + "\n\nThe resource you tried to access was not valid.", errorResp);
                 case (HttpStatusCode)429:
-                    errorResp.Headers.TryGetValues(actualContent + "\n\nRatelimit -Reset", out var resetTime);
-                    throw new TooManyRequestsException(actualContent + "\n\nYou have reached your rate limit. Too many requests were made", resetTime.FirstOrDefault(), errorResp);
+					errorResp.Headers.TryGetValues("Ratelimit-Reset", out var resetTime);
+					throw new TooManyRequestsException(actualContent + "\n\nYou have reached your rate limit. Too many requests were made", resetTime.FirstOrDefault(), errorResp);
                 case HttpStatusCode.BadGateway:
                     throw new BadGatewayException(actualContent + "\n\nThe API answered with a 502 Bad Gateway. Please retry your request", errorResp);
                 case HttpStatusCode.GatewayTimeout:
