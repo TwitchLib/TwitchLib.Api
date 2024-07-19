@@ -12,7 +12,7 @@ namespace TwitchLib.Api.Helix
     /// </summary>
     public class Raids : ApiBase
     {
-        public Raids(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public Raids(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager) : base(settings, rateLimiter, http, userAccessTokenManager)
         {
         }
 

@@ -17,7 +17,7 @@ namespace TwitchLib.Api.Helix
     /// </summary>
     public class Clips : ApiBase
     {
-        public Clips(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public Clips(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager) : base(settings, rateLimiter, http, userAccessTokenManager)
         { }
 
         #region GetClips

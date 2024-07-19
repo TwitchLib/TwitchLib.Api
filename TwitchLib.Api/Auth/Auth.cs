@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using TwitchLib.Api.Core;
@@ -11,8 +15,32 @@ namespace TwitchLib.Api.Auth
     /// <summary>These endpoints fall outside of v5 and Helix, and relate to Authorization</summary>
     public class Auth : ApiBase
     {
-        public Auth(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        private ILogger _logger;
+        private IApiSettings _settings;
+
+        internal Auth(ILogger logger, IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http, null)
         {
+            _logger = logger;
+            _settings = settings;
+        }
+
+        internal AccessCodeResponse GetAccessCodeFromClientIdAndSecret(CancellationTokenSource cancellationToken, string clientId, string secret)
+        {
+            string authorizationUrl = GetAuthorizationCodeUrl($"http://{_settings.OAuthResponseHostname}:{_settings.OAuthResponsePort}/api/callback", _settings.Scopes, forceVerify: false, state: Guid.NewGuid().ToString(), clientId: clientId);
+
+            _logger.LogTrace($"Auth::GetAccessCodeFromClientIdAndSecret(): authorizationUrl = {authorizationUrl}");
+
+            // Launch a browser to authorize the user's scope and trigger Twitch to return an access code.
+            Process process = new Process();
+            process.StartInfo.UseShellExecute = true;
+            process.StartInfo.FileName = authorizationUrl;
+            process.Start();
+
+            var authenticationServerManager = new AuthenticationServerManager(_logger);
+
+            AccessCodeResponse response = authenticationServerManager.WaitForAuthorizationCodeCallback(cancellationToken, _settings.OAuthResponseHostname, _settings.OAuthResponsePort);
+
+            return response;
         }
 
         /// <summary>

@@ -12,9 +12,14 @@ using TwitchLib.Api.Core.Models;
 
 namespace TwitchLib.Api.Core
 {
+    /// <summary>
+    /// A base class for any method calling the Twitch API. Provides authorization credentials and
+    /// abstracts for calling basic web methods.
+    /// </summary>
     public class ApiBase
     {
         private readonly TwitchLibJsonSerializer _jsonSerializer;
+        private readonly IUserAccessTokenManager _userAccessTokenManager;
         protected readonly IApiSettings Settings;
         private readonly IRateLimiter _rateLimiter;
         private readonly IHttpCallHandler _http;
@@ -25,20 +30,30 @@ namespace TwitchLib.Api.Core
         private DateTime? _serverBasedAccessTokenExpiry;
         private string _serverBasedAccessToken;
 
-        public ApiBase(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http)
+        /// <summary>
+        /// Standard constructor for all derived API methods.
+        /// </summary>
+        /// <param name="settings">Can be null.</param>
+        /// <param name="rateLimiter">Can be null.</param>
+        /// <param name="http">Can be null.</param>
+        /// <param name="userAccessTokenManager">Can be null.</param>
+        public ApiBase(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager)
         {
             Settings = settings; 
             _rateLimiter = rateLimiter;
             _http = http;
             _jsonSerializer = new TwitchLibJsonSerializer();
+            _userAccessTokenManager = userAccessTokenManager;
         }
 
-        public async ValueTask<string> GetAccessTokenAsync(string accessToken = null)
+        private async ValueTask<string> GetAccessTokenAsync(string accessToken = null)
         {
             if (!string.IsNullOrWhiteSpace(accessToken))
                 return accessToken;
             if (!string.IsNullOrWhiteSpace(Settings.AccessToken))
                 return Settings.AccessToken;
+            if (Settings.UseUserTokenForHelixCalls && _userAccessTokenManager != null)
+                return await GenerateUserAccessToken();
             if (!string.IsNullOrWhiteSpace(Settings.Secret) && !string.IsNullOrWhiteSpace(Settings.ClientId) && !Settings.SkipAutoServerTokenGeneration)
             {
                 if (_serverBasedAccessTokenExpiry == null || _serverBasedAccessTokenExpiry - TimeSpan.FromMinutes(1) < DateTime.Now)
@@ -48,6 +63,11 @@ namespace TwitchLib.Api.Core
             }
 
             return null;
+        }
+
+        private async Task<string> GenerateUserAccessToken()
+        {
+            return await _userAccessTokenManager.GetUserAccessToken();
         }
 
         internal async Task<string> GenerateServerBasedAccessToken()
@@ -338,10 +358,18 @@ namespace TwitchLib.Api.Core
             {
                 for (var i = 0; i < getParams.Count; i++)
                 {
+                    // When "after" is null, then Uri.EscapeDataString dies with null exception.
+                    var value = "";
+
+                    if (getParams[i].Value != null)
+                        value = getParams[i].Value;
+
                     if (i == 0)
-                        url += $"?{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                        url += "?";
                     else
-                        url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                        url += "&";
+
+                    url += $"{getParams[i].Key}={Uri.EscapeDataString(value)}";
                 }
             }
             return url;

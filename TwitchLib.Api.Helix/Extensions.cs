@@ -16,7 +16,7 @@ namespace TwitchLib.Api.Helix
     /// </summary>
     public class Extensions : ApiBase
     {
-        public Extensions(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public Extensions(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager) : base(settings, rateLimiter, http, userAccessTokenManager)
         { }
 
         #region GetExtensionTransactions

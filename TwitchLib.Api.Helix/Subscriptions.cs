@@ -14,7 +14,7 @@ namespace TwitchLib.Api.Helix
     /// </summary>
     public class Subscriptions : ApiBase
     {
-        public Subscriptions(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+        public Subscriptions(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http, IUserAccessTokenManager userAccessTokenManager) : base(settings, rateLimiter, http, userAccessTokenManager)
         {
         }
 
