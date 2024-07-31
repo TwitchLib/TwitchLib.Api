@@ -11,5 +11,5 @@ public class BanUserResponse
     /// Identifies the user and type of ban.
     /// </summary>
     [JsonProperty(PropertyName = "data")]
-    public BannedUser Data { get; protected set; }
+    public BannedUser[] Data { get; protected set; }
 }
