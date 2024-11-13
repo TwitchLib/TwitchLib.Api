@@ -149,7 +149,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 case HttpStatusCode.Forbidden:
                     throw new BadTokenException($"{deserializedError.Error} - {deserializedError.Message}", errorResp);
                 default:
-                    throw new HttpRequestException($"Something went wrong during the request! Please try again later \n {deserializedError.Message}");
+                    throw new HttpRequestException($"{deserializedError.Error} - {deserializedError.Message}");
             }
         }
     }
