@@ -44,7 +44,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
             var response = await _http.PutAsync(new Uri(url), new ByteArrayContent(payload)).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
-                HandleWebException(response);
+                await HandleWebException(response);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace TwitchLib.Api.Core.HttpCallHandlers
                 return new KeyValuePair<int, string>((int)response.StatusCode, respStr);
             }
 
-            HandleWebException(response);
+            await HandleWebException(response);
             return new KeyValuePair<int, string>(0, null);
         }
 
