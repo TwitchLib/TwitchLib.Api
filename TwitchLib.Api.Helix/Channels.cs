@@ -32,22 +32,29 @@ namespace TwitchLib.Api.Helix
         /// <summary>
         /// Gets channel information for given user.
         /// </summary>
+        /// <param name="broadcasterIds">list of user ids whose channel to get (max 100).</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetChannelInformationResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<GetChannelInformationResponse> GetChannelInformationAsync(List<string> broadcasterIds, string accessToken = null)
+        {
+            if (broadcasterIds.Count == 0 || broadcasterIds.Count > 100)
+                throw new BadParameterException("boardcasterIds must contain between 1 and 100 broadcasterIds.");
+
+            var getParams = broadcasterIds.Select(broadcasterId => new KeyValuePair<string, string>("broadcaster_id", broadcasterId)).ToList();
+
+            return TwitchGetGenericAsync<GetChannelInformationResponse>("/channels", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        /// <summary>
+        /// Gets channel information for given user.
+        /// backwards compatible, queries just one
+        /// </summary>
         /// <param name="broadcasterId">The ID of the broadcaster whose channel you want to get.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetChannelInformationResponse"></returns>
         /// <exception cref="BadParameterException"></exception>
-        public Task<GetChannelInformationResponse> GetChannelInformationAsync(string broadcasterId, string accessToken = null)
-        {
-            if (string.IsNullOrEmpty(broadcasterId))
-                throw new BadParameterException("broadcasterId must be set");
-
-            var getParams = new List<KeyValuePair<string, string>>
-            {
-                new("broadcaster_id", broadcasterId)
-            };
-
-            return TwitchGetGenericAsync<GetChannelInformationResponse>("/channels", ApiVersion.Helix, getParams, accessToken);
-        }
+        public Task<GetChannelInformationResponse> GetChannelInformationAsync(string broadcasterId, string accessToken = null) => GetChannelInformationAsync([broadcasterId], accessToken);
         #endregion
 
         #region ModifyChannelInformation
