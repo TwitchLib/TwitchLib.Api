@@ -6,6 +6,12 @@
    public enum ContentClassificationLabelEnum
    {
       /// <summary>
+      /// <para>Content Classification Label for broadcasts with discussions or debates about politics
+      /// or sensitive social issues such as elections, civic integrity, military conflict, and civil rights.</para>
+      /// </summary>
+      DebatedSocialIssuesAndPolitics,
+      
+      /// <summary>
       /// <para>Content Classification Label for broadcasts with excessive tobacco glorification or promotion, 
       /// any marijuana consumption/use, legal drug and alcohol induced intoxication, discussions of illegal drugs.</para>
       /// </summary>
