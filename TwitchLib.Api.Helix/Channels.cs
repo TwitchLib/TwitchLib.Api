@@ -54,7 +54,7 @@ namespace TwitchLib.Api.Helix
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetChannelInformationResponse"></returns>
         /// <exception cref="BadParameterException"></exception>
-        public Task<GetChannelInformationResponse> GetChannelInformationAsync(string broadcasterId, string accessToken = null) => GetChannelInformationAsync([broadcasterId], accessToken);
+        public Task<GetChannelInformationResponse> GetChannelInformationAsync(string broadcasterId, string accessToken = null) => GetChannelInformationAsync(new List<string>(){broadcasterId}, accessToken);
         #endregion
 
         #region ModifyChannelInformation
