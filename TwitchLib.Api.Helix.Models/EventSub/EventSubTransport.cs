@@ -29,6 +29,12 @@ public class EventSubTransport
     /// <summary>
     /// The UTC date and time that the WebSocket connection was established. Included only if method is set to websocket.
     /// </summary>
+    [JsonProperty(PropertyName = "connected_at")]
+    public string ConnectedAt { get; protected set; }
+
+    /// <summary>
+    /// The UTC date and time that the WebSocket connection was disconnected. Included only if method is set to websocket.
+    /// </summary>
     [JsonProperty(PropertyName = "disconnected_at")]
     public string DisconnectedAt { get; protected set; }
 }
