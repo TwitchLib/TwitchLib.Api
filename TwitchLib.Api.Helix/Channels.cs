@@ -140,7 +140,7 @@ namespace TwitchLib.Api.Helix
                 if (userIds.Count == 0)
                     throw new BadParameterException("userIds must contain at least 1 userId if a list is included in the call");
 
-                getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("userId", userId)));
+                getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("user_id", userId)));
             }
 
             if (!string.IsNullOrWhiteSpace(after))
