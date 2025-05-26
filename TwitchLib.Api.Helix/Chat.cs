@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -163,15 +164,15 @@ namespace TwitchLib.Api.Helix
         {
             if (string.IsNullOrEmpty(userId))
                 throw new BadParameterException("userId must be set");
-            
+
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("user_id", userId)
             };
-            
+
             if (!string.IsNullOrEmpty(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
-            
+
             if (!string.IsNullOrEmpty(broadcasterId))
                 getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
 
@@ -338,6 +339,7 @@ namespace TwitchLib.Api.Helix
         /// <param name="accessToken"></param>
         /// <returns></returns>
         /// <exception cref="BadParameterException"></exception>
+        [Obsolete("Use SendChatMessage(SendChatMessageRequest, string) instead")]
         public Task<SendChatMessageResponse> SendChatMessage(string broadcasterId, string senderId, string message, string replyParentMessageId = null, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
@@ -355,12 +357,34 @@ namespace TwitchLib.Api.Helix
                 ["sender_id"] = senderId,
                 ["message"] = message
             };
+
             if (replyParentMessageId != null)
             {
                 json.Add("reply_parent_message_id", replyParentMessageId);
             }
 
             return TwitchPostGenericAsync<SendChatMessageResponse>("/chat/messages", ApiVersion.Helix, json.ToString(), null, accessToken);
+        }
+
+        /// <summary>
+        /// Sends a message to a chat
+        /// </summary>
+        /// <param name="request">Request parameters for the message</param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<SendChatMessageResponse> SendChatMessage(SendChatMessageRequest request, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(request.BroadcasterId))
+                throw new BadParameterException("BroadcasterId must be set");
+
+            if (string.IsNullOrEmpty(request.SenderId))
+                throw new BadParameterException("SenderId must be set");
+
+            if (string.IsNullOrEmpty(request.Message))
+                throw new BadParameterException("Message must be set");
+
+            return TwitchPostGenericAsync<SendChatMessageResponse>("/chat/messages", ApiVersion.Helix, JsonConvert.SerializeObject(request), null, accessToken);
         }
 
         #endregion
