@@ -117,7 +117,7 @@ namespace TwitchLib.Api.Helix
         /// <param name="clientId">optional Client ID to override the use of the stored one in the TwitchAPI instance</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetEventSubSubscriptionsResponse">Returns a list of your EventSub subscriptions.</returns>
-        public Task<GetEventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(string status = null, string type = null, string userId = null, string after = null, string clientId = null, string accessToken = null)
+        public Task<GetEventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(string status = null, string type = null, string userId = null, string subscriptionId = null, string after = null, string clientId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
 
@@ -129,6 +129,9 @@ namespace TwitchLib.Api.Helix
 
             if (!string.IsNullOrWhiteSpace(userId))
                 getParams.Add(new KeyValuePair<string, string>("user_id", userId));
+
+            if (!string.IsNullOrWhiteSpace(subscriptionId))
+                getParams.Add(new KeyValuePair<string, string>("subscription_id", subscriptionId));
 
             if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
