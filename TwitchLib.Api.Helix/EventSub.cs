@@ -117,7 +117,8 @@ namespace TwitchLib.Api.Helix
         /// <param name="clientId">optional Client ID to override the use of the stored one in the TwitchAPI instance</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetEventSubSubscriptionsResponse">Returns a list of your EventSub subscriptions.</returns>
-        public Task<GetEventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(string status = null, string type = null, string userId = null, string subscriptionId = null, string after = null, string clientId = null, string accessToken = null)
+        [Obsolete("Use GetEventSubSubscriptionsAsync(GetEventSubSubscriptionsRequest, string, string) instead")]
+        public Task<GetEventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(string status = null, string type = null, string userId = null, string after = null, string clientId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
 
@@ -130,11 +131,37 @@ namespace TwitchLib.Api.Helix
             if (!string.IsNullOrWhiteSpace(userId))
                 getParams.Add(new KeyValuePair<string, string>("user_id", userId));
 
-            if (!string.IsNullOrWhiteSpace(subscriptionId))
-                getParams.Add(new KeyValuePair<string, string>("subscription_id", subscriptionId));
-
             if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
+
+            return TwitchGetGenericAsync<GetEventSubSubscriptionsResponse>("/eventsub/subscriptions", ApiVersion.Helix, getParams, accessToken, clientId);
+        }
+
+        /// <summary>
+        /// Gets a list of your EventSub subscriptions. The list is paginated and ordered by the oldest subscription first.
+        /// </summary>
+        /// <param name="request">Request parameters for the call.</param>
+        /// <param name="clientId">optional Client ID to override the use of the stored one in the TwitchAPI instance</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetEventSubSubscriptionsResponse">Returns a list of your EventSub subscriptions.</returns>
+        public Task<GetEventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(GetEventSubSubscriptionsRequest request, string clientId = null, string accessToken = null)
+        {
+            var getParams = new List<KeyValuePair<string, string>>();
+
+            if (!string.IsNullOrWhiteSpace(request.Status))
+                getParams.Add(new KeyValuePair<string, string>("status", request.Status));
+
+            if (!string.IsNullOrWhiteSpace(request.Type))
+                getParams.Add(new KeyValuePair<string, string>("type", request.Type));
+
+            if (!string.IsNullOrWhiteSpace(request.UserId))
+                getParams.Add(new KeyValuePair<string, string>("user_id", request.UserId));
+
+            if (!string.IsNullOrWhiteSpace(request.SubscriptionId))
+                getParams.Add(new KeyValuePair<string, string>("subscription_id", request.SubscriptionId));
+
+            if (!string.IsNullOrWhiteSpace(request.After))
+                getParams.Add(new KeyValuePair<string, string>("after", request.After));
 
             return TwitchGetGenericAsync<GetEventSubSubscriptionsResponse>("/eventsub/subscriptions", ApiVersion.Helix, getParams, accessToken, clientId);
         }
