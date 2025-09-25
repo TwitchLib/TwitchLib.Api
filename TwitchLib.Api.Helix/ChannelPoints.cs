@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
+using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.ChannelPoints.CreateCustomReward;
 using TwitchLib.Api.Helix.Models.ChannelPoints.GetCustomReward;
@@ -39,6 +40,9 @@ namespace TwitchLib.Api.Helix
         /// <returns cref="CreateCustomRewardsResponse"></returns>
         public Task<CreateCustomRewardsResponse> CreateCustomRewardsAsync(string broadcasterId, CreateCustomRewardsRequest request, string accessToken = null)
         {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException($"Parameter 'broadcasterId' cannot be null or empty.");
+
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new("broadcaster_id", broadcasterId)
@@ -68,6 +72,12 @@ namespace TwitchLib.Api.Helix
         /// <returns></returns>
         public Task DeleteCustomRewardAsync(string broadcasterId, string rewardId, string accessToken = null)
         {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException($"Parameter 'broadcasterId' cannot be null or empty.");
+
+            if (string.IsNullOrEmpty(rewardId))
+                throw new BadParameterException($"Parameter 'rewardId' cannot be null or empty.");
+
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new("broadcaster_id", broadcasterId),
@@ -94,6 +104,9 @@ namespace TwitchLib.Api.Helix
         /// <returns cref="GetCustomRewardsResponse"></returns>
         public Task<GetCustomRewardsResponse> GetCustomRewardAsync(string broadcasterId, List<string> rewardIds = null, bool onlyManageableRewards = false, string accessToken = null)
         {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException($"Parameter 'broadcasterId' cannot be null or empty.");
+
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new("broadcaster_id", broadcasterId),
@@ -126,6 +139,12 @@ namespace TwitchLib.Api.Helix
         /// <returns cref="UpdateCustomRewardResponse"></returns>
         public Task<UpdateCustomRewardResponse> UpdateCustomRewardAsync(string broadcasterId, string rewardId, UpdateCustomRewardRequest request, string accessToken = null)
         {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException($"Parameter 'broadcasterId' cannot be null or empty.");
+
+            if (string.IsNullOrEmpty(rewardId))
+                throw new BadParameterException($"Parameter 'rewardId' cannot be null or empty.");
+
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new("broadcaster_id", broadcasterId),
@@ -167,6 +186,12 @@ namespace TwitchLib.Api.Helix
         /// <returns cref="GetCustomRewardRedemptionResponse"></returns>
         public Task<GetCustomRewardRedemptionResponse> GetCustomRewardRedemptionAsync(string broadcasterId, string rewardId, List<string> redemptionIds = null, string status = null, string sort = null, string after = null, string first = null, string accessToken = null)
         {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException($"Parameter 'broadcasterId' cannot be null or empty.");
+
+            if (string.IsNullOrEmpty(rewardId))
+                throw new BadParameterException($"Parameter 'rewardId' cannot be null or empty.");
+
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new("broadcaster_id", broadcasterId),
@@ -220,6 +245,12 @@ namespace TwitchLib.Api.Helix
         /// <returns cref="UpdateRedemptionStatusResponse"></returns>
         public Task<UpdateRedemptionStatusResponse> UpdateRedemptionStatusAsync(string broadcasterId, string rewardId, List<string> redemptionIds, UpdateCustomRewardRedemptionStatusRequest request, string accessToken = null)
         {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException($"Parameter 'broadcasterId' cannot be null or empty.");
+
+            if (string.IsNullOrEmpty(rewardId))
+                throw new BadParameterException($"Parameter 'rewardId' cannot be null or empty.");
+
             var getParams = new List<KeyValuePair<string, string>>
             {
                 new("broadcaster_id", broadcasterId),
