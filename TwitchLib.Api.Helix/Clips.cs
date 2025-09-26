@@ -9,6 +9,7 @@ using TwitchLib.Api.Core.Extensions.System;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Clips.CreateClip;
 using TwitchLib.Api.Helix.Models.Clips.GetClips;
+using TwitchLib.Api.Helix.Models.Clips.GetClipsDownload;
 
 namespace TwitchLib.Api.Helix
 {
@@ -128,6 +129,44 @@ namespace TwitchLib.Api.Helix
             };
 
             return TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        #endregion
+
+        #region GetClipsDownload
+
+        /// <summary>
+        ///  Provides URLs to download the video file(s) for the specified clips.
+        /// <para>Rate Limits: Limited to 100 requests per minute.</para>
+        /// <para>Required scope: editor:manage:clips or channel:manage:clips</para>
+        /// </summary>
+        /// <param name="editorId">The User ID of the editor for the channel you want to download a clip for. If using the broadcaster’s auth token, this is the same as <paramref name="broadcasterId"/>. This must match the user_id in the user access token.</param>
+        /// <param name="broadcasterId">The ID of the broadcaster you want to download clips for.</param>
+        /// <param name="clipIds">The ID that identifies the clip you want to download. Include this parameter for each clip you want to download, up to a maximum of 10 clips.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="CreatedClipResponse"></returns>
+        public Task<GetClipsDownloadResponse> GetClipsDownloadAsync(string editorId, string broadcasterId, List<string> clipIds, string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(editorId))
+                throw new BadParameterException("editorId cannot be null/empty/whitespace");
+
+            if (string.IsNullOrWhiteSpace(broadcasterId))
+                throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
+
+            if (clipIds is null)
+                throw new BadParameterException("clipIds must be set");
+
+            if(clipIds.Count <1 || clipIds.Count > 10)
+                throw new BadParameterException("clipIds must contain between 1 and 10 items");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new("editor_id", editorId),
+                new("broadcaster_id", broadcasterId),
+            };
+            getParams.AddRange(clipIds.Select(clipId => new KeyValuePair<string, string>("clip_id", clipId)));
+
+            return TwitchGetGenericAsync<GetClipsDownloadResponse>("/clips/downloads", ApiVersion.Helix, getParams, accessToken);
         }
 
         #endregion
