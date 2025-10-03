@@ -38,6 +38,11 @@ namespace TwitchLib.Api.Core.Enums
         Whisper_Edit,
 
         /// <summary>
+        /// Manage Clips as an editor.
+        /// </summary>
+        Editor_Manage_Clips,
+
+        /// <summary>
         /// View analytics data for the Twitch Extensions owned by the authenticated account.
         /// </summary>
         Analytics_Read_Extensions,
@@ -71,6 +76,11 @@ namespace TwitchLib.Api.Core.Enums
         /// Manage a channel’s broadcast configuration, including updating channel configuration and managing stream markers and stream tags.
         /// </summary>
         Channel_Manage_Broadcast,
+
+        /// <summary>
+        /// Manage Clips for a channel.
+        /// </summary>
+        Channel_Manage_Clips,
 
         /// <summary>
         /// Manage a channel’s Extension configuration, including activating Extensions.
@@ -243,14 +253,39 @@ namespace TwitchLib.Api.Core.Enums
         Moderator_Manage_Shoutouts,
 
         /// <summary>
+        /// Manage a broadcaster’s unban requests.
+        /// </summary>
+        Moderator_Manage_Unban_Requests,
+
+        /// <summary>
+        /// Warn users in channels where you have the moderator role.
+        /// </summary>
+        Moderator_Manage_Warnings,
+
+        /// <summary>
         /// View a broadcaster’s AutoMod settings.
         /// </summary>
         Moderator_Read_Automod_Settings,
 
         /// <summary>
+        /// Read the list of bans or unbans in channels where you have the moderator role.
+        /// </summary>
+        Moderator_Read_Banned_Users,
+
+        /// <summary>
         /// View a broadcaster’s list of blocked terms.
         /// </summary>
         Moderator_Read_Blocked_Terms,
+
+        /// <summary>
+        /// Read deleted chat messages in channels where you have the moderator role.
+        /// </summary>
+        Moderator_Read_Chat_Messages,
+
+        /// <summary>
+        /// Read the list of moderators in channels where you have the moderator role.
+        /// </summary>
+        Moderator_Read_Moderators,
 
         /// <summary>
         /// View a broadcaster’s chat room settings.
@@ -282,6 +317,25 @@ namespace TwitchLib.Api.Core.Enums
         /// </summary>
         Moderator_Read_Shoutouts,
 
+        /// <summary>
+        /// Read chat messages from suspicious users and see users flagged as suspicious in channels where you have the moderator role.
+        /// </summary>
+        Moderator_Read_Suspicious_Users,
+
+        /// <summary>
+        /// View a broadcaster’s unban requests.
+        /// </summary>
+        Moderator_Read_Unban_Requests,
+
+        /// <summary>
+        /// Read the list of VIPs in channels where you have the moderator role.
+        /// </summary>
+        Moderator_Read_VIPs,
+
+        /// <summary>
+        /// Read warnings in channels where you have the moderator role.
+        /// </summary>
+        Moderator_Read_Warnings,
 
         /// <summary>
         /// Allows client’s bot to act as this user.
@@ -292,6 +346,11 @@ namespace TwitchLib.Api.Core.Enums
         /// Manage a user object.
         /// </summary>
         User_Edit,
+
+        /// <summary>
+        /// View and edit a user’s broadcasting configuration, including Extension configurations.
+        /// </summary>
+        User_Edit_Broadcast,
 
         /// <summary>
         /// Deprecated. Was previously used for “Create User Follows” and “Delete User Follows.”
@@ -335,6 +394,11 @@ namespace TwitchLib.Api.Core.Enums
         User_Read_Email,
 
         /// <summary>
+        /// View emotes available to a user
+        /// </summary>
+        User_Read_Emotes,
+
+        /// <summary>
         /// View the list of channels a user follows.
         /// </summary>
         User_Read_Follows,
@@ -348,6 +412,11 @@ namespace TwitchLib.Api.Core.Enums
         /// View if an authorized user is subscribed to specific channels.
         /// </summary>
         User_Read_Subscriptions,
+
+        /// <summary>
+        /// Receive whispers sent to your user.
+        /// </summary>
+        User_Read_Whispers,
 
         /// <summary>
         /// User write chat
