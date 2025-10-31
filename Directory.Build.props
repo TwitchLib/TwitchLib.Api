@@ -2,6 +2,7 @@
 	<!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
 
 	<PropertyGroup>
+		<ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
 		<TargetFrameworks>netstandard2.0;net8.0;net9.0</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 
