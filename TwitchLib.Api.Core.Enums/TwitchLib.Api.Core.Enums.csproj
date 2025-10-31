@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	
+
   <PropertyGroup>
     <Description>Project containing the enums of TwitchLib.Api</Description>
   </PropertyGroup>

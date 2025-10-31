@@ -1,15 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	
+
   <PropertyGroup>
     <Description>Api component of TwitchLib. This component allows you to access the Twitch API, as well as undocumented and third party APIs.</Description>
   </PropertyGroup>
-	
-  <ItemGroup>
-    <None Include="..\twitchlib.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
   
 	<ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />

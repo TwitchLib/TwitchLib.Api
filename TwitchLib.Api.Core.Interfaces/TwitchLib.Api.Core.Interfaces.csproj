@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	
+
   <PropertyGroup>
     <Description>Project containing all of the interfaces used in TwitchLib.Api</Description>
   </PropertyGroup>
