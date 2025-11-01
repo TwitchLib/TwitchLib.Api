@@ -1,0 +1,35 @@
+<Project>
+	<!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
+
+	<PropertyGroup>
+		<ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
+		<TargetFrameworks>netstandard2.0;net8.0;net9.0</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<!--Package-->
+	<PropertyGroup>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>swiftyspiffy, Prom3theu5, Syzuna, LuckyNoS7evin</Authors>
+		<Copyright>Copyright 2025</Copyright>
+		<PackageIcon>twitchlib.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
+		<RepositoryUrl>>https://github.com/TwitchLib/TwitchLib.Api</RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
+		<PackageTags>twitch library chat c# csharp api events pubsub net</PackageTags>
+		<PackageReleaseNotes>a lot of changes</PackageReleaseNotes>
+		<VersionPrefix>3.10.1</VersionPrefix>
+		<VersionSuffix>$(VersionSuffix)</VersionSuffix>
+		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+		<FileVersion>$(VersionPrefix)</FileVersion>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\twitchlib.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+</Project>
