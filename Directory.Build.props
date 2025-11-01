@@ -20,7 +20,7 @@
 		<RepositoryType>Git</RepositoryType>
 		<PackageTags>twitch library chat c# csharp api events pubsub net</PackageTags>
 		<PackageReleaseNotes>a lot of changes</PackageReleaseNotes>
-		<VersionPrefix>3.10.2</VersionPrefix>
+		<VersionPrefix>3.10.3</VersionPrefix>
 		<VersionSuffix>$(VersionSuffix)</VersionSuffix>
 		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
 		<FileVersion>$(VersionPrefix)</FileVersion>
