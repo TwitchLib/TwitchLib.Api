@@ -8,7 +8,7 @@ using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Auth
 {
-    /// <summary>These endpoints fall outside of v5 and Helix, and relate to Authorization</summary>
+    /// <summary>These endpoints fall outside of Helix, and relate to Authorization</summary>
     public class Auth : ApiBase
     {
         public Auth(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
@@ -36,10 +36,10 @@ namespace TwitchLib.Api.Auth
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("grant_type", "refresh_token"),
-                new KeyValuePair<string, string>("refresh_token", refreshToken),
-                new KeyValuePair<string, string>("client_id", internalClientId),
-                new KeyValuePair<string, string>("client_secret", clientSecret)
+                new("grant_type", "refresh_token"),
+                new("refresh_token", refreshToken),
+                new("client_id", internalClientId),
+                new("client_secret", clientSecret)
             };
 
             return TwitchPostGenericAsync<RefreshResponse>("/token", ApiVersion.Auth, null, getParams, null, internalClientId);
@@ -106,11 +106,11 @@ namespace TwitchLib.Api.Auth
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("grant_type", "authorization_code"),
-                new KeyValuePair<string, string>("code", code),
-                new KeyValuePair<string, string>("client_id", internalClientId),
-                new KeyValuePair<string, string>("client_secret", clientSecret),
-                new KeyValuePair<string, string>("redirect_uri", redirectUri)
+                new("grant_type", "authorization_code"),
+                new("code", code),
+                new("client_id", internalClientId),
+                new("client_secret", clientSecret),
+                new("redirect_uri", redirectUri)
             };
 
             return TwitchPostGenericAsync<AuthCodeResponse>("/token", ApiVersion.Auth, null, getParams, null, internalClientId);

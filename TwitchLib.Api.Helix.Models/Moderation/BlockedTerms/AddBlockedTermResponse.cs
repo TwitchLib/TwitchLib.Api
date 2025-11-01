@@ -1,10 +1,15 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Moderation.BlockedTerms
+namespace TwitchLib.Api.Helix.Models.Moderation.BlockedTerms;
+
+/// <summary>
+/// Add blocked term response object.
+/// </summary>
+public class AddBlockedTermResponse
 {
-    public class AddBlockedTermResponse
-    {
-        [JsonProperty(PropertyName = "data")]
-        public BlockedTerm[] Data { get; protected set; }
-    }
+    /// <summary>
+    /// A list that contains the single blocked term that the broadcaster added.
+    /// </summary>
+    [JsonProperty(PropertyName = "data")]
+    public BlockedTerm[] Data { get; protected set; }
 }

@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.Api.Core.Interfaces
 {
+    /// <summary>
+    /// Interface for rate limiter
+    /// </summary>
     public interface IRateLimiter
     {
         Task Perform(Func<Task> perform, CancellationToken cancellationToken);

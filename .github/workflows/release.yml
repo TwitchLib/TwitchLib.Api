@@ -8,21 +8,29 @@ jobs:
   release:
    if: "contains(toJSON(github.event.commits.*.message), '[Release]')"
    runs-on: ubuntu-latest
+   permissions:
+      id-token: write  # enable GitHub OIDC token issuance for this job
 
    steps:
-   - uses: actions/checkout@v3
+   - uses: actions/checkout@v5
    - name: Setup .NET
-     uses: actions/setup-dotnet@v2
+     uses: actions/setup-dotnet@v5
      with:
-       dotnet-version: 6.0.x
+       dotnet-version: 9.0.x
    - name: Restore dependencies
      run: dotnet restore
    - name: Build TwitchLib.Api
      run: dotnet build -c Release --no-restore
    - name: Pack TwitchLib.Api
-     run: dotnet pack TwitchLib.Api.sln -v normal -c Release -o nugets --no-build
+     run: dotnet pack TwitchLib.Api.sln -v normal -c Release --no-build
+   # Get a short-lived NuGet API key
+   - name: NuGet login (OIDC → temp API key)
+     uses: NuGet/login@v1
+     id: login
+     with:
+       user: ${{ secrets.NUGET_USER }}
    - name: Push to Nuget
-     run: dotnet nuget push "./nugets/*.nupkg" -k ${{ secrets.API_NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
+     run: dotnet nuget push "./artifacts/package/release/*.nupkg" --api-key ${{steps.login.outputs.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
    - name: Send Discord Notification
      uses: sarisia/actions-status-discord@v1
      if: always()

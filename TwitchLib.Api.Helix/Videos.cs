@@ -20,6 +20,8 @@ namespace TwitchLib.Api.Helix
         {
         }
 
+        #region DeleteVideos
+
         /// <summary>
         /// Deletes one or more videos. Videos are past broadcasts, Highlights, or uploads.
         /// <para>Invalid Video IDs will be ignored (i.e. IDs provided that do not have a video associated with it).</para>
@@ -39,6 +41,9 @@ namespace TwitchLib.Api.Helix
 
             return TwitchDeleteGenericAsync<DeleteVideosResponse>("/videos", ApiVersion.Helix, getParams, accessToken);
         }
+        #endregion
+
+        #region GetVideos
 
         /// <summary>
         /// Gets video information by one or more video IDs, user ID, or game ID.
@@ -56,7 +61,6 @@ namespace TwitchLib.Api.Helix
         /// <param name="sort">Sort order of the videos.</param>
         /// <param name="type">Type of video.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
-        /// <returns></returns>
         /// <exception cref="BadParameterException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public Task<GetVideosResponse> GetVideosAsync(List<string> videoIds = null, string userId = null, string gameId = null, string after = null, string before = null, int first = 20, string language = null, Period period = Period.All, VideoSort sort = VideoSort.Time, VideoType type = VideoType.All, string accessToken = null)
@@ -147,5 +151,6 @@ namespace TwitchLib.Api.Helix
 
             return TwitchGetGenericAsync<GetVideosResponse>("/videos", ApiVersion.Helix, getParams, accessToken);
         }
+        #endregion
     }
 }

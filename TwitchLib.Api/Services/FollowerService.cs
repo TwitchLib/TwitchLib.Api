@@ -174,8 +174,10 @@ namespace TwitchLib.Api.Services
 
         protected override async Task OnServiceTimerTick()
         {
-            await base.OnServiceTimerTick();
-            await UpdateLatestFollowersAsync();
+            try {
+                await base.OnServiceTimerTick();
+                await UpdateLatestFollowersAsync();
+            } catch {}
         }
 
         private async Task<List<ChannelFollower>> GetLatestFollowersAsync(string channel)

@@ -2,6 +2,9 @@
 
 namespace TwitchLib.Api.Core.RateLimiter
 {
+    /// <summary>
+    /// Dispose Action
+    /// </summary>
     public class DisposeAction : IDisposable
     {
         private Action _act;

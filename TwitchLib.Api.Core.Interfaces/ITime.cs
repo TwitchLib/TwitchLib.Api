@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.Api.Core.Interfaces
 {
+    /// <summary>
+    /// Interface for time
+    /// </summary>
     public interface ITime
     {
         DateTime GetTimeNow();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace TwitchLib.Api.Core.Internal
         /// Creates a new TwitchHttpClientHandler
         /// </summary>
         /// <param name="logger">Logger to use for logging</param>
-        public TwitchHttpClientHandler(ILogger<IHttpCallHandler> logger) : base(new HttpClientHandler())
+        public TwitchHttpClientHandler(ILogger<IHttpCallHandler> logger) : base(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })
         {
             _logger = logger;
         }

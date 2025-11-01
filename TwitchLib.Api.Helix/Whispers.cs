@@ -46,8 +46,8 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("from_user_id", fromUserId),
-                new KeyValuePair<string, string>("to_user_id", toUserId),
+                new("from_user_id", fromUserId),
+                new("to_user_id", toUserId),
             };
 
             // This should be updated to have a Request Class in the future.

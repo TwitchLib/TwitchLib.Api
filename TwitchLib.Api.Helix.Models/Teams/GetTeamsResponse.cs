@@ -1,10 +1,15 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Teams
+namespace TwitchLib.Api.Helix.Models.Teams;
+
+/// <summary>
+/// Get teams response object.
+/// </summary>
+public class GetTeamsResponse
 {
-    public class GetTeamsResponse
-    {
-        [JsonProperty(PropertyName = "data")]
-        public Team[] Teams { get; protected set; }
-    }
+    /// <summary>
+    /// A list that contains the single team that you requested.
+    /// </summary>
+    [JsonProperty(PropertyName = "data")]
+    public Team[] Teams { get; protected set; }
 }

@@ -9,6 +9,7 @@ using TwitchLib.Api.Core.Extensions.System;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Clips.CreateClip;
 using TwitchLib.Api.Helix.Models.Clips.GetClips;
+using TwitchLib.Api.Helix.Models.Clips.GetClipsDownload;
 
 namespace TwitchLib.Api.Helix
 {
@@ -21,6 +22,7 @@ namespace TwitchLib.Api.Helix
         { }
 
         #region GetClips
+
         /// <summary>
         /// Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only).
         /// <para>Note: The clips service returns a maximum of 1000 clips.</para>
@@ -52,11 +54,15 @@ namespace TwitchLib.Api.Helix
         /// Ending date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.)
         /// <para>If this is specified, started_at also must be specified; otherwise, the time period is ignored.</para>
         /// </param>
+        /// <param name="isFeatured">
+        /// A Boolean value that determines whether the response includes featured clips.
+        /// <para>If true, returns only clips that are featured. If false, returns only clips that aren’t featured. All clips are returned if this parameter is not present.</para>
+        /// </param>
         /// <param name="first">Maximum number of objects to return. Maximum: 100. Default: 20.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetClipsResponse"></returns>
         /// <exception cref="BadParameterException"></exception>
-        public Task<GetClipsResponse> GetClipsAsync(List<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, int first = 20, string accessToken = null)
+        public Task<GetClipsResponse> GetClipsAsync(List<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, bool? isFeatured = null, int first = 20, string accessToken = null)
         {
             if (first < 0 || first > 100)
                 throw new BadParameterException("'first' must between 0 (inclusive) and 100 (inclusive).");
@@ -91,6 +97,9 @@ namespace TwitchLib.Api.Helix
 
             if (!string.IsNullOrWhiteSpace(after))
                 getParams.Add(new KeyValuePair<string, string>("after", after));
+            
+            if (isFeatured.HasValue)
+                getParams.Add(new KeyValuePair<string, string>("is_featured", isFeatured.Value.ToString()));
 
             getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
 
@@ -116,10 +125,48 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new("broadcaster_id", broadcasterId)
             };
 
             return TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        #endregion
+
+        #region GetClipsDownload
+
+        /// <summary>
+        ///  Provides URLs to download the video file(s) for the specified clips.
+        /// <para>Rate Limits: Limited to 100 requests per minute.</para>
+        /// <para>Required scope: editor:manage:clips or channel:manage:clips</para>
+        /// </summary>
+        /// <param name="editorId">The User ID of the editor for the channel you want to download a clip for. If using the broadcaster’s auth token, this is the same as <paramref name="broadcasterId"/>. This must match the user_id in the user access token.</param>
+        /// <param name="broadcasterId">The ID of the broadcaster you want to download clips for.</param>
+        /// <param name="clipIds">The ID that identifies the clip you want to download. Include this parameter for each clip you want to download, up to a maximum of 10 clips.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="CreatedClipResponse"></returns>
+        public Task<GetClipsDownloadResponse> GetClipsDownloadAsync(string editorId, string broadcasterId, List<string> clipIds, string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(editorId))
+                throw new BadParameterException("editorId cannot be null/empty/whitespace");
+
+            if (string.IsNullOrWhiteSpace(broadcasterId))
+                throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
+
+            if (clipIds is null)
+                throw new BadParameterException("clipIds must be set");
+
+            if(clipIds.Count <1 || clipIds.Count > 10)
+                throw new BadParameterException("clipIds must contain between 1 and 10 items");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new("editor_id", editorId),
+                new("broadcaster_id", broadcasterId),
+            };
+            getParams.AddRange(clipIds.Select(clipId => new KeyValuePair<string, string>("clip_id", clipId)));
+
+            return TwitchGetGenericAsync<GetClipsDownloadResponse>("/clips/downloads", ApiVersion.Helix, getParams, accessToken);
         }
 
         #endregion

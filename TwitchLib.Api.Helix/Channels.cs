@@ -6,12 +6,15 @@ using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
+using TwitchLib.Api.Helix.Models.Channels.GetAdSchedule;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelEditors;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelFollowers;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelInformation;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelVIPs;
 using TwitchLib.Api.Helix.Models.Channels.GetFollowedChannels;
 using TwitchLib.Api.Helix.Models.Channels.ModifyChannelInformation;
+using TwitchLib.Api.Helix.Models.Channels.SnoozeNextAd;
+using TwitchLib.Api.Helix.Models.Channels.StartCommercial;
 
 namespace TwitchLib.Api.Helix
 {
@@ -25,28 +28,37 @@ namespace TwitchLib.Api.Helix
         }
 
         #region GetChannelInformation
+
         /// <summary>
         /// Gets channel information for given user.
+        /// </summary>
+        /// <param name="broadcasterIds">list of user ids whose channel to get (max 100).</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetChannelInformationResponse"></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<GetChannelInformationResponse> GetChannelInformationAsync(List<string> broadcasterIds, string accessToken = null)
+        {
+            if (broadcasterIds.Count == 0 || broadcasterIds.Count > 100)
+                throw new BadParameterException("boardcasterIds must contain between 1 and 100 broadcasterIds.");
+
+            var getParams = broadcasterIds.Select(broadcasterId => new KeyValuePair<string, string>("broadcaster_id", broadcasterId)).ToList();
+
+            return TwitchGetGenericAsync<GetChannelInformationResponse>("/channels", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        /// <summary>
+        /// Gets channel information for given user.
+        /// backwards compatible, queries just one
         /// </summary>
         /// <param name="broadcasterId">The ID of the broadcaster whose channel you want to get.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetChannelInformationResponse"></returns>
         /// <exception cref="BadParameterException"></exception>
-        public Task<GetChannelInformationResponse> GetChannelInformationAsync(string broadcasterId, string accessToken = null)
-        {
-            if (string.IsNullOrEmpty(broadcasterId))
-                throw new BadParameterException("broadcasterId must be set");
-
-            var getParams = new List<KeyValuePair<string, string>>
-            {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
-            };
-
-            return TwitchGetGenericAsync<GetChannelInformationResponse>("/channels", ApiVersion.Helix, getParams, accessToken);
-        }
+        public Task<GetChannelInformationResponse> GetChannelInformationAsync(string broadcasterId, string accessToken = null) => GetChannelInformationAsync(new List<string>(){broadcasterId}, accessToken);
         #endregion
 
         #region ModifyChannelInformation
+
         /// <summary>
         /// Modifies channel information for given user.
         /// <para>Required scope: channel:manage:broadcast</para>
@@ -56,21 +68,25 @@ namespace TwitchLib.Api.Helix
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns></returns>
         /// <exception cref="BadParameterException"></exception>
-        public Task ModifyChannelInformationAsync(string broadcasterId, ModifyChannelInformationRequest request, string accessToken = null)
+        public async Task<bool> ModifyChannelInformationAsync(string broadcasterId, ModifyChannelInformationRequest request, string accessToken = null)
         {
             if (string.IsNullOrEmpty(broadcasterId))
                 throw new BadParameterException("broadcasterId must be set");
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new("broadcaster_id", broadcasterId)
             };
 
-            return TwitchPatchAsync("/channels", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
+            var response = await TwitchPatchAsync("/channels", ApiVersion.Helix, JsonConvert.SerializeObject(request), getParams, accessToken);
+
+            // Successfully updated the channel's properties if return code is 204 (No Content)
+            return response.Key == 204;
         }
         #endregion
 
         #region GetChannelEditors
+
         /// <summary>
         /// Gets a list of users who have editor permissions for a specific channel.
         /// <para>Required scope: channel:read:editors</para>
@@ -86,7 +102,7 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new("broadcaster_id", broadcasterId)
             };
 
             return TwitchGetGenericAsync<GetChannelEditorsResponse>("/channels/editors", ApiVersion.Helix, getParams, accessToken);
@@ -115,8 +131,8 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("first", first.ToString())
+                new("broadcaster_id", broadcasterId),
+                new("first", first.ToString())
             };
 
             if (userIds != null)
@@ -124,7 +140,7 @@ namespace TwitchLib.Api.Helix
                 if (userIds.Count == 0)
                     throw new BadParameterException("userIds must contain at least 1 userId if a list is included in the call");
 
-                getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("userId", userId)));
+                getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("user_id", userId)));
             }
 
             if (!string.IsNullOrWhiteSpace(after))
@@ -155,8 +171,8 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("user_id", userId),
+                new("broadcaster_id", broadcasterId),
+                new("user_id", userId),
             };
 
             return TwitchPostAsync("/channels/vips", ApiVersion.Helix, null, getParams, accessToken);
@@ -164,7 +180,7 @@ namespace TwitchLib.Api.Helix
 
         #endregion
 
-        #region DeleteChannelVIP
+        #region RemoveChannelVIP
 
         /// <summary>
         /// Removes a VIP from the broadcaster’s chat room.
@@ -184,8 +200,8 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
-                new KeyValuePair<string, string>("user_id", userId),
+                new("broadcaster_id", broadcasterId),
+                new("user_id", userId),
             };
 
             return TwitchDeleteAsync("/channels/vips", ApiVersion.Helix, getParams, accessToken);
@@ -222,7 +238,7 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("user_id", userId)
+                new("user_id", userId)
             };
             
             if (!string.IsNullOrWhiteSpace(broadcasterId))
@@ -236,11 +252,11 @@ namespace TwitchLib.Api.Helix
         }
 
         #endregion
-        
+
         #region GetChannelFollowers
 
         /// <summary>
-        /// Gets a list of users that follow the specified broadcaster.
+        /// Gets a list of users that follow the specified broadcaster. Requires moderator:read:followers scope.
         /// <para>You can also use this endpoint to see whether a specific user follows the broadcaster.</para>
         /// </summary>
         /// <param name="broadcasterId">The broadcaster’s ID. Returns the list of users that follow this broadcaster.</param>
@@ -263,7 +279,7 @@ namespace TwitchLib.Api.Helix
 
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new("broadcaster_id", broadcasterId)
             };
             
             if (!string.IsNullOrWhiteSpace(userId))
@@ -274,6 +290,71 @@ namespace TwitchLib.Api.Helix
                 getParams.Add(new KeyValuePair<string, string>("after", after));
             
             return TwitchGetGenericAsync<GetChannelFollowersResponse>("/channels/followers", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
+
+        #region GetAdSchedule
+
+        /// <summary>
+        /// Returns ad schedule related information, including snooze, when the last ad was run, when the next ad is scheduled, and if the channel is currently in pre-roll free time.
+        /// </summary>
+        /// <param name="broadcasterId">The broadcaster's ID. Ad schedule is relevant to this broadcaster, and so should the auth.</param>
+        /// <param name="accessToken"> Optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetAdScheduleResponse"></returns>
+        public Task<GetAdScheduleResponse> GetAdScheduleAsync(string broadcasterId, string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+
+                new("broadcaster_id", broadcasterId)
+            };
+
+            return TwitchGetGenericAsync<GetAdScheduleResponse>("/channels/ads", ApiVersion.Helix, getParams, accessToken);
+        }
+
+        #endregion
+
+        #region SnoozeNextAd
+
+        /// <summary>
+        /// If available, pushes back the timestamp of the upcoming automatic mid-roll ad by 5 minutes. This endpoint duplicates the snooze functionality in the creator dashboard’s Ads Manager.
+        /// </summary>
+        /// <param name="broadcasterId">The broadcaster's ID. Ad snoozing is relevant to this broadcaster, and so should the auth.</param>
+        /// <param name="accessToken"> Optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="SnoozeNextAdResponse"></returns>
+        public Task<SnoozeNextAdResponse> SnoozeNextAdAsync(string broadcasterId, string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new("broadcaster_id", broadcasterId)
+            };
+
+            return TwitchPostGenericAsync<SnoozeNextAdResponse>("/channels/ads/schedule/snooze", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        #endregion
+        
+        #region StartCommercial
+
+        /// <summary>
+        /// <para><see href="https://dev.twitch.tv/docs/api/reference/#start-commercial">
+        /// Twitch Docs: Start Commercial</see></para>
+        /// <para>Starts a commercial on the specified channel.</para>
+        /// <para>Only partners and affiliates may run commercials and they must be streaming live at the time.
+        /// Only the broadcaster may start a commercial - the broadcaster’s editors and moderators may not start commercials on behalf of the broadcaster.</para>
+        /// <para><b>Requires a user access token that includes the channel:edit:commercial scope.</b></para>
+        /// </summary>
+        /// <param name="request" cref="StartCommercialRequest"></param>
+        /// <param name="accessToken">Optional access token to override the use of the stored one in the TwitchAPI instance.</param>
+        /// <returns cref="StartCommercialResponse"></returns>
+        public Task<StartCommercialResponse> StartCommercialAsync(StartCommercialRequest request, string accessToken = null)
+        {
+            return TwitchPostGenericAsync<StartCommercialResponse>("/channels/commercial", ApiVersion.Helix, JsonConvert.SerializeObject(request), null, accessToken);
         }
 
         #endregion

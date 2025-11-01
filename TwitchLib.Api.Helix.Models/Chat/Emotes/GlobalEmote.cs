@@ -1,7 +1,15 @@
-﻿namespace TwitchLib.Api.Helix.Models.Chat.Emotes
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Api.Helix.Models.Chat.Emotes;
+
+/// <summary>
+/// Global emote.
+/// </summary>
+public class GlobalEmote : Emote
 {
-    public class GlobalEmote : Emote
-    {
-        // Empty for now as everything is in the base class already
-    }
+    /// <summary>
+    /// Contains the image URLs for the emote.
+    /// </summary>
+    [JsonProperty("images")]
+    public EmoteImages Images { get; protected set; }
 }

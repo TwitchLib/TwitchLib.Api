@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
+using TwitchLib.Api.Helix.Models.Channels.SendChatMessage;
 using TwitchLib.Api.Helix.Models.Chat;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetChannelChatBadges;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetGlobalChatBadges;
@@ -15,6 +17,7 @@ using TwitchLib.Api.Helix.Models.Chat.ChatSettings;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetChannelEmotes;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetEmoteSets;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetGlobalEmotes;
+using TwitchLib.Api.Helix.Models.Chat.Emotes.GetUserEmotes;
 using TwitchLib.Api.Helix.Models.Chat.GetChatters;
 using TwitchLib.Api.Helix.Models.Chat.GetUserChatColor;
 
@@ -146,6 +149,35 @@ namespace TwitchLib.Api.Helix
         public Task<GetGlobalEmotesResponse> GetGlobalEmotesAsync(string accessToken = null)
         {
             return TwitchGetGenericAsync<GetGlobalEmotesResponse>("/chat/emotes/global", ApiVersion.Helix, accessToken: accessToken);
+        }
+
+        /// <summary>
+        /// Retrieves emotes available to the user across all channels.
+        /// </summary>
+        /// <param name="userId">The ID of the user. This ID must match the user ID in the user access token.</param>
+        /// <param name="after">The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value.</param>
+        /// <param name="broadcasterId">The User ID of a broadcaster you wish to get follower emotes of. Using this query parameter will guarantee inclusion of the broadcaster’s follower emotes in the response body.</param>
+        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+        /// <returns cref="GetUserEmotesResponse"></returns>
+        public Task<GetUserEmotesResponse> GetUserEmotesAsync(string userId, string after = null,
+            string broadcasterId = null, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(userId))
+                throw new BadParameterException("userId must be set");
+
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("user_id", userId)
+            };
+
+            if (!string.IsNullOrEmpty(after))
+                getParams.Add(new KeyValuePair<string, string>("after", after));
+
+            if (!string.IsNullOrEmpty(broadcasterId))
+                getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
+
+            return TwitchGetGenericAsync<GetUserEmotesResponse>("/chat/emotes/user", ApiVersion.Helix, getParams,
+                accessToken);
         }
         #endregion
 
@@ -295,6 +327,64 @@ namespace TwitchLib.Api.Helix
             };
 
             return TwitchPostAsync("/chat/shoutouts", ApiVersion.Helix, null, getParams, accessToken);
+        }
+
+        /// <summary>
+        /// Sends a message to a chat
+        /// </summary>
+        /// <param name="broadcasterId">The ID of the broadcaster whose chat room the message will be sent to.</param>
+        /// <param name="senderId">	The ID of the user sending the message. This ID must match the user ID in the user access token.</param>
+        /// <param name="message">	The message to send. The message is limited to a maximum of 500 characters. Chat messages can also include emoticons. To include emoticons, use the name of the emote. The names are case sensitive. Don’t include colons around the name (e.g., :bleedPurple:). If Twitch recognizes the name, Twitch converts the name to the emote before writing the chat message to the chat room</param>
+        /// <param name="replyParentMessageId">The ID of the chat message being replied to. If omitted, the message is not a reply</param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        /// <exception cref="BadParameterException"></exception>
+        [Obsolete("Use SendChatMessage(SendChatMessageRequest, string) instead")]
+        public Task<SendChatMessageResponse> SendChatMessage(string broadcasterId, string senderId, string message, string replyParentMessageId = null, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(broadcasterId))
+                throw new BadParameterException("broadcasterId must be set");
+
+            if (string.IsNullOrEmpty(senderId))
+                throw new BadParameterException("senderId must be set");
+
+            if (string.IsNullOrEmpty(message))
+                throw new BadParameterException("message must be set");
+
+            var json = new JObject
+            {
+                ["broadcaster_id"] = broadcasterId,
+                ["sender_id"] = senderId,
+                ["message"] = message
+            };
+
+            if (replyParentMessageId != null)
+            {
+                json.Add("reply_parent_message_id", replyParentMessageId);
+            }
+
+            return TwitchPostGenericAsync<SendChatMessageResponse>("/chat/messages", ApiVersion.Helix, json.ToString(), null, accessToken);
+        }
+
+        /// <summary>
+        /// Sends a message to a chat
+        /// </summary>
+        /// <param name="request">Request parameters for the message</param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        /// <exception cref="BadParameterException"></exception>
+        public Task<SendChatMessageResponse> SendChatMessage(SendChatMessageRequest request, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(request.BroadcasterId))
+                throw new BadParameterException("BroadcasterId must be set");
+
+            if (string.IsNullOrEmpty(request.SenderId))
+                throw new BadParameterException("SenderId must be set");
+
+            if (string.IsNullOrEmpty(request.Message))
+                throw new BadParameterException("Message must be set");
+
+            return TwitchPostGenericAsync<SendChatMessageResponse>("/chat/messages", ApiVersion.Helix, JsonConvert.SerializeObject(request), null, accessToken);
         }
 
         #endregion

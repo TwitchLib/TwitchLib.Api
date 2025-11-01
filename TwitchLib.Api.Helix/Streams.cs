@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -100,42 +99,6 @@ namespace TwitchLib.Api.Helix
             };
 
             return TwitchGetGenericAsync<GetStreamTagsResponse>("/streams/tags", ApiVersion.Helix, getParams, accessToken);
-        }
-
-        /// <summary>
-        /// Applies one or more tags to the specified channel, overwriting any existing tags.
-        /// <para>If the request does not specify tags, all existing tags are removed from the channel.</para>
-        /// <para>You may not specify automatic tags; the call will fail if you specify automatic tags. </para>
-        /// <para>Tags expire 72 hours after they are applied, unless the channel is live within that time period.</para>
-        /// <para>The expiration period is subject to change.</para>
-        /// <para>Requires a user OAuth access token with a scope of channel:manage:broadcast.</para>
-        /// </summary>
-        /// <param name="broadcasterId">The user ID of the channel to apply the tags to.</param>
-        /// <param name="tagIds">
-        /// A list of IDs that identify the tags to apply to the channel.
-        /// <para>You may specify a maximum of five tags.</para>
-        /// <para>To remove all tags from the channel, set tagIds to an empty list / null.</para>
-        /// </param>
-        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
-        /// <returns></returns>
-        public Task ReplaceStreamTagsAsync(string broadcasterId, List<string> tagIds = null, string accessToken = null)
-        {
-            var getParams = new List<KeyValuePair<string, string>>
-            {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
-            };
-
-            string payload = null;
-            if (tagIds != null && tagIds.Count > 0)
-            {
-                var dynamicPayload = new JObject
-                {
-                    { "tag_ids", new JArray(tagIds) }
-                };
-                payload = dynamicPayload.ToString();
-            }
-
-            return TwitchPutAsync("/streams/tags", ApiVersion.Helix, payload, getParams, accessToken);
         }
 
         /// <summary>

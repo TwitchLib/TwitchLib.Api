@@ -19,13 +19,14 @@ namespace TwitchLib.Api.Helix
         {
         }
 
+        #region GetCheermotes
+
         /// <summary>
         /// Retrieves the list of available Cheermotes, animated emotes to which viewers can assign Bits, to cheer in chat. Cheermotes returned are available throughout Twitch, in all Bits-enabled channels.
         /// </summary>
         /// <param name="broadcasterId">D for the broadcaster who might own specialized Cheermotes.</param>
         /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
         /// <returns cref="GetCheermotesResponse"></returns>
-        #region GetCheermotes
         public Task<GetCheermotesResponse> GetCheermotesAsync(string broadcasterId = null, string accessToken = null)
         {
             var getParams = new List<KeyValuePair<string, string>>();
@@ -67,7 +68,7 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("count", count.ToString())
+                new("count", count.ToString())
             };
 
             switch (period)
@@ -115,7 +116,7 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("should_include_all", shouldIncludeAll.ToString().ToLower())
+                new("should_include_all", shouldIncludeAll.ToString().ToLower())
             };
 
             return TwitchGetGenericAsync<GetExtensionBitsProductsResponse>("/bits/extensions", ApiVersion.Helix, getParams, accessToken);

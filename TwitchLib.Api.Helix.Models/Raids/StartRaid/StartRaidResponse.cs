@@ -1,10 +1,15 @@
 ﻿using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Raids.StartRaid
+namespace TwitchLib.Api.Helix.Models.Raids.StartRaid;
+
+/// <summary>
+/// Start raid response object.
+/// </summary>
+public class StartRaidResponse
 {
-    public class StartRaidResponse
-    {
-        [JsonProperty(PropertyName = "data")]
-        public Raid[] Data { get; protected set; }
-    }
+    /// <summary>
+    /// A list that contains a single object with information about the pending raid.
+    /// </summary>
+    [JsonProperty(PropertyName = "data")]
+    public Raid[] Data { get; protected set; }
 }

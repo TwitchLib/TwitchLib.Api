@@ -5,6 +5,9 @@ using TwitchLib.Api.Core.Interfaces;
 
 namespace TwitchLib.Api.Core.RateLimiter
 {
+    /// <summary>
+    /// Bypass Limiter
+    /// </summary>
     public class BypassLimiter : IRateLimiter
     {
         public Task Perform(Func<Task> perform)

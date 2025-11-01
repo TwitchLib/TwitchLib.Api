@@ -16,6 +16,8 @@ namespace TwitchLib.Api.Helix
         {
         }
 
+        #region GetChannelTeams
+
         /// <summary>
         /// Retrieves a list of Twitch Teams of which the specified channel/broadcaster is a member.
         /// </summary>
@@ -26,11 +28,14 @@ namespace TwitchLib.Api.Helix
         {
             var getParams = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                new("broadcaster_id", broadcasterId)
             };
 
             return TwitchGetGenericAsync<GetChannelTeamsResponse>("/teams/channel", ApiVersion.Helix, getParams, accessToken);
         }
+        #endregion
+
+        #region GetTeams
 
         /// <summary>
         /// Gets information for a specific Twitch Team.
@@ -51,5 +56,6 @@ namespace TwitchLib.Api.Helix
 
             return TwitchGetGenericAsync<GetTeamsResponse>("/teams", ApiVersion.Helix, getParams, accessToken);
         }
+        #endregion
     }
 }
