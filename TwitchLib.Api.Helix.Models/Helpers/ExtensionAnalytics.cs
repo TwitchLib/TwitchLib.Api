@@ -1,4 +1,5 @@
-﻿namespace TwitchLib.Api.Helix.Models.Helpers;
+﻿#nullable disable
+namespace TwitchLib.Api.Helix.Models.Helpers;
 
 /// <summary>
 /// Extension Analytics Helper object.

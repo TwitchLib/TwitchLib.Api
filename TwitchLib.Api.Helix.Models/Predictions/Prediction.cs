@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿#nullable disable
+using Newtonsoft.Json;
 using TwitchLib.Api.Core.Enums;
 
 namespace TwitchLib.Api.Helix.Models.Predictions;

@@ -1,3 +1,4 @@
+#nullable disable
 #nullable enable
 namespace TwitchLib.Api.Helix.Models.EventSub;
 

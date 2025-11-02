@@ -1,8 +1,8 @@
-﻿namespace TwitchLib.Api.Helix.Models.Moderation.BanUser
+﻿#nullable disable
+namespace TwitchLib.Api.Helix.Models.Moderation.BanUser;
+
+public class BanUser
 {
-    public class BanUser
-    {
-        public string UserId;
-        public string Reason;
-    }
+    public string UserId;
+    public string Reason;
 }

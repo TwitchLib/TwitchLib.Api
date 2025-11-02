@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿#nullable disable
+using Newtonsoft.Json;
 
-namespace TwitchLib.Api.ThirdParty.ModLookup
+namespace TwitchLib.Api.ThirdParty.ModLookup;
+
+public class TopResponse
 {
-    public class TopResponse
-    {
-        [JsonProperty(PropertyName = "status")]
-        public int Status { get; protected set; }
-        [JsonProperty(PropertyName = "top")]
-        public Top Top { get; protected set; }
-    }
+    [JsonProperty(PropertyName = "status")]
+    public int Status { get; protected set; }
+    [JsonProperty(PropertyName = "top")]
+    public Top Top { get; protected set; }
 }

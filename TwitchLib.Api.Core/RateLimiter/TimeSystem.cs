@@ -1,34 +1,34 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using TwitchLib.Api.Core.Interfaces;
 
-namespace TwitchLib.Api.Core.RateLimiter
+namespace TwitchLib.Api.Core.RateLimiter;
+
+/// <summary>
+/// Time System
+/// </summary>
+public class TimeSystem : ITime
 {
-    /// <summary>
-    /// Time System
-    /// </summary>
-    public class TimeSystem : ITime
+    public static ITime StandardTime { get; }
+
+    static TimeSystem()
     {
-        public static ITime StandardTime { get; }
+        StandardTime = new TimeSystem();
+    }
 
-        static TimeSystem()
-        {
-            StandardTime = new TimeSystem();
-        }
+    private TimeSystem()
+    {
+    }
 
-        private TimeSystem()
-        {
-        }
+    DateTime ITime.GetTimeNow()
+    {
+        return DateTime.Now;
+    }
 
-        DateTime ITime.GetTimeNow()
-        {
-            return DateTime.Now;
-        }
-
-        Task ITime.GetDelay(TimeSpan timespan, CancellationToken cancellationToken)
-        {
-            return Task.Delay(timespan, cancellationToken);
-        }
+    Task ITime.GetDelay(TimeSpan timespan, CancellationToken cancellationToken)
+    {
+        return Task.Delay(timespan, cancellationToken);
     }
 }

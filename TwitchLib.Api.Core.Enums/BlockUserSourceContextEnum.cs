@@ -1,18 +1,18 @@
-﻿namespace TwitchLib.Api.Core.Enums
+﻿#nullable disable
+namespace TwitchLib.Api.Core.Enums;
+
+/// <summary>
+/// Enum representing where the source context was for the blocked user
+/// </summary>
+public enum BlockUserSourceContextEnum
 {
     /// <summary>
-    /// Enum representing where the source context was for the blocked user
+    /// In chat
     /// </summary>
-    public enum BlockUserSourceContextEnum
-    {
-        /// <summary>
-        /// In chat
-        /// </summary>
-        Chat,
+    Chat,
 
-        /// <summary>
-        /// In a whisper
-        /// </summary>
-        Whisper
-    }
+    /// <summary>
+    /// In a whisper
+    /// </summary>
+    Whisper
 }

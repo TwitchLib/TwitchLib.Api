@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,165 +12,164 @@ using TwitchLib.Api.Helix.Models.Clips.CreateClip;
 using TwitchLib.Api.Helix.Models.Clips.GetClips;
 using TwitchLib.Api.Helix.Models.Clips.GetClipsDownload;
 
-namespace TwitchLib.Api.Helix
+namespace TwitchLib.Api.Helix;
+
+/// <summary>
+/// Clips related APIs
+/// </summary>
+public class Clips : ApiBase
 {
+    public Clips(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
+    { }
+
+    #region GetClips
+
     /// <summary>
-    /// Clips related APIs
+    /// Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only).
+    /// <para>Note: The clips service returns a maximum of 1000 clips.</para>
     /// </summary>
-    public class Clips : ApiBase
+    /// <param name="clipIds">IDs of the clips to query. Limit: 100.</param>
+    /// <param name="gameId">
+    /// ID of the game for which clips are returned.
+    /// <para>The number of clips returned is determined by the first query-string parameter (default: 20).</para>
+    /// <para>Results are ordered by view count.</para>
+    /// </param>
+    /// <param name="broadcasterId">
+    /// ID of the broadcaster for which clips are returned.
+    /// <para>The number of clips returned is determined by the first query-string parameter (default: 20).</para>
+    /// <para>Results are ordered by view count.</para>
+    /// </param>
+    /// <param name="before">
+    /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response.
+    /// <para>This applies only to queries specifying broadcaster_id or game_id</para>
+    /// </param>
+    /// <param name="after">
+    /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response.
+    /// <para>This applies only to queries specifying broadcaster_id or game_id</para>
+    /// </param>
+    /// <param name="startedAt">
+    /// Starting date/time for returned clips, in RFC3339 format. (The seconds value is ignored.)
+    /// <para>If this is specified, ended_at also should be specified; otherwise, the ended_at date/time will be 1 week after the started_at value.</para>
+    /// </param>
+    /// <param name="endedAt">
+    /// Ending date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.)
+    /// <para>If this is specified, started_at also must be specified; otherwise, the time period is ignored.</para>
+    /// </param>
+    /// <param name="isFeatured">
+    /// A Boolean value that determines whether the response includes featured clips.
+    /// <para>If true, returns only clips that are featured. If false, returns only clips that aren’t featured. All clips are returned if this parameter is not present.</para>
+    /// </param>
+    /// <param name="first">Maximum number of objects to return. Maximum: 100. Default: 20.</param>
+    /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <returns cref="GetClipsResponse"></returns>
+    /// <exception cref="BadParameterException"></exception>
+    public Task<GetClipsResponse> GetClipsAsync(List<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, bool? isFeatured = null, int first = 20, string accessToken = null)
     {
-        public Clips(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
-        { }
+        if (first < 0 || first > 100)
+            throw new BadParameterException("'first' must between 0 (inclusive) and 100 (inclusive).");
 
-        #region GetClips
+        var getParams = new List<KeyValuePair<string, string>>();
 
-        /// <summary>
-        /// Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only).
-        /// <para>Note: The clips service returns a maximum of 1000 clips.</para>
-        /// </summary>
-        /// <param name="clipIds">IDs of the clips to query. Limit: 100.</param>
-        /// <param name="gameId">
-        /// ID of the game for which clips are returned.
-        /// <para>The number of clips returned is determined by the first query-string parameter (default: 20).</para>
-        /// <para>Results are ordered by view count.</para>
-        /// </param>
-        /// <param name="broadcasterId">
-        /// ID of the broadcaster for which clips are returned.
-        /// <para>The number of clips returned is determined by the first query-string parameter (default: 20).</para>
-        /// <para>Results are ordered by view count.</para>
-        /// </param>
-        /// <param name="before">
-        /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response.
-        /// <para>This applies only to queries specifying broadcaster_id or game_id</para>
-        /// </param>
-        /// <param name="after">
-        /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response.
-        /// <para>This applies only to queries specifying broadcaster_id or game_id</para>
-        /// </param>
-        /// <param name="startedAt">
-        /// Starting date/time for returned clips, in RFC3339 format. (The seconds value is ignored.)
-        /// <para>If this is specified, ended_at also should be specified; otherwise, the ended_at date/time will be 1 week after the started_at value.</para>
-        /// </param>
-        /// <param name="endedAt">
-        /// Ending date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.)
-        /// <para>If this is specified, started_at also must be specified; otherwise, the time period is ignored.</para>
-        /// </param>
-        /// <param name="isFeatured">
-        /// A Boolean value that determines whether the response includes featured clips.
-        /// <para>If true, returns only clips that are featured. If false, returns only clips that aren’t featured. All clips are returned if this parameter is not present.</para>
-        /// </param>
-        /// <param name="first">Maximum number of objects to return. Maximum: 100. Default: 20.</param>
-        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
-        /// <returns cref="GetClipsResponse"></returns>
-        /// <exception cref="BadParameterException"></exception>
-        public Task<GetClipsResponse> GetClipsAsync(List<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, bool? isFeatured = null, int first = 20, string accessToken = null)
+        if (clipIds != null)
         {
-            if (first < 0 || first > 100)
-                throw new BadParameterException("'first' must between 0 (inclusive) and 100 (inclusive).");
-
-            var getParams = new List<KeyValuePair<string, string>>();
-
-            if (clipIds != null)
-            {
-                getParams.AddRange(clipIds.Select(clipId => new KeyValuePair<string, string>("id", clipId)));
-            }
-
-            if (!string.IsNullOrWhiteSpace(gameId))
-                getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
-
-            if (!string.IsNullOrWhiteSpace(broadcasterId))
-                getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
-
-            if (getParams.Count == 0 || (getParams.Count > 1 && gameId != null && broadcasterId != null))
-                throw new BadParameterException("One of the following parameters must be set: clipId, gameId, broadcasterId. Only one is allowed to be set.");
-
-            if (startedAt == null && endedAt != null)
-                throw new BadParameterException("The ended_at parameter cannot be used without the started_at parameter. Please include both parameters!");
-
-            if (startedAt != null)
-                getParams.Add(new KeyValuePair<string, string>("started_at", startedAt.Value.ToRfc3339String()));
-
-            if (endedAt != null)
-                getParams.Add(new KeyValuePair<string, string>("ended_at", endedAt.Value.ToRfc3339String()));
-
-            if (!string.IsNullOrWhiteSpace(before))
-                getParams.Add(new KeyValuePair<string, string>("before", before));
-
-            if (!string.IsNullOrWhiteSpace(after))
-                getParams.Add(new KeyValuePair<string, string>("after", after));
-            
-            if (isFeatured.HasValue)
-                getParams.Add(new KeyValuePair<string, string>("is_featured", isFeatured.Value.ToString()));
-
-            getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
-
-            return TwitchGetGenericAsync<GetClipsResponse>("/clips", ApiVersion.Helix, getParams, accessToken);
+            getParams.AddRange(clipIds.Select(clipId => new KeyValuePair<string, string>("id", clipId)));
         }
 
-        #endregion
+        if (!string.IsNullOrWhiteSpace(gameId))
+            getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
 
-        #region CreateClip
+        if (!string.IsNullOrWhiteSpace(broadcasterId))
+            getParams.Add(new KeyValuePair<string, string>("broadcaster_id", broadcasterId));
 
-        /// <summary>
-        /// Creates a clip programmatically. This returns both an ID and an edit URL for the new clip.
-        /// <para>Clip creation takes time. We recommend that you query Get Clips, with the clip ID that is returned here.</para>
-        /// <para>If Get Clips returns a valid clip, your clip creation was successful.</para>
-        /// <para>If, after 15 seconds, you still have not gotten back a valid clip from Get Clips, assume that the clip was not created and retry Create Clip.</para>
-        /// <para>This endpoint has a global rate limit, across all callers.</para>
-        /// <para>Required scope: clips:edit</para>
-        /// </summary>
-        /// <param name="broadcasterId">ID of the stream from which the clip will be made.</param>
-        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
-        /// <returns cref="CreatedClipResponse"></returns>
-        public Task<CreatedClipResponse> CreateClipAsync(string broadcasterId, string accessToken = null)
-        {
-            var getParams = new List<KeyValuePair<string, string>>
-            {
-                new("broadcaster_id", broadcasterId)
-            };
+        if (getParams.Count == 0 || (getParams.Count > 1 && gameId != null && broadcasterId != null))
+            throw new BadParameterException("One of the following parameters must be set: clipId, gameId, broadcasterId. Only one is allowed to be set.");
 
-            return TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, accessToken);
-        }
+        if (startedAt == null && endedAt != null)
+            throw new BadParameterException("The ended_at parameter cannot be used without the started_at parameter. Please include both parameters!");
 
-        #endregion
+        if (startedAt != null)
+            getParams.Add(new KeyValuePair<string, string>("started_at", startedAt.Value.ToRfc3339String()));
 
-        #region GetClipsDownload
+        if (endedAt != null)
+            getParams.Add(new KeyValuePair<string, string>("ended_at", endedAt.Value.ToRfc3339String()));
 
-        /// <summary>
-        ///  Provides URLs to download the video file(s) for the specified clips.
-        /// <para>Rate Limits: Limited to 100 requests per minute.</para>
-        /// <para>Required scope: editor:manage:clips or channel:manage:clips</para>
-        /// </summary>
-        /// <param name="editorId">The User ID of the editor for the channel you want to download a clip for. If using the broadcaster’s auth token, this is the same as <paramref name="broadcasterId"/>. This must match the user_id in the user access token.</param>
-        /// <param name="broadcasterId">The ID of the broadcaster you want to download clips for.</param>
-        /// <param name="clipIds">The ID that identifies the clip you want to download. Include this parameter for each clip you want to download, up to a maximum of 10 clips.</param>
-        /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
-        /// <returns cref="CreatedClipResponse"></returns>
-        public Task<GetClipsDownloadResponse> GetClipsDownloadAsync(string editorId, string broadcasterId, List<string> clipIds, string accessToken = null)
-        {
-            if (string.IsNullOrWhiteSpace(editorId))
-                throw new BadParameterException("editorId cannot be null/empty/whitespace");
+        if (!string.IsNullOrWhiteSpace(before))
+            getParams.Add(new KeyValuePair<string, string>("before", before));
 
-            if (string.IsNullOrWhiteSpace(broadcasterId))
-                throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
+        if (!string.IsNullOrWhiteSpace(after))
+            getParams.Add(new KeyValuePair<string, string>("after", after));
+        
+        if (isFeatured.HasValue)
+            getParams.Add(new KeyValuePair<string, string>("is_featured", isFeatured.Value.ToString()));
 
-            if (clipIds is null)
-                throw new BadParameterException("clipIds must be set");
+        getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
 
-            if(clipIds.Count <1 || clipIds.Count > 10)
-                throw new BadParameterException("clipIds must contain between 1 and 10 items");
-
-            var getParams = new List<KeyValuePair<string, string>>
-            {
-                new("editor_id", editorId),
-                new("broadcaster_id", broadcasterId),
-            };
-            getParams.AddRange(clipIds.Select(clipId => new KeyValuePair<string, string>("clip_id", clipId)));
-
-            return TwitchGetGenericAsync<GetClipsDownloadResponse>("/clips/downloads", ApiVersion.Helix, getParams, accessToken);
-        }
-
-        #endregion
-
+        return TwitchGetGenericAsync<GetClipsResponse>("/clips", ApiVersion.Helix, getParams, accessToken);
     }
+
+    #endregion
+
+    #region CreateClip
+
+    /// <summary>
+    /// Creates a clip programmatically. This returns both an ID and an edit URL for the new clip.
+    /// <para>Clip creation takes time. We recommend that you query Get Clips, with the clip ID that is returned here.</para>
+    /// <para>If Get Clips returns a valid clip, your clip creation was successful.</para>
+    /// <para>If, after 15 seconds, you still have not gotten back a valid clip from Get Clips, assume that the clip was not created and retry Create Clip.</para>
+    /// <para>This endpoint has a global rate limit, across all callers.</para>
+    /// <para>Required scope: clips:edit</para>
+    /// </summary>
+    /// <param name="broadcasterId">ID of the stream from which the clip will be made.</param>
+    /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <returns cref="CreatedClipResponse"></returns>
+    public Task<CreatedClipResponse> CreateClipAsync(string broadcasterId, string accessToken = null)
+    {
+        var getParams = new List<KeyValuePair<string, string>>
+        {
+            new("broadcaster_id", broadcasterId)
+        };
+
+        return TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, accessToken);
+    }
+
+    #endregion
+
+    #region GetClipsDownload
+
+    /// <summary>
+    ///  Provides URLs to download the video file(s) for the specified clips.
+    /// <para>Rate Limits: Limited to 100 requests per minute.</para>
+    /// <para>Required scope: editor:manage:clips or channel:manage:clips</para>
+    /// </summary>
+    /// <param name="editorId">The User ID of the editor for the channel you want to download a clip for. If using the broadcaster’s auth token, this is the same as <paramref name="broadcasterId"/>. This must match the user_id in the user access token.</param>
+    /// <param name="broadcasterId">The ID of the broadcaster you want to download clips for.</param>
+    /// <param name="clipIds">The ID that identifies the clip you want to download. Include this parameter for each clip you want to download, up to a maximum of 10 clips.</param>
+    /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <returns cref="CreatedClipResponse"></returns>
+    public Task<GetClipsDownloadResponse> GetClipsDownloadAsync(string editorId, string broadcasterId, List<string> clipIds, string accessToken = null)
+    {
+        if (string.IsNullOrWhiteSpace(editorId))
+            throw new BadParameterException("editorId cannot be null/empty/whitespace");
+
+        if (string.IsNullOrWhiteSpace(broadcasterId))
+            throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
+
+        if (clipIds is null)
+            throw new BadParameterException("clipIds must be set");
+
+        if(clipIds.Count <1 || clipIds.Count > 10)
+            throw new BadParameterException("clipIds must contain between 1 and 10 items");
+
+        var getParams = new List<KeyValuePair<string, string>>
+        {
+            new("editor_id", editorId),
+            new("broadcaster_id", broadcasterId),
+        };
+        getParams.AddRange(clipIds.Select(clipId => new KeyValuePair<string, string>("clip_id", clipId)));
+
+        return TwitchGetGenericAsync<GetClipsDownloadResponse>("/clips/downloads", ApiVersion.Helix, getParams, accessToken);
+    }
+
+    #endregion
+
 }

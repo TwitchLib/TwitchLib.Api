@@ -1,3 +1,4 @@
+#nullable disable
 using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.EventSub.Conduits.Shards.UpdateConduitShards;

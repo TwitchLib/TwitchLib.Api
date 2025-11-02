@@ -1,16 +1,16 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TwitchLib.Api.Core.Interfaces
-{
-    /// <summary>
-    /// Interface for time
-    /// </summary>
-    public interface ITime
-    {
-        DateTime GetTimeNow();
+namespace TwitchLib.Api.Core.Interfaces;
 
-        Task GetDelay(TimeSpan timespan, CancellationToken cancellationToken);
-    }
+/// <summary>
+/// Interface for time
+/// </summary>
+public interface ITime
+{
+    DateTime GetTimeNow();
+
+    Task GetDelay(TimeSpan timespan, CancellationToken cancellationToken);
 }

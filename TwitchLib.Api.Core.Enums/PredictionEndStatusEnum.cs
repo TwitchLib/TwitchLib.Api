@@ -1,23 +1,23 @@
-﻿namespace TwitchLib.Api.Core.Enums
+﻿#nullable disable
+namespace TwitchLib.Api.Core.Enums;
+
+/// <summary>
+/// Enum representing the prediction end status
+/// </summary>
+public enum PredictionEndStatus
 {
     /// <summary>
-    /// Enum representing the prediction end status
+    /// Prediction resolved
     /// </summary>
-    public enum PredictionEndStatus
-    {
-        /// <summary>
-        /// Prediction resolved
-        /// </summary>
-        RESOLVED,
+    RESOLVED,
 
-        /// <summary>
-        /// Prediction cancelled
-        /// </summary>
-        CANCELED,
+    /// <summary>
+    /// Prediction cancelled
+    /// </summary>
+    CANCELED,
 
-        /// <summary>
-        /// Prediction locked
-        /// </summary>
-        LOCKED
-    }
+    /// <summary>
+    /// Prediction locked
+    /// </summary>
+    LOCKED
 }

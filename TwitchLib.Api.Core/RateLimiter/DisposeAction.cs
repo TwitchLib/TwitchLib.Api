@@ -1,23 +1,23 @@
-﻿using System;
+﻿#nullable disable
+using System;
 
-namespace TwitchLib.Api.Core.RateLimiter
+namespace TwitchLib.Api.Core.RateLimiter;
+
+/// <summary>
+/// Dispose Action
+/// </summary>
+public class DisposeAction : IDisposable
 {
-    /// <summary>
-    /// Dispose Action
-    /// </summary>
-    public class DisposeAction : IDisposable
+    private Action _act;
+
+    public DisposeAction(Action act) 
     {
-        private Action _act;
+        _act = act;
+    }
 
-        public DisposeAction(Action act) 
-        {
-            _act = act;
-        }
-
-        public void Dispose() 
-        {
-            _act?.Invoke();
-            _act = null;
-        }
+    public void Dispose() 
+    {
+        _act?.Invoke();
+        _act = null;
     }
 }

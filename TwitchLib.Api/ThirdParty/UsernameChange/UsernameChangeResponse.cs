@@ -1,7 +1,7 @@
-﻿namespace TwitchLib.Api.ThirdParty.UsernameChange
+﻿#nullable disable
+namespace TwitchLib.Api.ThirdParty.UsernameChange;
+
+public class UsernameChangeResponse
 {
-    public class UsernameChangeResponse
-    {
-        public UsernameChangeListing[] UsernameChangeListings { get; protected set; }
-    }
+    public UsernameChangeListing[] UsernameChangeListings { get; protected set; }
 }

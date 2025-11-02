@@ -1,16 +1,16 @@
+#nullable disable
 using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Core.HttpCallHandlers
+namespace TwitchLib.Api.Core.HttpCallHandlers;
+
+public class TwitchErrorResponse
 {
-    public class TwitchErrorResponse
-    {
-        [JsonProperty("error")]
-        public string Error;
+    [JsonProperty("error")]
+    public string Error;
 
-        [JsonProperty("status")]
-        public int Status;
+    [JsonProperty("status")]
+    public int Status;
 
-        [JsonProperty("message")]
-        public string Message;
-    }
+    [JsonProperty("message")]
+    public string Message;
 }

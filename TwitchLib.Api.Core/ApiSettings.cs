@@ -1,100 +1,100 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Interfaces;
 
-namespace TwitchLib.Api.Core
+namespace TwitchLib.Api.Core;
+
+/// <summary>
+/// Api Settings
+/// </summary>
+public class ApiSettings : IApiSettings, INotifyPropertyChanged
 {
-    /// <summary>
-    /// Api Settings
-    /// </summary>
-    public class ApiSettings : IApiSettings, INotifyPropertyChanged
+    private string _clientId;
+    private string _secret;
+    private string _accessToken;
+    private bool _skipDynamicScopeValidation;
+    private bool _skipAutoServerTokenGeneration;
+    private List<AuthScopes> _scopes;
+    public string ClientId
     {
-        private string _clientId;
-        private string _secret;
-        private string _accessToken;
-        private bool _skipDynamicScopeValidation;
-        private bool _skipAutoServerTokenGeneration;
-        private List<AuthScopes> _scopes;
-        public string ClientId
+        get => _clientId;
+        set
         {
-            get => _clientId;
-            set
+            if (value != _clientId)
             {
-                if (value != _clientId)
-                {
-                    _clientId = value;
-                    NotifyPropertyChanged();
-                }
+                _clientId = value;
+                NotifyPropertyChanged();
             }
         }
-        public string Secret
+    }
+    public string Secret
+    {
+        get => _secret;
+        set
         {
-            get => _secret;
-            set
+            if (value != _secret)
             {
-                if (value != _secret)
-                {
-                    _secret = value;
-                    NotifyPropertyChanged();
-                }
+                _secret = value;
+                NotifyPropertyChanged();
             }
         }
-        public string AccessToken
+    }
+    public string AccessToken
+    {
+        get => _accessToken;
+        set
         {
-            get => _accessToken;
-            set
+            if (value != _accessToken)
             {
-                if (value != _accessToken)
-                {
-                    _accessToken = value;
-                    NotifyPropertyChanged();
-                }
+                _accessToken = value;
+                NotifyPropertyChanged();
             }
         }
-        public bool SkipDynamicScopeValidation
+    }
+    public bool SkipDynamicScopeValidation
+    {
+        get => _skipDynamicScopeValidation;
+        set
         {
-            get => _skipDynamicScopeValidation;
-            set
+            if (value != _skipDynamicScopeValidation)
             {
-                if (value != _skipDynamicScopeValidation)
-                {
-                    _skipDynamicScopeValidation = value;
-                    NotifyPropertyChanged();
-                }
+                _skipDynamicScopeValidation = value;
+                NotifyPropertyChanged();
             }
         }
-        public bool SkipAutoServerTokenGeneration
+    }
+    public bool SkipAutoServerTokenGeneration
+    {
+        get => _skipAutoServerTokenGeneration;
+        set
         {
-            get => _skipAutoServerTokenGeneration;
-            set
+            if (value != _skipAutoServerTokenGeneration)
             {
-                if (value != _skipAutoServerTokenGeneration)
-                {
-                    _skipAutoServerTokenGeneration = value;
-                    NotifyPropertyChanged();
-                }
+                _skipAutoServerTokenGeneration = value;
+                NotifyPropertyChanged();
             }
         }
-        public List<AuthScopes> Scopes
+    }
+    public List<AuthScopes> Scopes
+    {
+        get => _scopes;
+        set
         {
-            get => _scopes;
-            set
+            if (value != _scopes)
             {
-                if (value != _scopes)
-                {
-                    _scopes = value;
-                    NotifyPropertyChanged();
-                }
+                _scopes = value;
+                NotifyPropertyChanged();
             }
         }
+    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

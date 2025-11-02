@@ -1,4 +1,4 @@
-﻿using System;
+﻿#nullable disable
 using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.Moderation.ShieldModeStatus.UpdateShieldModeStatus;

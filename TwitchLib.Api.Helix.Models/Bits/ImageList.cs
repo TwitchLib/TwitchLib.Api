@@ -1,3 +1,4 @@
+#nullable disable
 using Newtonsoft.Json;
 using System.Collections.Generic;
 

@@ -1,4 +1,5 @@
-﻿namespace TwitchLib.Api.Helix.Models.Chat;
+﻿#nullable disable
+namespace TwitchLib.Api.Helix.Models.Chat;
 
 /// <summary>
 /// The list of color codes a user can use for their name.

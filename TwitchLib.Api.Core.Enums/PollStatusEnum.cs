@@ -1,18 +1,18 @@
-﻿namespace TwitchLib.Api.Core.Enums
+﻿#nullable disable
+namespace TwitchLib.Api.Core.Enums;
+
+/// <summary>
+/// Enum representing the poll status
+/// </summary>
+public enum PollStatusEnum
 {
     /// <summary>
-    /// Enum representing the poll status
+    /// Poll Terminated
     /// </summary>
-    public enum PollStatusEnum
-    {
-        /// <summary>
-        /// Poll Terminated
-        /// </summary>
-        TERMINATED,
+    TERMINATED,
 
-        /// <summary>
-        /// Poll Archived
-        /// </summary>
-        ARCHIVED
-    }
+    /// <summary>
+    /// Poll Archived
+    /// </summary>
+    ARCHIVED
 }

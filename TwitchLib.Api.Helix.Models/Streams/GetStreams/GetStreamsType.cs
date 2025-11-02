@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿#nullable disable
 namespace TwitchLib.Api.Helix.Models.Streams.GetStreams;
 
 /// <summary>

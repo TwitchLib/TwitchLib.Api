@@ -1,17 +1,17 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using System.Collections.Generic;
 
-namespace TwitchLib.Api.Services.Events
+namespace TwitchLib.Api.Services.Events;
+
+/// <inheritdoc />
+/// <summary>
+/// Class representing EventArgs for the OnChannelsSet event.
+/// </summary>
+public class OnChannelsSetArgs : EventArgs
 {
-    /// <inheritdoc />
     /// <summary>
-    /// Class representing EventArgs for the OnChannelsSet event.
+    /// The channels the service is currently monitoring.
     /// </summary>
-    public class OnChannelsSetArgs : EventArgs
-    {
-        /// <summary>
-        /// The channels the service is currently monitoring.
-        /// </summary>
-        public List<string> Channels;
-    }
+    public List<string> Channels;
 }

@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿#nullable disable
+using Newtonsoft.Json;
 
-namespace TwitchLib.Api.ThirdParty.AuthorizationFlow
+namespace TwitchLib.Api.ThirdParty.AuthorizationFlow;
+
+public class CreatedFlow
 {
-    public class CreatedFlow
-    {
-        [JsonProperty(PropertyName = "message")]
-        public string Url { get; protected set; }
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; protected set; }
-    }
+    [JsonProperty(PropertyName = "message")]
+    public string Url { get; protected set; }
+    [JsonProperty(PropertyName = "id")]
+    public string Id { get; protected set; }
 }

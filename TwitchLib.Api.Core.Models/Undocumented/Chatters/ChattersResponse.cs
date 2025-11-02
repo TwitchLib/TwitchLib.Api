@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿#nullable disable
+using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Core.Models.Undocumented.Chatters
+namespace TwitchLib.Api.Core.Models.Undocumented.Chatters;
+
+public class ChattersResponse
 {
-    public class ChattersResponse
-    {
-        [JsonProperty(PropertyName = "chatter_count")]
-        public int ChatterCount { get; protected set; }
-        [JsonProperty(PropertyName = "chatters")]
-        public Chatters Chatters { get; protected set; }
-    }
+    [JsonProperty(PropertyName = "chatter_count")]
+    public int ChatterCount { get; protected set; }
+    [JsonProperty(PropertyName = "chatters")]
+    public Chatters Chatters { get; protected set; }
 }

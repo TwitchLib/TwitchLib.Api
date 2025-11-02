@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 
-#nullable enable
-
 namespace TwitchLib.Api.Helix.Models.Clips.GetClipsDownload;
 
 /// <summary>

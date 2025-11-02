@@ -1,11 +1,11 @@
-﻿using System;
+﻿#nullable disable
+using System;
 
-namespace TwitchLib.Api.Helix.Models.Moderation.BanUser
+namespace TwitchLib.Api.Helix.Models.Moderation.BanUser;
+
+public class TimeoutUser
 {
-    public class TimeoutUser
-    {
-        public string UserId;
-        public string Reason;
-        public TimeSpan Duration; 
-    }
+    public string UserId;
+    public string Reason;
+    public TimeSpan Duration; 
 }

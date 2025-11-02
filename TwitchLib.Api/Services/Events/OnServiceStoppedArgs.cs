@@ -1,12 +1,12 @@
-﻿using System;
+﻿#nullable disable
+using System;
 
-namespace TwitchLib.Api.Services.Events
+namespace TwitchLib.Api.Services.Events;
+
+/// <inheritdoc />
+/// <summary>
+/// Class representing EventArgs for the OnServiceStopped event.
+/// </summary>
+public class OnServiceStoppedArgs : EventArgs
 {
-    /// <inheritdoc />
-    /// <summary>
-    /// Class representing EventArgs for the OnServiceStopped event.
-    /// </summary>
-    public class OnServiceStoppedArgs : EventArgs
-    {
-    }
 }
