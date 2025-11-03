@@ -1,23 +1,22 @@
-﻿namespace TwitchLib.Api.Core.Enums
+﻿namespace TwitchLib.Api.Core.Enums;
+
+/// <summary>
+/// Enum representing the eventsub transport method
+/// </summary>
+public enum EventSubTransportMethod
 {
     /// <summary>
-    /// Enum representing the eventsub transport method
+    /// Webhook
     /// </summary>
-    public enum EventSubTransportMethod
-    {
-        /// <summary>
-        /// Webhook
-        /// </summary>
-        Webhook,
+    Webhook,
 
-        /// <summary>
-        /// Websocket
-        /// </summary>
-        Websocket,
+    /// <summary>
+    /// Websocket
+    /// </summary>
+    Websocket,
 
-        /// <summary>
-        /// Conduit
-        /// </summary>
-        Conduit
-    }
+    /// <summary>
+    /// Conduit
+    /// </summary>
+    Conduit
 }

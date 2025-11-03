@@ -1,4 +1,5 @@
-﻿namespace TwitchLib.Api.Helix.Models.Chat;
+﻿#nullable disable
+namespace TwitchLib.Api.Helix.Models.Chat;
 
 /// <summary>
 /// The colors used to highlight the announcement.

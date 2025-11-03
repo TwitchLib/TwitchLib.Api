@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿#nullable disable
+using Newtonsoft.Json;
 using TwitchLib.Api.Helix.Models.Common;
 
 namespace TwitchLib.Api.Helix.Models.Streams.GetFollowedStreams;

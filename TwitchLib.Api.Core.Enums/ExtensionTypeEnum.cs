@@ -1,23 +1,22 @@
-﻿namespace TwitchLib.Api.Core.Enums
+﻿namespace TwitchLib.Api.Core.Enums;
+
+/// <summary>
+/// Enum representing the extension type
+/// </summary>
+public enum ExtensionType
 {
     /// <summary>
-    /// Enum representing the extension type
+    /// Extenion is a panel
     /// </summary>
-    public enum ExtensionType
-    {
-        /// <summary>
-        /// Extenion is a panel
-        /// </summary>
-        Panel,
+    Panel,
 
-        /// <summary>
-        /// Extension is an overlay
-        /// </summary>
-        Overlay,
+    /// <summary>
+    /// Extension is an overlay
+    /// </summary>
+    Overlay,
 
-        /// <summary>
-        /// Extension is a component
-        /// </summary>
-        Component
-    }
+    /// <summary>
+    /// Extension is a component
+    /// </summary>
+    Component
 }

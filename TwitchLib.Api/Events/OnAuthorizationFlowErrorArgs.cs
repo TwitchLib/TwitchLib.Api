@@ -1,18 +1,18 @@
-﻿namespace TwitchLib.Api.Events
+﻿#nullable disable
+namespace TwitchLib.Api.Events;
+
+/// <summary>
+/// On Authorization Flow Error Args
+/// </summary>
+public class OnAuthorizationFlowErrorArgs
 {
     /// <summary>
-    /// On Authorization Flow Error Args
+    /// Error
     /// </summary>
-    public class OnAuthorizationFlowErrorArgs
-    {
-        /// <summary>
-        /// Error
-        /// </summary>
-        public int Error { get; set; }
+    public int Error { get; set; }
 
-        /// <summary>
-        /// Message
-        /// </summary>
-        public string Message { get; set; }
-    }
+    /// <summary>
+    /// Message
+    /// </summary>
+    public string Message { get; set; }
 }

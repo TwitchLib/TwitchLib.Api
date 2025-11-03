@@ -1,25 +1,25 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
+using System.Collections.Generic;
 
-namespace TwitchLib.Api.Core.RateLimiter
+namespace TwitchLib.Api.Core.RateLimiter;
+
+/// <summary>
+/// Limited Size Stack
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class LimitedSizeStack<T>: LinkedList<T>
 {
-    /// <summary>
-    /// Limited Size Stack
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class LimitedSizeStack<T>: LinkedList<T>
+    private readonly int _maxSize;
+    public LimitedSizeStack(int maxSize)
     {
-        private readonly int _maxSize;
-        public LimitedSizeStack(int maxSize)
-        {
-            _maxSize = maxSize;
-        }
+        _maxSize = maxSize;
+    }
 
-        public void Push(T item)
-        {
-            AddFirst(item);
+    public void Push(T item)
+    {
+        AddFirst(item);
 
-            if (Count > _maxSize)
-                RemoveLast();
-        }
+        if (Count > _maxSize)
+            RemoveLast();
     }
 }

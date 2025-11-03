@@ -1,23 +1,22 @@
-﻿namespace TwitchLib.Api.Core.Enums
+﻿namespace TwitchLib.Api.Core.Enums;
+
+/// <summary>
+/// Enum representing the reason a User was blocked
+/// </summary>
+public enum BlockUserReasonEnum
 {
     /// <summary>
-    /// Enum representing the reason a User was blocked
+    /// Spam
     /// </summary>
-    public enum BlockUserReasonEnum
-    {
-        /// <summary>
-        /// Spam
-        /// </summary>
-        Spam,
+    Spam,
 
-        /// <summary>
-        /// Harrassment
-        /// </summary>
-        Harassment,
+    /// <summary>
+    /// Harrassment
+    /// </summary>
+    Harassment,
 
-        /// <summary>
-        /// Some other reason
-        /// </summary>
-        Other
-    }
+    /// <summary>
+    /// Some other reason
+    /// </summary>
+    Other
 }

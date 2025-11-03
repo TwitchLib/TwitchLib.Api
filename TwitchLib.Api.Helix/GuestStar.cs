@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TwitchLib.Api.Core;

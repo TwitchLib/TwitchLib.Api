@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.Streams.GetStreamMarkers;

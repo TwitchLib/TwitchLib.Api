@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿#nullable disable
+using Newtonsoft.Json;
 
-namespace TwitchLib.Api.ThirdParty.ModLookup
+namespace TwitchLib.Api.ThirdParty.ModLookup;
+
+public class ModLookupResponse
 {
-    public class ModLookupResponse
-    {
-        [JsonProperty(PropertyName = "status")]
-        public int Status { get; protected set; }
-        [JsonProperty(PropertyName = "user")]
-        public string User { get; protected set; }
-        [JsonProperty(PropertyName = "count")]
-        public int Count { get; protected set; }
-        [JsonProperty(PropertyName = "channels")]
-        public ModLookupListing[] Channels { get; protected set; }
-    }
+    [JsonProperty(PropertyName = "status")]
+    public int Status { get; protected set; }
+    [JsonProperty(PropertyName = "user")]
+    public string User { get; protected set; }
+    [JsonProperty(PropertyName = "count")]
+    public int Count { get; protected set; }
+    [JsonProperty(PropertyName = "channels")]
+    public ModLookupListing[] Channels { get; protected set; }
 }

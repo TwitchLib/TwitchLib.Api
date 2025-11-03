@@ -1,16 +1,15 @@
 ﻿using System;
 
-namespace TwitchLib.Api.Core.Exceptions
+namespace TwitchLib.Api.Core.Exceptions;
+
+/// <inheritdoc />
+/// <summary>Exception representing a Helix request sent without an OAuth access token</summary>
+public class ClientIdAndOAuthTokenRequired : Exception
 {
     /// <inheritdoc />
-    /// <summary>Exception representing a Helix request sent without an OAuth access token</summary>
-    public class ClientIdAndOAuthTokenRequired : Exception
+    /// <summary>Exception constructor</summary>
+    public ClientIdAndOAuthTokenRequired(string explanation)
+        : base(explanation)
     {
-        /// <inheritdoc />
-        /// <summary>Exception constructor</summary>
-        public ClientIdAndOAuthTokenRequired(string explanation)
-            : base(explanation)
-        {
-        }
     }
 }

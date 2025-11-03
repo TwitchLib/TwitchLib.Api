@@ -1,35 +1,35 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using TwitchLib.Api.Helix.Models.Helpers;
 
-namespace TwitchLib.Api.Helpers
+namespace TwitchLib.Api.Helpers;
+
+/// <summary>
+/// Extension Analytics Helper
+/// </summary>
+public static class ExtensionAnalyticsHelper
 {
-    /// <summary>
-    /// Extension Analytics Helper
-    /// </summary>
-    public static class ExtensionAnalyticsHelper
+    public static async Task<List<ExtensionAnalytics>> HandleUrlAsync(string url)
     {
-        public static async Task<List<ExtensionAnalytics>> HandleUrlAsync(string url)
-        {
-            var cnts = await GetContentsAsync(url);
-            var data = ExtractData(cnts);
+        var cnts = await GetContentsAsync(url);
+        var data = ExtractData(cnts);
 
-            return data.Select(line => new ExtensionAnalytics(line)).ToList();
-        }
+        return data.Select(line => new ExtensionAnalytics(line)).ToList();
+    }
 
-        private static IEnumerable<string> ExtractData(IEnumerable<string> cnts)
-        {
-            return cnts.Where(line => line.Any(char.IsDigit)).ToList();
-        }
+    private static IEnumerable<string> ExtractData(IEnumerable<string> cnts)
+    {
+        return cnts.Where(line => line.Any(char.IsDigit)).ToList();
+    }
 
-        private static async Task<string[]> GetContentsAsync(string url)
-        {
-            var client = new HttpClient();
-            var lines = (await client.GetStringAsync(url)).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            return lines;
-        }
+    private static async Task<string[]> GetContentsAsync(string url)
+    {
+        var client = new HttpClient();
+        var lines = (await client.GetStringAsync(url)).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+        return lines;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿#nullable disable
+using Newtonsoft.Json;
 using System;
 
 namespace TwitchLib.Api.Helix.Models.Channels.GetChannelEditors;

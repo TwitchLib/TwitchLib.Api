@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿#nullable disable
+using Newtonsoft.Json;
 
-namespace TwitchLib.Api.Helix.Models.Channels.SendChatMessage
+namespace TwitchLib.Api.Helix.Models.Channels.SendChatMessage;
+
+public class SendChatMessageResponse
 {
-    public class SendChatMessageResponse
-    {
-        /// <summary>
-        /// The data for the chat message
-        /// </summary>
-        [JsonProperty(PropertyName = "data", NullValueHandling = NullValueHandling.Ignore)]
-        public ChatMessageInfo[] Data { get; protected set; }
-    }
+    /// <summary>
+    /// The data for the chat message
+    /// </summary>
+    [JsonProperty(PropertyName = "data", NullValueHandling = NullValueHandling.Ignore)]
+    public ChatMessageInfo[] Data { get; protected set; }
 }

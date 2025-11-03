@@ -1,28 +1,28 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TwitchLib.Api.Core.Interfaces
+namespace TwitchLib.Api.Core.Interfaces;
+
+/// <summary>
+/// Interface for rate limiter
+/// </summary>
+public interface IRateLimiter
 {
-    /// <summary>
-    /// Interface for rate limiter
-    /// </summary>
-    public interface IRateLimiter
-    {
-        Task Perform(Func<Task> perform, CancellationToken cancellationToken);
+    Task Perform(Func<Task> perform, CancellationToken cancellationToken);
 
-        Task Perform(Func<Task> perform);
+    Task Perform(Func<Task> perform);
 
-        Task<T> Perform<T>(Func<Task<T>> perform);
+    Task<T> Perform<T>(Func<Task<T>> perform);
 
-        Task<T> Perform<T>(Func<Task<T>> perform, CancellationToken cancellationToken);
+    Task<T> Perform<T>(Func<Task<T>> perform, CancellationToken cancellationToken);
 
-        Task Perform(Action perform, CancellationToken cancellationToken);
+    Task Perform(Action perform, CancellationToken cancellationToken);
 
-        Task Perform(Action perform);
+    Task Perform(Action perform);
 
-        Task<T> Perform<T>(Func<T> perform);
+    Task<T> Perform<T>(Func<T> perform);
 
-        Task<T> Perform<T>(Func<T> perform, CancellationToken cancellationToken);
-    }
+    Task<T> Perform<T>(Func<T> perform, CancellationToken cancellationToken);
 }

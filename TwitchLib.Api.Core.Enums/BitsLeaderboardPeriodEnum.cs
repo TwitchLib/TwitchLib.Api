@@ -1,33 +1,32 @@
-﻿namespace TwitchLib.Api.Core.Enums
+﻿namespace TwitchLib.Api.Core.Enums;
+
+/// <summary>
+/// Enum representing Bits Leaderboard Period
+/// </summary>
+public enum BitsLeaderboardPeriodEnum
 {
     /// <summary>
-    /// Enum representing Bits Leaderboard Period
+    /// A Day
     /// </summary>
-    public enum BitsLeaderboardPeriodEnum
-    {
-        /// <summary>
-        /// A Day
-        /// </summary>
-        Day,
+    Day,
 
-        /// <summary>
-        /// A Week
-        /// </summary>
-        Week,
+    /// <summary>
+    /// A Week
+    /// </summary>
+    Week,
 
-        /// <summary>
-        /// A Month
-        /// </summary>
-        Month,
+    /// <summary>
+    /// A Month
+    /// </summary>
+    Month,
 
-        /// <summary>
-        /// A Year
-        /// </summary>
-        Year,
+    /// <summary>
+    /// A Year
+    /// </summary>
+    Year,
 
-        /// <summary>
-        /// All-Time or everything
-        /// </summary>
-        All
-    }
+    /// <summary>
+    /// All-Time or everything
+    /// </summary>
+    All
 }

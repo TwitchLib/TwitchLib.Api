@@ -1,23 +1,23 @@
-﻿namespace TwitchLib.Api.Core.Interfaces
+﻿#nullable disable
+namespace TwitchLib.Api.Core.Interfaces;
+
+/// <summary>
+/// Interface for follows
+/// </summary>
+public interface IFollows
 {
     /// <summary>
-    /// Interface for follows
+    /// Total follows
     /// </summary>
-    public interface IFollows
-    {
-        /// <summary>
-        /// Total follows
-        /// </summary>
-        int Total { get; }
+    int Total { get; }
 
-        /// <summary>
-        /// Cursor
-        /// </summary>
-        string Cursor { get; }
+    /// <summary>
+    /// Cursor
+    /// </summary>
+    string Cursor { get; }
 
-        /// <summary>
-        /// Follows interface
-        /// </summary>
-        IFollow[] Follows { get; }
-    }
+    /// <summary>
+    /// Follows interface
+    /// </summary>
+    IFollow[] Follows { get; }
 }

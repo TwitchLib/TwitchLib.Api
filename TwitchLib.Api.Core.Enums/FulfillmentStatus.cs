@@ -1,18 +1,17 @@
-﻿namespace TwitchLib.Api.Core.Enums
+﻿namespace TwitchLib.Api.Core.Enums;
+
+/// <summary>
+/// Enum representing the fulfullment status
+/// </summary>
+public enum FulfillmentStatus
 {
     /// <summary>
-    /// Enum representing the fulfullment status
+    /// Claimed
     /// </summary>
-    public enum FulfillmentStatus
-    {
-        /// <summary>
-        /// Claimed
-        /// </summary>
-        CLAIMED,
+    CLAIMED,
 
-        /// <summary>
-        /// Fulfilled
-        /// </summary>
-        FULFILLED
-    }
+    /// <summary>
+    /// Fulfilled
+    /// </summary>
+    FULFILLED
 }

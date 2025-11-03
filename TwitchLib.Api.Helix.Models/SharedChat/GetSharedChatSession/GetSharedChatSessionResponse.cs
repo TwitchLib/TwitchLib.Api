@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using TwitchLib.Api.Helix.Models.GuestStar;
+﻿#nullable disable
+using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.SharedChat.GetSharedChatSession;
 

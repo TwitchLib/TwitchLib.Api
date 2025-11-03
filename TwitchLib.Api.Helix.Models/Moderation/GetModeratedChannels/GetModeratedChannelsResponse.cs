@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#nullable disable
+using Newtonsoft.Json;
 using TwitchLib.Api.Helix.Models.Common;
-using TwitchLib.Api.Helix.Models.Moderation.GetModerators;
 
 namespace TwitchLib.Api.Helix.Models.Moderation.GetModeratedChannels;
 

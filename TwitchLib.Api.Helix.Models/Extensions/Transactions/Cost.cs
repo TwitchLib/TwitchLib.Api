@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#nullable disable
+using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.Extensions.Transactions;
 

@@ -1,23 +1,22 @@
-﻿namespace TwitchLib.Api.Core.Enums
+﻿namespace TwitchLib.Api.Core.Enums;
+
+/// <summary>
+/// Enum representing the custeom reward redemption status
+/// </summary>
+public enum CustomRewardRedemptionStatus
 {
     /// <summary>
-    /// Enum representing the custeom reward redemption status
+    /// Not completed
     /// </summary>
-    public enum CustomRewardRedemptionStatus
-    {
-        /// <summary>
-        /// Not completed
-        /// </summary>
-        UNFULFILLED,
+    UNFULFILLED,
 
-        /// <summary>
-        /// Completed
-        /// </summary>
-        FULFILLED,
+    /// <summary>
+    /// Completed
+    /// </summary>
+    FULFILLED,
 
-        /// <summary>
-        /// Cancelled
-        /// </summary>
-        CANCELED
-    }
+    /// <summary>
+    /// Cancelled
+    /// </summary>
+    CANCELED
 }

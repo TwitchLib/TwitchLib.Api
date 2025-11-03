@@ -1,15 +1,11 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
-using TwitchLib.Api.Helix.Models.GuestStar.CreateGuestStarSession;
 using TwitchLib.Api.Helix.Models.GuestStar.GetChannelGuestStarSettings;
-using TwitchLib.Api.Helix.Models.GuestStar.GetGuestStarInvites;
-using TwitchLib.Api.Helix.Models.GuestStar.GetGuestStarSession;
-using TwitchLib.Api.Helix.Models.GuestStar.UpdateChannelGuestStarSettings;
 using TwitchLib.Api.Helix.Models.SharedChat.GetSharedChatSession;
 
 namespace TwitchLib.Api.Helix;

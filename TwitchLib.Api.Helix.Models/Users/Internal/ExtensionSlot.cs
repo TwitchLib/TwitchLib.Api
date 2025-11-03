@@ -1,4 +1,5 @@
-﻿using TwitchLib.Api.Core.Enums;
+﻿#nullable disable
+using TwitchLib.Api.Core.Enums;
 
 namespace TwitchLib.Api.Helix.Models.Users.Internal;
 

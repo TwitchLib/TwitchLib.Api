@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Globalization;
 
-namespace TwitchLib.Api.Core.Extensions.System
+namespace TwitchLib.Api.Core.Extensions.System;
+
+/// <summary>
+/// Extension methods for the DateTime type
+/// </summary>
+public static class DateTimeExtensions
 {
     /// <summary>
-    /// Extension methods for the DateTime type
+    /// Converts a .NET DateTime type to a RFC3339 string
     /// </summary>
-    public static class DateTimeExtensions
+    /// <param name="dateTime">Time as .NET DateTime</param>
+    /// <returns>Time as RFC3339 string</returns>
+    public static string ToRfc3339String(this DateTime dateTime)
     {
-        /// <summary>
-        /// Converts a .NET DateTime type to a RFC3339 string
-        /// </summary>
-        /// <param name="dateTime">Time as .NET DateTime</param>
-        /// <returns>Time as RFC3339 string</returns>
-        public static string ToRfc3339String(this DateTime dateTime)
-        {
-            return dateTime.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz", DateTimeFormatInfo.InvariantInfo);
-        }
+        return dateTime.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz", DateTimeFormatInfo.InvariantInfo);
     }
 }
