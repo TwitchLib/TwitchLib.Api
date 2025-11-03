@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace TwitchLib.Api.Core.Enums;
+﻿namespace TwitchLib.Api.Core.Enums;
 
 /// <summary>
 /// Enum representing the reason a User was blocked

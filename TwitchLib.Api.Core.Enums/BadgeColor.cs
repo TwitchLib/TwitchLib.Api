@@ -1,6 +1,6 @@
-﻿#nullable disable
-namespace TwitchLib.Api.Core.Enums;
+﻿namespace TwitchLib.Api.Core.Enums;
 
+// todo: not used anywhere, consider removing
 /// <summary>Color enum representing color based on cheer amount.</summary>
 public enum BadgeColor
 {

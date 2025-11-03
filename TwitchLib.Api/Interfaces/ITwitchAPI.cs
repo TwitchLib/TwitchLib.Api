@@ -1,4 +1,3 @@
-#nullable disable
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Core.Undocumented;
 

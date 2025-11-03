@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace TwitchLib.Api.Core.Enums;
+﻿namespace TwitchLib.Api.Core.Enums;
 
 /// <summary>Period value used to specify time frame for clips.</summary>
 public enum Period
