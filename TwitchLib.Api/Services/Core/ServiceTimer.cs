@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Timers;
 
 namespace TwitchLib.Api.Services.Core;
@@ -20,7 +19,7 @@ internal class ServiceTimer : Timer
         Elapsed += async ( sender, e ) => await TimerElapsedAsync(sender, e);
     }
 
-    private async Task TimerElapsedAsync(object sender, ElapsedEventArgs e)
+    private async Task TimerElapsedAsync(object? sender, ElapsedEventArgs e)
     {
         await _serviceTimerTickAsyncCallback();
     }

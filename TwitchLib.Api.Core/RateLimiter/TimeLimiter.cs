@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -116,7 +115,7 @@ public class TimeLimiter : IRateLimiter
 
     public static TimeLimiter Compose(params IAwaitableConstraint[] constraints)
     {
-        IAwaitableConstraint current = null;
+        IAwaitableConstraint? current = null;
         foreach (var constraint in constraints)
         {
             current = (current == null) ? constraint : current.Compose(constraint);

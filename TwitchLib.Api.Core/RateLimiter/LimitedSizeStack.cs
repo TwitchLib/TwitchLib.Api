@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace TwitchLib.Api.Core.RateLimiter;
 
@@ -7,7 +6,7 @@ namespace TwitchLib.Api.Core.RateLimiter;
 /// Limited Size Stack
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class LimitedSizeStack<T>: LinkedList<T>
+public class LimitedSizeStack<T> : LinkedList<T>
 {
     private readonly int _maxSize;
     public LimitedSizeStack(int maxSize)
