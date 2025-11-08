@@ -24,7 +24,7 @@ jobs:
    - name: Build TwitchLib.Api
      run: dotnet build -c Release --no-restore
    - name: Pack TwitchLib.Api
-     run: dotnet pack TwitchLib.Api.sln -v normal -c Release --no-build --version-suffix "preview.${{ github.run_number }}.${{ steps.short-sha.outputs.sha }}"
+     run: dotnet pack -v normal -c Release --no-build --version-suffix "preview.${{ github.run_number }}.${{ steps.short-sha.outputs.sha }}"
     # Get a short-lived NuGet API key
    - name: NuGet login (OIDC → temp API key)
      uses: NuGet/login@v1
