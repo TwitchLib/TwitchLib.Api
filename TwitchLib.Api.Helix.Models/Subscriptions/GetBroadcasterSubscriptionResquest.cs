@@ -58,7 +58,7 @@ public class GetBroadcasterSubscriptionsRequest
             getParams.Add(new("after", After));
 
         if (!string.IsNullOrEmpty(Before))
-            getParams.Add(new("after", Before));
+            getParams.Add(new("before", Before));
 
         return getParams;
     }
