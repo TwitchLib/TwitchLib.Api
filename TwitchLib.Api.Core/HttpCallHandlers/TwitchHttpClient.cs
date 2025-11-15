@@ -1,13 +1,13 @@
-#nullable disable
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using TwitchLib.Api.Core.Common;
 using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
@@ -28,7 +28,7 @@ public class TwitchHttpClient : IHttpCallHandler
     /// Creates an Instance of the TwitchHttpClient Class.
     /// </summary>
     /// <param name="logger">Instance Of Logger, otherwise no logging is used,  </param>
-    public TwitchHttpClient(ILogger<TwitchHttpClient> logger = null)
+    public TwitchHttpClient(ILogger<TwitchHttpClient> logger)
     {
         _logger = logger;
         _http = new HttpClient(new TwitchHttpClientHandler(_logger));
@@ -60,7 +60,7 @@ public class TwitchHttpClient : IHttpCallHandler
     /// <returns>KeyValuePair with the key being the returned StatusCode and the Value being the ResponseBody as string</returns>
     /// <exception cref="InvalidCredentialException"></exception>
     public async Task<KeyValuePair<int, string>> GeneralRequestAsync(string url, string method,
-        string payload = null, ApiVersion api = ApiVersion.Helix, string clientId = null, string accessToken = null)
+        string? payload = null, ApiVersion api = ApiVersion.Helix, string? clientId = null, string? accessToken = null)
     {
         var request = new HttpRequestMessage
         {
@@ -97,25 +97,25 @@ public class TwitchHttpClient : IHttpCallHandler
         }
 
         await HandleWebException(response);
-        return new KeyValuePair<int, string>(0, null);
+        return new KeyValuePair<int, string>(0, null!);
     }
 
-    public async Task<int> RequestReturnResponseCodeAsync(string url, string method, List<KeyValuePair<string, string>> getParams = null)
+    public async Task<int> RequestReturnResponseCodeAsync(string url, string method, List<KeyValuePair<string, string>>? getParams = null)
     {
-        if (getParams != null)
+        var urlStringBuilder = new StringBuilder(url);
+        if (getParams?.Count > 0)
         {
-            for (var i = 0; i < getParams.Count; i++)
+            var queryStartIndex = urlStringBuilder.Length;
+            foreach (var param in getParams)
             {
-                if (i == 0)
-                    url += $"?{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
-                else
-                    url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                urlStringBuilder.Append($"&{param.Key}={Uri.EscapeDataString(param.Value)}");
             }
+            urlStringBuilder[queryStartIndex] = '?';
         }
 
         var request = new HttpRequestMessage
         {
-            RequestUri = new Uri(url),
+            RequestUri = new Uri(urlStringBuilder.ToString()),
             Method = new HttpMethod(method)
         };
         var response = await _http.SendAsync(request).ConfigureAwait(false);
@@ -124,7 +124,7 @@ public class TwitchHttpClient : IHttpCallHandler
 
     private async Task HandleWebException(HttpResponseMessage errorResp)
     {
-        var bodyContent = await errorResp.Content.ReadAsStringAsync();
+        var bodyContent = await errorResp.Content.ReadAsStringAsync().ConfigureAwait(false);
         var deserializedError = JsonConvert.DeserializeObject<TwitchErrorResponse>(bodyContent);
 
         switch (errorResp.StatusCode)

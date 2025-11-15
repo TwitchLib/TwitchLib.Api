@@ -12,7 +12,6 @@ namespace TwitchLib.Api.Helix;
 /// </summary>
 public class Helix
 {
-  private readonly ILogger<Helix> _logger;
   /// <summary>
   /// API Settings like the ClientId, Client Secret and so on
   /// </summary>
@@ -137,11 +136,10 @@ public class Helix
   /// <param name="rateLimiter">Instance Of RateLimiter, otherwise no ratelimiter is used.</param>
   /// <param name="settings">Instance of ApiSettings, otherwise defaults used. (Can be changed later)</param>
   /// <param name="http">Instance of HttpCallHandler, otherwise default handler used.</param>
-  public Helix(ILoggerFactory loggerFactory = null, IRateLimiter rateLimiter = null, IApiSettings settings = null, IHttpCallHandler http = null)
+  public Helix(ILoggerFactory loggerFactory, IRateLimiter rateLimiter = null, IApiSettings settings = null, IHttpCallHandler http = null)
   {
-     _logger = loggerFactory?.CreateLogger<Helix>();
      rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
-     http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
+     http = http ?? new TwitchHttpClient(loggerFactory.CreateLogger<TwitchHttpClient>());
      Settings = settings ?? new ApiSettings();
 
      Analytics = new Analytics(Settings, rateLimiter, http);

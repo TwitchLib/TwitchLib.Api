@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +14,7 @@ internal class NameBasedMonitor : CoreMonitor
 
     public NameBasedMonitor(ITwitchAPI api) : base(api) { }
 
-    public override async Task<Func<Stream, bool>> CompareStream(string channel, string accessToken = null)
+    public override async Task<Func<Stream, bool>> CompareStream(string channel, string? accessToken = null)
     {
         if (!_channelToId.TryGetValue(channel, out var channelId))
         {
@@ -26,7 +25,7 @@ internal class NameBasedMonitor : CoreMonitor
         return stream => stream.UserId == channelId;
     }
 
-    public override Task<GetStreamsResponse> GetStreamsAsync(List<string> channels, string accessToken = null)
+    public override Task<GetStreamsResponse> GetStreamsAsync(List<string> channels, string? accessToken = null)
     {
         return _api.Helix.Streams.GetStreamsAsync(first: channels.Count, userLogins: channels, accessToken: accessToken);
     }

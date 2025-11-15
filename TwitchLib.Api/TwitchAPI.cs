@@ -1,6 +1,6 @@
-#nullable disable
 using System.ComponentModel;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.HttpCallHandlers;
 using TwitchLib.Api.Core.Interfaces;
@@ -26,11 +26,12 @@ public class TwitchAPI : ITwitchAPI
     /// <param name="rateLimiter">Instance Of RateLimiter, otherwise no ratelimiter is used.</param>
     /// <param name="settings">Instance of ApiSettings, otherwise defaults used, can be changed later</param>
     /// <param name="http">Instance of HttpCallHandler, otherwise default handler used</param>
-    public TwitchAPI(ILoggerFactory loggerFactory = null, IRateLimiter rateLimiter = null, IApiSettings settings = null, IHttpCallHandler http = null)
+    public TwitchAPI(ILoggerFactory? loggerFactory = null, IRateLimiter? rateLimiter = null, IApiSettings? settings = null, IHttpCallHandler? http = null)
     {
-        _logger = loggerFactory?.CreateLogger<TwitchAPI>();
-        rateLimiter = rateLimiter ?? BypassLimiter.CreateLimiterBypassInstance();
-        http = http ?? new TwitchHttpClient(loggerFactory?.CreateLogger<TwitchHttpClient>());
+        loggerFactory ??= NullLoggerFactory.Instance;
+        _logger = loggerFactory.CreateLogger<TwitchAPI>();
+        rateLimiter ??= BypassLimiter.CreateLimiterBypassInstance();
+        http ??= new TwitchHttpClient(loggerFactory.CreateLogger<TwitchHttpClient>());
         Settings = settings ?? new ApiSettings();
 
         Auth = new Auth.Auth(Settings, rateLimiter, http);
@@ -41,7 +42,7 @@ public class TwitchAPI : ITwitchAPI
         Settings.PropertyChanged += SettingsPropertyChanged;
     }
 
-    private void SettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void SettingsPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         switch (e.PropertyName)
         {
