@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using TwitchLib.Api.Core.Interfaces;
 
@@ -20,7 +19,7 @@ public class PersistentCountByIntervalAwaitableConstraint : CountByIntervalAwait
     /// <param name="saveStateAction">Action is used to save state.</param>
     /// <param name="initialTimeStamps">Initial timestamps.</param>
     public PersistentCountByIntervalAwaitableConstraint(int count, TimeSpan timeSpan,
-        Action<DateTime> saveStateAction, IEnumerable<DateTime> initialTimeStamps, ITime time = null) : base(count, timeSpan, time)
+        Action<DateTime> saveStateAction, IEnumerable<DateTime>? initialTimeStamps, ITime? time = null) : base(count, timeSpan, time)
     {
         _saveStateAction = saveStateAction;
 
