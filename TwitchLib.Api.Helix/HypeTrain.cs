@@ -6,6 +6,7 @@ using TwitchLib.Api.Core.Enums;
 using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.HypeTrain;
+using TwitchLib.Api.Helix.Models.Moderation.GetModerators;
 
 namespace TwitchLib.Api.Helix;
 
@@ -35,10 +36,7 @@ public class HypeTrain : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetHypeTrainResponse> GetHypeTrainEventsAsync(string broadcasterId, int first = 1, string cursor = null, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-        {
-            throw new BadParameterException("BroadcasterId must be set");
-        }
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {

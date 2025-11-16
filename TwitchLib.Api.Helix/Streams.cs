@@ -89,10 +89,7 @@ public class Streams : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetStreamTagsResponse> GetStreamTagsAsync(string broadcasterId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-        {
-            throw new BadParameterException("BroadcasterId must be set");
-        }
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -161,8 +158,7 @@ public class Streams : ApiBase
         if (!string.IsNullOrWhiteSpace(userId) && !string.IsNullOrWhiteSpace(videoId))
             throw new BadParameterException("userId and videoId are mutually exclusive");
 
-        if (first < 1 || first > 100)
-            throw new BadParameterException("first cannot be less than 1 or greater than 100");
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>();
 
@@ -195,8 +191,7 @@ public class Streams : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetFollowedStreamsResponse> GetFollowedStreamsAsync(string userId, int first = 100, string after = null, string accessToken = null)
     {
-        if (first < 1 || first > 100)
-            throw new BadParameterException("first cannot be less than 1 or greater than 100");
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {

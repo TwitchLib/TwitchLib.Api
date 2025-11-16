@@ -65,8 +65,7 @@ public class Clips : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetClipsResponse> GetClipsAsync(List<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, bool? isFeatured = null, int first = 20, string accessToken = null)
     {
-        if (first < 0 || first > 100)
-            throw new BadParameterException("'first' must between 0 (inclusive) and 100 (inclusive).");
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>();
 
@@ -148,17 +147,9 @@ public class Clips : ApiBase
     /// <returns cref="CreatedClipResponse"></returns>
     public Task<GetClipsDownloadResponse> GetClipsDownloadAsync(string editorId, string broadcasterId, List<string> clipIds, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(editorId))
-            throw new BadParameterException("editorId cannot be null/empty/whitespace");
-
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
-
-        if (clipIds is null)
-            throw new BadParameterException("clipIds must be set");
-
-        if(clipIds.Count <1 || clipIds.Count > 10)
-            throw new BadParameterException("clipIds must contain between 1 and 10 items");
+        BadParameterException.ThrowIfNullOrEmpty(editorId);
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfCollectionNullOrEmptyOrGreaterThan(clipIds, 10);
 
         var getParams = new List<KeyValuePair<string, string>>
         {

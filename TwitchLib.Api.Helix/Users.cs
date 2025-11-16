@@ -40,8 +40,7 @@ public class Users : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetUserBlockListResponse> GetUserBlockListAsync(string broadcasterId, int first = 20, string after = null, string accessToken = null)
     {
-        if (first > 100)
-            throw new BadParameterException($"Maximum allowed objects is 100 (you passed {first})");
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {

@@ -33,12 +33,8 @@ public class Subscriptions : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<CheckUserSubscriptionResponse> CheckUserSubscriptionAsync(string broadcasterId, string userId, string accessToken = null)
     {
-
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("BroadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(userId))
-            throw new BadParameterException("UserId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(userId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -63,9 +59,8 @@ public class Subscriptions : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetUserSubscriptionsResponse> GetUserSubscriptionsAsync(string broadcasterId, List<string> userIds, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("BroadcasterId must be set");
-        
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+
         if (userIds == null || userIds.Count == 0)
             throw new BadParameterException("UserIds must be set contain at least one user id");
 
@@ -94,11 +89,8 @@ public class Subscriptions : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetBroadcasterSubscriptionsResponse> GetBroadcasterSubscriptionsAsync(string broadcasterId, int first = 20, string after = null, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("BroadcasterId must be set");
-
-        if (first > 100)
-            throw new BadParameterException("First must be 100 or less");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
