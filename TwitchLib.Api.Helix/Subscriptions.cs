@@ -60,9 +60,7 @@ public class Subscriptions : ApiBase
     public Task<GetUserSubscriptionsResponse> GetUserSubscriptionsAsync(string broadcasterId, List<string> userIds, string accessToken = null)
     {
         BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
-
-        if (userIds == null || userIds.Count == 0)
-            throw new BadParameterException("UserIds must be set contain at least one user id");
+        BadParameterException.ThrowIfCollectionNullOrEmptyOrGreaterThan(userIds, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {

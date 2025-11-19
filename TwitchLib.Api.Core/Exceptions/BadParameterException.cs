@@ -46,4 +46,12 @@ public class BadParameterException : Exception
             throw new BadParameterException($"Parameter '{paramName}' must contains at least 1 item and cannot exceed {max} items.");
         }
     }
+
+    public static void ThrowIfCollectioGreaterThan<T>(List<T> value, int max, [CallerArgumentExpression(nameof(value))] string? paramName = null)
+    {
+        if (value.Count > max)
+        {
+            throw new BadParameterException($"Parameter '{paramName}' cannot exceed {max} items.");
+        }
+    }
 }

@@ -131,11 +131,9 @@ public class Channels : ApiBase
             new("first", first.ToString())
         };
 
-        if (userIds != null)
+        if (userIds?.Count > 0)
         {
-            if (userIds.Count == 0)
-                throw new BadParameterException("userIds must contain at least 1 userId if a list is included in the call");
-
+            BadParameterException.ThrowIfCollectioGreaterThan(userIds, 100);
             getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("user_id", userId)));
         }
 

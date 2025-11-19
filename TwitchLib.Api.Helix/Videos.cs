@@ -35,8 +35,7 @@ public class Videos : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<DeleteVideosResponse> DeleteVideosAsync(List<string> videoIds, string accessToken = null)
     {
-        if (videoIds.Count > 5)
-            throw new BadParameterException($"Maximum of 5 video ids allowed per request (you passed {videoIds.Count})");
+        BadParameterException.ThrowIfCollectionNullOrEmptyOrGreaterThan(videoIds, 5);
 
         var getParams = videoIds.Select(videoId => new KeyValuePair<string, string>("id", videoId)).ToList();
 

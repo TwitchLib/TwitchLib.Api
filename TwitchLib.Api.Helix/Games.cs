@@ -37,37 +37,26 @@ public class Games : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetGamesResponse> GetGamesAsync(List<string> gameIds = null, List<string> gameNames = null, List<string> igdbIds = null, string accessToken = null)
     {
-        if (gameIds == null && gameNames == null && igdbIds == null 
-            || gameIds != null && gameIds.Count == 0 && gameNames == null && igdbIds == null 
-            || gameNames != null && gameNames.Count == 0 && gameIds == null && igdbIds == null
-            || igdbIds != null && igdbIds.Count == 0 && gameIds == null && gameNames == null)
+        var totalCount = (gameIds?.Count + gameNames?.Count + igdbIds?.Count).GetValueOrDefault();
+        if (totalCount is 0)
             throw new BadParameterException("Either gameIds, gameNames or igdbIds must have at least one value");
-
-        if (gameIds != null && gameIds.Count > 100)
-            throw new BadParameterException("gameIds list cannot exceed 100 items");
-
-        if (gameNames != null && gameNames.Count > 100)
-            throw new BadParameterException("gameNames list cannot exceed 100 items");
-
-        if (igdbIds != null && igdbIds.Count > 100)
-            throw new BadParameterException("igdbIds list cannot exceed 100 items");
-
-        if (gameIds?.Count + gameNames?.Count + igdbIds?.Count > 100)
+        if (totalCount > 100)
             throw new BadParameterException("The combined amount of items of gameIds, gameNames and igdbIds cannot exceed 100 items");
+            
 
         var getParams = new List<KeyValuePair<string, string>>();
 
-        if (gameIds != null && gameIds.Count > 0)
+        if (gameIds?.Count > 0)
         {
             getParams.AddRange(gameIds.Select(gameId => new KeyValuePair<string, string>("id", gameId)));
         }
 
-        if (gameNames != null && gameNames.Count > 0)
+        if (gameNames?.Count > 0)
         {
             getParams.AddRange(gameNames.Select(gameName => new KeyValuePair<string, string>("name", gameName)));
         }
 
-        if (igdbIds != null && igdbIds.Count > 0)
+        if (igdbIds?.Count > 0)
         {
             getParams.AddRange(igdbIds.Select(igdbId => new KeyValuePair<string, string>("igdb_id", igdbId)));
         }

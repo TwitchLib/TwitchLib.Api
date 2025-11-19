@@ -84,9 +84,7 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<CheckAutoModStatusResponse> CheckAutoModStatusAsync(List<Message> messages, string broadcasterId, string accessToken = null)
     {
-        if (messages == null || messages.Count == 0)
-            throw new BadParameterException("messages cannot be null and must be greater than 0 length");
-
+        BadParameterException.ThrowIfCollectionNullOrEmptyOrGreaterThan(messages, 100);
         BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
 
         var getParams = new List<KeyValuePair<string, string>>
