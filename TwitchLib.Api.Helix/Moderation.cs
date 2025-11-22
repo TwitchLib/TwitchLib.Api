@@ -26,6 +26,7 @@ using TwitchLib.Api.Helix.Models.Moderation.UnbanRequests.GetUnbanRequests;
 using TwitchLib.Api.Helix.Models.Moderation.UnbanRequests.ResolveUnbanRequests;
 using TwitchLib.Api.Helix.Models.Moderation.WarnChatUser;
 using TwitchLib.Api.Helix.Models.Moderation.WarnChatUser.Request;
+using TwitchLib.Api.Helix.Models.Users.GetUsers;
 
 namespace TwitchLib.Api.Helix;
 
@@ -53,8 +54,8 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task ManageHeldAutoModMessagesAsync(string userId, string msgId, ManageHeldAutoModMessageActionEnum action, string accessToken = null)
     {
-        if(string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(msgId))
-            throw new BadParameterException("userId and msgId cannot be null and must be greater than 0 length");
+        BadParameterException.ThrowIfNullOrEmpty(userId);
+        BadParameterException.ThrowIfNullOrEmpty(msgId);
 
         var json = new JObject
         {
@@ -83,11 +84,8 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<CheckAutoModStatusResponse> CheckAutoModStatusAsync(List<Message> messages, string broadcasterId, string accessToken = null)
     {
-        if (messages == null || messages.Count == 0)
-            throw new BadParameterException("messages cannot be null and must be greater than 0 length");
-
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
+        BadParameterException.ThrowIfCollectionNullOrEmptyOrGreaterThan(messages, 100);
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -107,11 +105,8 @@ public class Moderation : ApiBase
     #region GetBannedEvents
     public Task<GetBannedEventsResponse> GetBannedEventsAsync(string broadcasterId, List<string> userIds = null, string after = null, int first = 20, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
-
-        if (first < 1 || first > 100)
-            throw new BadParameterException("first cannot be less than 1 or greater than 100");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -145,11 +140,8 @@ public class Moderation : ApiBase
     /// <returns cref="GetBannedUsersResponse"></returns>
     public Task<GetBannedUsersResponse> GetBannedUsersAsync(string broadcasterId, List<string> userIds = null, int first = 20, string after = null, string before = null, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
-
-        if (first < 1 || first > 100)
-            throw new BadParameterException("first cannot be less than 1 or greater than 100");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -190,10 +182,8 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetModeratorsResponse> GetModeratorsAsync(string broadcasterId, List<string> userIds = null, int first = 20, string after = null, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
-        if (first > 100 || first < 1)
-            throw new BadParameterException("first must be greater than 0 and less than 101");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -216,8 +206,7 @@ public class Moderation : ApiBase
 
     public Task<GetModeratorEventsResponse> GetModeratorEventsAsync(string broadcasterId, List<string> userIds = null, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -245,21 +234,13 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<BanUserResponse> BanUserAsync(string broadcasterId, string moderatorId, BanUserRequest banUserRequest, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrEmpty(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-
-        if (banUserRequest == null)
-            throw new BadParameterException("banUserRequest cannot be null");
-
-        if (string.IsNullOrWhiteSpace(banUserRequest.UserId))
-            throw new BadParameterException("banUserRequest.UserId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNull(banUserRequest);
+        BadParameterException.ThrowIfNullOrEmpty(banUserRequest.UserId);
 
         if (banUserRequest.Duration.HasValue)
-            if(banUserRequest.Duration.Value <= 0 || banUserRequest.Duration.Value > 1209600)
-                throw new BadParameterException("banUserRequest.Duration has to be between including 1 and including 1209600");
+            BadParameterException.ThrowIfNotBetween(banUserRequest.Duration.Value, 1, 1_209_600);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -293,14 +274,9 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task UnbanUserAsync(string broadcasterId, string moderatorId, string userId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-
-        if (string.IsNullOrWhiteSpace(userId))
-            throw new BadParameterException("userId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(userId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -330,11 +306,8 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetAutomodSettingsResponse> GetAutomodSettingsAsync(string broadcasterId, string moderatorId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -364,11 +337,8 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<UpdateAutomodSettingsResponse> UpdateAutomodSettingsAsync(string broadcasterId, string moderatorId, AutomodSettings settings, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
 
         // you can set the overall level, OR you can set individual levels, but not both
 
@@ -405,14 +375,9 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetBlockedTermsResponse> GetBlockedTermsAsync(string broadcasterId, string moderatorId, string after = null, int first = 20, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-
-        if (first < 1 || first > 100)
-            throw new BadParameterException("first must be greater than 0 and less than 101");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -451,14 +416,9 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<AddBlockedTermResponse> AddBlockedTermAsync(string broadcasterId, string moderatorId, string term, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-
-        if (string.IsNullOrWhiteSpace(term))
-            throw new BadParameterException("term must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(term);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -492,14 +452,9 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task DeleteBlockedTermAsync(string broadcasterId, string moderatorId, string termId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-
-        if (string.IsNullOrWhiteSpace(termId))
-            throw new BadParameterException("termId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(termId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -533,11 +488,8 @@ public class Moderation : ApiBase
     /// <returns></returns>
     public Task DeleteChatMessagesAsync(string broadcasterId, string moderatorId, string messageId = null, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -568,11 +520,8 @@ public class Moderation : ApiBase
     /// <returns></returns>
     public Task AddChannelModeratorAsync(string broadcasterId, string userId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(userId))
-            throw new BadParameterException("userId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(userId);
 
         var getParams = new List<KeyValuePair<string, string>>()
         {
@@ -598,11 +547,8 @@ public class Moderation : ApiBase
     /// <returns></returns>
     public Task DeleteChannelModeratorAsync(string broadcasterId, string userId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(userId))
-            throw new BadParameterException("userId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(userId);
 
         var getParams = new List<KeyValuePair<string, string>>()
         {
@@ -630,11 +576,8 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetShieldModeStatusResponse> GetShieldModeStatusAsync(string broadcasterId, string moderatorId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -660,11 +603,8 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<ShieldModeStatus> UpdateShieldModeStatusAsync(string broadcasterId, string moderatorId, ShieldModeStatusRequest request, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -697,11 +637,8 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetUnbanRequestsResponse> GetUnbanRequestsAsync(string broadcasterId, string moderatorId, string status, string userId = null, string after = null, int first = 0, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrEmpty(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
 
         string[] validStatus = { "pending", "approved", "denied", "acknowledged", "canceled" };
         if (string.IsNullOrEmpty(status) || !validStatus.Contains(status))
@@ -743,14 +680,9 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<ResolveUnbanRequestsResponse> ResolveUnbanRequestsAsync(string broadcasterId, string moderatorId, string unbanRequestId, string status, string resolutionText, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrEmpty(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-
-        if (string.IsNullOrEmpty(unbanRequestId))
-            throw new BadParameterException("unbanRequestId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(unbanRequestId);
 
         string[] validStatus = { "approved", "denied" };
         if (string.IsNullOrEmpty(status) || !validStatus.Contains(status))
@@ -792,10 +724,8 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetModeratedChannelsResponse> GetModeratedChannelsAsync(string userId, int first = 20, string after = null, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(userId))
-            throw new BadParameterException("userId cannot be null/empty/whitespace");
-        if (first > 100 || first < 1)
-            throw new BadParameterException("first must be greater than 0 and less than 101");
+        BadParameterException.ThrowIfNullOrEmpty(userId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -826,17 +756,10 @@ public class Moderation : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<WarnChatUserResponse> WarnChatUserAsync(string broadcasterId, string moderatorId, WarnChatUserRequest warnChatUserRequest, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrEmpty(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-
-        if (warnChatUserRequest == null)
-            throw new BadParameterException("warnChatUserRequest cannot be null");
-
-        if (string.IsNullOrWhiteSpace(warnChatUserRequest.UserId))
-            throw new BadParameterException("warnChatUserRequest.UserId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNull(warnChatUserRequest);
+        BadParameterException.ThrowIfNullOrEmpty(warnChatUserRequest.UserId);
 
         if (warnChatUserRequest.Reason.Length > 500)
             throw new BadParameterException("warnChatUserRequest.Reason can't be greater then 500 characters.");

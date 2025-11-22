@@ -16,6 +16,7 @@ using TwitchLib.Api.Helix.Models.Channels.GetFollowedChannels;
 using TwitchLib.Api.Helix.Models.Channels.ModifyChannelInformation;
 using TwitchLib.Api.Helix.Models.Channels.SnoozeNextAd;
 using TwitchLib.Api.Helix.Models.Channels.StartCommercial;
+using TwitchLib.Api.Helix.Models.Users.GetUsers;
 
 namespace TwitchLib.Api.Helix;
 
@@ -39,8 +40,7 @@ public class Channels : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetChannelInformationResponse> GetChannelInformationAsync(List<string> broadcasterIds, string accessToken = null)
     {
-        if (broadcasterIds.Count == 0 || broadcasterIds.Count > 100)
-            throw new BadParameterException("boardcasterIds must contain between 1 and 100 broadcasterIds.");
+        BadParameterException.ThrowIfCollectionNullOrEmptyOrGreaterThan(broadcasterIds, 100);
 
         var getParams = broadcasterIds.Select(broadcasterId => new KeyValuePair<string, string>("broadcaster_id", broadcasterId)).ToList();
 
@@ -71,8 +71,7 @@ public class Channels : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public async Task<bool> ModifyChannelInformationAsync(string broadcasterId, ModifyChannelInformationRequest request, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -98,8 +97,7 @@ public class Channels : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetChannelEditorsResponse> GetChannelEditorsAsync(string broadcasterId, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -124,11 +122,8 @@ public class Channels : ApiBase
     /// <returns cref="GetChannelVIPsResponse"></returns>
     public Task<GetChannelVIPsResponse> GetVIPsAsync(string broadcasterId, List<string> userIds = null, int first = 20, string after = null, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (first > 100 & first <= 0)
-            throw new BadParameterException("first must be greater than 0 and less then 101");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -136,11 +131,9 @@ public class Channels : ApiBase
             new("first", first.ToString())
         };
 
-        if (userIds != null)
+        if (userIds?.Count > 0)
         {
-            if (userIds.Count == 0)
-                throw new BadParameterException("userIds must contain at least 1 userId if a list is included in the call");
-
+            BadParameterException.ThrowIfCollectioGreaterThan(userIds, 100);
             getParams.AddRange(userIds.Select(userId => new KeyValuePair<string, string>("user_id", userId)));
         }
 
@@ -164,11 +157,8 @@ public class Channels : ApiBase
     /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
     public Task AddChannelVIPAsync(string broadcasterId, string userId, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrEmpty(userId))
-            throw new BadParameterException("userId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(userId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -193,11 +183,8 @@ public class Channels : ApiBase
     /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
     public Task RemoveChannelVIPAsync(string broadcasterId, string userId, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrEmpty(userId))
-            throw new BadParameterException("userId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(userId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -231,11 +218,8 @@ public class Channels : ApiBase
     /// <returns cref="GetFollowedChannelsResponse"></returns>
     public Task<GetFollowedChannelsResponse> GetFollowedChannelsAsync(string userId, string broadcasterId = null, int first = 20, string after = null, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(userId))
-            throw new BadParameterException("userId must be set");
-        
-        if (first < 1 || first > 100)
-            throw new BadParameterException("first cannot be less than 1 or greater than 100");
+        BadParameterException.ThrowIfNullOrEmpty(userId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -272,11 +256,8 @@ public class Channels : ApiBase
     /// <returns cref="GetFollowedChannelsResponse"></returns>
     public Task<GetChannelFollowersResponse> GetChannelFollowersAsync(string broadcasterId, string userId = null, int first = 20, string after = null, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-        
-        if (first < 1 || first > 100)
-            throw new BadParameterException("first cannot be less than 1 or greater than 100");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -305,11 +286,10 @@ public class Channels : ApiBase
     /// <returns cref="GetAdScheduleResponse"></returns>
     public Task<GetAdScheduleResponse> GetAdScheduleAsync(string broadcasterId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+
         var getParams = new List<KeyValuePair<string, string>>
         {
-
             new("broadcaster_id", broadcasterId)
         };
 
@@ -328,8 +308,8 @@ public class Channels : ApiBase
     /// <returns cref="SnoozeNextAdResponse"></returns>
     public Task<SnoozeNextAdResponse> SnoozeNextAdAsync(string broadcasterId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+
         var getParams = new List<KeyValuePair<string, string>>
         {
             new("broadcaster_id", broadcasterId)

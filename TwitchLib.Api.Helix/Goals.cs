@@ -31,8 +31,7 @@ public class Goals : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetCreatorGoalsResponse> GetCreatorGoalsAsync(string broadcasterId, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId cannot be null or empty");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {

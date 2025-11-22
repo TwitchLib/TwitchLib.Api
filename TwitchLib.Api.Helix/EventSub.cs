@@ -40,11 +40,8 @@ public class EventSub : ApiBase
     public Task<CreateEventSubSubscriptionResponse> CreateEventSubSubscriptionAsync(string type, string version, Dictionary<string, string> condition, EventSubTransportMethod method, string websocketSessionId = null, string webhookCallback = null,
         string webhookSecret = null, string conduitId = null, string clientId = null, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(type))
-            throw new BadParameterException("type must be set");
-
-        if (string.IsNullOrEmpty(version))
-            throw new BadParameterException("version must be set");
+        BadParameterException.ThrowIfNullOrEmpty(type);
+        BadParameterException.ThrowIfNullOrEmpty(version);
 
         if (condition == null || condition.Count == 0)
             throw new BadParameterException("condition must be set");
@@ -52,8 +49,7 @@ public class EventSub : ApiBase
         switch (method)
         {
             case EventSubTransportMethod.Webhook:
-                if (string.IsNullOrWhiteSpace(webhookCallback))
-                    throw new BadParameterException("webhookCallback must be set");
+                BadParameterException.ThrowIfNullOrEmpty(webhookCallback);
 
                 if (webhookSecret == null || webhookSecret.Length < 10 || webhookSecret.Length > 100)
                     throw new BadParameterException("webhookSecret must be set, and be between 10 (inclusive) and 100 (inclusive)");
@@ -72,8 +68,7 @@ public class EventSub : ApiBase
                 };
                 return TwitchPostGenericAsync<CreateEventSubSubscriptionResponse>("/eventsub/subscriptions", ApiVersion.Helix, JsonConvert.SerializeObject(webhookBody), null, accessToken, clientId);
             case EventSubTransportMethod.Websocket:
-                if (string.IsNullOrWhiteSpace(websocketSessionId))
-                    throw new BadParameterException("websocketSessionId must be set");
+                BadParameterException.ThrowIfNullOrEmpty(websocketSessionId);
 
                 var websocketBody = new
                 {
@@ -88,8 +83,7 @@ public class EventSub : ApiBase
                 };
                 return TwitchPostGenericAsync<CreateEventSubSubscriptionResponse>("/eventsub/subscriptions", ApiVersion.Helix, JsonConvert.SerializeObject(websocketBody), null, accessToken, clientId);
             case EventSubTransportMethod.Conduit:
-                if (string.IsNullOrWhiteSpace(conduitId))
-                    throw new BadParameterException("conduitId must be set");
+                BadParameterException.ThrowIfNullOrEmpty(conduitId);
                 
                 var conduitBody = new
                 {
@@ -208,8 +202,7 @@ public class EventSub : ApiBase
     public async Task<CreateConduitsResponse> CreateConduits(CreateConduitsRequest request, string clientId = null,
         string accessToken = null)
     {
-        if (request.ShardCount is <= 0 or > 20_000)
-            throw new BadParameterException("request.ShardCount must be greater than 0 and less or equal than 20000");
+        BadParameterException.ThrowIfNotBetween(request.ShardCount, 1, 20_000);
         
         return await TwitchPostGenericAsync<CreateConduitsResponse>("/eventsub/conduits", ApiVersion.Helix,
             JsonConvert.SerializeObject(request), null, accessToken, clientId);
@@ -225,9 +218,8 @@ public class EventSub : ApiBase
     public async Task<UpdateConduitsResponse> UpdateConduits(UpdateConduitsRequest request, string clientId = null,
         string accessToken = null)
     {
-        if (request.ShardCount is <= 0 or > 20_000)
-            throw new BadParameterException("request.ShardCount must be greater than 0 and less or equal than 20000");
-        
+        BadParameterException.ThrowIfNotBetween(request.ShardCount, 1, 20_000);
+
         return await TwitchPatchGenericAsync<UpdateConduitsResponse>("/eventsub/conduits", ApiVersion.Helix,
             JsonConvert.SerializeObject(request), null, accessToken, clientId);
     }
