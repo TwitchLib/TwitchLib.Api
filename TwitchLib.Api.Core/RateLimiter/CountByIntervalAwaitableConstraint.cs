@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -22,7 +21,7 @@ public class CountByIntervalAwaitableConstraint : IAwaitableConstraint
     private SemaphoreSlim _semafore { get; } = new SemaphoreSlim(1, 1);
     private ITime _time { get; }
 
-    public CountByIntervalAwaitableConstraint(int count, TimeSpan timeSpan, ITime time=null)
+    public CountByIntervalAwaitableConstraint(int count, TimeSpan timeSpan, ITime? time = null)
     {
         if (count <= 0)
             throw new ArgumentException("count should be strictly positive", nameof(count));
@@ -42,7 +41,7 @@ public class CountByIntervalAwaitableConstraint : IAwaitableConstraint
         var count = 0;
         var now = _time.GetTimeNow();
         var target = now - _timeSpan;
-        LinkedListNode<DateTime> element = _timeStamps.First, last = null;
+        LinkedListNode<DateTime>? element = _timeStamps.First, last = null;
         while ((element != null) && (element.Value > target))
         {
             last = element;

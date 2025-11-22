@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Text;
 using TwitchLib.Api.Core.Enums;
 
@@ -14,7 +15,15 @@ public static class Helpers
     /// <returns></returns>
     public static string FormatOAuth(string token)
     {
+#if NET
+        Span<Range> ranges = stackalloc Range[3];
+        var tokenSpan = token.AsSpan();
+        return tokenSpan.Split(ranges, ' ') is 1
+            ? token
+            : tokenSpan[ranges[1]].ToString();
+#else
         return token.Contains(" ") ? token.Split(' ')[1] : token;
+#endif
     }
 
     /// <summary>
@@ -100,13 +109,13 @@ public static class Helpers
             AuthScopes.Moderator_Read_Banned_Users => "moderator:manage:banned_users",
             AuthScopes.Moderator_Read_Chat_Messages => "moderator:read:chat_messages",
             AuthScopes.Moderator_Read_Moderators => "moderator:read:moderators",
-            AuthScopes.Moderator_Read_Suspicious_Users=>"moderator:read:suspicious_users",
-            AuthScopes.Moderator_Read_Unban_Requests=>"moderator:read:unban_requests",
-            AuthScopes.Moderator_Read_VIPs=>"moderator:read:vips",
-            AuthScopes.Moderator_Read_Warnings=>"moderator:read:warnings",
-            AuthScopes.User_Edit_Broadcast=>"user:edit:broadcast",
-            AuthScopes.User_Read_Emotes=>"user:read:emotes",
-            AuthScopes.User_Read_Whispers=>"user:read:whispers",
+            AuthScopes.Moderator_Read_Suspicious_Users => "moderator:read:suspicious_users",
+            AuthScopes.Moderator_Read_Unban_Requests => "moderator:read:unban_requests",
+            AuthScopes.Moderator_Read_VIPs => "moderator:read:vips",
+            AuthScopes.Moderator_Read_Warnings => "moderator:read:warnings",
+            AuthScopes.User_Edit_Broadcast => "user:edit:broadcast",
+            AuthScopes.User_Read_Emotes => "user:read:emotes",
+            AuthScopes.User_Read_Whispers => "user:read:whispers",
             AuthScopes.Any => string.Empty,
             AuthScopes.None => string.Empty,
             _ => string.Empty
@@ -213,7 +222,22 @@ public static class Helpers
     /// <returns>input as Base64 string</returns>
     public static string Base64Encode(string plainText)
     {
+#if NET
+        var bytesLen = Encoding.UTF8.GetByteCount(plainText);
+        byte[]? array = null;
+        Span<byte> plainTextBytes = bytesLen <= 256
+            ? stackalloc byte[bytesLen]
+            : (array = ArrayPool<byte>.Shared.Rent(bytesLen));
+
+        Encoding.UTF8.GetBytes(plainText, plainTextBytes);
+        var base64 = Convert.ToBase64String(plainTextBytes.Slice(0, bytesLen));
+
+        if (array is not null)
+            ArrayPool<byte>.Shared.Return(array);
+        return base64;
+#else
         var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
         return Convert.ToBase64String(plainTextBytes);
+#endif
     }
 }
