@@ -210,7 +210,7 @@ public class Clips : ApiBase
 
         var getParams = request.ToParams();
 
-        return TwitchPostGenericAsync<CreatedClipFromVodResponse>("/clips", ApiVersion.Helix, null, getParams, accessToken);
+        return TwitchPostGenericAsync<CreatedClipFromVodResponse>("/videos/clips", ApiVersion.Helix, null, getParams, accessToken);
     }
   
     #endregion
