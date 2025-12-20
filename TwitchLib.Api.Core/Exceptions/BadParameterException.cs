@@ -38,6 +38,13 @@ public class BadParameterException : Exception
             throw new BadParameterException($"Parameter '{paramName}' cannot be less than {min}(inclusive) or greater than {max}(inclusive).");
         }
     }
+    public static void ThrowIfNotBetween(float value, float min, float max, [CallerArgumentExpression(nameof(value))] string? paramName = null)
+    {
+        if (value < min || value > max)
+        {
+            throw new BadParameterException($"Parameter '{paramName}' cannot be less than {min}(inclusive) or greater than {max}(inclusive).");
+        }
+    }
 
     public static void ThrowIfCollectionNullOrEmptyOrGreaterThan<T>(List<T> value, int max, [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {

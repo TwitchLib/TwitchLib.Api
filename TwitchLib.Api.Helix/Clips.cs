@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +8,7 @@ using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Extensions.System;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Clips.CreateClip;
+using TwitchLib.Api.Helix.Models.Clips.CreateClipFromVod;
 using TwitchLib.Api.Helix.Models.Clips.GetClips;
 using TwitchLib.Api.Helix.Models.Clips.GetClipsDownload;
 
@@ -19,6 +19,9 @@ namespace TwitchLib.Api.Helix;
 /// </summary>
 public class Clips : ApiBase
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Clips" /> class
+    /// </summary>
     public Clips(IApiSettings settings, IRateLimiter rateLimiter, IHttpCallHandler http) : base(settings, rateLimiter, http)
     { }
 
@@ -63,7 +66,7 @@ public class Clips : ApiBase
     /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
     /// <returns cref="GetClipsResponse"></returns>
     /// <exception cref="BadParameterException"></exception>
-    public Task<GetClipsResponse> GetClipsAsync(List<string> clipIds = null, string gameId = null, string broadcasterId = null, string before = null, string after = null, DateTime? startedAt = null, DateTime? endedAt = null, bool? isFeatured = null, int first = 20, string accessToken = null)
+    public Task<GetClipsResponse> GetClipsAsync(List<string>? clipIds = null, string? gameId = null, string? broadcasterId = null, string? before = null, string? after = null, DateTime? startedAt = null, DateTime? endedAt = null, bool? isFeatured = null, int first = 20, string? accessToken = null)
     {
         BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
@@ -121,12 +124,35 @@ public class Clips : ApiBase
     /// <param name="broadcasterId">ID of the stream from which the clip will be made.</param>
     /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
     /// <returns cref="CreatedClipResponse"></returns>
-    public Task<CreatedClipResponse> CreateClipAsync(string broadcasterId, string accessToken = null)
+    public Task<CreatedClipResponse> CreateClipAsync(string broadcasterId, string? accessToken = null)
     {
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+
         var getParams = new List<KeyValuePair<string, string>>
         {
             new("broadcaster_id", broadcasterId)
         };
+
+        return TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, accessToken);
+    }
+
+    /// <summary>
+    /// Creates a clip programmatically. This returns both an ID and an edit URL for the new clip.
+    /// <para>Clip creation takes time. We recommend that you query Get Clips, with the clip ID that is returned here.</para>
+    /// <para>If Get Clips returns a valid clip, your clip creation was successful.</para>
+    /// <para>If, after 15 seconds, you still have not gotten back a valid clip from Get Clips, assume that the clip was not created and retry Create Clip.</para>
+    /// <para>This endpoint has a global rate limit, across all callers.</para>
+    /// <para>Required scope: clips:edit</para>
+    /// </summary>
+    /// <param name="request">Request parameters for the call.</param>
+    /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <returns cref="CreatedClipResponse"></returns>
+    public Task<CreatedClipResponse> CreateClipAsync(CreatedClipRequest request, string? accessToken = null)
+    {
+        BadParameterException.ThrowIfNull(request);
+        BadParameterException.ThrowIfNullOrEmpty(request.BroadcasterId);
+
+        var getParams = request.ToParams();
 
         return TwitchPostGenericAsync<CreatedClipResponse>("/clips", ApiVersion.Helix, null, getParams, accessToken);
     }
@@ -145,7 +171,7 @@ public class Clips : ApiBase
     /// <param name="clipIds">The ID that identifies the clip you want to download. Include this parameter for each clip you want to download, up to a maximum of 10 clips.</param>
     /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
     /// <returns cref="CreatedClipResponse"></returns>
-    public Task<GetClipsDownloadResponse> GetClipsDownloadAsync(string editorId, string broadcasterId, List<string> clipIds, string accessToken = null)
+    public Task<GetClipsDownloadResponse> GetClipsDownloadAsync(string editorId, string broadcasterId, List<string> clipIds, string? accessToken = null)
     {
         BadParameterException.ThrowIfNullOrEmpty(editorId);
         BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
@@ -163,4 +189,29 @@ public class Clips : ApiBase
 
     #endregion
 
+    #region CreateClipFromVod
+
+    /// <summary>
+    /// Creates a clip programmatically. This returns both an ID and an edit URL for the new.
+    /// <summary>
+    /// </summary>
+    /// <param name="request">Request parameters for the call.</param>
+    /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <returns cref="CreatedClipFromVodResponse"></returns>
+    public Task<CreatedClipFromVodResponse> CreateClipFromVodAsync(CreatedClipFromVodRequest request, string? accessToken = null)
+    {
+        BadParameterException.ThrowIfNull(request);
+        BadParameterException.ThrowIfNull(request.EditorId);
+        BadParameterException.ThrowIfNull(request.BroadcasterId);
+        BadParameterException.ThrowIfNull(request.VodId);
+        BadParameterException.ThrowIfNull(request.Title);
+        if (request.Duration is not null)
+            BadParameterException.ThrowIfNotBetween(request.Duration.Value, 5, 60);
+
+        var getParams = request.ToParams();
+
+        return TwitchPostGenericAsync<CreatedClipFromVodResponse>("/clips", ApiVersion.Helix, null, getParams, accessToken);
+    }
+  
+    #endregion
 }

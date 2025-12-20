@@ -140,7 +140,7 @@ public class ApiBase
         return await _rateLimiter.Perform(async () => (await _http.GeneralRequestAsync(url, "DELETE", null, api, clientId, accessToken).ConfigureAwait(false))).ConfigureAwait(false);
     }
 
-    protected async Task<T> TwitchPostGenericAsync<T>(string resource, ApiVersion api, string payload, List<KeyValuePair<string, string>>? getParams = null, string? accessToken = null, string? clientId = null, string? customBase = null)
+    protected async Task<T> TwitchPostGenericAsync<T>(string resource, ApiVersion api, string? payload, List<KeyValuePair<string, string>>? getParams = null, string? accessToken = null, string? clientId = null, string? customBase = null)
     {
         var url = ConstructResourceUrl(resource, getParams, api, customBase);
 

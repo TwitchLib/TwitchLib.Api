@@ -1,5 +1,4 @@
-﻿#nullable disable
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.Clips.GetClipsDownload;
 
@@ -12,5 +11,5 @@ public class GetClipsDownloadResponse
     /// List of clips and their download URLs.
     /// </summary>
     [JsonProperty(PropertyName = "data")]
-    public ClipDownload[] Clips { get; protected set; }
+    public ClipDownload[] Clips { get; protected set; } = null!;
 }
