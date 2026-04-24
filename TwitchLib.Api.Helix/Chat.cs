@@ -13,6 +13,7 @@ using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Channels.SendChatMessage;
 using TwitchLib.Api.Helix.Models.Chat;
+using TwitchLib.Api.Helix.Models.Chat.Announcement;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetChannelChatBadges;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetGlobalChatBadges;
 using TwitchLib.Api.Helix.Models.Chat.ChatSettings;
@@ -253,6 +254,7 @@ public class Chat : ApiBase
     /// <param name="message">The announcement to make in the broadcaster’s chat room.</param>
     /// <param name="color">The color used to highlight the announcement. Possible case-sensitive values are: blue/green/orange/purple/primary(default)</param>
     /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    [Obsolete("Use SendChatAnnouncementAsync(string, string, SendChatAnnouncementRequest, string) instead.")]
     public Task SendChatAnnouncementAsync(string broadcasterId, string moderatorId, string message, AnnouncementColors color = null, string accessToken = null)
     {
         BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
@@ -279,6 +281,35 @@ public class Chat : ApiBase
             ["message"] = message,
             ["color"] = color.Value
         };
+        
+        return TwitchPostAsync("/chat/announcements", ApiVersion.Helix, json.ToString(), getParams, accessToken);
+    }
+
+    /// <summary>
+    /// Sends an announcement to the broadcaster’s chat room.
+    /// Requires a user access token that includes the moderator:manage:announcements scope.
+    /// The ID in the moderator_id query parameter must match the user ID in the access token.
+    /// </summary>
+    /// <param name="broadcasterId">The ID of the broadcaster that owns the chat room to send the announcement to.</param>
+    /// <param name="moderatorId">The ID of a user who has permission to moderate the broadcaster’s chat room. This ID must match the user ID in the OAuth token, which can be a moderator or the broadcaster.</param>
+    /// <param name="request">The request parameters for sending the announcement.</param>
+    /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    public Task SendChatAnnouncementAsync(string broadcasterId, string moderatorId, SendChatAnnouncementRequest request, string accessToken = null)
+    {
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(request.Message);
+
+        if (request.Message.Length > 500)
+            throw new BadParameterException("message length must be less than or equal to 500 characters");
+
+        var getParams = new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+            new KeyValuePair<string, string>("moderator_id", moderatorId),
+        };
+
+        var json = JObject.FromObject(request);
 
         return TwitchPostAsync("/chat/announcements", ApiVersion.Helix, json.ToString(), getParams, accessToken);
     }
