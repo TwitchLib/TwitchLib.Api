@@ -34,8 +34,7 @@ public class Search : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<SearchCategoriesResponse> SearchCategoriesAsync(string encodedSearchQuery, string after = null, int first = 20, string accessToken = null)
     {
-        if (first < 0 || first > 100)
-            throw new BadParameterException("'first' parameter must be between 1 (inclusive) and 100 (inclusive).");
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -71,8 +70,7 @@ public class Search : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<SearchChannelsResponse> SearchChannelsAsync(string encodedSearchQuery, bool liveOnly = false, string after = null, int first = 20, string accessToken = null)
     {
-        if (first < 0 || first > 100)
-            throw new BadParameterException("'first' parameter must be between 1 (inclusive) and 100 (inclusive).");
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {

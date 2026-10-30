@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,12 +34,8 @@ public class Subscriptions : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<CheckUserSubscriptionResponse> CheckUserSubscriptionAsync(string broadcasterId, string userId, string accessToken = null)
     {
-
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("BroadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(userId))
-            throw new BadParameterException("UserId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(userId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -63,11 +60,8 @@ public class Subscriptions : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetUserSubscriptionsResponse> GetUserSubscriptionsAsync(string broadcasterId, List<string> userIds, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("BroadcasterId must be set");
-        
-        if (userIds == null || userIds.Count == 0)
-            throw new BadParameterException("UserIds must be set contain at least one user id");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfCollectionNullOrEmptyOrGreaterThan(userIds, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -92,13 +86,11 @@ public class Subscriptions : ApiBase
     /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
     /// <returns cref="GetBroadcasterSubscriptionsResponse"></returns>
     /// <exception cref="BadParameterException"></exception>
+    [Obsolete("Use GetEventSubSubscriptionsAsync(GetBroadcasterSubscriptionsRequest, string) instead")]
     public Task<GetBroadcasterSubscriptionsResponse> GetBroadcasterSubscriptionsAsync(string broadcasterId, int first = 20, string after = null, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("BroadcasterId must be set");
-
-        if (first > 100)
-            throw new BadParameterException("First must be 100 or less");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -106,8 +98,32 @@ public class Subscriptions : ApiBase
             new("first", first.ToString())
         };
 
-        if (!string.IsNullOrWhiteSpace(after)) 
+        if (!string.IsNullOrWhiteSpace(after))
             getParams.Add(new KeyValuePair<string, string>("after", after));
+        
+        return TwitchGetGenericAsync<GetBroadcasterSubscriptionsResponse>("/subscriptions", ApiVersion.Helix, getParams, accessToken);
+    }
+
+    /// <summary>
+    /// Gets a list of users that subscribe to the specified broadcaster.
+    /// <para>Required scope: channel:read:subscriptions</para>
+    /// </summary>
+    /// <param name="request">Request parameters for the call.</param>
+    /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    /// <returns cref="GetBroadcasterSubscriptionsResponse"></returns>
+    /// <exception cref="BadParameterException"></exception>
+    public Task<GetBroadcasterSubscriptionsResponse> GetBroadcasterSubscriptionsAsync(GetBroadcasterSubscriptionsRequest request, string accessToken = null)
+    {
+        if (string.IsNullOrWhiteSpace(request.BroadcasterId))
+            throw new BadParameterException("request.BroadcasterId must be set");
+
+        if (request.First > 100)
+            throw new BadParameterException("request.First must be 100 or less");
+
+        if (request.UserIds?.Count > 100)
+            throw new BadParameterException("Count of request.UserIds must be 100 or less");
+
+        var getParams = request.ToParams();
 
         return TwitchGetGenericAsync<GetBroadcasterSubscriptionsResponse>("/subscriptions", ApiVersion.Helix, getParams, accessToken);
     }

@@ -39,10 +39,8 @@ public class GuestStar : ApiBase
     public Task<GetChannelGuestStarSettingsResponse> GetChannelGuestStarSettingsAsync(string broadcasterId,
         string moderatorId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -70,11 +68,8 @@ public class GuestStar : ApiBase
     public Task UpdateChannelGuestStarSettingsAsync(string broadcasterId,
         UpdateChannelGuestStarSettingsRequest newSettings, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (newSettings == null)
-            throw new BadParameterException("newSettings cannot be null");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNull(newSettings);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -103,10 +98,8 @@ public class GuestStar : ApiBase
     public Task<GetGuestStarSessionResponse> GetGuestStarSessionAsync(string broadcasterId, string moderatorId,
         string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -133,8 +126,7 @@ public class GuestStar : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<CreateGuestStarSessionResponse> CreateGuestStarSession(string broadcasterId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -162,11 +154,8 @@ public class GuestStar : ApiBase
     public Task<EndGuestStarSessionResponse> EndGuestStarSession(string broadcasterId, string sessionId,
         string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrWhiteSpace(sessionId))
-            throw new BadParameterException("sessionId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(sessionId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -196,12 +185,9 @@ public class GuestStar : ApiBase
     public Task<GetGuestStarInvitesResponse> GetGuestStarInvitesAsync(string broadcasterId, string moderatorId,
         string sessionId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-        if (string.IsNullOrWhiteSpace(sessionId))
-            throw new BadParameterException("sessionId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(sessionId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -232,14 +218,10 @@ public class GuestStar : ApiBase
     public Task SendGuestStarInvitesAsync(string broadcasterId, string moderatorId, string sessionId, string guestId,
         string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-        if (string.IsNullOrWhiteSpace(sessionId))
-            throw new BadParameterException("sessionId must be set");
-        if (string.IsNullOrWhiteSpace(guestId))
-            throw new BadParameterException("guestId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(sessionId);
+        BadParameterException.ThrowIfNullOrEmpty(guestId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -270,14 +252,10 @@ public class GuestStar : ApiBase
     public Task DeleteGuestStarInvitesAsync(string broadcasterId, string moderatorId, string sessionId, string guestId,
         string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-        if (string.IsNullOrWhiteSpace(sessionId))
-            throw new BadParameterException("sessionId must be set");
-        if (string.IsNullOrWhiteSpace(guestId))
-            throw new BadParameterException("guestId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(sessionId);
+        BadParameterException.ThrowIfNullOrEmpty(guestId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -309,16 +287,11 @@ public class GuestStar : ApiBase
     public Task AssignGuestStarSlotAsync(string broadcasterId, string moderatorId, string sessionId, string guestId,
         string slotId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-        if (string.IsNullOrWhiteSpace(sessionId))
-            throw new BadParameterException("sessionId must be set");
-        if (string.IsNullOrWhiteSpace(guestId))
-            throw new BadParameterException("guestId must be set");
-        if (string.IsNullOrWhiteSpace(slotId))
-            throw new BadParameterException("slotId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(sessionId);
+        BadParameterException.ThrowIfNullOrEmpty(guestId);
+        BadParameterException.ThrowIfNullOrEmpty(slotId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -351,16 +324,11 @@ public class GuestStar : ApiBase
     public Task UpdateGuestStarSlotAsync(string broadcasterId, string moderatorId, string sessionId,
         string sourceSlotId, string destinationSlotId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-        if (string.IsNullOrWhiteSpace(sessionId))
-            throw new BadParameterException("sessionId must be set");
-        if (string.IsNullOrWhiteSpace(sourceSlotId))
-            throw new BadParameterException("sourceSlotId must be set");
-        if (string.IsNullOrWhiteSpace(destinationSlotId))
-            throw new BadParameterException("destinationSlotId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(sessionId);
+        BadParameterException.ThrowIfNullOrEmpty(sourceSlotId);
+        BadParameterException.ThrowIfNullOrEmpty(destinationSlotId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -393,14 +361,10 @@ public class GuestStar : ApiBase
     public Task DeleteGuestStarSlotAsync(string broadcasterId, string moderatorId, string sessionId, string slotId, 
         bool? shouldReinviteGuest = null, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-        if (string.IsNullOrWhiteSpace(sessionId))
-            throw new BadParameterException("sessionId must be set");
-        if (string.IsNullOrWhiteSpace(slotId))
-            throw new BadParameterException("slotId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(sessionId);
+        BadParameterException.ThrowIfNullOrEmpty(slotId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -438,14 +402,10 @@ public class GuestStar : ApiBase
     public Task UpdateGuestStarSlotSettingsAsync(string broadcasterId, string moderatorId, string sessionId, string slotId, 
         bool? isAudioEnabled = null, bool? isVideoEnabled = null, bool? isLive = null, int? volume = null, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-        if (string.IsNullOrWhiteSpace(sessionId))
-            throw new BadParameterException("sessionId must be set");
-        if (string.IsNullOrWhiteSpace(slotId))
-            throw new BadParameterException("slotId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(sessionId);
+        BadParameterException.ThrowIfNullOrEmpty(slotId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {

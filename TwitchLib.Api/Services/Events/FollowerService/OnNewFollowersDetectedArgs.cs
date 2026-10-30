@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using TwitchLib.Api.Helix.Models.Channels.GetChannelFollowers;
 
@@ -12,7 +11,7 @@ namespace TwitchLib.Api.Services.Events.FollowerService;
 public class OnNewFollowersDetectedArgs : EventArgs
 {
     /// <summary>Event property representing channel the service is currently monitoring.</summary>
-    public string Channel;
+    public string Channel { get; set; } = null!;
     /// <summary>Event property representing all new followers detected.</summary>
-    public List<ChannelFollower> NewFollowers;
+    public List<ChannelFollower> NewFollowers { get; set; } = null!;
 }

@@ -31,11 +31,8 @@ public class Whispers : ApiBase
     /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
     public Task SendWhisperAsync(string fromUserId, string toUserId, string message, bool newRecipient, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(fromUserId))
-            throw new BadParameterException("FromUserId must be set");
-
-        if (string.IsNullOrWhiteSpace(toUserId))
-            throw new BadParameterException("ToUserId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(fromUserId);
+        BadParameterException.ThrowIfNullOrEmpty(toUserId);
 
         if (message == null)
             throw new BadParameterException("message must be set");

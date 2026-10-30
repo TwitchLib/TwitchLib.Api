@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -15,7 +14,7 @@ public static class ExtensionAnalyticsHelper
 {
     public static async Task<List<ExtensionAnalytics>> HandleUrlAsync(string url)
     {
-        var cnts = await GetContentsAsync(url);
+        var cnts = await GetContentsAsync(url).ConfigureAwait(false);
         var data = ExtractData(cnts);
 
         return data.Select(line => new ExtensionAnalytics(line)).ToList();
@@ -29,7 +28,14 @@ public static class ExtensionAnalyticsHelper
     private static async Task<string[]> GetContentsAsync(string url)
     {
         var client = new HttpClient();
-        var lines = (await client.GetStringAsync(url)).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+        var str = await client.GetStringAsync(url).ConfigureAwait(false);
+        var lines = str
+#if NET
+            .Split(Environment.NewLine, StringSplitOptions.None);
+#else
+            .Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+#endif
         return lines;
     }
 }

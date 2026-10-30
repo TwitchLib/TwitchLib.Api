@@ -32,8 +32,7 @@ public class SharedChat : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetSharedChatSessionResponse> GetSharedChatSessionAsync(string broadcasterId, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {

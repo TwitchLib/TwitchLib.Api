@@ -32,8 +32,7 @@ public class Charity : ApiBase
     /// <returns cref="GetCharityCampaignResponse">A list that contains the charity campaign that the broadcaster is currently running.</returns>
     public Task<GetCharityCampaignResponse> GetCharityCampaignAsync(string broadcasterId, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -58,11 +57,8 @@ public class Charity : ApiBase
     /// <returns cref="GetCharityCampaignResponse">A list that contains the charity campaign that the broadcaster is currently running.</returns>
     public Task<GetCharityCampaignDonationsResponse> GetCharityCampaignDonationsAsync(string broadcasterId, int first = 20, string after = null, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (first < 1 || first > 100)
-            throw new BadParameterException("first cannot be less than 1 or greater than 100");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {

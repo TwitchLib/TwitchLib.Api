@@ -1,5 +1,4 @@
-﻿#nullable disable
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace TwitchLib.Api.Helix.Models.Clips.CreateClip;
 
@@ -12,5 +11,5 @@ public class CreatedClipResponse
   /// Contains clip's ID and edit_URL that can be used to edit the clip's title, identify the part of the clip to publish, and publish the clip.
   /// </summary>
   [JsonProperty(PropertyName = "data")]
-  public CreatedClip[] CreatedClips { get; protected set; }
+  public CreatedClip[] CreatedClips { get; protected set; } = null!;
 }

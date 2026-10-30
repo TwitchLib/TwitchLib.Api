@@ -1,0 +1,22 @@
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Api.Helix.Models.Clips.CreateClipFromVod;
+
+/// <summary>
+/// A Twitch clip created from CreateClipFromVod
+/// </summary>
+public class CreatedClipFromVod
+{
+    /// <summary>
+    /// An ID that uniquely identifies the clip.
+    /// </summary>
+    [JsonProperty(PropertyName = "id")]
+    public string Id { get; protected set; } = null!;
+
+    /// <summary>
+    /// <para>A URL that you can use to edit the clip’s title, identify the part of the clip to publish, and publish the clip.</para>
+    /// <para> The URL is valid for up to 24 hours or until the clip is published, whichever comes first.</para>
+    /// </summary>
+    [JsonProperty(PropertyName = "edit_url")]
+    public string EditUrl { get; protected set; } = null!;
+}

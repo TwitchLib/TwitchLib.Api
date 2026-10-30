@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+  </Folder>
+  <Project Path="TwitchLib.Api.Core.Enums/TwitchLib.Api.Core.Enums.csproj" />
+  <Project Path="TwitchLib.Api.Core.Interfaces/TwitchLib.Api.Core.Interfaces.csproj" />
+  <Project Path="TwitchLib.Api.Core.Models/TwitchLib.Api.Core.Models.csproj" />
+  <Project Path="TwitchLib.Api.Core/TwitchLib.Api.Core.csproj" />
+  <Project Path="TwitchLib.Api.Helix.Models/TwitchLib.Api.Helix.Models.csproj" />
+  <Project Path="TwitchLib.Api.Helix/TwitchLib.Api.Helix.csproj" />
+  <Project Path="TwitchLib.Api/TwitchLib.Api.csproj" />
+  <Project Path="TwitchLib.Api.Test/TwitchLib.Api.Test.csproj" />
+</Solution>

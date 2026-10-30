@@ -35,11 +35,8 @@ public class Extensions : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetExtensionTransactionsResponse> GetExtensionTransactionsAsync(string extensionId, List<string> ids = null, string after = null, int first = 20, string applicationAccessToken = null)
     {
-        if(string.IsNullOrWhiteSpace(extensionId))
-            throw new BadParameterException("extensionId cannot be null");
-
-        if (first < 1 || first > 100)
-            throw new BadParameterException("'first' must between 1 (inclusive) and 100 (inclusive).");
+        BadParameterException.ThrowIfNullOrEmpty(extensionId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -74,11 +71,8 @@ public class Extensions : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetExtensionLiveChannelsResponse> GetExtensionLiveChannelsAsync(string extensionId, int first = 20, string after = null, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(extensionId))
-            throw new BadParameterException("extensionId must be set");
-
-        if (first < 1 || first > 100)
-            throw new BadParameterException("'first' must between 1 (inclusive) and 100 (inclusive).");
+        BadParameterException.ThrowIfNullOrEmpty(extensionId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 100);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -105,8 +99,7 @@ public class Extensions : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetReleasedExtensionsResponse> GetReleasedExtensionsAsync(string extensionId, string extensionVersion = null, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(extensionId))
-            throw new BadParameterException("extensionId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(extensionId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {

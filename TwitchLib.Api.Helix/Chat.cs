@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Threading.Tasks;
 using System.Web;
 using TwitchLib.Api.Core;
@@ -12,6 +13,7 @@ using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Helix.Models.Channels.SendChatMessage;
 using TwitchLib.Api.Helix.Models.Chat;
+using TwitchLib.Api.Helix.Models.Chat.Announcement;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetChannelChatBadges;
 using TwitchLib.Api.Helix.Models.Chat.Badges.GetGlobalChatBadges;
 using TwitchLib.Api.Helix.Models.Chat.ChatSettings;
@@ -21,6 +23,8 @@ using TwitchLib.Api.Helix.Models.Chat.Emotes.GetGlobalEmotes;
 using TwitchLib.Api.Helix.Models.Chat.Emotes.GetUserEmotes;
 using TwitchLib.Api.Helix.Models.Chat.GetChatters;
 using TwitchLib.Api.Helix.Models.Chat.GetUserChatColor;
+using TwitchLib.Api.Helix.Models.Moderation.CheckAutoModStatus;
+using TwitchLib.Api.Helix.Models.Moderation.GetModerators;
 
 namespace TwitchLib.Api.Helix;
 
@@ -81,14 +85,9 @@ public class Chat : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetChattersResponse> GetChattersAsync(string broadcasterId, string moderatorId, int first = 100, string after = null, string accessToken = null)
     {
-        if (string.IsNullOrWhiteSpace(broadcasterId))
-            throw new BadParameterException("broadcasterId cannot be null/empty/whitespace");
-
-        if (string.IsNullOrWhiteSpace(moderatorId))
-            throw new BadParameterException("moderatorId cannot be null/empty/whitespace");
-
-        if (first < 1 || first > 1000)
-            throw new BadParameterException("first cannot be less than 1 or greater than 1000");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNotBetween(first, 1, 1_000);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -163,8 +162,7 @@ public class Chat : ApiBase
     public Task<GetUserEmotesResponse> GetUserEmotesAsync(string userId, string after = null,
         string broadcasterId = null, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(userId))
-            throw new BadParameterException("userId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(userId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -198,11 +196,8 @@ public class Chat : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<GetChatSettingsResponse> GetChatSettingsAsync(string broadcasterId, string moderatorId, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrEmpty(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -232,14 +227,9 @@ public class Chat : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<UpdateChatSettingsResponse> UpdateChatSettingsAsync(string broadcasterId, string moderatorId, ChatSettings settings, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrEmpty(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
-
-        if (settings == null)
-            throw new BadParameterException("settings must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNull(settings);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -264,13 +254,11 @@ public class Chat : ApiBase
     /// <param name="message">The announcement to make in the broadcaster’s chat room.</param>
     /// <param name="color">The color used to highlight the announcement. Possible case-sensitive values are: blue/green/orange/purple/primary(default)</param>
     /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    [Obsolete("Use SendChatAnnouncementAsync(string, string, SendChatAnnouncementRequest, string) instead.")]
     public Task SendChatAnnouncementAsync(string broadcasterId, string moderatorId, string message, AnnouncementColors color = null, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrEmpty(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
 
         if (message == null)
             throw new BadParameterException("message must be set");
@@ -293,6 +281,35 @@ public class Chat : ApiBase
             ["message"] = message,
             ["color"] = color.Value
         };
+        
+        return TwitchPostAsync("/chat/announcements", ApiVersion.Helix, json.ToString(), getParams, accessToken);
+    }
+
+    /// <summary>
+    /// Sends an announcement to the broadcaster’s chat room.
+    /// Requires a user access token that includes the moderator:manage:announcements scope.
+    /// The ID in the moderator_id query parameter must match the user ID in the access token.
+    /// </summary>
+    /// <param name="broadcasterId">The ID of the broadcaster that owns the chat room to send the announcement to.</param>
+    /// <param name="moderatorId">The ID of a user who has permission to moderate the broadcaster’s chat room. This ID must match the user ID in the OAuth token, which can be a moderator or the broadcaster.</param>
+    /// <param name="request">The request parameters for sending the announcement.</param>
+    /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
+    public Task SendChatAnnouncementAsync(string broadcasterId, string moderatorId, SendChatAnnouncementRequest request, string accessToken = null)
+    {
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
+        BadParameterException.ThrowIfNullOrEmpty(request.Message);
+
+        if (request.Message.Length > 500)
+            throw new BadParameterException("message length must be less than or equal to 500 characters");
+
+        var getParams = new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>("broadcaster_id", broadcasterId),
+            new KeyValuePair<string, string>("moderator_id", moderatorId),
+        };
+
+        var json = JObject.FromObject(request);
 
         return TwitchPostAsync("/chat/announcements", ApiVersion.Helix, json.ToString(), getParams, accessToken);
     }
@@ -311,14 +328,9 @@ public class Chat : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task SendShoutoutAsync(string fromBroadcasterId, string toBroadcasterId, string moderatorId, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(fromBroadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrEmpty(toBroadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrEmpty(moderatorId))
-            throw new BadParameterException("moderatorId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(fromBroadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(toBroadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(moderatorId);
 
         var getParams = new List<KeyValuePair<string, string>>
         {
@@ -343,14 +355,9 @@ public class Chat : ApiBase
     [Obsolete("Use SendChatMessage(SendChatMessageRequest, string) instead")]
     public Task<SendChatMessageResponse> SendChatMessage(string broadcasterId, string senderId, string message, string replyParentMessageId = null, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(broadcasterId))
-            throw new BadParameterException("broadcasterId must be set");
-
-        if (string.IsNullOrEmpty(senderId))
-            throw new BadParameterException("senderId must be set");
-
-        if (string.IsNullOrEmpty(message))
-            throw new BadParameterException("message must be set");
+        BadParameterException.ThrowIfNullOrEmpty(broadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(senderId);
+        BadParameterException.ThrowIfNullOrEmpty(message);
 
         var json = new JObject
         {
@@ -376,14 +383,10 @@ public class Chat : ApiBase
     /// <exception cref="BadParameterException"></exception>
     public Task<SendChatMessageResponse> SendChatMessage(SendChatMessageRequest request, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(request.BroadcasterId))
-            throw new BadParameterException("BroadcasterId must be set");
-
-        if (string.IsNullOrEmpty(request.SenderId))
-            throw new BadParameterException("SenderId must be set");
-
-        if (string.IsNullOrEmpty(request.Message))
-            throw new BadParameterException("Message must be set");
+        BadParameterException.ThrowIfNull(request);
+        BadParameterException.ThrowIfNullOrEmpty(request.BroadcasterId);
+        BadParameterException.ThrowIfNullOrEmpty(request.SenderId);
+        BadParameterException.ThrowIfNullOrEmpty(request.Message);
 
         return TwitchPostGenericAsync<SendChatMessageResponse>("/chat/messages", ApiVersion.Helix, JsonConvert.SerializeObject(request), null, accessToken);
     }
@@ -399,8 +402,7 @@ public class Chat : ApiBase
     /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
     public Task UpdateUserChatColorAsync(string userId, UserColors color, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(userId))
-            throw new BadParameterException("userId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(userId);
 
         if (string.IsNullOrEmpty(color.Value))
             throw new BadParameterException("color must be set");
@@ -423,8 +425,7 @@ public class Chat : ApiBase
     /// <param name="accessToken">optional access token to override the use of the stored one in the TwitchAPI instance</param>
     public Task UpdateUserChatColorAsync(string userId, string colorHex, string accessToken = null)
     {
-        if (string.IsNullOrEmpty(userId))
-            throw new BadParameterException("userId must be set");
+        BadParameterException.ThrowIfNullOrEmpty(userId);
 
         if (string.IsNullOrEmpty(colorHex))
             throw new BadParameterException("colorHex must be set");
@@ -454,8 +455,7 @@ public class Chat : ApiBase
     /// <returns cref="GetUserChatColorResponse"></returns>
     public Task<GetUserChatColorResponse> GetUserChatColorAsync(List<string> userIds, string accessToken = null)
     {
-        if (userIds.Count == 0)
-            throw new BadParameterException("userIds must contain at least 1 userId");
+        BadParameterException.ThrowIfCollectionNullOrEmptyOrGreaterThan(userIds, 100);
 
         var getParams = new List<KeyValuePair<string, string>>();
 
