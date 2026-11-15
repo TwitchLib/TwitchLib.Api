@@ -25,10 +25,11 @@ public class SharedChat : ApiBase
     /// <para><see href="https://dev.twitch.tv/docs/api/reference/#get-shared-chat-session">
     /// Twitch Docs: Get Shared Chat Session</see></para>
     /// <para>Retrieves the active shared chat session for a channel.</para>
+    /// <para>Requires a User Access Token</para>
     /// </summary>
     /// <param name="broadcasterId">The User ID of the channel broadcaster.</param>
     /// <param name="accessToken">Optional access token to override the use of the stored one in the TwitchAPI instance</param>
-    /// <returns cref="GetChannelGuestStarSettingsResponse"></returns>
+    /// <returns cref="GetSharedChatSessionResponse"></returns>
     /// <exception cref="BadParameterException"></exception>
     public Task<GetSharedChatSessionResponse> GetSharedChatSessionAsync(string broadcasterId, string accessToken = null)
     {

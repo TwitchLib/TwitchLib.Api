@@ -101,6 +101,10 @@ public class Helix
   /// </summary>
   public Search Search { get; }
   /// <summary>
+  /// Shared Chat related Helix APIs
+  /// </summary>
+  public SharedChat SharedChat { get; }
+  /// <summary>
   /// Stream related Helix APIs
   /// </summary>
   public Streams Streams { get; }
@@ -163,6 +167,7 @@ public class Helix
      Raids = new Raids(settings, rateLimiter, http);
      Schedule = new Schedule(Settings, rateLimiter, http);
      Search = new Search(Settings, rateLimiter, http);
+     SharedChat = new SharedChat(Settings, rateLimiter, http);
      Streams = new Streams(Settings, rateLimiter, http);
      Subscriptions = new Subscriptions(Settings, rateLimiter, http);
      Tags = new Tags(Settings, rateLimiter, http);
